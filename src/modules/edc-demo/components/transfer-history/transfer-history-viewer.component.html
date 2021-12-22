@@ -1,0 +1,65 @@
+<div id="wrapper">
+    <mat-paginator [length]="(transferProcesses$ | async)?.length" pageSize="100" hidePageSize="true">
+    </mat-paginator>
+
+    <table mat-table [dataSource]="transferProcesses$" class="transfer-history-table">
+        
+        <ng-container matColumnDef="stateTimestamp">
+            <th mat-header-cell *matHeaderCellDef scope="col">Timestamp</th>
+            <td mat-cell *matCellDef="let item" class="singleline-cell">{{item.stateTimestamp}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef scope="col">Id</th>
+            <td mat-cell *matCellDef="let item">{{item.id}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef scope="col">Type</th>
+            <td mat-cell *matCellDef="let item">{{item.type}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="state">
+            <th mat-header-cell *matHeaderCellDef scope="col">State</th>
+            <td mat-cell *matCellDef="let item">{{transferProcessStates[item.state]}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="connectorId">
+            <th mat-header-cell *matHeaderCellDef scope="col">ConnectorId</th>
+            <td mat-cell *matCellDef="let item">{{item.connectorId}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="connectorAddress">
+            <th mat-header-cell *matHeaderCellDef scope="col">ConnectorAddress</th>
+            <td mat-cell *matCellDef="let item">{{item.connectorAddress}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="protocol">
+            <th mat-header-cell *matHeaderCellDef scope="col">Protocol</th>
+            <td mat-cell *matCellDef="let item">{{item.protocol}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="assetId">
+            <th mat-header-cell *matHeaderCellDef scope="col">AssetId</th>
+            <td mat-cell *matCellDef="let item">{{item.assetId}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="contractId">
+            <th mat-header-cell *matHeaderCellDef scope="col">ContractId</th>
+            <td mat-cell *matCellDef="let item">{{item.contractId}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dataDestinationType">
+            <th mat-header-cell *matHeaderCellDef scope="col">DataDestinationType</th>
+            <td mat-cell *matCellDef="let item">{{item.dataDestinationType}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="error">
+            <th mat-header-cell *matHeaderCellDef scope="col">Error</th>
+            <td mat-cell *matCellDef="let item">{{item.errorDetail}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columns" class="transfer-history-table-header"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>        
+    </table>
+</div>

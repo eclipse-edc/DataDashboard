@@ -1,0 +1,79 @@
+<mat-dialog-content>
+
+    <mat-form-field id="form-field-id" class="form-field" color="accent">
+        <mat-label>Id</mat-label>
+        <input matInput [(ngModel)]="contractDefinition.id" required [disabled]="editMode">
+    </mat-form-field>
+
+    <div>
+        <mat-form-field id="form-field-access-policy" class="form-field form-field-policy">
+            <mat-label>Access policy</mat-label>
+            <mat-select [(ngModel)]="accessPolicy">
+                <mat-option *ngFor="let policy of policies" [value]="policy">
+                    {{policy.uid}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field id="form-field-contract-policy" class="form-field form-field-policy">
+            <mat-label>Contract policy</mat-label>
+            <mat-select [(ngModel)]="contractPolicy">
+                <mat-option *ngFor="let policy of policies" [value]="policy">
+                    {{policy.uid}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+
+    <mat-card class="mat-elevation-z8">
+        <mat-card-subtitle>Selectors</mat-card-subtitle>
+        <mat-card-content>
+            <div *ngFor="let criterion of contractDefinition.selectorExpression.criteria">
+                <mat-form-field class="form-field" color="accent">
+                    <mat-label>left operand</mat-label>
+                    <input matInput [(ngModel)]="criterion.left" required>
+                </mat-form-field>
+
+                <mat-form-field class="form-field form-field-operator" color="accent">
+                    <mat-label>operator</mat-label>
+                    <input matInput [(ngModel)]="criterion.op" required>
+                </mat-form-field>
+
+                <mat-form-field class="form-field" color="accent">
+                    <mat-label>right operand</mat-label>
+                    <input matInput [(ngModel)]="criterion.right" required>
+                </mat-form-field>
+
+                <button mat-icon-button color="accent" (click)="onRemoveCriteria(criterion)"
+                    [disabled]="contractDefinition.selectorExpression.criteria.length === 1">
+                    <mat-icon>highlight_remove</mat-icon>
+                </button>
+            </div>
+
+            <mat-card-actions>
+                <button mat-stroked-button color="accent" (click)="onAddCriterion()">
+                    <mat-icon>add_circle_outline</mat-icon> Add selector
+                </button>
+            </mat-card-actions>
+
+        </mat-card-content>
+    </mat-card>
+    <div>&nbsp;</div>
+
+</mat-dialog-content>
+
+
+<mat-dialog-actions>
+    <button mat-stroked-button color="accent" *ngIf="editMode" (click)="onSave()">
+        <mat-icon>save</mat-icon> Save
+    </button>
+
+    <button mat-stroked-button color="accent" *ngIf="!editMode" (click)="onSave()">
+        <mat-icon>add_circle_outline</mat-icon> Create
+    </button>
+
+    <button mat-stroked-button mat-dialog-close color="accent">
+        <mat-icon>cancel</mat-icon> Cancel
+    </button>
+</mat-dialog-actions>

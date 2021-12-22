@@ -1,0 +1,26 @@
+<mat-dialog-content *ngIf="storageTypes$ | async as storageTypes">
+
+    <mat-form-field id="form-field-destination" class="form-field" color="accent">
+        <mat-label>Destination</mat-label>
+        <mat-select [(ngModel)]="storageTypeId">
+            <mat-option *ngFor="let storageType of storageTypes" [value]="storageType.id">
+                {{storageType.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div>
+    <button mat-stroked-button color="accent" (click)="onTransfer()">
+        <mat-icon>downloading</mat-icon> Start transfer
+    </button>
+
+    <button mat-stroked-button mat-dialog-close color="accent">
+        <mat-icon>cancel</mat-icon> Cancel
+    </button>
+</div>
+<!-- <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar> -->
+
+</mat-dialog-actions>

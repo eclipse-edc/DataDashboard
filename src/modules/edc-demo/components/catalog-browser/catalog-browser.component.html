@@ -1,0 +1,95 @@
+<div id="wrapper" *ngIf="filteredAssets$ | async as filteredAssets">
+    <div>
+        <mat-form-field class="search-form-field" color="accent">
+            <mat-label>Search catalog</mat-label>
+            <input matInput (input)="onSearch()" [(ngModel)]="searchText">
+            <mat-icon matPrefix>search</mat-icon>
+            <button *ngIf="searchText" matSuffix mat-icon-button (click)="searchText=''; onSearch()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <mat-paginator [length]="(filteredAssets)?.length" pageSize="10" hidePageSize="true">
+        </mat-paginator>
+
+        <!-- <button mat-button (click)="onSearch()">Search</button> -->
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+        <mat-card *ngFor="let asset of filteredAssets" class="asset-card">
+            <mat-card-header>
+                <mat-icon mat-card-avatar>sim_card</mat-icon>
+                <mat-card-title>{{asset.name}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list dense>
+                    <mat-list-item>
+                        <mat-icon mat-list-icon>policy</mat-icon>
+                        <div mat-line class="asset-property-name">Policy</div>
+                        <div mat-line>{{asset.policyId}}</div>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <mat-icon mat-list-icon>category</mat-icon>
+                        <div mat-line class="asset-property-name">Type</div>
+                        <div mat-line>{{asset.type}}</div>
+                    </mat-list-item>
+                </mat-list>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Additional properties
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-list dense>
+                        <mat-list-item>
+                            <mat-icon mat-list-icon>key</mat-icon>
+                            <div mat-line class="asset-property-name">Id</div>
+                            <div mat-line>{{asset.id}}</div>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon mat-list-icon>numbers</mat-icon>
+                            <div mat-line class="asset-property-name">Version</div>
+                            <div mat-line>{{asset.version}}</div>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="asset.contentType">
+                            <mat-icon mat-list-icon>content_paste</mat-icon>
+                            <div mat-line class="asset-property-name">Content-Type</div>
+                            <div mat-line>{{asset.contentType}}</div>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="asset.originator">
+                            <mat-icon mat-list-icon>link</mat-icon>
+                            <div mat-line class="asset-property-name">Originator</div>
+                            <div mat-line>{{asset.originator}}</div>
+                        </mat-list-item>
+                        <mat-list-item *ngFor="let additionalPropertyKey of asset.additionalPropertyKeys">
+                            <mat-icon mat-list-icon>list</mat-icon>
+                            <div mat-line *ngIf="additionalPropertyKey.replace('asset:prop:', '') as name"
+                                class="asset-property-name">
+                                {{name.charAt(0).toUpperCase() + name.slice(1)}}
+                            </div>
+                            <div mat-line title="{{asset.properties[additionalPropertyKey]}}">
+                                {{asset.properties[additionalPropertyKey]}}</div>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-expansion-panel>
+
+            </mat-card-content>
+
+            <mat-divider inset></mat-divider>
+            <mat-card-actions class="card-actions">
+                <button mat-stroked-button color="accent" (click)="onNegotiate(asset)" [disabled]="!asset.isAsync || isBusy(asset) || isNegoiated(asset)">
+                    <mat-icon>drive_file_rename_outline</mat-icon> Negotiate
+                </button>
+                <button mat-stroked-button color="accent" (click)="onTransfer(asset)" [disabled]="!asset.isAsync || isBusy(asset) || !isNegoiated(asset)">
+                    <mat-icon>downloading</mat-icon> Transfer
+                </button>
+                {{getTransferState(asset)}}
+            </mat-card-actions>
+            <mat-card-footer>
+                <mat-progress-bar mode="indeterminate" color="accent" *ngIf="isBusy(asset)"></mat-progress-bar>
+            </mat-card-footer>
+        </mat-card>
+    </div>
+</div>
