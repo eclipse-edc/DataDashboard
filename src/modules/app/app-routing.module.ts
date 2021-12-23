@@ -8,19 +8,19 @@ import { TransferHistoryViewerComponent } from '../edc-demo/components/transfer-
 
 export const routes: Routes = [
   {
-    path: 'introduction', component: IntroductionComponent, data: { title: 'Introduction', icon: 'info_outline' }
+    path: 'introduction', component: IntroductionComponent, data: { title: 'Getting Started', icon: 'info_outline' }
   },
   {
-    path: 'catalog-browser', component: CatalogBrowserComponent, data: { title: 'Catalog Browser', icon: 'sim_card' }
+    path: 'catalog-browser', component: CatalogBrowserComponent, data: { title: 'Dataspace Catalog', icon: 'sim_card' }
+  },
+  {
+    path: 'transfer-history-viewer', component: TransferHistoryViewerComponent, data: { title: 'Transfer History', icon: 'assignment' }
   },
   {
     path: 'policy-editor', component: PolicyEditorComponent, data: { title: 'Policy Editor', icon: 'rule' }
   },
   {
-    path: 'transfer-history-viewer', component: TransferHistoryViewerComponent, data: { title: 'Transfer History Viewer', icon: 'assignment' }
-  },
-  {
-    path: 'asset-publisher', component: AssetPublisherComponent, data: { title: 'Asset Publisher', icon: 'upload' }
+    path: 'asset-publisher', component: AssetPublisherComponent, data: { title: 'Data Publisher', icon: 'upload' }
   },
   {
     path: '', redirectTo: 'introduction', pathMatch: 'full'
