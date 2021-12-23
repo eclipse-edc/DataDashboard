@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 
 @import "~@angular/material/theming";
@@ -19,7 +19,7 @@ $theming-material-components-theme: mat-dark-theme(
 
 @include angular-material-theme($theming-material-components-theme);
 
-$custom-typography: mat.define-typography-config($font-family: 'Oxanium');
+$custom-typography: mat.define-typography-config($font-family: 'Open Sans');
 @include mat.core($custom-typography);
 
 :root {
