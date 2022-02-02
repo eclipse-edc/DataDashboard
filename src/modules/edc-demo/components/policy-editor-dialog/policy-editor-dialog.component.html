@@ -31,7 +31,7 @@
         <mat-card-content>
             <div *ngFor="let criterion of contractDefinition.selectorExpression.criteria">
                 <mat-form-field class="form-field" color="accent">
-                    <mat-label>left operand</mat-label>
+                    <mat-label>asset property</mat-label>
                     <input matInput [(ngModel)]="criterion.left" required>
                 </mat-form-field>
 
@@ -41,7 +41,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="form-field" color="accent">
-                    <mat-label>right operand</mat-label>
+                    <mat-label>value</mat-label>
                     <input matInput [(ngModel)]="criterion.right" required>
                 </mat-form-field>
 
