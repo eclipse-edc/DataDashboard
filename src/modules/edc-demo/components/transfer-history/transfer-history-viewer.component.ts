@@ -11,7 +11,7 @@ import { EdcDemoApiService } from '../../services/edc-demo-api.service';
 })
 export class TransferHistoryViewerComponent implements OnInit {
 
-  columns: string[] = ['stateTimestamp', 'id', 'type', 'state', 'connectorId', 'connectorAddress', 'protocol', 'assetId', 'contractId', 'dataDestinationType', 'error' ];
+  columns: string[] = ['stateTimestamp', 'id', 'type', 'state', 'connectorId', 'connectorAddress', 'protocol', 'assetId', 'contractId', 'dataDestinationType', 'error'];
   transferProcesses$: Observable<TransferProcess[]> = of([]);
   transferProcessStates = TransferProcessStates;
 

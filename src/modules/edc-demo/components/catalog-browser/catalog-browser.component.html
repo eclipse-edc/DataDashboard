@@ -1,4 +1,4 @@
-<div id="wrapper" *ngIf="filteredAssets$ | async as filteredAssets">
+<div id="wrapper" *ngIf="filteredContractOffers$ | async as filteredContractOffers">
     <div>
         <mat-form-field class="search-form-field" color="accent">
             <mat-label>Search catalog</mat-label>
@@ -9,7 +9,7 @@
             </button>
         </mat-form-field>
 
-        <mat-paginator [length]="(filteredAssets)?.length" pageSize="10" hidePageSize="true">
+        <mat-paginator [length]="(filteredContractOffers)?.length" pageSize="(filteredContractOffers)?.length" hidePageSize="true">
         </mat-paginator>
 
         <!-- <button mat-button (click)="onSearch()">Search</button> -->
@@ -17,22 +17,22 @@
 
     <div fxLayout="row wrap" fxLayoutAlign="start start">
 
-        <mat-card *ngFor="let asset of filteredAssets" class="asset-card">
+        <mat-card *ngFor="let contractOffer of filteredContractOffers" class="asset-card">
             <mat-card-header>
                 <mat-icon mat-card-avatar>sim_card</mat-icon>
-                <mat-card-title>{{asset.name}}</mat-card-title>
+                <mat-card-title>{{contractOffer.asset.name}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <mat-list dense>
-                    <mat-list-item>
+                    <!-- <mat-list-item>
                         <mat-icon mat-list-icon>policy</mat-icon>
                         <div mat-line class="asset-property-name">Policy</div>
-                        <div mat-line>{{asset.policyId}}</div>
-                    </mat-list-item>
+                        <div mat-line>{{contractOffer.asset.policyId}}</div>
+                    </mat-list-item> -->
                     <mat-list-item>
                         <mat-icon mat-list-icon>category</mat-icon>
                         <div mat-line class="asset-property-name">Type</div>
-                        <div mat-line>{{asset.type}}</div>
+                        <div mat-line>{{contractOffer.asset.type}}</div>
                     </mat-list-item>
                 </mat-list>
 
@@ -46,31 +46,31 @@
                         <mat-list-item>
                             <mat-icon mat-list-icon>key</mat-icon>
                             <div mat-line class="asset-property-name">Id</div>
-                            <div mat-line>{{asset.id}}</div>
+                            <div mat-line>{{contractOffer.asset.id}}</div>
                         </mat-list-item>
                         <mat-list-item>
                             <mat-icon mat-list-icon>numbers</mat-icon>
                             <div mat-line class="asset-property-name">Version</div>
-                            <div mat-line>{{asset.version}}</div>
+                            <div mat-line>{{contractOffer.asset.version}}</div>
                         </mat-list-item>
-                        <mat-list-item *ngIf="asset.contentType">
+                        <mat-list-item *ngIf="contractOffer.asset.contentType">
                             <mat-icon mat-list-icon>content_paste</mat-icon>
                             <div mat-line class="asset-property-name">Content-Type</div>
-                            <div mat-line>{{asset.contentType}}</div>
+                            <div mat-line>{{contractOffer.asset.contentType}}</div>
                         </mat-list-item>
-                        <mat-list-item *ngIf="asset.originator">
+                        <mat-list-item *ngIf="contractOffer.asset.originator">
                             <mat-icon mat-list-icon>link</mat-icon>
                             <div mat-line class="asset-property-name">Originator</div>
-                            <div mat-line>{{asset.originator}}</div>
+                            <div mat-line>{{contractOffer.asset.originator}}</div>
                         </mat-list-item>
-                        <mat-list-item *ngFor="let additionalPropertyKey of asset.additionalPropertyKeys">
+                        <mat-list-item *ngFor="let additionalPropertyKey of contractOffer.asset.additionalPropertyKeys">
                             <mat-icon mat-list-icon>list</mat-icon>
                             <div mat-line *ngIf="additionalPropertyKey.replace('asset:prop:', '') as name"
                                 class="asset-property-name">
                                 {{name.charAt(0).toUpperCase() + name.slice(1)}}
                             </div>
-                            <div mat-line title="{{asset.properties[additionalPropertyKey]}}">
-                                {{asset.properties[additionalPropertyKey]}}</div>
+                            <div mat-line title="{{contractOffer.asset.properties[additionalPropertyKey]}}">
+                                {{contractOffer.asset.properties[additionalPropertyKey]}}</div>
                         </mat-list-item>
                     </mat-list>
                 </mat-expansion-panel>
@@ -79,16 +79,16 @@
 
             <mat-divider inset></mat-divider>
             <mat-card-actions class="card-actions">
-                <button mat-stroked-button color="accent" (click)="onNegotiate(asset)" [disabled]="!asset.isAsync || isBusy(asset) || isNegoiated(asset)">
+                <button mat-stroked-button color="accent" (click)="onNegotiate(contractOffer)" [disabled]="!contractOffer.asset.isAsync || isBusy(contractOffer) || isNegoiated(contractOffer)">
                     <mat-icon>drive_file_rename_outline</mat-icon> Negotiate
                 </button>
-                <button mat-stroked-button color="accent" (click)="onTransfer(asset)" [disabled]="!asset.isAsync || isBusy(asset) || !isNegoiated(asset)">
+                <button mat-stroked-button color="accent" (click)="onTransfer(contractOffer)" [disabled]="!contractOffer.asset.isAsync || isBusy(contractOffer) || !isNegoiated(contractOffer)">
                     <mat-icon>downloading</mat-icon> Transfer
                 </button>
-                {{getTransferState(asset)}}
+                {{getState(contractOffer)}}
             </mat-card-actions>
             <mat-card-footer>
-                <mat-progress-bar mode="indeterminate" color="accent" *ngIf="isBusy(asset)"></mat-progress-bar>
+                <mat-progress-bar mode="indeterminate" color="accent" *ngIf="isBusy(contractOffer)"></mat-progress-bar>
             </mat-card-footer>
         </mat-card>
     </div>

@@ -35,7 +35,8 @@ import { environment } from 'src/environments/environment';
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-    { provide: 'HOME_CONNECTOR_BASE_URL', useFactory: () => environment.homeConnectorUrl }
+    { provide: 'HOME_CONNECTOR_BASE_URL', useFactory: () => environment.homeConnectorUrl },
+    { provide: 'API_KEY', useFactory: () => environment.apiKey }
   ],
   bootstrap: [AppComponent]
 })

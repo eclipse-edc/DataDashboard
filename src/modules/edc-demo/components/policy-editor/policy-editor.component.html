@@ -9,7 +9,7 @@
             </button>
         </mat-form-field>
 
-        <mat-paginator [length]="contractDefinitions.length" pageSize="10" hidePageSize="true">
+        <mat-paginator [length]="contractDefinitions.length" pageSize="contractDefinitions.length" hidePageSize="true">
         </mat-paginator>
 
         <button mat-stroked-button color="accent" (click)="onCreate()" id="create-button">

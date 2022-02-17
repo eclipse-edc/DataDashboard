@@ -10,4 +10,5 @@ export interface TransferProcess {
     assetId: string;
     contractId: string;
     dataDestinationType: string;
+    destinationAddress: string;
 }

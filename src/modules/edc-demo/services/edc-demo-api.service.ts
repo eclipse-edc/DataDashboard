@@ -11,6 +11,10 @@ import { Policy } from '../models/api/policy';
 import { ContractDefinition } from '../models/api/contract-definition';
 import { AssetEntry } from '../models/api/asset-entry';
 import { Health } from '../models/api/health';
+import { ContractOffer } from '../models/api/contract-offer';
+import { NegotiationCreation } from '../models/api/negotiation-creation';
+import { NegotiationResult } from '../models/api/negotiation-result';
+import { NegotiationState } from '../models/api/negotiation-state';
 
 
 @Injectable({
@@ -20,7 +24,9 @@ export class EdcDemoApiService {
 
   private apiBaseUrl = '';
 
-  constructor(private httpClient: HttpClient, @Inject('HOME_CONNECTOR_BASE_URL') homeConnectorBaseUrl: string) {
+  constructor(private httpClient: HttpClient, 
+    @Inject('HOME_CONNECTOR_BASE_URL') private homeConnectorBaseUrl: string,
+    @Inject('API_KEY') private apiKey: string) {
     this.apiBaseUrl = `${homeConnectorBaseUrl}/api/edc-demo`;
   }
 
@@ -67,6 +73,14 @@ export class EdcDemoApiService {
       .pipe(map((assets) => assets.map(asset => new Asset(asset.properties))));
   }
 
+  getContractOffers(): Observable<ContractOffer[]> {
+    return this.get<ContractOffer[]>('/contract-offers')
+    .pipe(map((contractOffers) => contractOffers.map(contractOffer =>  { 
+      contractOffer.asset = new Asset(contractOffer.asset.properties) 
+      return contractOffer;
+    })));
+  }
+
   getDataRequests(): Observable<DataRequest[]> {
     return this.get<DataRequest[]>('/data-requests');
   }
@@ -95,6 +109,10 @@ export class EdcDemoApiService {
     return this.post<TransferProcess>('/transfer-processes', transferProcessCreation);
   }
 
+  createNegotiation(negotiationCreation: NegotiationCreation): Observable<NegotiationResult> {
+    return this.post<NegotiationResult>('/negotiations', negotiationCreation);
+  }
+
   createContractDefinition(contractDefinition: ContractDefinition): Observable<ContractDefinition> {
     return this.post<ContractDefinition>('/contract-definitions', contractDefinition);
   }
@@ -105,5 +123,10 @@ export class EdcDemoApiService {
 
   createAssetEntry(assetEntry: AssetEntry): Observable<AssetEntry> {
     return this.post<AssetEntry>('/asset-entries', assetEntry);
+  }
+
+  getNegotiationState(id: string): Observable<NegotiationState> {
+    const url = `${this.homeConnectorBaseUrl}/api/control/negotiation/${id}`; 
+    return this.catchError(this.httpClient.get<NegotiationState>(url, { headers: { 'X-Api-Key': this.apiKey} }), url, 'GET');
   }
 }

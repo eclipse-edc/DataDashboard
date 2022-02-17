@@ -51,7 +51,6 @@ export class AssetPublisherComponent implements OnInit {
       }
     };
 
-    console.log(assetEntry);
     this.apiService.createAssetEntry(assetEntry).subscribe(() => this.clearForm());
   }
 }
