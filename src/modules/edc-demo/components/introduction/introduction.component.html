@@ -10,18 +10,23 @@
             various ecosystems.
         </p>
         <p>
-            <a mat-stroked-button class="link" target="_blank" color="secondary"
-                href="https://github.com/eclipse-dataspaceconnector/DataSpaceConnector">
-                GitHub
-            </a>
-            <a mat-stroked-button class="link" target="_blank" color="secondary"
-                href="https://github.com/eclipse-dataspaceconnector/DataSpaceConnector/blob/main/README.md">
-                Getting Started
-            </a>
-            <a mat-stroked-button class="link" target="_blank" color="secondary"
-                href="https://github.com/eclipse-dataspaceconnector/DataSpaceConnector/blob/main/onboarding.md">
-                Onboarding Guide
-            </a>
+          <a class="link" color="secondary" href="https://github.com/eclipse-dataspaceconnector/DataSpaceConnector"
+             mat-stroked-button
+             target="_blank">
+            GitHub
+          </a>
+          <a class="link" color="secondary"
+             href="https://github.com/eclipse-dataspaceconnector/DataSpaceConnector/blob/main/README.md"
+             mat-stroked-button
+             target="_blank">
+            Getting Started
+          </a>
+          <a class="link" color="secondary"
+             href="https://github.com/eclipse-dataspaceconnector/DataSpaceConnector/blob/main/onboarding.md"
+             mat-stroked-button
+             target="_blank">
+            Onboarding Guide
+          </a>
         </p>
     </div>
 </mat-card>
@@ -30,29 +35,40 @@
     <h1>EDC Demo (this application)</h1>
     <div>
         <p class="description">
-            This EDC demo shows (some) features of the Eclipse Dataspace Connector.
-            It consists of this application, built with Angular, and an Eclipse Dataspace Connector extension,
-            that provides the backend API for this frontend. This application is not intended for production usage and is 'work in progress'.
-            Some of the features are faked to some degree, or some assumptions are made, to close the gap where features are in the flux 
-            on the connector side. The intention is to show the general flow (where possible and useful).
+          This EDC demo shows (some) features of the Eclipse Dataspace Connector.
+          It consists of this application, built with Angular, and an Eclipse Dataspace Connector extension,
+          that provides the backend API for this frontend. This application is not intended for production usage and is
+          'work in progress'.
+          Some of the features are faked to some degree, or some assumptions are made, to close the gap where features
+          are in the flux
+          on the connector side. The intention is to show the general flow (where possible and useful).
         </p>
-        <p>
-            <a mat-stroked-button class="link" target="_blank" color="secondary"
-                href="https://github.com/eclipse-dataspaceconnector/DataSpaceConnector/blob/main/samples/02-health-endpoint/README.md">
-                Write your first extension
-            </a>
-        </p>
+      <p>
+        <a class="link" color="secondary"
+           href="https://github.com/eclipse-dataspaceconnector/DataSpaceConnector/blob/main/samples/02-health-endpoint/README.md"
+           mat-stroked-button
+           target="_blank">
+          Write your first extension
+        </a>
+      </p>
         <p class="description">
             Example use cases, that you can try out with this application, are:
         </p>
-        <ul id="example-use-cases-list">
-            <li>View the asset catalog of your Dataspace using the <a [routerLink]="['/catalog-browser']" class="md-accent">Catalog Browser</a></li>
-            <li>Search for assets in your Dataspace using the <a [routerLink]="['/catalog-browser']">Catalog Browser</a></li>
-            <li>Transfer an asset in your Dataspace using the <a [routerLink]="['/catalog-browser']">Catalog Browser</a></li>
-            <li>Create a policy and apply it to assets in your Dataspace using the <a [routerLink]="['/policy-editor']">Policy Editor</a></li>
-            <li>View which assets have been transfered in your Dataspace using the <a [routerLink]="['/transfer-history-viewer']">Transfer History Viewer</a></li>
-            <li>Publish a new asset into your Dataspace using the <a [routerLink]="['/asset-publisher']">Asset Publisher</a></li>
-        </ul>
+      <ul id="example-use-cases-list">
+        <li>View the asset catalog of your Dataspace using the <a [routerLink]="['/catalog-browser']" class="md-accent">Catalog
+          Browser</a></li>
+        <li>Search for assets in your Dataspace using the <a [routerLink]="['/catalog-browser']">Catalog Browser</a>
+        </li>
+        <li>Transfer an asset in your Dataspace using the <a [routerLink]="['/catalog-browser']">Catalog Browser</a>
+        </li>
+        <li>Create a policy and apply it to assets in your Dataspace using the <a
+          [routerLink]="['/contractdefinition-editor']">Contract
+          Definition Editor</a></li>
+        <li>View which assets have been transfered in your Dataspace using the <a
+          [routerLink]="['/transfer-history-viewer']">Transfer History Viewer</a></li>
+        <li>Publish a new asset into your Dataspace using the <a [routerLink]="['/asset-publisher']">Asset Publisher</a>
+        </li>
+      </ul>
     </div>
 </mat-card>
 </div>

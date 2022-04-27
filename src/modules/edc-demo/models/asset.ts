@@ -1,7 +1,6 @@
-import { AssetProperties } from "./api/asset-properties";
 
 export class Asset {
-    private static readonly PROPERTY_ID = "asset:prop:id";
+    private static readonly PROPERTY_ID:string = "asset:prop:id";
     private static readonly PROPERTY_NAME = "asset:prop:name";
     private static readonly PROPERTY_VERSION = "asset:prop:version";
     private static readonly PROPERTY_CONTENT_TYPE = "asset:prop:contenttype";
@@ -18,9 +17,9 @@ export class Asset {
         Asset.PROPERTY_ORIGINATOR
     ];
 
-    constructor(public properties: AssetProperties) {
+    constructor(public properties: { [key: string]: string; }) {
     }
-    
+
     public get id() {
         return this.properties[Asset.PROPERTY_ID];
     }

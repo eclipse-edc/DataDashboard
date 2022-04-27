@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AssetEntry } from '../../models/api/asset-entry';
-import { StorageType } from '../../models/api/storage-type';
-import { Asset } from '../../models/asset';
-import { EdcDemoApiService } from '../../services/edc-demo-api.service';
+import {Component, Inject, OnInit} from '@angular/core';
+import {StorageType} from '../../models/api/storage-type';
+import {AssetEntryDto, AssetService} from "../../../edc-dmgmt-client";
 
 @Component({
   selector: 'edc-demo-asset-publisher',
@@ -13,17 +9,16 @@ import { EdcDemoApiService } from '../../services/edc-demo-api.service';
 })
 export class AssetPublisherComponent implements OnInit {
 
-  storageTypes$: Observable<StorageType[]> = of([]); 
   id: string = '';
   version: string = '';
   name: string = '';
   address: string = '';
   storageTypeId: string = '';
 
-  constructor(private apiService: EdcDemoApiService) { }
+  constructor(private assetService: AssetService, @Inject('STORAGE_TYPES') public storageTypes: StorageType[]) {
+  }
 
   ngOnInit(): void {
-    this.storageTypes$ = this.apiService.getStorageTypes();
   }
 
   clearForm() {
@@ -34,7 +29,7 @@ export class AssetPublisherComponent implements OnInit {
   }
 
   onPublish() {
-    const assetEntry: AssetEntry = {
+    const assetEntry: AssetEntryDto = {
       asset: {
         properties: {
           "asset:prop:name": this.name,
@@ -47,10 +42,9 @@ export class AssetPublisherComponent implements OnInit {
           "address": this.address,
           "type": this.storageTypeId
         },
-        type: this.storageTypeId
       }
     };
 
-    this.apiService.createAssetEntry(assetEntry).subscribe(() => this.clearForm());
+    this.assetService.createAsset(assetEntry).subscribe(() => this.clearForm());
   }
 }

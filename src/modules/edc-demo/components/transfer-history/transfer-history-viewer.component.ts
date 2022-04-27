@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { TransferProcess } from '../../models/api/transfer-process';
-import { TransferProcessStates } from '../../models/api/transfer-process-states';
-import { EdcDemoApiService } from '../../services/edc-demo-api.service';
+import {Component, OnInit} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {TransferProcessDto, TransferProcessService} from "../../../edc-dmgmt-client";
 
 @Component({
   selector: 'edc-demo-transfer-history',
@@ -11,13 +9,12 @@ import { EdcDemoApiService } from '../../services/edc-demo-api.service';
 })
 export class TransferHistoryViewerComponent implements OnInit {
 
-  columns: string[] = ['stateTimestamp', 'id', 'type', 'state', 'connectorId', 'connectorAddress', 'protocol', 'assetId', 'contractId', 'dataDestinationType', 'error'];
-  transferProcesses$: Observable<TransferProcess[]> = of([]);
-  transferProcessStates = TransferProcessStates;
+  columns: string[] = ['stateTimestamp', 'id', 'type', 'state', 'connectorId', 'protocol', 'assetId', 'contractId', 'error'];
+  transferProcesses$: Observable<TransferProcessDto[]> = of([]);
 
-  constructor(private apiService: EdcDemoApiService) { }
+  constructor(private apiService: TransferProcessService) { }
 
   ngOnInit(): void {
-    this.transferProcesses$ = this.apiService.getTransferProcesses();
+    this.transferProcesses$ = this.apiService.getAllTransferProcesses();
   }
 }

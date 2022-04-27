@@ -1,20 +1,15 @@
 # Stage 1: Compile and Build angular codebase
-
-# Use official node image as the base image
 FROM node:lts as build
 
-# Set the working directory
 WORKDIR /app
-
-# Add the source code to app
 COPY ./ /app/
-
-# Install all the dependencies
 RUN npm install
-
-# Generate the build of the application
 RUN npm run build
 
+# Stage 2: Serve app with nginx
+FROM nginx:alpine
+COPY --from=build /app/deployment/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist/edc-demo-client /usr/share/nginx/html
+COPY --from=build /app/src/assets /usr/share/nginx/html/assets
+EXPOSE 80
 
-EXPOSE 4200
-CMD ["npm", "start"]

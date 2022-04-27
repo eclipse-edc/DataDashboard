@@ -1,0 +1,6 @@
+{
+  "_comment": "This file will be replaced at runtime when deployed to the cloud",
+  "connectorUrl": "http://ageramvd2-consumer.northeurope.azurecontainer.io:8182/api/v1/data",
+  "storageAccount": "ageramvd2gpstorage",
+  "apiKey": "x-edc-showcase-x"
+}

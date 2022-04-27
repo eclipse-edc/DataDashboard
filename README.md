@@ -1,27 +1,44 @@
-# EdcDemoClient
+# Generate client code for EDC REST APIs
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.10.
+1. [optional] copy the current version of EDC's `openapi.yaml` file to `openapi/`. There is one checked in, so this is not required.
+2. in a shell execute
+   ```shell
+   docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate -i /local/openapi/openapi.yaml -g typescript-angular -o /local/src/modules/edc-dmgmt-client/
+   ```
+   This re-generates the service and model classes. _Be careful not to overwrite service `constructor` methods!
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# Deploy to Azure
 
-## Code scaffolding
+Create a resource group and container registry:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+export RESOURCE_GROUP=edc-data-dashboard
+export ACR_NAME=edcdatadashboard
+az group create --resource-group $RESOURCE_GROUP --location westeurope -o none
+az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Standard --location westeurope --admin-enabled -o none
+```
 
-## Build
+Dockerize the application and push it to the registry by running:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+az acr build --registry $ACR_NAME --image edc-showcase/edc-data-dashboard:latest .
+```
 
-## Running unit tests
+The docker image is now ready to be deployed to Azure Container Instances (ACI). The `app.config.json` file contains configuration which is fetched by the application at startup. This file can be overridden at deployment time by mounting a secret on `assets/config`. For each deployment you need to provide the corresponding connector backend URL, the storage account name and the API key using this secret. Deploy to ACI using the following command:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+export CONNECTOR_URL=<CONNECTOR_URL>
+export STORAGE_ACCOUNT=<STORAGE_ACCOUNT>
+export API_KEY=<API_KEY>
 
-## Running end-to-end tests
+# deploy to ACI (when prompted for credentials use the username/password as available in Azure Portal: ACR->Access Keys)
+az container create --image ${ACR_NAME}.azurecr.io/edc-showcase/edc-data-dashboard:latest \
+--resource-group $RESOURCE_GROUP \
+--name edc-data-dashboard \
+--secrets "app.config.json"="{\"connectorUrl\": \"$CONNECTOR_URL\", \"storageAccount\": \"$STORAGE_ACCOUNT\", \"apiKey\": \"$API_KEY\"}" \
+--secrets-mount-path /usr/share/nginx/html/assets/config \
+--dns-name-label edc-data-dashboard
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

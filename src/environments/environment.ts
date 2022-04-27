@@ -4,9 +4,6 @@
 
 export const environment = {
   production: false,
-  // homeConnectorUrl: 'http://localhost:8181',
-  homeConnectorUrl: 'http://localhost:4200',
-  apiKey: 'x-edc-showcase-x'
 };
 
 /*

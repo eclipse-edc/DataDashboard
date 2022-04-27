@@ -1,8 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Asset } from '../../models/asset';
-import { EdcDemoApiService } from '../../services/edc-demo-api.service';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'edc-demo-introduction',
