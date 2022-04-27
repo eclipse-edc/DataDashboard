@@ -15,6 +15,7 @@ import {NavigationComponent} from './components/navigation/navigation.component'
 import {EdcDemoModule} from '../edc-demo/edc-demo.module';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {AppConfigService} from "./app-config.service";
+import {API_KEY, CONNECTOR_CATALOG_API, CONNECTOR_DATAMANAGEMENT_API} from "../edc-dmgmt-client";
 
 
 @NgModule({
@@ -35,11 +36,29 @@ import {AppConfigService} from "./app-config.service";
     NavigationComponent,
   ],
   providers: [
-    {provide: APP_INITIALIZER, useFactory: (configService: AppConfigService) => () => configService.loadConfig(), deps: [AppConfigService], multi: true},
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (configService: AppConfigService) => () => configService.loadConfig(),
+      deps: [AppConfigService],
+      multi: true
+    },
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
-    {provide: 'HOME_CONNECTOR_BASE_URL', useFactory: (s: AppConfigService) => s.getConfig()?.connectorUrl, deps: [AppConfigService]},
-    {provide: 'HOME_CONNECTOR_STORAGE_ACCOUNT', useFactory: (s: AppConfigService) => s.getConfig()?.storageAccount, deps: [AppConfigService]},
-    {provide: 'API_KEY', useFactory: (s: AppConfigService) => s.getConfig()?.apiKey, deps: [AppConfigService]},
+    {
+      provide: CONNECTOR_DATAMANAGEMENT_API,
+      useFactory: (s: AppConfigService) => s.getConfig()?.dataManagementApiUrl,
+      deps: [AppConfigService]
+    },
+    {
+      provide: CONNECTOR_CATALOG_API,
+      useFactory: (s: AppConfigService) => s.getConfig()?.catalogUrl,
+      deps: [AppConfigService]
+    },
+    {
+      provide: 'HOME_CONNECTOR_STORAGE_ACCOUNT',
+      useFactory: (s: AppConfigService) => s.getConfig()?.storageAccount,
+      deps: [AppConfigService]
+    },
+    {provide: API_KEY, useFactory: (s: AppConfigService) => s.getConfig()?.apiKey, deps: [AppConfigService]},
     {
       provide: 'STORAGE_TYPES',
       useFactory: () => [{id: "AzureStorage", name: "AzureStorage"}, {id: "AmazonS3", name: "AmazonS3"}],

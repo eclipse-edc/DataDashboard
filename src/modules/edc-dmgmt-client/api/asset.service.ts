@@ -30,7 +30,7 @@ import {AssetDto} from '../model/assetDto';
 import {AssetEntryDto} from '../model/assetEntryDto';
 
 // @ts-ignore
-import {BASE_PATH, COLLECTION_FORMATS} from '../variables';
+import {API_KEY, BASE_PATH, COLLECTION_FORMATS, CONNECTOR_DATAMANAGEMENT_API} from '../variables';
 import {Configuration} from '../configuration';
 
 
@@ -45,8 +45,8 @@ export class AssetService {
   protected basePath = 'http://localhost';
 
   constructor(protected httpClient: HttpClient,
-              @Inject('HOME_CONNECTOR_BASE_URL') basePath: string,
-              @Inject('API_KEY') private apiKey: string,
+              @Inject(CONNECTOR_DATAMANAGEMENT_API) basePath: string,
+              @Inject(API_KEY) private apiKey: string,
               @Optional() configuration: Configuration) {
     if (configuration) {
       this.configuration = configuration;

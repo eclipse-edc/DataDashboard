@@ -2,7 +2,8 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 export interface AppConfig {
-  connectorUrl: string;
+  dataManagementApiUrl: string;
+  catalogUrl: string;
   storageAccount: string;
   apiKey: string;
 }

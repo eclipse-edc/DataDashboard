@@ -28,7 +28,8 @@ az acr build --registry $ACR_NAME --image edc-showcase/edc-data-dashboard:latest
 The docker image is now ready to be deployed to Azure Container Instances (ACI). The `app.config.json` file contains configuration which is fetched by the application at startup. This file can be overridden at deployment time by mounting a secret on `assets/config`. For each deployment you need to provide the corresponding connector backend URL, the storage account name and the API key using this secret. Deploy to ACI using the following command:
 
 ```bash
-export CONNECTOR_URL=<CONNECTOR_URL>
+export CONNECTOR_DATA_URL=<CONNECTOR_DATA_URL>
+export CONNECTOR_CATALOG_URL=<CONNECTOR_CATALOG_URL>
 export STORAGE_ACCOUNT=<STORAGE_ACCOUNT>
 export API_KEY=<API_KEY>
 
@@ -36,7 +37,7 @@ export API_KEY=<API_KEY>
 az container create --image ${ACR_NAME}.azurecr.io/edc-showcase/edc-data-dashboard:latest \
 --resource-group $RESOURCE_GROUP \
 --name edc-data-dashboard \
---secrets "app.config.json"="{\"connectorUrl\": \"$CONNECTOR_URL\", \"storageAccount\": \"$STORAGE_ACCOUNT\", \"apiKey\": \"$API_KEY\"}" \
+--secrets "app.config.json"="{\"dataManagementApiUrl\": \"$CONNECTOR_DATA_URL\", \"catalogUrl\": \"$CONNECTOR_CATALOG_URL\", \"storageAccount\": \"$STORAGE_ACCOUNT\", \"apiKey\": \"$API_KEY\"}" \
 --secrets-mount-path /usr/share/nginx/html/assets/config \
 --dns-name-label edc-data-dashboard
 ```

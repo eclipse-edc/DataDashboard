@@ -5,6 +5,8 @@ import {catchError, map} from 'rxjs/operators';
 import {Asset} from '../models/asset';
 import {ContractOffer} from '../models/api/contract-offer';
 import {
+  API_KEY,
+  CONNECTOR_CATALOG_API,
   ContractAgreementDto,
   ContractNegotiationDto,
   ContractNegotiationService,
@@ -23,18 +25,15 @@ import {
 })
 export class CatalogBrowserService {
 
-  private readonly apiBaseUrl: string;
-
   constructor(private httpClient: HttpClient,
               private transferProcessService: TransferProcessService,
               private negotiationService: ContractNegotiationService,
-              @Inject('API_KEY') private apiKey: string,
-              @Inject('HOME_CONNECTOR_BASE_URL') private homeConnectorBaseUrl: string) {
-    this.apiBaseUrl = `${homeConnectorBaseUrl}/catalog`;
+              @Inject(API_KEY) private apiKey: string,
+              @Inject(CONNECTOR_CATALOG_API) private catalogApiUrl: string) {
   }
 
   getContractOffers(): Observable<ContractOffer[]> {
-    return this.get<ContractOffer[]>('/contract-offers')
+    return this.post<ContractOffer[]>(this.catalogApiUrl)
       .pipe(map((contractOffers) => contractOffers.map(contractOffer => {
         contractOffer.asset = new Asset(contractOffer.asset.properties)
         return contractOffer;
@@ -61,13 +60,12 @@ export class CatalogBrowserService {
     return this.negotiationService.getAgreementForNegotiation(contractId);
   }
 
-  private get<T>(urlPath: string,
-                 params?: HttpParams | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>; })
+  private post<T>(urlPath: string,
+                  params?: HttpParams | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>; })
     : Observable<T> {
-    urlPath = urlPath.startsWith('/') ? urlPath : `/${urlPath}`;
-    const url = `${this.apiBaseUrl}${urlPath}`;
+    const url = `${urlPath}`;
     let headers = new HttpHeaders({'X-Api-Key': this.apiKey});
-    return this.catchError(this.httpClient.get<T>(url, {headers, params}), url, 'GET');
+    return this.catchError(this.httpClient.post<T>(url, {headers, params}), url, 'POST');
   }
 
   private catchError<T>(observable: Observable<T>, url: string, method: string): Observable<T> {
@@ -77,7 +75,7 @@ export class CatalogBrowserService {
           if (httpErrorResponse.error instanceof Error) {
             console.error(`Error accessing URL '${url}', Method: 'GET', Error: '${httpErrorResponse.error.message}'`);
           } else {
-            console.error(`Unsuccessful status code accessing URL '${url}', Method: 'GET', StatusCode: '${httpErrorResponse.status}', Error: '${httpErrorResponse.error?.message}'`);
+            console.error(`Unsuccessful status code accessing URL '${url}', Method: '${method}', StatusCode: '${httpErrorResponse.status}', Error: '${httpErrorResponse.error?.message}'`);
           }
 
           return EMPTY;
