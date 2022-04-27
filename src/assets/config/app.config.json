@@ -1,7 +1,7 @@
 {
   "_comment": "This file will be replaced at runtime when deployed to the cloud",
   "dataManagementApiUrl": "http://ageramvd2-consumer.northeurope.azurecontainer.io:8182/api/v1/data",
-  "catalogUrl": "http://ageramvd2-consumer.northeurope.azurecontainer.io:9191/api/federated-catalog",
+  "catalogUrl": "http://ageramvd2-consumer.northeurope.azurecontainer.io:9191/api/federatedcatalog",
   "storageAccount": "ageramvd2gpstorage",
   "apiKey": "x-edc-showcase-x"
 }
