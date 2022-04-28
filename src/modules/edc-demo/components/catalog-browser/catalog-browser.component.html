@@ -79,10 +79,10 @@
 
             <mat-divider inset></mat-divider>
             <mat-card-actions class="card-actions">
-                <button mat-stroked-button color="accent" (click)="onNegotiate(contractOffer)" [disabled]="!contractOffer.asset.isAsync || isBusy(contractOffer) || isNegoiated(contractOffer)">
+                <button mat-stroked-button color="accent" (click)="onNegotiate(contractOffer)" [disabled]="!contractOffer.asset.isAsync || isBusy(contractOffer) || isNegotiated(contractOffer)">
                     <mat-icon>drive_file_rename_outline</mat-icon> Negotiate
                 </button>
-                <button mat-stroked-button color="accent" (click)="onTransfer(contractOffer)" [disabled]="!contractOffer.asset.isAsync || isBusy(contractOffer) || !isNegoiated(contractOffer)">
+                <button mat-stroked-button color="accent" (click)="onTransfer(contractOffer)" [disabled]="!contractOffer.asset.isAsync || isBusy(contractOffer) || !isNegotiated(contractOffer)">
                     <mat-icon>downloading</mat-icon> Transfer
                 </button>
                 {{getState(contractOffer)}}

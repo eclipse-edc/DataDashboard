@@ -11,6 +11,12 @@ import {
 import {CatalogBrowserService} from "../../services/catalog-browser.service";
 import {ContractNegotiationDto, NegotiationInitiateRequestDto, TransferRequestDto} from "../../../edc-dmgmt-client";
 
+interface RunningTransferProcess {
+  processId: string;
+  assetId?: string;
+  state: TransferProcessStates;
+}
+
 @Component({
   selector: 'edc-demo-catalog-browser',
   templateUrl: './catalog-browser.component.html',
@@ -20,13 +26,17 @@ export class CatalogBrowserComponent implements OnInit {
 
   filteredContractOffers$: Observable<ContractOffer[]> = of([]);
   searchText = '';
-  runningTransferProcesses: { processId: string, assetId?: string, state: TransferProcessStates }[] = [];
+  runningTransferProcesses: RunningTransferProcess[] = [];
   runningNegotiations: Map<string, NegotiationResult> = new Map<string, NegotiationResult>(); // contractOfferId, NegotiationResult
   finishedNegotiations: Map<string, ContractNegotiationDto> = new Map<string, ContractNegotiationDto>(); // contractOfferId, contractAgreementId
   busyAssetIds: string[] = [];
   private fetch$ = new BehaviorSubject(null);
   private pollingHandleTransfer?: any;
   private pollingHandleNegotiation?: any;
+  private readonly finishedTransferProcessStates = [
+    "COMPLETED",
+    "ERROR",
+    "ENDED"];
 
   constructor(private apiService: CatalogBrowserService,
               public dialog: MatDialog,
@@ -64,7 +74,7 @@ export class CatalogBrowserComponent implements OnInit {
 
     // const contractAgreementId = this.finishedNegotiations.get(contractOffer.id)!;
     var negotiation = this.finishedNegotiations.get(contractOffer.id);
-    const transferRequestDtoObservable = this.apiService.getAgreementForNegotiation(<string>negotiation!.id).pipe(map(agreement => {
+    const transferRequest$ = this.apiService.getAgreementForNegotiation(<string>negotiation!.id).pipe(map(agreement => {
       const transferRequest: TransferRequestDto = {
         assetId: contractOffer.asset.id,
         contractId: agreement.id,
@@ -82,41 +92,49 @@ export class CatalogBrowserComponent implements OnInit {
       return transferRequest;
     }));
 
-    const finishedTransferProcessStates = [
-      "COMPLETED",
-      "ERROR",
-      "ENDED"];
 
-    const asseteId = contractOffer.asset.id;
-    transferRequestDtoObservable.pipe(mergeMap(transferRequest => this.apiService.initiateTransfer(transferRequest)))
+    const assetId = contractOffer.asset.id;
+    transferRequest$.pipe(mergeMap(transferRequest => this.apiService.initiateTransfer(transferRequest)))
       .subscribe(transferProcessId => {
-        this.runningTransferProcesses.push({
-          processId: transferProcessId,
-          assetId: asseteId,
-          state: TransferProcessStates.REQUESTED
-        });
-        if (!this.pollingHandleTransfer) {
-          // there are no active transfer processes
-          this.pollingHandleTransfer = setInterval(() => {
-            const finishedTransferProcesses: string[] = [];
-            for (const runningId of this.runningTransferProcesses) {
-              this.apiService.getTransferProcessesById(runningId.processId).subscribe(refreshedTransferProcess => {
 
-                Object.assign(runningId, refreshedTransferProcess);
-                if (finishedTransferProcessStates.includes(runningId.state.toString())) {
-                  finishedTransferProcesses.push(runningId.processId);
-                }
-
-                this.runningTransferProcesses = this.runningTransferProcesses.filter(tp => !finishedTransferProcesses.includes(tp.processId));
-                if (this.runningTransferProcesses.length === 0) {
-                  clearInterval(this.pollingHandleTransfer);
-                  this.pollingHandleTransfer = undefined;
-                }
-              });
-            }
-          }, 1000);
-        }
+        this.startPolling(transferProcessId, assetId);
       });
+  }
+
+  private startPolling(transferProcessId: string, assetId: string) {
+
+    // track this transfer process
+    this.runningTransferProcesses.push({
+      processId: transferProcessId,
+      assetId: assetId,
+      state: TransferProcessStates.REQUESTED
+    });
+
+    if (!this.pollingHandleTransfer) {
+      this.pollingHandleTransfer = setInterval(this.pollRunningTransfers(), 1000);
+    }
+  }
+
+  private pollRunningTransfers() {
+    return () => {
+      const finishedTransferProcesses: string[] = [];
+      for (const runningId of this.runningTransferProcesses) {
+
+        const processId = runningId.processId;
+        this.apiService.getTransferProcessesById(processId).subscribe(refreshedTransferProcess => {
+
+          if (this.finishedTransferProcessStates.includes(refreshedTransferProcess.state.toString())) {
+            finishedTransferProcesses.push(processId);
+          }
+
+          this.runningTransferProcesses = this.runningTransferProcesses.filter(tp => !finishedTransferProcesses.includes(tp.processId));
+          if (this.runningTransferProcesses.length === 0) {
+            clearInterval(this.pollingHandleTransfer);
+            this.pollingHandleTransfer = undefined;
+          }
+        });
+      }
+    };
   }
 
   startNegotiation(contractOffer: ContractOffer) {
@@ -178,7 +196,7 @@ export class CatalogBrowserComponent implements OnInit {
     return this.runningNegotiations.get(contractOffer.id) !== undefined || !!this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.asset.id);
   }
 
-  getState(contractOffer: ContractOffer) {
+  getState(contractOffer: ContractOffer): string {
     const transferProcess = this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.asset.id);
     if (transferProcess) {
       return TransferProcessStates[transferProcess.state];
@@ -192,7 +210,7 @@ export class CatalogBrowserComponent implements OnInit {
     return '';
   }
 
-  isNegoiated(contractOffer: ContractOffer) {
+  isNegotiated(contractOffer: ContractOffer) {
     return this.finishedNegotiations.get(contractOffer.id) !== undefined;
   }
 }
