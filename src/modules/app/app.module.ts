@@ -16,6 +16,7 @@ import {EdcDemoModule} from '../edc-demo/edc-demo.module';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {AppConfigService} from "./app-config.service";
 import {API_KEY, CONNECTOR_CATALOG_API, CONNECTOR_DATAMANAGEMENT_API} from "../edc-dmgmt-client";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {API_KEY, CONNECTOR_CATALOG_API, CONNECTOR_DATAMANAGEMENT_API} from "../e
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    EdcDemoModule
+    EdcDemoModule,
+    MatSnackBarModule
   ],
   declarations: [
     AppComponent,

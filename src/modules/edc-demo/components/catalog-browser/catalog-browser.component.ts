@@ -10,6 +10,8 @@ import {
 } from '../catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component';
 import {CatalogBrowserService} from "../../services/catalog-browser.service";
 import {ContractNegotiationDto, NegotiationInitiateRequestDto, TransferRequestDto} from "../../../edc-dmgmt-client";
+import {NotificationService} from "../../services/notification.service";
+import {Router} from "@angular/router";
 
 interface RunningTransferProcess {
   processId: string;
@@ -40,6 +42,8 @@ export class CatalogBrowserComponent implements OnInit {
 
   constructor(private apiService: CatalogBrowserService,
               public dialog: MatDialog,
+              private router: Router,
+              private notificationService: NotificationService,
               @Inject('HOME_CONNECTOR_STORAGE_ACCOUNT') private homeConnectorStorageAccount: string) {
   }
 
@@ -59,7 +63,7 @@ export class CatalogBrowserComponent implements OnInit {
     this.fetch$.next(null);
   }
 
-  onTransfer(contractOffer: ContractOffer) {
+  onTransferClicked(contractOffer: ContractOffer) {
     const dialogRef = this.dialog.open(CatalogBrowserTransferDialog);
 
     dialogRef.afterClosed().pipe(first()).subscribe(result => {
@@ -125,6 +129,9 @@ export class CatalogBrowserComponent implements OnInit {
 
           if (this.finishedTransferProcessStates.includes(refreshedTransferProcess.state.toString())) {
             finishedTransferProcesses.push(processId);
+            this.notificationService.showMessage(`Asset ${refreshedTransferProcess.dataRequest.assetId} has finished!`, 'Show me!', () => {
+              this.router.navigate(['/transfer-history-viewer'])
+            })
           }
 
           this.runningTransferProcesses = this.runningTransferProcesses.filter(tp => !finishedTransferProcesses.includes(tp.processId));
@@ -137,8 +144,8 @@ export class CatalogBrowserComponent implements OnInit {
     };
   }
 
-  startNegotiation(contractOffer: ContractOffer) {
-
+  onNegotiateClicked(contractOffer: ContractOffer) {
+    this.notificationService.showMessage("Negotiation started");
     const initiateRequest: NegotiationInitiateRequestDto = {
       connectorAddress: contractOffer.asset.originator,
 
@@ -186,10 +193,6 @@ export class CatalogBrowserComponent implements OnInit {
         }, 1000);
       }
     });
-  }
-
-  onNegotiate(contractOffer: ContractOffer) {
-    this.startNegotiation(contractOffer);
   }
 
   isBusy(contractOffer: ContractOffer) {

@@ -1,9 +1,13 @@
 @import './theme.scss';
 
-html, body { 
-    height: 100%; 
+html, body {
+    height: 100%;
 }
 
-body { 
-    margin: 0; 
+body {
+    margin: 0;
+}
+.snackbar-style{
+  background-color:orange;
+  color:black;
 }
