@@ -41,7 +41,7 @@ export class CatalogBrowserService {
   }
 
   initiateTransfer(transferRequest: TransferRequestDto): Observable<string> {
-    return this.transferProcessService.initiateTransfer(transferRequest)
+    return this.transferProcessService.initiateTransfer(transferRequest).pipe(map(t => t.id!))
   }
 
   getTransferProcessesById(id: string): Observable<TransferProcessDto> {
@@ -49,7 +49,7 @@ export class CatalogBrowserService {
   }
 
   initiateNegotiation(initiateDto: NegotiationInitiateRequestDto): Observable<string> {
-    return this.negotiationService.initiateContractNegotiation(initiateDto, 'body', false,)
+    return this.negotiationService.initiateContractNegotiation(initiateDto, 'body', false,).pipe(map(t => t.id!))
   }
 
   getNegotiationState(id: string): Observable<ContractNegotiationDto> {

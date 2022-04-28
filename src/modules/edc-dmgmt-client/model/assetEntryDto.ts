@@ -14,7 +14,7 @@ import { AssetDto } from './assetDto';
 
 
 export interface AssetEntryDto { 
-    asset?: AssetDto;
-    dataAddress?: DataAddressDto;
+    asset: AssetDto;
+    dataAddress: DataAddressDto;
 }
 

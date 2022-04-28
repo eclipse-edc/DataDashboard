@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { DataRequestDto } from './dataRequestDto';
+import { DataAddressInformationDto } from './dataAddressInformationDto';
 
 
 export interface TransferProcessDto {
@@ -18,5 +19,6 @@ export interface TransferProcessDto {
     state: string;
     errorDetail?: string;
     dataRequest: DataRequestDto;
+    dataDestination?: DataAddressInformationDto;
 }
 

@@ -218,10 +218,10 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getCatalog(federatedCatalogCacheQuery?: FederatedCatalogCacheQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ContractOffer>>;
-    public getCatalog(federatedCatalogCacheQuery?: FederatedCatalogCacheQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ContractOffer>>>;
-    public getCatalog(federatedCatalogCacheQuery?: FederatedCatalogCacheQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ContractOffer>>>;
-    public getCatalog(federatedCatalogCacheQuery?: FederatedCatalogCacheQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public getCachedCatalog(federatedCatalogCacheQuery?: FederatedCatalogCacheQuery, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ContractOffer>>;
+    public getCachedCatalog(federatedCatalogCacheQuery?: FederatedCatalogCacheQuery, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ContractOffer>>>;
+    public getCachedCatalog(federatedCatalogCacheQuery?: FederatedCatalogCacheQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ContractOffer>>>;
+    public getCachedCatalog(federatedCatalogCacheQuery?: FederatedCatalogCacheQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -263,7 +263,7 @@ export class DefaultService {
             }
         }
 
-        return this.httpClient.post<Array<ContractOffer>>(`${this.configuration.basePath}/catalog`,
+        return this.httpClient.post<Array<ContractOffer>>(`${this.configuration.basePath}/federatedcatalog`,
             federatedCatalogCacheQuery,
             {
                 context: localVarHttpContext,

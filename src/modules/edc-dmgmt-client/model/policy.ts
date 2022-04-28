@@ -9,22 +9,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import {Prohibition} from './prohibition';
-import {Duty} from './duty';
-import {Permission} from './permission';
+import { Prohibition } from './prohibition';
+import { Duty } from './duty';
+import { Permission } from './permission';
 
 
 export interface Policy {
-  uid: string;
-  permissions?: Array<Permission>;
-  prohibitions?: Array<Prohibition>;
-  obligations?: Array<Duty>;
-  extensibleProperties?: { [key: string]: object; };
-  inheritsFrom?: string;
-  assigner?: string;
-  assignee?: string;
-  target?: string;
-  type?: Policy.TypeEnum;
+    uid: string;
+    permissions?: Array<Permission>;
+    prohibitions?: Array<Prohibition>;
+    obligations?: Array<Duty>;
+    extensibleProperties?: { [key: string]: object; };
+    inheritsFrom?: string;
+    assigner?: string;
+    assignee?: string;
+    target?: string;
+    type?: Policy.TypeEnum;
 }
 export namespace Policy {
     export type TypeEnum = 'SET' | 'OFFER' | 'CONTRACT';

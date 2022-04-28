@@ -123,6 +123,7 @@ export class CatalogBrowserComponent implements OnInit {
 
     const initiateRequest: NegotiationInitiateRequestDto = {
       connectorAddress: contractOffer.asset.originator,
+
       offer: {
         offerId: contractOffer.id,
         assetId: contractOffer.asset.id,
