@@ -2,7 +2,7 @@
 
 **Note: this repository does not contain production-grade code and is only intended for demonstration purposes**
 
-EDC Data Dashboard is a frontend application for [EDC connectors](https://github.com/eclipse-dataspaceconnector/DataSpaceConnector) running in the [MVD](https://github.com/agera-edc/MinimumViableDataspace).
+EDC Data Dashboard is a dev frontend application for [EDC Data Management API](https://github.com/eclipse-dataspaceconnector/DataSpaceConnector).
 
 ## Generate client code for EDC REST APIs
 
