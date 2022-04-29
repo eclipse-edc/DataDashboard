@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - 'main'
+
+# Grant permissions to obtain federated identity credentials
+# see https://docs.github.com/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+  # Build runtime image in Azure Container Registry, tagged with the unique run_number.
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout code
+      - uses: actions/checkout@v2
+
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      - name: 'Login to ACR'
+        run: az acr login -n $ACR_NAME
+        env:
+          ACR_NAME: ${{ secrets.ACR_NAME }}
+
+      # Build Docker runtime image remotely on ACR & push it to the registry.
+      - name: 'Build image'
+        run: az acr build --registry $ACR_NAME --image mvd-edc/data-dashboard:$(git rev-parse HEAD) .
+        env:
+          ACR_NAME: ${{ secrets.ACR_NAME }}
