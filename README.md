@@ -1,4 +1,10 @@
-# Generate client code for EDC REST APIs
+# EDC Data Dashboard
+
+**Note: this repository does not contain production-grade code and is only intended for demonstration purposes**
+
+EDC Data Dashboard is a frontend application for [EDC connectors](https://github.com/eclipse-dataspaceconnector/DataSpaceConnector) running in the [MVD](https://github.com/agera-edc/MinimumViableDataspace).
+
+## Generate client code for EDC REST APIs
 
 1. [optional] copy the current version of EDC's `openapi.yaml` file to `openapi/`. There is one checked in, so this is not required.
 2. in a shell execute
@@ -8,7 +14,7 @@
    This re-generates the service and model classes. _Be careful not to overwrite service `constructor` methods!
 
 
-# Deploy to Azure
+## Deploy to Azure
 
 Create a resource group and container registry:
 
