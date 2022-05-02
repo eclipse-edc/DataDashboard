@@ -49,7 +49,7 @@ Configure the following GitHub secrets:
 | ----------------------------- | ------------------------------------------------------------ |
 | `ARM_TENANT_ID`               | The Azure AD tenant ID.                                      |
 | `ARM_SUBSCRIPTION_ID`         | The Azure subscription ID to deploy resources in.            |
-| `ACR_NAME`                    | The name of the Azure Container Registry to deploy. Use only lowercase letters and numbers. |
+| `ACR_NAME`                    | The name of the Azure Container Registry to use. Should be already deployed. |
 
 ### Pushing ECD Data Dashboard image manually
 
