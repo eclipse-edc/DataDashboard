@@ -55,10 +55,21 @@ Configure the following GitHub secrets:
 
 You can push the EDC Data Dashboard docker image to an Azure Container Registry (ACR) of your choice manually.
 
-First authenticate with ACR by following the instructions in the [documentation](https://docs.microsoft.com/azure/container-registry/container-registry-authentication?tabs=azure-cli).
-
-Next, push the docker image by running the following Azure CLI command on your local machine (adapting the name of the image according to your setup):
+First authenticate with ACR by following the instructions in the [documentation](https://docs.microsoft.com/azure/container-registry/container-registry-authentication). Example for bash:
 
 ```bash
-az acr build --registry <ACR_NAME> --image edc/edc-data-dashboard:$(git rev-parse HEAD) .
+az login
+az acr login --name <ACR_NAME>
+```
+
+Next, build the docker image by running the following Azure CLI command on your local machine, adapting the name and tag of the image according to your setup:
+
+```bash
+docker build -t <ACR_NAME>.azurecr.io/edc/edc-data-dashboard:latest .
+```
+
+Finally, push the docker image to ACR:
+
+```bash
+docker push <ACR_NAME>.azurecr.io/edc/edc-data-dashboard:latest
 ```
