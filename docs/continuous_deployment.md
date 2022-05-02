@@ -50,7 +50,3 @@ Configure the following GitHub secrets:
 | `ARM_TENANT_ID`               | The Azure AD tenant ID.                                      |
 | `ARM_SUBSCRIPTION_ID`         | The Azure subscription ID to deploy resources in.            |
 | `ACR_NAME`                    | The name of the Azure Container Registry to deploy. Use only lowercase letters and numbers. |
-
-### Pushing ECD Data Dashboard image manually
-
-The `cd` Manually run the `cd` GitHub Actions workflow. The workflow runs automatically on commits to the "main" branch.
