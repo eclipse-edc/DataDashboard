@@ -13,7 +13,7 @@ permissions:
 
 jobs:
 
-  # Build runtime image in Azure Container Registry, tagged with the unique run_number.
+  # Build runtime image in Azure Container Registry, tagged with the commit ID.
   Build:
     runs-on: ubuntu-latest
     steps:
