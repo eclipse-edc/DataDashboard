@@ -39,7 +39,6 @@ Configure the following GitHub secrets:
 | Secret name         | Value                          |
 | ------------------- | ------------------------------ |
 | `ARM_CLIENT_ID`     | The application (client) ID.   |
-| `ARM_CLIENT_SECRET` | The application client secret. |
 
 ### Configure CD settings
 
