@@ -50,3 +50,11 @@ Configure the following GitHub secrets:
 | `ARM_TENANT_ID`               | The Azure AD tenant ID.                                      |
 | `ARM_SUBSCRIPTION_ID`         | The Azure subscription ID to deploy resources in.            |
 | `ACR_NAME`                    | The name of the Azure Container Registry to deploy. Use only lowercase letters and numbers. |
+
+### Pushing ECD Data Dashboard image manually
+
+You can push the EDC Data Dashboard docker image manually by running the following Azure CLI command on your local machine (adapting the name of the image according to your setup):
+
+```bash
+az acr build --registry <ACR_NAME> --image edc/edc-data-dashboard:$(git rev-parse HEAD) .
+```
