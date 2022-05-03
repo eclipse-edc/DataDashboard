@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {TransferProcessDto, TransferProcessService} from "../../../edc-dmgmt-client";
+import {AppConfigService} from "../../../app/app-config.service";
 
 @Component({
   selector: 'edc-demo-transfer-history',
@@ -9,12 +10,14 @@ import {TransferProcessDto, TransferProcessService} from "../../../edc-dmgmt-cli
 })
 export class TransferHistoryViewerComponent implements OnInit {
 
-  columns: string[] = ['stateTimestamp', 'id', 'type', 'state', 'connectorId', 'protocol', 'assetId', 'contractId', 'error'];
+  columns: string[] = ['id', 'type', 'state', 'connectorId', 'protocol', 'assetId', 'contractId', 'error', 'link'];
   transferProcesses$: Observable<TransferProcessDto[]> = of([]);
+  storageExplorerLinkTemplate: string | undefined;
 
-  constructor(private apiService: TransferProcessService) { }
+  constructor(private apiService: TransferProcessService, private appConfigService: AppConfigService) { }
 
   ngOnInit(): void {
     this.transferProcesses$ = this.apiService.getAllTransferProcesses();
+    this.storageExplorerLinkTemplate = this.appConfigService.getConfig()?.storageExplorerLinkTemplate
   }
 }

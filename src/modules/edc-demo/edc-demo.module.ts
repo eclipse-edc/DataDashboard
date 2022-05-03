@@ -35,6 +35,8 @@ import {
 } from './components/catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component';
 import {ContractViewerComponent} from './components/contract-viewer/contract-viewer.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {SafePipe} from "./pipes/safe.pipe";
+import {ReplacePipe} from "./pipes/replace.pipe";
 
 import {PolicyViewComponent} from "./components/policy-view/policy-view.component";
 import {
@@ -76,6 +78,10 @@ import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-polic
     IntroductionComponent,
     ContractDefinitionEditorDialog,
     CatalogBrowserTransferDialog,
+    ContractViewerComponent,
+    CatalogBrowserTransferDialog,
+    SafePipe,
+    ReplacePipe,
     PolicyViewComponent,
     PolicyRuleViewerComponent,
     CatalogBrowserTransferDialog,

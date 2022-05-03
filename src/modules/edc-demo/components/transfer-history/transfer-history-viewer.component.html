@@ -4,11 +4,6 @@
 
     <table mat-table [dataSource]="transferProcesses" class="transfer-history-table">
 
-        <ng-container matColumnDef="stateTimestamp">
-            <th mat-header-cell *matHeaderCellDef scope="col">Timestamp</th>
-            <td mat-cell *matCellDef="let item" class="singleline-cell">{{item.stateTimestamp}}</td>
-        </ng-container>
-
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef scope="col">Id</th>
             <td mat-cell *matCellDef="let item">{{item.id}}</td>
@@ -47,6 +42,13 @@
         <ng-container matColumnDef="error">
             <th mat-header-cell *matHeaderCellDef scope="col">Error</th>
             <td mat-cell *matCellDef="let item">{{item.errorDetail}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="link">
+          <th mat-header-cell *matHeaderCellDef scope="col">Link</th>
+          <td mat-cell *matCellDef="let item">
+            <a *ngIf="item.dataDestination.properties.type == 'AzureStorage'" mat-button color="accent" [href]="storageExplorerLinkTemplate | replace: item.dataDestination.properties | safe: 'url'">view</a>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="columns" class="transfer-history-table-header"></tr>
