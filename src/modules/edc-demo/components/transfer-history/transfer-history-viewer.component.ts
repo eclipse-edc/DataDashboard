@@ -10,7 +10,7 @@ import {AppConfigService} from "../../../app/app-config.service";
 })
 export class TransferHistoryViewerComponent implements OnInit {
 
-  columns: string[] = ['id', 'type', 'state', 'connectorId', 'protocol', 'assetId', 'contractId', 'error', 'link'];
+  columns: string[] = ['id', 'type', 'state', 'connectorId', 'protocol', 'assetId', 'contractId', 'error', 'action'];
   transferProcesses$: Observable<TransferProcessDto[]> = of([]);
   storageExplorerLinkTemplate: string | undefined;
 

@@ -44,10 +44,10 @@
             <td mat-cell *matCellDef="let item">{{item.errorDetail}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="link">
-          <th mat-header-cell *matHeaderCellDef scope="col">Link</th>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef scope="col">Action</th>
           <td mat-cell *matCellDef="let item">
-            <a *ngIf="item.dataDestination.properties.type == 'AzureStorage'" mat-button color="accent" [href]="storageExplorerLinkTemplate | replace: item.dataDestination.properties | safe: 'url'">view</a>
+            <a *ngIf="item.dataDestination.properties.type == 'AzureStorage'" mat-button color="accent" [href]="storageExplorerLinkTemplate | replace: item.dataDestination.properties | safe: 'url'">Open Storage Explorer</a>
           </td>
         </ng-container>
 
