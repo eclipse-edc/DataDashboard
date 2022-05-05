@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {AssetPublisherComponent} from '../edc-demo/components/asset-publisher/asset-publisher.component';
+import {AssetViewerComponent} from '../edc-demo/components/asset-viewer/asset-viewer.component';
 import {CatalogBrowserComponent} from '../edc-demo/components/catalog-browser/catalog-browser.component';
 import {IntroductionComponent} from '../edc-demo/components/introduction/introduction.component';
 import {
@@ -34,7 +34,7 @@ export const routes: Routes = [
     data: {title: 'Contract Definition Editor', icon: 'rule'}
   },
   {
-    path: 'asset-publisher', component: AssetPublisherComponent, data: {title: 'Data Publisher', icon: 'upload'}
+    path: 'assets', component: AssetViewerComponent, data: {title: 'Assets', icon: 'upload'}
   },
   {
     path: '', redirectTo: 'introduction', pathMatch: 'full'

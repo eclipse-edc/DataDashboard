@@ -24,7 +24,6 @@ import {TransferHistoryViewerComponent} from './components/transfer-history/tran
 import {
   ContractDefinitionEditorComponent
 } from './components/contractdefinition-editor/contractdefinition-editor.component';
-import {AssetPublisherComponent} from './components/asset-publisher/asset-publisher.component';
 import {IntroductionComponent} from './components/introduction/introduction.component';
 import {RouterModule} from '@angular/router';
 import {
@@ -35,6 +34,8 @@ import {
 } from './components/catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component';
 import {ContractViewerComponent} from './components/contract-viewer/contract-viewer.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {AssetEditorDialog} from "./components/asset-editor-dialog/asset-editor-dialog.component";
+import {AssetViewerComponent} from "./components/asset-viewer/asset-viewer.component";
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     CatalogBrowserComponent,
     TransferHistoryViewerComponent,
     ContractDefinitionEditorComponent,
-    AssetPublisherComponent,
+    AssetViewerComponent,
+    AssetEditorDialog,
     IntroductionComponent,
     PolicyEditorDialog,
     CatalogBrowserTransferDialog,
@@ -77,7 +79,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     CatalogBrowserComponent,
     TransferHistoryViewerComponent,
     ContractDefinitionEditorComponent,
-    AssetPublisherComponent,
+    AssetViewerComponent,
     IntroductionComponent,
     ContractViewerComponent
   ]
