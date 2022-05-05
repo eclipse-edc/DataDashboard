@@ -5,9 +5,15 @@ html, body {
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }
-.snackbar-style{
-  background-color:orange;
-  color:black;
+
+.snackbar-info-style {
+  background-color: orange;
+  color: black;
+}
+
+.snackbar-error-style {
+  background-color: crimson;
+  color: black;
 }

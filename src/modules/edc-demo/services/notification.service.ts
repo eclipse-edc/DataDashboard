@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {MatSnackBar, MatSnackBarConfig, MatSnackBarDismiss} from "@angular/material/snack-bar";
-import {Observable, Observer, PartialObserver} from "rxjs";
+import {Observable} from "rxjs";
 
 
 @Injectable({
@@ -18,17 +18,17 @@ export class NotificationService {
    * If left out, and onAction is specified, "Done" is used as default.
    * @param onAction A callback that is invoked when the action button is clicked.
    */
-  showMessage(message: string, action?: string, onAction?: () => any): Observable<MatSnackBarDismiss> {
+  public showInfo(message: string, action?: string, onAction?: () => any): Observable<MatSnackBarDismiss> {
 
     if (!action && onAction) {
       action = "Done";
     }
     const config: MatSnackBarConfig = {
-      duration: onAction ? 0 : 3000, // no auto-cancel if an action was specified
+      duration: onAction ? 5000 : 3000, // no auto-cancel if an action was specified
       verticalPosition: "top",
       politeness: "polite",
       horizontalPosition: "center",
-      panelClass: ["snackbar-style"] //see styles.scss
+      panelClass: ["snackbar-info-style"] //see styles.scss
     }
     let ref = this.snackBar.open(message, action, config);
 
@@ -38,5 +38,19 @@ export class NotificationService {
 
     return ref.afterDismissed()
   }
+
+  public showError(message: string): Observable<MatSnackBarDismiss> {
+    const config: MatSnackBarConfig = {
+      duration: 5000, // no auto-cancel if an action was specified
+      verticalPosition: "top",
+      politeness: "assertive",
+      horizontalPosition: "center",
+      panelClass: ["snackbar-error-style"] //see styles.scss
+    }
+
+    let ref = this.snackBar.open(message, undefined, config)
+    return ref.afterDismissed();
+  }
+
 
 }

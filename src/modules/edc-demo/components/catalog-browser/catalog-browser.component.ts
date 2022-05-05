@@ -1,15 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {first, map, mergeMap, switchMap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import {ContractOffer} from '../../models/api/contract-offer';
 import {NegotiationResult} from '../../models/api/negotiation-result';
 import {TransferProcessStates} from '../../models/api/transfer-process-states';
-import {
-  CatalogBrowserTransferDialog
-} from '../catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component';
 import {CatalogBrowserService} from "../../services/catalog-browser.service";
-import {ContractNegotiationDto, NegotiationInitiateRequestDto, TransferRequestDto} from "../../../edc-dmgmt-client";
+import {ContractNegotiationDto, NegotiationInitiateRequestDto} from "../../../edc-dmgmt-client";
 import {NotificationService} from "../../services/notification.service";
 import {Router} from "@angular/router";
 
@@ -31,14 +28,8 @@ export class CatalogBrowserComponent implements OnInit {
   runningTransferProcesses: RunningTransferProcess[] = [];
   runningNegotiations: Map<string, NegotiationResult> = new Map<string, NegotiationResult>(); // contractOfferId, NegotiationResult
   finishedNegotiations: Map<string, ContractNegotiationDto> = new Map<string, ContractNegotiationDto>(); // contractOfferId, contractAgreementId
-  busyAssetIds: string[] = [];
   private fetch$ = new BehaviorSubject(null);
-  private pollingHandleTransfer?: any;
   private pollingHandleNegotiation?: any;
-  private readonly finishedTransferProcessStates = [
-    "COMPLETED",
-    "ERROR",
-    "ENDED"];
 
   constructor(private apiService: CatalogBrowserService,
               public dialog: MatDialog,
@@ -63,89 +54,7 @@ export class CatalogBrowserComponent implements OnInit {
     this.fetch$.next(null);
   }
 
-  onTransferClicked(contractOffer: ContractOffer) {
-    const dialogRef = this.dialog.open(CatalogBrowserTransferDialog);
-
-    dialogRef.afterClosed().pipe(first()).subscribe(result => {
-      const storageTypeId: string = result.storageTypeId;
-      if (!!storageTypeId) {
-        this.startTransfer(contractOffer, storageTypeId);
-      }
-    });
-  }
-
-  startTransfer(contractOffer: ContractOffer, storageTypeId: string) {
-
-    // const contractAgreementId = this.finishedNegotiations.get(contractOffer.id)!;
-    var negotiation = this.finishedNegotiations.get(contractOffer.id);
-    const transferRequest$ = this.apiService.getAgreementForNegotiation(<string>negotiation!.id).pipe(map(agreement => {
-      const transferRequest: TransferRequestDto = {
-        assetId: contractOffer.asset.id,
-        contractId: agreement.id,
-        connectorId: "consumer", //doesn't matter, but cannot be null
-        dataDestination: {
-          properties: {
-            "type": storageTypeId,
-            account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
-            container: "dst-container", // CAUTION: hardcoded value for AzureBlob
-          }
-        },
-        transferType: {isFinite: true}, //must be there, otherwise NPE on backend
-        connectorAddress: contractOffer.asset.originator
-      };
-      return transferRequest;
-    }));
-
-
-    const assetId = contractOffer.asset.id;
-    transferRequest$.pipe(mergeMap(transferRequest => this.apiService.initiateTransfer(transferRequest)))
-      .subscribe(transferProcessId => {
-
-        this.startPolling(transferProcessId, assetId);
-      });
-  }
-
-  private startPolling(transferProcessId: string, assetId: string) {
-
-    // track this transfer process
-    this.runningTransferProcesses.push({
-      processId: transferProcessId,
-      assetId: assetId,
-      state: TransferProcessStates.REQUESTED
-    });
-
-    if (!this.pollingHandleTransfer) {
-      this.pollingHandleTransfer = setInterval(this.pollRunningTransfers(), 1000);
-    }
-  }
-
-  private pollRunningTransfers() {
-    return () => {
-      const finishedTransferProcesses: string[] = [];
-      for (const runningId of this.runningTransferProcesses) {
-
-        const processId = runningId.processId;
-        this.apiService.getTransferProcessesById(processId).subscribe(refreshedTransferProcess => {
-
-          if (this.finishedTransferProcessStates.includes(refreshedTransferProcess.state.toString())) {
-            finishedTransferProcesses.push(processId);
-            this.notificationService.showMessage(`Asset ${refreshedTransferProcess.dataRequest.assetId} has finished!`, 'Show me!', () => {
-              this.router.navigate(['/transfer-history-viewer'])
-            })
-          }
-
-          this.runningTransferProcesses = this.runningTransferProcesses.filter(tp => !finishedTransferProcesses.includes(tp.processId));
-          if (this.runningTransferProcesses.length === 0) {
-            clearInterval(this.pollingHandleTransfer);
-            this.pollingHandleTransfer = undefined;
-          }
-        });
-      }
-    };
-  }
-
   onNegotiateClicked(contractOffer: ContractOffer) {
-    this.notificationService.showMessage("Negotiation started");
     const initiateRequest: NegotiationInitiateRequestDto = {
       connectorAddress: contractOffer.asset.originator,
 
@@ -181,6 +90,9 @@ export class CatalogBrowserComponent implements OnInit {
                 this.runningNegotiations.delete(offerId);
                 if (updatedNegotiation.state === "CONFIRMED") {
                   this.finishedNegotiations.set(offerId, updatedNegotiation);
+                  this.notificationService.showInfo("Contract Negotiation complete!", "Show me!", () => {
+                    this.router.navigate(['/contract-viewer'])
+                  })
                 }
               }
 
@@ -216,4 +128,5 @@ export class CatalogBrowserComponent implements OnInit {
   isNegotiated(contractOffer: ContractOffer) {
     return this.finishedNegotiations.get(contractOffer.id) !== undefined;
   }
+
 }

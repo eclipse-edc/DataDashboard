@@ -33,6 +33,8 @@ import {
 import {
   CatalogBrowserTransferDialog
 } from './components/catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component';
+import {ContractViewerComponent} from './components/contract-viewer/contract-viewer.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 @NgModule({
@@ -58,7 +60,8 @@ import {
     MatTabsModule,
     MatProgressBarModule,
     MatListModule,
-    RouterModule
+    RouterModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     CatalogBrowserComponent,
@@ -67,14 +70,16 @@ import {
     AssetPublisherComponent,
     IntroductionComponent,
     PolicyEditorDialog,
-    CatalogBrowserTransferDialog
+    CatalogBrowserTransferDialog,
+    ContractViewerComponent
   ],
   exports: [
     CatalogBrowserComponent,
     TransferHistoryViewerComponent,
     ContractDefinitionEditorComponent,
     AssetPublisherComponent,
-    IntroductionComponent
+    IntroductionComponent,
+    ContractViewerComponent
   ]
 })
 export class EdcDemoModule { }
