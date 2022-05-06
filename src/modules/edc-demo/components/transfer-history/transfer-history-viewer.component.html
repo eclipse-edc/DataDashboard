@@ -1,4 +1,15 @@
 <div id="wrapper" *ngIf="transferProcesses$ | async as transferProcesses">
+
+    <mat-card>
+      <div class="info-box">
+        <mat-icon>info</mat-icon>
+        <span class="text">Please install Storage Explorer for visualizing files transferred to Azure Blob Storage</span>
+        <span class="button">
+          <a mat-raised-button href="https://azure.microsoft.com/features/storage-explorer/">Install Azure Storage Explorer</a>
+        </span>
+      </div>
+    </mat-card>
+
     <mat-paginator [length]="transferProcesses.length" pageSize="transferProcesses.length" hidePageSize="true">
     </mat-paginator>
 
