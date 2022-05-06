@@ -1,13 +1,19 @@
 <div id="wrapper" *ngIf="transferProcesses$ | async as transferProcesses">
+
+    <mat-card>
+      <div class="info-box">
+        <mat-icon>info</mat-icon>
+        <span class="text">Please install Storage Explorer for visualizing files transferred to Azure Blob Storage</span>
+        <span class="button">
+          <a mat-raised-button href="https://azure.microsoft.com/features/storage-explorer/">Install Azure Storage Explorer</a>
+        </span>
+      </div>
+    </mat-card>
+
     <mat-paginator [length]="transferProcesses.length" pageSize="transferProcesses.length" hidePageSize="true">
     </mat-paginator>
 
     <table mat-table [dataSource]="transferProcesses" class="transfer-history-table">
-
-        <ng-container matColumnDef="stateTimestamp">
-            <th mat-header-cell *matHeaderCellDef scope="col">Timestamp</th>
-            <td mat-cell *matCellDef="let item" class="singleline-cell">{{item.stateTimestamp}}</td>
-        </ng-container>
 
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef scope="col">Id</th>
@@ -47,6 +53,13 @@
         <ng-container matColumnDef="error">
             <th mat-header-cell *matHeaderCellDef scope="col">Error</th>
             <td mat-cell *matCellDef="let item">{{item.errorDetail}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef scope="col">Action</th>
+          <td mat-cell *matCellDef="let item">
+            <a *ngIf="item.dataDestination.properties.type == 'AzureStorage'" mat-button color="accent" [href]="storageExplorerLinkTemplate | replace: item.dataDestination.properties | safe: 'url'">Open Storage Explorer</a>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="columns" class="transfer-history-table-header"></tr>

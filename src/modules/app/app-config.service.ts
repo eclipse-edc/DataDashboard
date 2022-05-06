@@ -6,6 +6,7 @@ export interface AppConfig {
   catalogUrl: string;
   storageAccount: string;
   apiKey: string;
+  storageExplorerLinkTemplate: string;
 }
 
 @Injectable({

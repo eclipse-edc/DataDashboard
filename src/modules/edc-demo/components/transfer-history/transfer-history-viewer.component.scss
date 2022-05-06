@@ -26,3 +26,18 @@ mat-paginator {
     display: inline-block;
     background-color: transparent;
 }
+
+.info-box {
+  display: flex;
+  align-items: center;
+
+  .text {
+    padding-left: 10px;
+  }
+
+  .button {
+    margin-left: auto;
+  }
+}
+
+
