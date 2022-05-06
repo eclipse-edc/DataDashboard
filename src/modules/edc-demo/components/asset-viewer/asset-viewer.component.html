@@ -56,7 +56,7 @@
         <button (click)="onEdit(asset)" [disabled]="isBusy()" color="accent" mat-stroked-button>
           <mat-icon>edit_note</mat-icon> Edit
         </button>
-        <button color="accent" disabled="true" mat-stroked-button>
+        <button (click)="onDelete(asset)" [disabled]="isBusy()" color="accent" mat-stroked-button>
           <mat-icon>delete_sweep</mat-icon> Delete
         </button>
       </mat-card-actions>

@@ -38,13 +38,17 @@ export class AssetViewerComponent implements OnInit {
         }));
   }
 
+  isBusy() {
+    return this.isTransfering;
+  }
+
   onSearch() {
     this.fetch$.next(null);
   }
 
   onEdit(asset: AssetDto) {
     const assetClone: AssetEntryDto  = JSON.parse(JSON.stringify(asset));
-    const dialogRef = this.dialog.open(PolicyEditorDialog, {
+    const dialogRef = this.dialog.open(AssetEditorDialog, {
       data: assetClone
     });
 
@@ -57,8 +61,9 @@ export class AssetViewerComponent implements OnInit {
     });
   }
 
-  isBusy() {
-    return this.isTransfering;
+  onDelete(asset: AssetDto) {
+    this.assetService.removeAsset(asset.properties["asset:prop:id"]);
+    this.fetch$.next(null);
   }
 
   onCreate() {
