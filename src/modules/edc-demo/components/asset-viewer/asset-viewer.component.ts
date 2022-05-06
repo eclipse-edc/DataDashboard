@@ -46,24 +46,24 @@ export class AssetViewerComponent implements OnInit {
     this.fetch$.next(null);
   }
 
-  onEdit(asset: AssetDto) {
-    const assetClone: AssetEntryDto  = JSON.parse(JSON.stringify(asset));
+  onEdit(assetDto: AssetDto) {
     const dialogRef = this.dialog.open(AssetEditorDialog, {
-      data: assetClone
+      data: assetDto
     });
 
     dialogRef.afterClosed().pipe(first()).subscribe((result: { assetEntryDto?: AssetEntryDto }) => {
       const updatedAsset = result.assetEntryDto;
       if (updatedAsset) {
-        this.assetService.createAsset(updatedAsset).subscribe(() => this.fetch$.next(null));
-        this.fetch$.next(null);
+        this.assetService.removeAsset(updatedAsset.asset.properties["asset:prop:id"])
+          .subscribe(() => this.assetService.createAsset(updatedAsset)
+            .subscribe(() => this.fetch$.next(null)));
       }
     });
   }
 
   onDelete(asset: AssetDto) {
-    this.assetService.removeAsset(asset.properties["asset:prop:id"]);
-    this.fetch$.next(null);
+    this.assetService.removeAsset(asset.properties["asset:prop:id"])
+      .subscribe(() => this.fetch$.next(null));
   }
 
   onCreate() {
@@ -72,7 +72,6 @@ export class AssetViewerComponent implements OnInit {
       const newAsset = result?.assetEntryDto;
       if (newAsset) {
         this.assetService.createAsset(newAsset).subscribe(() => this.fetch$.next(null));
-        this.fetch$.next(null);
       }
     });
   }
