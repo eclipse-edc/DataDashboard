@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {StorageType} from '../../models/api/storage-type';
+import {StorageType} from '../../models/storage-type';
 import {AssetEntryDto, AssetService} from "../../../edc-dmgmt-client";
 
 @Component({

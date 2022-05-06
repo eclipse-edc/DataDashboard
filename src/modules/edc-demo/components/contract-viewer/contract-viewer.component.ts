@@ -16,8 +16,8 @@ import {
 } from "../catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CatalogBrowserService} from "../../services/catalog-browser.service";
-import {TransferProcessStates} from "../../models/api/transfer-process-states";
 import {Router} from "@angular/router";
+import {TransferProcessStates} from "../../models/transfer-process-states";
 
 interface RunningTransferProcess {
   processId: string;

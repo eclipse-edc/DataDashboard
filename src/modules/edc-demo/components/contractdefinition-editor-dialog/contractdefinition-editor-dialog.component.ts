@@ -8,7 +8,7 @@ import {ContractDefinitionDto, Criterion, Policy, PolicyService} from "../../../
   templateUrl: './contractdefinition-editor-dialog.component.html',
   styleUrls: ['./contractdefinition-editor-dialog.component.scss']
 })
-export class PolicyEditorDialog implements OnInit {
+export class ContractDefinitionEditorDialog implements OnInit {
 
   policies: Policy[] = [];
   name: string = '';
@@ -29,7 +29,7 @@ export class PolicyEditorDialog implements OnInit {
   };
 
   constructor(private policyService: PolicyService,
-              private dialogRef: MatDialogRef<PolicyEditorDialog>,
+              private dialogRef: MatDialogRef<ContractDefinitionEditorDialog>,
               @Inject(MAT_DIALOG_DATA) contractDefinition?: ContractDefinitionDto) {
     if (contractDefinition) {
       this.contractDefinition = contractDefinition;

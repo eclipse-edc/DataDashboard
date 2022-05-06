@@ -24,7 +24,7 @@ export interface Policy {
     assigner?: string;
     assignee?: string;
     target?: string;
-    type?: Policy.TypeEnum;
+    type: Policy.TypeEnum;
 }
 export namespace Policy {
     export type TypeEnum = 'SET' | 'OFFER' | 'CONTRACT';

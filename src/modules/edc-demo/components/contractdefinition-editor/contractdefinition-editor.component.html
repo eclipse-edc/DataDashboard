@@ -1,7 +1,7 @@
 <div *ngIf="filteredContractDefinitions$ | async as contractDefinitions" id="wrapper">
     <div>
-        <mat-form-field appearance="fill" appearance="outline" class="search-form-field" color="accent">
-            <mat-label>Search policies</mat-label>
+        <mat-form-field appearance="outline" class="search-form-field" color="accent">
+            <mat-label>Search definitions</mat-label>
             <input (input)="onSearch()" [(ngModel)]="searchText" matInput>
             <mat-icon matPrefix>search</mat-icon>
             <button (click)="searchText=''; onSearch()" *ngIf="searchText" mat-icon-button matSuffix>

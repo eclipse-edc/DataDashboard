@@ -3,7 +3,7 @@ import {Inject, Injectable} from '@angular/core';
 import {EMPTY, Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {Asset} from '../models/asset';
-import {ContractOffer} from '../models/api/contract-offer';
+import {ContractOffer} from '../models/contract-offer';
 import {
   API_KEY,
   CONNECTOR_CATALOG_API,

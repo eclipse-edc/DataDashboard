@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {PolicyEditorDialog} from '../contractdefinition-editor-dialog/contractdefinition-editor-dialog.component';
+import {ContractDefinitionEditorDialog} from '../contractdefinition-editor-dialog/contractdefinition-editor-dialog.component';
 import {ContractDefinitionDto, ContractDefinitionService} from "../../../edc-dmgmt-client";
 
 
@@ -39,7 +39,7 @@ export class ContractDefinitionEditorComponent implements OnInit {
 
   onEdit(contractDefinition: ContractDefinitionDto) {
     const contractDefinitionClone: ContractDefinitionDto  = JSON.parse(JSON.stringify(contractDefinition));
-    const dialogRef = this.dialog.open(PolicyEditorDialog, {
+    const dialogRef = this.dialog.open(ContractDefinitionEditorDialog, {
       data: contractDefinitionClone
     });
 
@@ -57,7 +57,7 @@ export class ContractDefinitionEditorComponent implements OnInit {
   }
 
   onCreate() {
-    const dialogRef = this.dialog.open(PolicyEditorDialog);
+    const dialogRef = this.dialog.open(ContractDefinitionEditorDialog);
     dialogRef.afterClosed().pipe(first()).subscribe((result: { contractDefinition?: ContractDefinitionDto }) => {
       const newContractDefinition = result?.contractDefinition;
       if (newContractDefinition) {
