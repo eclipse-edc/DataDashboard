@@ -40,7 +40,7 @@ export const routes: Routes = [
     data: {title: 'Contract Definition Editor', icon: 'rule'}
   },
   {
-    path: 'assets', component: AssetViewerComponent, data: {title: 'Assets', icon: 'upload'}
+    path: 'assets-viewer', component: AssetViewerComponent, data: {title: 'Assets', icon: 'upload'}
   },
   {
     path: '', redirectTo: 'introduction', pathMatch: 'full'
