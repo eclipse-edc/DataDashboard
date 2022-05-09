@@ -1,5 +1,5 @@
-import { Asset } from "../asset";
-import {Policy} from "../../../edc-dmgmt-client";
+import { Asset } from "./asset";
+import {Policy} from "../../edc-dmgmt-client";
 
 export interface ContractOffer {
     id: string;

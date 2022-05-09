@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {PolicyEditorDialog} from '../contractdefinition-editor-dialog/contractdefinition-editor-dialog.component';
 import {
   AssetDto,
   AssetService,

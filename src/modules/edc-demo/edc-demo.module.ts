@@ -27,16 +27,23 @@ import {
 import {IntroductionComponent} from './components/introduction/introduction.component';
 import {RouterModule} from '@angular/router';
 import {
-  PolicyEditorDialog
+  ContractDefinitionEditorDialog
 } from './components/contractdefinition-editor-dialog/contractdefinition-editor-dialog.component';
 import {
   CatalogBrowserTransferDialog
 } from './components/catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component';
 import {ContractViewerComponent} from './components/contract-viewer/contract-viewer.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {SafePipe} from "./pipes/safe.pipe";
+import {ReplacePipe} from "./pipes/replace.pipe";
 import {AssetEditorDialog} from "./components/asset-editor-dialog/asset-editor-dialog.component";
 import {AssetViewerComponent} from "./components/asset-viewer/asset-viewer.component";
 
+import {PolicyViewComponent} from "./components/policy-view/policy-view.component";
+import {
+  PolicyRuleViewerComponent
+} from "./components/policy-rule-viewer/policy-rule-viewer.component";
+import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-policy-dialog.component";
 
 @NgModule({
   imports: [
@@ -71,9 +78,18 @@ import {AssetViewerComponent} from "./components/asset-viewer/asset-viewer.compo
     AssetViewerComponent,
     AssetEditorDialog,
     IntroductionComponent,
-    PolicyEditorDialog,
+    ContractDefinitionEditorDialog,
     CatalogBrowserTransferDialog,
-    ContractViewerComponent
+    ContractViewerComponent,
+    CatalogBrowserTransferDialog,
+    SafePipe,
+    ReplacePipe,
+    PolicyViewComponent,
+    PolicyRuleViewerComponent,
+    CatalogBrowserTransferDialog,
+    ContractViewerComponent,
+    NewPolicyDialogComponent,
+    IntroductionComponent
   ],
   exports: [
     CatalogBrowserComponent,
@@ -81,7 +97,11 @@ import {AssetViewerComponent} from "./components/asset-viewer/asset-viewer.compo
     ContractDefinitionEditorComponent,
     AssetViewerComponent,
     IntroductionComponent,
+    PolicyRuleViewerComponent,
+    IntroductionComponent,
+    NewPolicyDialogComponent,
     ContractViewerComponent
   ]
 })
-export class EdcDemoModule { }
+export class EdcDemoModule {
+}

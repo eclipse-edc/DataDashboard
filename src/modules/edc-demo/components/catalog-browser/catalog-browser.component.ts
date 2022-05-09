@@ -2,13 +2,13 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
-import {ContractOffer} from '../../models/api/contract-offer';
-import {NegotiationResult} from '../../models/api/negotiation-result';
-import {TransferProcessStates} from '../../models/api/transfer-process-states';
 import {CatalogBrowserService} from "../../services/catalog-browser.service";
 import {ContractNegotiationDto, NegotiationInitiateRequestDto} from "../../../edc-dmgmt-client";
 import {NotificationService} from "../../services/notification.service";
 import {Router} from "@angular/router";
+import {TransferProcessStates} from "../../models/transfer-process-states";
+import {ContractOffer} from "../../models/contract-offer";
+import {NegotiationResult} from "../../models/negotiation-result";
 
 interface RunningTransferProcess {
   processId: string;
