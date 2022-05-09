@@ -13,6 +13,30 @@ EDC Data Dashboard is a dev frontend application for [EDC Data Management API](h
    ```
    This re-generates the service and model classes. _Be careful not to overwrite service `constructor` methods!
 
+## Running the frontend locally
+Should you want to run the frontend on your development machine, you'll have to configure some backend values. Those are stored in `app.config.json`, and 
+by default contain the following:
+
+```json
+{
+  "dataManagementApiUrl": "{{dataManagementApiUrl}}",
+  "catalogUrl": "{{catalogUrl}}",
+  "storageAccount": "{{account}}",
+  "storageExplorerLinkTemplate": "storageexplorer://v=1&accountid=/subscriptions/{{subscriptionId}}/resourceGroups/{{resourceGroup}}/providers/Microsoft.Storage/storageAccounts/{{account}}&subscriptionid={{subscriptionId}}&resourcetype=Azure.BlobContainer&resourcename={{container}}",
+  "apiKey": "{{apiKey}}"
+}
+```
+Substitute the values as necessary:
+- `apiKey`: enter here what your EDC instance expects in th `x-api-key` header
+- `catalogUrl`: prepend your connector URL, e.g. `http://localhost`, assuming your catalog endpoint is exposed at port 8181, which is the default
+- `dataManagementApiUrl`:  prepend your connector URL, e.g. `http://localhost`, assuming your IDS endpoint is exposed at port 9191
+- `storageAccount`: insert the name of an Azure Blob Storage account to which the connector has access, otherwise data transfers won't work.
+
+**Be extra careful NOT to commit those changes, as they might leak potentially sensitive information!!!**
+
+As some extra safety consider running `git udpate-index --assume-unchanged src/assets/config/app.config.json` before changing this file.
+
+
 
 ## Deploy to Azure
 
