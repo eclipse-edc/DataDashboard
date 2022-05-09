@@ -94,9 +94,10 @@ export class ContractViewerComponent implements OnInit {
           properties: {
             "type": storageTypeId,
             account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
-            container: "dst-container", // CAUTION: hardcoded value for AzureBlob
+            // container: omitted, so it will be auto-assigned by the EDC runtime
           }
         },
+        managedResources: true,
         transferType: {isFinite: true}, //must be there, otherwise NPE on backend
         connectorAddress: offeredAsset.originator
       };
