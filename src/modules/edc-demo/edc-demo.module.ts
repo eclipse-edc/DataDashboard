@@ -24,7 +24,6 @@ import {TransferHistoryViewerComponent} from './components/transfer-history/tran
 import {
   ContractDefinitionEditorComponent
 } from './components/contractdefinition-editor/contractdefinition-editor.component';
-import {AssetPublisherComponent} from './components/asset-publisher/asset-publisher.component';
 import {IntroductionComponent} from './components/introduction/introduction.component';
 import {RouterModule} from '@angular/router';
 import {
@@ -37,6 +36,8 @@ import {ContractViewerComponent} from './components/contract-viewer/contract-vie
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SafePipe} from "./pipes/safe.pipe";
 import {ReplacePipe} from "./pipes/replace.pipe";
+import {AssetEditorDialog} from "./components/asset-editor-dialog/asset-editor-dialog.component";
+import {AssetViewerComponent} from "./components/asset-viewer/asset-viewer.component";
 
 import {PolicyViewComponent} from "./components/policy-view/policy-view.component";
 import {
@@ -74,7 +75,8 @@ import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-polic
     CatalogBrowserComponent,
     TransferHistoryViewerComponent,
     ContractDefinitionEditorComponent,
-    AssetPublisherComponent,
+    AssetViewerComponent,
+    AssetEditorDialog,
     IntroductionComponent,
     ContractDefinitionEditorDialog,
     CatalogBrowserTransferDialog,
@@ -93,7 +95,7 @@ import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-polic
     CatalogBrowserComponent,
     TransferHistoryViewerComponent,
     ContractDefinitionEditorComponent,
-    AssetPublisherComponent,
+    AssetViewerComponent,
     IntroductionComponent,
     PolicyRuleViewerComponent,
     IntroductionComponent,
