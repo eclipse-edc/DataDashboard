@@ -20,42 +20,33 @@
   </div>
 
   <div fxLayout="row wrap" fxLayoutAlign="start start">
-
     <mat-card *ngFor="let asset of assets" class="contract-definition-card">
       <mat-card-header>
         <mat-icon mat-card-avatar>id</mat-icon>
-        <mat-card-title>{{asset.properties["asset:prop:id"]}}</mat-card-title>
+        <mat-card-title>{{asset.id}}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <mat-list dense>
           <mat-list-item>
-            <mat-icon mat-list-icon>category</mat-icon>
-            <div class="policy-name" mat-line>Name</div>
-            <div mat-line>{{asset.properties["asset:prop:name"]}}</div>
+            <mat-icon mat-list-icon>info</mat-icon>
+            <div class="asset-property" mat-line>Name</div>
+            <div mat-line>{{asset.name}}</div>
           </mat-list-item>
           <mat-list-item>
             <mat-icon mat-list-icon>category</mat-icon>
-            <div class="policy-name" mat-line>Content Type</div>
-            <div mat-line>{{asset.properties["asset:prop:contenttype"]}}</div>
+            <div class="asset-property" mat-line>Content Type</div>
+            <div mat-line>{{asset.contentType}}</div>
           </mat-list-item>
           <mat-list-item>
-            <mat-icon mat-list-icon>category</mat-icon>
-            <div class="policy-name" mat-line>Version</div>
-            <div mat-line>{{asset.properties["asset:prop:version"]}}</div>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-icon mat-list-icon>category</mat-icon>
-            <div class="policy-name" mat-line>Type</div>
-            <div mat-line>{{asset.properties["type"]}}</div>
+            <mat-icon mat-list-icon>file_copy</mat-icon>
+            <div class="asset-property" mat-line>Version</div>
+            <div mat-line>{{asset.version}}</div>
           </mat-list-item>
         </mat-list>
       </mat-card-content>
 
       <mat-divider inset></mat-divider>
       <mat-card-actions class="card-actions">
-        <button (click)="onEdit(asset)" [disabled]="isBusy()" color="accent" mat-stroked-button>
-          <mat-icon>edit_note</mat-icon> Edit
-        </button>
         <button (click)="onDelete(asset)" [disabled]="isBusy()" color="accent" mat-stroked-button>
           <mat-icon>delete_sweep</mat-icon> Delete
         </button>

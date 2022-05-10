@@ -22,14 +22,7 @@ export class AssetEditorDialog implements OnInit {
   blobname: string = '';
 
   constructor(private assetService: AssetService, private dialogRef: MatDialogRef<AssetEditorDialog>,
-              @Inject('STORAGE_TYPES') public storageTypes: StorageType[],
-              @Inject(MAT_DIALOG_DATA) assetDto?: AssetDto) {
-    if (assetDto) {
-        this.id = assetDto.properties["asset:prop:id"];
-        this.name = assetDto.properties["asset:prop:name"];
-        this.version = assetDto.properties["asset:prop:version"];
-        this.contenttype = assetDto.properties["asset:prop:contenttype"];
-    }
+      @Inject('STORAGE_TYPES') public storageTypes: StorageType[]) {
   }
 
   ngOnInit(): void {
@@ -42,7 +35,7 @@ export class AssetEditorDialog implements OnInit {
           "asset:prop:name": this.name,
           "asset:prop:version": this.version,
           "asset:prop:id": this.id,
-          "asset:prop:contenttype": this.contenttype
+          "asset:prop:contenttype": this.contenttype,
         }
       },
       dataAddress: {

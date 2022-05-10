@@ -2,13 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {
-  AssetDto,
-  AssetService,
-  AssetEntryDto,
-} from "../../../edc-dmgmt-client";
+import {AssetEntryDto, AssetService,} from "../../../edc-dmgmt-client";
 import {AssetEditorDialog} from "../asset-editor-dialog/asset-editor-dialog.component";
-
+import {Asset} from "../../models/asset";
 
 @Component({
   selector: 'edc-demo-asset-viewer',
@@ -17,7 +13,7 @@ import {AssetEditorDialog} from "../asset-editor-dialog/asset-editor-dialog.comp
 })
 export class AssetViewerComponent implements OnInit {
 
-  filteredAssets$: Observable<AssetDto[]> = of([]);
+  filteredAssets$: Observable<Asset[]> = of([]);
   searchText = '';
   isTransfering = false;
   private fetch$ = new BehaviorSubject(null);
@@ -29,9 +25,9 @@ export class AssetViewerComponent implements OnInit {
     this.filteredAssets$ = this.fetch$
       .pipe(
         switchMap(() => {
-          const assets$ = this.assetService.getAllAssets();
+          const assets$ = this.assetService.getAllAssets().pipe(map(assets => assets.map(asset => new Asset(asset.properties))));
           return !!this.searchText ?
-            assets$.pipe(map(assets => assets.filter(asset => asset.properties["asset:prop:name"].includes(this.searchText))))
+            assets$.pipe(map(assets => assets.filter(asset => asset.name.includes(this.searchText))))
             :
             assets$;
         }));
@@ -45,23 +41,8 @@ export class AssetViewerComponent implements OnInit {
     this.fetch$.next(null);
   }
 
-  onEdit(assetDto: AssetDto) {
-    const dialogRef = this.dialog.open(AssetEditorDialog, {
-      data: assetDto
-    });
-
-    dialogRef.afterClosed().pipe(first()).subscribe((result: { assetEntryDto?: AssetEntryDto }) => {
-      const updatedAsset = result.assetEntryDto;
-      if (updatedAsset) {
-        this.assetService.removeAsset(updatedAsset.asset.properties["asset:prop:id"])
-          .subscribe(() => this.assetService.createAsset(updatedAsset)
-            .subscribe(() => this.fetch$.next(null)));
-      }
-    });
-  }
-
-  onDelete(asset: AssetDto) {
-    this.assetService.removeAsset(asset.properties["asset:prop:id"])
+  onDelete(asset: Asset) {
+    this.assetService.removeAsset(asset.id)
       .subscribe(() => this.fetch$.next(null));
   }
 
