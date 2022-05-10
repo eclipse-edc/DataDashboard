@@ -2,16 +2,16 @@ import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {ContractDefinitionEditorDialog} from '../contractdefinition-editor-dialog/contractdefinition-editor-dialog.component';
+import {ContractDefinitionEditorDialog} from '../contract-definition-editor-dialog/contract-definition-editor-dialog.component';
 import {ContractDefinitionDto, ContractDefinitionService} from "../../../edc-dmgmt-client";
 
 
 @Component({
-  selector: 'edc-demo-contractdefinition-editor',
-  templateUrl: './contractdefinition-editor.component.html',
-  styleUrls: ['./contractdefinition-editor.component.scss']
+  selector: 'contract-definition-viewer',
+  templateUrl: './contract-definition-viewer.component.html',
+  styleUrls: ['./contract-definition-viewer.component.scss']
 })
-export class ContractDefinitionEditorComponent implements OnInit {
+export class ContractDefinitionViewerComponent implements OnInit {
 
   filteredContractDefinitions$: Observable<ContractDefinitionDto[]> = of([]);
   searchText = '';
@@ -53,7 +53,7 @@ export class ContractDefinitionEditorComponent implements OnInit {
   }
 
   isBusy(assetId: string) {
-    return this.isTransfering && assetId === 'test-document-az_connector3';
+    return this.isTransfering;
   }
 
   onCreate() {

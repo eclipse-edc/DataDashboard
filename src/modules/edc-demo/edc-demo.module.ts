@@ -22,13 +22,13 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {CatalogBrowserComponent} from './components/catalog-browser/catalog-browser.component';
 import {TransferHistoryViewerComponent} from './components/transfer-history/transfer-history-viewer.component';
 import {
-  ContractDefinitionEditorComponent
-} from './components/contractdefinition-editor/contractdefinition-editor.component';
+  ContractDefinitionViewerComponent
+} from './components/contract-definition-viewer/contract-definition-viewer.component';
 import {IntroductionComponent} from './components/introduction/introduction.component';
 import {RouterModule} from '@angular/router';
 import {
   ContractDefinitionEditorDialog
-} from './components/contractdefinition-editor-dialog/contractdefinition-editor-dialog.component';
+} from './components/contract-definition-editor-dialog/contract-definition-editor-dialog.component';
 import {
   CatalogBrowserTransferDialog
 } from './components/catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component';
@@ -74,7 +74,7 @@ import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-polic
   declarations: [
     CatalogBrowserComponent,
     TransferHistoryViewerComponent,
-    ContractDefinitionEditorComponent,
+    ContractDefinitionViewerComponent,
     AssetViewerComponent,
     AssetEditorDialog,
     IntroductionComponent,
@@ -94,7 +94,7 @@ import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-polic
   exports: [
     CatalogBrowserComponent,
     TransferHistoryViewerComponent,
-    ContractDefinitionEditorComponent,
+    ContractDefinitionViewerComponent,
     AssetViewerComponent,
     IntroductionComponent,
     PolicyRuleViewerComponent,

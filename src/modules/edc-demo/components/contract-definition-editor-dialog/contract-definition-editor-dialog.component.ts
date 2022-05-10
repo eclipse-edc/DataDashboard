@@ -4,9 +4,9 @@ import {ContractDefinitionDto, Criterion, Policy, PolicyService} from "../../../
 
 
 @Component({
-  selector: 'edc-demo-contractdefinition-editor-dialog',
-  templateUrl: './contractdefinition-editor-dialog.component.html',
-  styleUrls: ['./contractdefinition-editor-dialog.component.scss']
+  selector: 'edc-demo-contract-definition-editor-dialog',
+  templateUrl: './contract-definition-editor-dialog.component.html',
+  styleUrls: ['./contract-definition-editor-dialog.component.scss']
 })
 export class ContractDefinitionEditorDialog implements OnInit {
 

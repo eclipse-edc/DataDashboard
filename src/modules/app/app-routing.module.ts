@@ -4,8 +4,8 @@ import {AssetViewerComponent} from '../edc-demo/components/asset-viewer/asset-vi
 import {CatalogBrowserComponent} from '../edc-demo/components/catalog-browser/catalog-browser.component';
 import {IntroductionComponent} from '../edc-demo/components/introduction/introduction.component';
 import {
-  ContractDefinitionEditorComponent
-} from '../edc-demo/components/contractdefinition-editor/contractdefinition-editor.component';
+  ContractDefinitionViewerComponent
+} from '../edc-demo/components/contract-definition-viewer/contract-definition-viewer.component';
 import {
   TransferHistoryViewerComponent
 } from '../edc-demo/components/transfer-history/transfer-history-viewer.component';
@@ -14,20 +14,19 @@ import {ContractViewerComponent} from "../edc-demo/components/contract-viewer/co
 
 export const routes: Routes = [
   {
-    path: 'introduction', component: IntroductionComponent, data: {title: 'Getting Started', icon: 'info_outline'}
+    path: 'introduction',
+    component: IntroductionComponent,
+    data: {title: 'Getting Started', icon: 'info_outline'}
   },
   {
-    path: 'catalog-browser', component: CatalogBrowserComponent, data: {title: 'Dataspace Catalog', icon: 'sim_card'}
+    path: 'catalog-browser',
+    component: CatalogBrowserComponent,
+    data: {title: 'Dataspace Catalog', icon: 'sim_card'}
   },
   {
     path: 'contract-viewer',
     component: ContractViewerComponent,
-    data: {title: 'Contract Viewer', icon: 'attachment'}
-  },
-  {
-    path: 'policy-viewer',
-    component: PolicyViewComponent,
-    data: {title: 'Policies', icon: 'policy'}
+    data: {title: 'Contracts', icon: 'attachment'}
   },
   {
     path: 'transfer-history-viewer',
@@ -35,12 +34,19 @@ export const routes: Routes = [
     data: {title: 'Transfer History', icon: 'assignment'}
   },
   {
-    path: 'contractdefinition-editor',
-    component: ContractDefinitionEditorComponent,
-    data: {title: 'Contract Definition Editor', icon: 'rule'}
+    path: 'contract-definition-viewer',
+    component: ContractDefinitionViewerComponent,
+    data: {title: 'Contract Definitions', icon: 'rule'}
   },
   {
-    path: 'assets-viewer', component: AssetViewerComponent, data: {title: 'Assets', icon: 'upload'}
+    path: 'policy-viewer',
+    component: PolicyViewComponent,
+    data: {title: 'Policies', icon: 'policy'}
+  },
+  {
+    path: 'assets-viewer',
+    component: AssetViewerComponent,
+    data: {title: 'Assets', icon: 'upload'}
   },
   {
     path: '', redirectTo: 'introduction', pathMatch: 'full'
