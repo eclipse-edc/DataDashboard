@@ -72,16 +72,10 @@
 
             <mat-divider inset></mat-divider>
             <mat-card-actions class="card-actions">
-                <button (click)="onEdit(contractDefinition)" [disabled]="isBusy(contractDefinition.id)" color="accent" mat-stroked-button>
-                    <mat-icon>edit_note</mat-icon> Edit
-                </button>
-                <button color="accent" disabled="true" mat-stroked-button>
+                <button (click)="onDelete(contractDefinition)" color="accent" mat-stroked-button>
                     <mat-icon>delete_sweep</mat-icon> Delete
                 </button>
             </mat-card-actions>
-            <mat-card-footer>
-                <mat-progress-bar *ngIf="isBusy(contractDefinition.id)" color="accent" mode="indeterminate"></mat-progress-bar>
-            </mat-card-footer>
         </mat-card>
     </div>
 </div>

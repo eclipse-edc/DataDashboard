@@ -7,7 +7,7 @@ import {ContractDefinitionDto, ContractDefinitionService} from "../../../edc-dmg
 
 
 @Component({
-  selector: 'contract-definition-viewer',
+  selector: 'edc-demo-contract-definition-viewer',
   templateUrl: './contract-definition-viewer.component.html',
   styleUrls: ['./contract-definition-viewer.component.scss']
 })
@@ -15,7 +15,6 @@ export class ContractDefinitionViewerComponent implements OnInit {
 
   filteredContractDefinitions$: Observable<ContractDefinitionDto[]> = of([]);
   searchText = '';
-  isTransfering = false;
   private fetch$ = new BehaviorSubject(null);
 
   constructor(private contractDefinitionService: ContractDefinitionService, private readonly dialog: MatDialog) {
@@ -37,23 +36,8 @@ export class ContractDefinitionViewerComponent implements OnInit {
     this.fetch$.next(null);
   }
 
-  onEdit(contractDefinition: ContractDefinitionDto) {
-    const contractDefinitionClone: ContractDefinitionDto  = JSON.parse(JSON.stringify(contractDefinition));
-    const dialogRef = this.dialog.open(ContractDefinitionEditorDialog, {
-      data: contractDefinitionClone
-    });
-
-    dialogRef.afterClosed().pipe(first()).subscribe((result: { contractDefinition?: ContractDefinitionDto }) => {
-      const updatedContractDefinition = result.contractDefinition;
-      if (updatedContractDefinition) {
-        this.contractDefinitionService.createContractDefinition(updatedContractDefinition).subscribe(() => this.fetch$.next(null));
-        this.fetch$.next(null);
-      }
-    });
-  }
-
-  isBusy(assetId: string) {
-    return this.isTransfering;
+  onDelete(contractDefinition: ContractDefinitionDto) {
+    this.contractDefinitionService.deleteContractDefinition(contractDefinition.id).subscribe(() => this.fetch$.next(null));
   }
 
   onCreate() {
@@ -62,8 +46,8 @@ export class ContractDefinitionViewerComponent implements OnInit {
       const newContractDefinition = result?.contractDefinition;
       if (newContractDefinition) {
         this.contractDefinitionService.createContractDefinition(newContractDefinition).subscribe(() => this.fetch$.next(null));
-        this.fetch$.next(null);
       }
     });
   }
+
 }

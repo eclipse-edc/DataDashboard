@@ -23,43 +23,16 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+
+        <mat-form-field class="form-field form-field-assets" id="form-field-contract-assets">
+          <mat-label>Assets</mat-label>
+          <mat-select [(ngModel)]="assets" multiple>
+            <mat-option *ngFor="let asset of availableAssets" [value]="asset">
+              {{asset.id}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
     </div>
-
-
-    <mat-card class="mat-elevation-z8">
-        <mat-card-subtitle>Selectors</mat-card-subtitle>
-        <mat-card-content>
-            <div *ngFor="let criterion of contractDefinition.criteria">
-              <mat-form-field class="form-field" color="accent">
-                <mat-label>asset property</mat-label>
-                <input [(ngModel)]="criterion.left" matInput required>
-              </mat-form-field>
-
-              <mat-form-field class="form-field form-field-operator" color="accent">
-                <mat-label>operator</mat-label>
-                <input [(ngModel)]="criterion.op" matInput required>
-              </mat-form-field>
-
-              <mat-form-field class="form-field" color="accent">
-                    <mat-label>value</mat-label>
-                    <input [(ngModel)]="criterion.right" matInput required>
-                </mat-form-field>
-
-              <button (click)="onRemoveCriteria(criterion)" [disabled]="contractDefinition.criteria.length === 1" color="accent"
-                      mat-icon-button>
-                <mat-icon>highlight_remove</mat-icon>
-              </button>
-            </div>
-
-            <mat-card-actions>
-                <button (click)="onAddCriterion()" color="accent" mat-stroked-button>
-                    <mat-icon>add_circle_outline</mat-icon> Add selector
-                </button>
-            </mat-card-actions>
-
-        </mat-card-content>
-    </mat-card>
-    <div>&nbsp;</div>
 
 </mat-dialog-content>
 
