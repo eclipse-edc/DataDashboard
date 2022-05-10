@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AssetDto, AssetService, ContractDefinitionDto, Policy, PolicyService} from "../../../edc-dmgmt-client";
 import {flatMap, map, mergeMap} from "rxjs/operators";
 import {Asset} from "../../models/asset";
+import {expectEl} from "@angular/flex-layout/_private-utils/testing";
 
 
 @Component({
@@ -57,13 +58,15 @@ export class ContractDefinitionEditorDialog implements OnInit {
     this.contractDefinition.contractPolicyId = this.contractPolicy!.uid;
     this.contractDefinition.criteria = [];
 
-    this.assets.forEach(asset => {
+    const ids= this.assets.map(asset => asset.id);
+    const idExpr = `[${ids.join(",")}]`;
+
+
       this.contractDefinition.criteria = [...this.contractDefinition.criteria, {
         left: 'asset:prop:id',
-        op: '=',
-        right: asset.id,
+        op: 'in',
+        right: idExpr,
       }];
-    })
 
     this.dialogRef.close({
       "contractDefinition": this.contractDefinition
