@@ -21,30 +21,30 @@ export const routes: Routes = [
   {
     path: 'catalog-browser',
     component: CatalogBrowserComponent,
-    data: {title: 'Dataspace Catalog', icon: 'sim_card'}
+    data: {title: 'Catalog Browser', icon: 'sim_card'}
   },
   {
-    path: 'contract-viewer',
+    path: 'contracts',
     component: ContractViewerComponent,
     data: {title: 'Contracts', icon: 'attachment'}
   },
   {
-    path: 'transfer-history-viewer',
+    path: 'transfer-history',
     component: TransferHistoryViewerComponent,
     data: {title: 'Transfer History', icon: 'assignment'}
   },
   {
-    path: 'contract-definition-viewer',
+    path: 'contract-definitions',
     component: ContractDefinitionViewerComponent,
     data: {title: 'Contract Definitions', icon: 'rule'}
   },
   {
-    path: 'policy-viewer',
+    path: 'policies',
     component: PolicyViewComponent,
     data: {title: 'Policies', icon: 'policy'}
   },
   {
-    path: 'assets-viewer',
+    path: 'assets',
     component: AssetViewerComponent,
     data: {title: 'Assets', icon: 'upload'}
   },

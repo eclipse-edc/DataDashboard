@@ -27,6 +27,7 @@ a {
 
 #example-use-cases-list {
     list-style-type: none;
+    padding-inline-start: 10px;
     li {
         margin-top: 10px;
         &:before {

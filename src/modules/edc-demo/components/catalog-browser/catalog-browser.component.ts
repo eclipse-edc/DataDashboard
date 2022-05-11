@@ -91,7 +91,7 @@ export class CatalogBrowserComponent implements OnInit {
                 if (updatedNegotiation.state === "CONFIRMED") {
                   this.finishedNegotiations.set(offerId, updatedNegotiation);
                   this.notificationService.showInfo("Contract Negotiation complete!", "Show me!", () => {
-                    this.router.navigate(['/contract-viewer'])
+                    this.router.navigate(['/contracts'])
                   })
                 }
               }
