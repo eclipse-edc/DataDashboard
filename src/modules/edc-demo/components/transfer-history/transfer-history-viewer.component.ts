@@ -10,14 +10,30 @@ import {AppConfigService} from "../../../app/app-config.service";
 })
 export class TransferHistoryViewerComponent implements OnInit {
 
-  columns: string[] = ['id', 'type', 'state', 'connectorId', 'protocol', 'assetId', 'contractId', 'error', 'action'];
+  columns: string[] = ['id', 'state', 'connectorId', 'assetId', 'contractId', 'action'];
   transferProcesses$: Observable<TransferProcessDto[]> = of([]);
   storageExplorerLinkTemplate: string | undefined;
 
-  constructor(private apiService: TransferProcessService, private appConfigService: AppConfigService) { }
+  constructor(private transferProcessService: TransferProcessService, private appConfigService: AppConfigService) { }
 
   ngOnInit(): void {
-    this.transferProcesses$ = this.apiService.getAllTransferProcesses();
+    this.loadTransferProcesses();
     this.storageExplorerLinkTemplate = this.appConfigService.getConfig()?.storageExplorerLinkTemplate
+  }
+
+  onDeprovision(transferProcess: TransferProcessDto): void {
+    this.transferProcessService.deprovisionTransferProcess(transferProcess.id).subscribe(() => this.loadTransferProcesses());
+  }
+
+  showStorageExplorerLink(transferProcess: TransferProcessDto) {
+    return transferProcess.dataDestination?.properties?.type === 'AzureStorage' && transferProcess.state === 'COMPLETED';
+  }
+
+  showDeprovisionButton(transferProcess: TransferProcessDto) {
+    return ['COMPLETED', 'PROVISIONED', 'REQUESTED', 'REQUESTED_ACK', 'IN_PROGRESS', 'STREAMING'].includes(transferProcess.state);
+  }
+
+  private loadTransferProcesses() {
+    this.transferProcesses$ = this.transferProcessService.getAllTransferProcesses();
   }
 }
