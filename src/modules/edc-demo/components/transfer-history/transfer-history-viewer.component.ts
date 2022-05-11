@@ -33,7 +33,7 @@ export class TransferHistoryViewerComponent implements OnInit {
     return ['COMPLETED', 'PROVISIONED', 'REQUESTED', 'REQUESTED_ACK', 'IN_PROGRESS', 'STREAMING'].includes(transferProcess.state);
   }
 
-  private loadTransferProcesses() {
+  loadTransferProcesses() {
     this.transferProcesses$ = this.transferProcessService.getAllTransferProcesses();
   }
 }
