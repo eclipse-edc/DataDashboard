@@ -28,6 +28,13 @@
             <div class="contract-property-value" mat-line>{{contract.providerAgentId}}</div>
           </mat-list-item>
 
+          <!-- sign date -->
+          <mat-list-item>
+            <mat-icon mat-list-icon>draw</mat-icon>
+            <div class="contract-property-header" mat-line>Signing date</div>
+            <div class="contract-property-value" mat-line>{{asDate(contract.contractSigningDate)}}</div>
+          </mat-list-item>
+
           <!-- valididty -->
           <mat-list-item>
             <mat-icon mat-list-icon>access_time</mat-icon>

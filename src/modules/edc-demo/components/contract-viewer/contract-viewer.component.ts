@@ -57,8 +57,13 @@ export class ContractViewerComponent implements OnInit {
     this.contracts$ = this.contractAgreementService.getAllAgreements();
   }
 
-  asDate(posixTimeStamp?: number): string {
-    return posixTimeStamp ? new Date(posixTimeStamp).toLocaleDateString() : '';
+  asDate(epochSeconds?: number): string {
+    if(epochSeconds){
+      const d = new Date(0);
+      d.setUTCSeconds(epochSeconds);
+      return d.toLocaleDateString();
+    }
+    return '';
   }
 
   getAsset(assetId?: string): Observable<Asset> {
