@@ -23,9 +23,19 @@
               <td mat-cell *matCellDef="let item">{{item.id}}</td>
           </ng-container>
 
+          <ng-container matColumnDef="creationDate">
+              <th mat-header-cell *matHeaderCellDef scope="col">Created</th>
+              <td mat-cell *matCellDef="let item">{{asDate(item.createdTimestamp)}}</td>
+          </ng-container>
+
           <ng-container matColumnDef="state">
               <th mat-header-cell *matHeaderCellDef scope="col">State</th>
               <td mat-cell *matCellDef="let item">{{item.state}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="lastUpdated">
+              <th mat-header-cell *matHeaderCellDef scope="col">Last updated</th>
+              <td mat-cell *matCellDef="let item">{{asDate(item.stateTimestamp)}}</td>
           </ng-container>
 
           <ng-container matColumnDef="connectorId">
