@@ -44,6 +44,7 @@ import {
   PolicyRuleViewerComponent
 } from "./components/policy-rule-viewer/policy-rule-viewer.component";
 import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-policy-dialog.component";
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   imports: [
@@ -69,7 +70,7 @@ import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-polic
     MatProgressBarModule,
     MatListModule,
     RouterModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   declarations: [
     CatalogBrowserComponent,
@@ -89,7 +90,8 @@ import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-polic
     CatalogBrowserTransferDialog,
     ContractViewerComponent,
     NewPolicyDialogComponent,
-    IntroductionComponent
+    IntroductionComponent,
+    ConfirmationDialogComponent
   ],
   exports: [
     CatalogBrowserComponent,

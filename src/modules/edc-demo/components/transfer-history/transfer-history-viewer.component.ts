@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {TransferProcessDto, TransferProcessService} from "../../../edc-dmgmt-client";
 import {AppConfigService} from "../../../app/app-config.service";
+import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'edc-demo-transfer-history',
@@ -14,7 +16,9 @@ export class TransferHistoryViewerComponent implements OnInit {
   transferProcesses$: Observable<TransferProcessDto[]> = of([]);
   storageExplorerLinkTemplate: string | undefined;
 
-  constructor(private transferProcessService: TransferProcessService, private appConfigService: AppConfigService) {
+  constructor(private transferProcessService: TransferProcessService,
+              private dialog : MatDialog,
+              private appConfigService: AppConfigService) {
   }
 
   ngOnInit(): void {
@@ -23,7 +27,18 @@ export class TransferHistoryViewerComponent implements OnInit {
   }
 
   onDeprovision(transferProcess: TransferProcessDto): void {
-    this.transferProcessService.deprovisionTransferProcess(transferProcess.id).subscribe(() => this.loadTransferProcesses());
+
+    const dialogData = new ConfirmDialogModel("Confirm deprovision", `Deprovisioning resources for transfer [${transferProcess.id}] will take some time and once started, it cannot be stopped.`)
+    dialogData.confirmColor = "warn";
+    dialogData.confirmText = "Confirm";
+    dialogData.cancelText = "Abort";
+    const ref = this.dialog.open(ConfirmationDialogComponent, {maxWidth: '20%', data: dialogData});
+
+    ref.afterClosed().subscribe(res => {
+      if (res) {
+        this.transferProcessService.deprovisionTransferProcess(transferProcess.id).subscribe(() => this.loadTransferProcesses());
+      }
+    });
   }
 
   showStorageExplorerLink(transferProcess: TransferProcessDto) {

@@ -81,7 +81,12 @@ export class ContractViewerComponent implements OnInit {
       }
       this.createTransferRequest(contract, storageTypeId)
         .pipe(switchMap(trq => this.transferService.initiateTransfer(trq)))
-        .subscribe(transferId => this.startPolling(transferId, contract.id!));
+        .subscribe(transferId => {
+          this.startPolling(transferId, contract.id!);
+        }, error => {
+          console.error(error);
+          this.notificationService.showError("Error initiating transfer");
+        });
     });
   }
 

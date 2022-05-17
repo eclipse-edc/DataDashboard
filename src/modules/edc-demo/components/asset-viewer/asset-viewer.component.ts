@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, Observer, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
 import {AssetEntryDto, AssetService,} from "../../../edc-dmgmt-client";
 import {AssetEditorDialog} from "../asset-editor-dialog/asset-editor-dialog.component";
 import {Asset} from "../../models/asset";
+import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
+import {NotificationService} from "../../services/notification.service";
 
 @Component({
   selector: 'edc-demo-asset-viewer',
@@ -15,10 +17,17 @@ export class AssetViewerComponent implements OnInit {
 
   filteredAssets$: Observable<Asset[]> = of([]);
   searchText = '';
-  isTransfering = false;
+  isTransferring = false;
   private fetch$ = new BehaviorSubject(null);
 
-  constructor(private assetService: AssetService, private readonly dialog: MatDialog) {
+  constructor(private assetService: AssetService,
+              private notificationService: NotificationService,
+              private readonly dialog: MatDialog) {
+  }
+
+  private showError(error: string) {
+    this.notificationService.showError("This asset cannot be deleted");
+    console.error(error);
   }
 
   ngOnInit(): void {
@@ -34,7 +43,7 @@ export class AssetViewerComponent implements OnInit {
   }
 
   isBusy() {
-    return this.isTransfering;
+    return this.isTransferring;
   }
 
   onSearch() {
@@ -42,8 +51,19 @@ export class AssetViewerComponent implements OnInit {
   }
 
   onDelete(asset: Asset) {
-    this.assetService.removeAsset(asset.id)
-      .subscribe(() => this.fetch$.next(null));
+
+    const dialogData = ConfirmDialogModel.forDelete("asset", `"${asset.name}"`)
+    const ref = this.dialog.open(ConfirmationDialogComponent, {maxWidth: "20%", data: dialogData});
+
+    ref.afterClosed().subscribe(res => {
+      if (res) {
+        this.assetService.removeAsset(asset.id).subscribe(() => this.fetch$.next(null),
+          err => this.showError(err),
+          () => this.notificationService.showInfo("Successfully deleted")
+        );
+      }
+    });
+
   }
 
   onCreate() {
@@ -51,7 +71,7 @@ export class AssetViewerComponent implements OnInit {
     dialogRef.afterClosed().pipe(first()).subscribe((result: { assetEntryDto?: AssetEntryDto }) => {
       const newAsset = result?.assetEntryDto;
       if (newAsset) {
-        this.assetService.createAsset(newAsset).subscribe(() => this.fetch$.next(null));
+        this.assetService.createAsset(newAsset).subscribe(() => this.fetch$.next(null), error => this.showError(error), () => this.notificationService.showInfo("Successfully created"));
       }
     });
   }

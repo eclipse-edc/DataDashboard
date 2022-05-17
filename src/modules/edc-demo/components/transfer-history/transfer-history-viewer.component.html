@@ -4,13 +4,13 @@
         <mat-icon>info</mat-icon>
         <span class="text">Please install Storage Explorer for visualizing files transferred to Azure Blob Storage</span>
         <span class="button">
-          <a mat-raised-button href="https://azure.microsoft.com/features/storage-explorer/">Install Azure Storage Explorer</a>
+          <a mat-stroked-button href="https://azure.microsoft.com/features/storage-explorer/" color="accent">Install Azure Storage Explorer</a>
         </span>
       </div>
     </mat-card>
 
     <div *ngIf="transferProcesses$ | async as transferProcesses">
-      <button mat-button (click)="loadTransferProcesses()">
+      <button mat-stroked-button (click)="loadTransferProcesses()" color="accent">
         <mat-icon>cached</mat-icon>
         Refresh
       </button>
