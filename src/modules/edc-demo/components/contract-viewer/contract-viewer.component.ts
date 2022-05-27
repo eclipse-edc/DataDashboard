@@ -7,9 +7,9 @@ import {
   TransferProcessService,
   TransferRequestDto
 } from "../../../edc-dmgmt-client";
-import {from, Observable, of, tap} from "rxjs";
+import {from, Observable, of} from "rxjs";
 import {Asset} from "../../models/asset";
-import {filter, first, map, switchMap} from "rxjs/operators";
+import {filter, first, map, switchMap, tap} from "rxjs/operators";
 import {NotificationService} from "../../services/notification.service";
 import {
   CatalogBrowserTransferDialog

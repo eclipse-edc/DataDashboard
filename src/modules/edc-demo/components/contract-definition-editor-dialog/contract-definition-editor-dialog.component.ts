@@ -1,9 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {AssetDto, AssetService, ContractDefinitionDto, Policy, PolicyService} from "../../../edc-dmgmt-client";
-import {flatMap, map, mergeMap} from "rxjs/operators";
+import {AssetService, ContractDefinitionDto, Policy, PolicyService} from "../../../edc-dmgmt-client";
+import {map} from "rxjs/operators";
 import {Asset} from "../../models/asset";
-import {expectEl} from "@angular/flex-layout/_private-utils/testing";
 
 
 @Component({
