@@ -7,6 +7,7 @@ export interface AppConfig {
   storageAccount: string;
   apiKey: string;
   storageExplorerLinkTemplate: string;
+  theme: string;
 }
 
 @Injectable({
