@@ -44,7 +44,7 @@ export const routes: Routes = [
     data: {title: 'Policies', icon: 'policy'}
   },
   {
-    path: 'assets',
+    path: 'my-assets', // must not be "assets" to prevent conflict with assets directory
     component: AssetViewerComponent,
     data: {title: 'Assets', icon: 'upload'}
   },
