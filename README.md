@@ -71,5 +71,6 @@ az container create --image ${ACR_NAME}.azurecr.io/edc-showcase/edc-data-dashboa
 --secrets-mount-path /usr/share/nginx/html/assets/config \
 --dns-name-label edc-data-dashboard
 ```
+## Contributing
 
-
+See [how to contribute](./CONTRIBUTING.md) for details.
