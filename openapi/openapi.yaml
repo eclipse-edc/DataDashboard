@@ -1200,11 +1200,11 @@ components:
     Criterion:
       type: object
       properties:
-        left:
+        operandLeft:
           type: object
-        op:
+        operator:
           type: string
-        right:
+        operandRight:
           type: object
     DataAddress:
       type: object
