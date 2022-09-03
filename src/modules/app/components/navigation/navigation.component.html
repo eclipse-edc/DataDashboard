@@ -3,7 +3,7 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar></mat-toolbar>
+    <mat-toolbar>Marktplatz</mat-toolbar>
     <mat-nav-list>
       <a [routerLink]="[route.path]" *ngFor="let route of routes">
       <mat-list-item *ngIf="route.component">
