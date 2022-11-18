@@ -55,7 +55,10 @@ export class ContractViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.contracts$ = this.contractAgreementService.getAllAgreements();
+    // Filter contracts only to where the current user's connector is the consumer. This should be done without checking the assetId once
+    // consumers and provider IDs are properly set during the contract agreement.
+    this.contracts$ = this.contractAgreementService.getAllAgreements()
+      .pipe(map(a => a.filter(b=> b.assetId.includes("urn:artifact"))));
   }
 
   asDate(epochSeconds?: number): string {
