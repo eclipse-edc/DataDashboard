@@ -1,30 +1,22 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Marktplatz</mat-toolbar>
-    <mat-nav-list>
-      <a [routerLink]="[route.path]" *ngFor="let route of routes">
-      <mat-list-item *ngIf="route.component">
-        <mat-icon mat-list-icon>{{route.data?.icon}}</mat-icon>
-        <span matLine>{{route.data?.title ?? route.path}}</span>
-      </mat-list-item>
-    </a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span>{{titleService.getTitle()}}</span>
+  <mat-sidenav class="sidenav" fixedInViewport mode="side" opened="true" disableClose>
+    <mat-toolbar>
+      <div class="logo-container">
+        <img class="logo" src="/assets/theme/logo-agrigaia.svg"/>
+      </div>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <app-current-user></app-current-user>
+    <mat-nav-list class="links">
+      <a [routerLink]="[route.path]" *ngFor="let route of routes" routerLinkActive="router-link-active">
+        <mat-list-item *ngIf="route.component">
+          <mat-icon mat-list-icon color="primary">{{route.data?.icon}}</mat-icon>
+          <span matLine>{{route.data?.title ?? route.path}}</span>
+        </mat-list-item>
+      </a>
+    </mat-nav-list>
+    <div style="flex-grow: 100"></div>
+  </mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <router-outlet class="page"></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

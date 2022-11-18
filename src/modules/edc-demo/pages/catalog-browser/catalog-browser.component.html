@@ -1,0 +1,47 @@
+<app-toolbar (onSearch)="onSearch($event)">
+</app-toolbar>
+<div class="content">
+  <div *ngIf="filteredContractOffers$ | async as filteredContractOffers" id="wrapper">
+    <h1 class="headline">{{titleService.getTitle()}}</h1>
+    <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+      <mat-card *ngFor="let contractOffer of filteredContractOffers" class="asset-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>sim_card</mat-icon>
+          <mat-card-title>{{contractOffer.asset.name}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list dense>
+            <mat-list-item>
+              <mat-icon mat-list-icon>category</mat-icon>
+              <div class="asset-property-name" mat-line>Typ</div>
+              <div mat-line>{{contractOffer.asset.type}}</div>
+            </mat-list-item>
+            <mat-list-item>
+              <mat-icon mat-list-icon>key</mat-icon>
+              <div class="asset-property-name" mat-line>Id</div>
+              <div mat-line>{{contractOffer.asset.id}}</div>
+            </mat-list-item>
+            <mat-list-item *ngIf="contractOffer.asset.contentType">
+              <mat-icon mat-list-icon>content_paste</mat-icon>
+              <div class="asset-property-name" mat-line>Content-Type</div>
+              <div mat-line>{{contractOffer.asset.contentType}}</div>
+            </mat-list-item>
+          </mat-list>
+
+        </mat-card-content>
+        <mat-divider inset></mat-divider>
+        <mat-card-actions class="card-actions">
+          <button (click)="openDetails(contractOffer)"
+                  [disabled]="!contractOffer.asset.isAsync || isBusy(contractOffer) || isNegotiated(contractOffer)"
+                  color="primary" mat-raised-button>
+            Details ansehen
+          </button>
+        </mat-card-actions>
+        <mat-card-footer class="footer">
+          <mat-progress-bar *ngIf="isBusy(contractOffer)" color="accent" mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
+      </mat-card>
+    </div>
+  </div>
+</div>

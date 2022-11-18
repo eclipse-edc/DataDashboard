@@ -1,0 +1,9 @@
+<mat-form-field appearance="standard" class="switcher">
+  <mat-label>Plattform</mat-label>
+  <mat-select [formControl]="platformForm">
+    <mat-select-trigger>
+      {{this.currentConfig.name}}
+    </mat-select-trigger>
+    <mat-option *ngFor="let appConfig of appConfigs" [value]="appConfig.id">{{appConfig.name}}</mat-option>
+  </mat-select>
+</mat-form-field>

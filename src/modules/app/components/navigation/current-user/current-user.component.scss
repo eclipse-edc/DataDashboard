@@ -1,0 +1,21 @@
+@import "src/modules/styles/variables";
+
+.current-user {
+  margin-top: 30px;
+  padding-left: 20px;
+  padding-right: 2px;
+
+  a {
+    text-decoration-line: none;
+  }
+
+  .image {
+    height: 45px;
+    width: 45px;
+  }
+
+  .name {
+    margin-left: 15px;
+  }
+
+}

@@ -19,32 +19,22 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule} from '@angular/material/list';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {CatalogBrowserComponent} from './components/catalog-browser/catalog-browser.component';
-import {TransferHistoryViewerComponent} from './components/transfer-history/transfer-history-viewer.component';
-import {
-  ContractDefinitionViewerComponent
-} from './components/contract-definition-viewer/contract-definition-viewer.component';
-import {IntroductionComponent} from './components/introduction/introduction.component';
+import {CatalogBrowserComponent} from './pages/catalog-browser/catalog-browser.component';
+import {TransferHistoryViewerComponent} from './pages/transfer-history/transfer-history-viewer.component';
 import {RouterModule} from '@angular/router';
-import {
-  ContractDefinitionEditorDialog
-} from './components/contract-definition-editor-dialog/contract-definition-editor-dialog.component';
 import {
   CatalogBrowserTransferDialog
 } from './components/catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component';
-import {ContractViewerComponent} from './components/contract-viewer/contract-viewer.component';
+import {ContractViewerComponent} from './pages/contract-viewer/contract-viewer.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SafePipe} from "./pipes/safe.pipe";
 import {ReplacePipe} from "./pipes/replace.pipe";
-import {AssetEditorDialog} from "./components/asset-editor-dialog/asset-editor-dialog.component";
-import {AssetViewerComponent} from "./components/asset-viewer/asset-viewer.component";
+import {ConfirmationDialogComponent} from './components/confirmation-dialog/confirmation-dialog.component';
 
-import {PolicyViewComponent} from "./components/policy-view/policy-view.component";
-import {
-  PolicyRuleViewerComponent
-} from "./components/policy-rule-viewer/policy-rule-viewer.component";
-import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-policy-dialog.component";
-import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {AppToolbarComponent} from "./pages/frame/app-toolbar/app-toolbar.component";
+import {AssetDetailsComponent} from './pages/catalog-browser/asset-details/asset-details.component';
+import {ContextSwitcherComponent} from "./pages/frame/context-switcher/context-switcher.component";
 
 @NgModule({
   imports: [
@@ -71,37 +61,24 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatListModule,
     RouterModule,
     MatProgressSpinnerModule,
+    MatToolbarModule,
   ],
   declarations: [
     CatalogBrowserComponent,
     TransferHistoryViewerComponent,
-    ContractDefinitionViewerComponent,
-    AssetViewerComponent,
-    AssetEditorDialog,
-    IntroductionComponent,
-    ContractDefinitionEditorDialog,
-    CatalogBrowserTransferDialog,
     ContractViewerComponent,
-    CatalogBrowserTransferDialog,
     SafePipe,
     ReplacePipe,
-    PolicyViewComponent,
-    PolicyRuleViewerComponent,
     CatalogBrowserTransferDialog,
     ContractViewerComponent,
-    NewPolicyDialogComponent,
-    IntroductionComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    AppToolbarComponent,
+    AssetDetailsComponent,
+    ContextSwitcherComponent
   ],
   exports: [
     CatalogBrowserComponent,
     TransferHistoryViewerComponent,
-    ContractDefinitionViewerComponent,
-    AssetViewerComponent,
-    IntroductionComponent,
-    PolicyRuleViewerComponent,
-    IntroductionComponent,
-    NewPolicyDialogComponent,
     ContractViewerComponent
   ]
 })

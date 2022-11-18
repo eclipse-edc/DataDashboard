@@ -455,6 +455,8 @@ export class TransferProcessService {
             }
         }
 
+        console.log(this.configuration.basePath)
+
         return this.httpClient.post<TransferId>(`${this.configuration.basePath}/transferprocess`,
             transferRequestDto,
             {

@@ -1,0 +1,118 @@
+@use '../../../node_modules/@angular/material/index' as mat;
+
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+@import "../../../node_modules/@angular/material/theming";
+@include mat.core();
+
+@import 'variables';
+
+$primary-palette: (
+  50: #e6eae7,
+  100: #bfcbc2,
+  200: #95a99a,
+  300: #6b8771,
+  400: #4b6d52,
+  500: #2b5334,
+  600: #264c2f,
+  700: #204227,
+  800: #1a3921,
+  900: #102915,
+  A100: #69ff80,
+  A200: #36ff54,
+  A400: #03ff29,
+  A700: #00e923,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$accent-palette: (
+  50: #f0f5e8,
+  100: #dbe6c6,
+  200: #c3d5a1,
+  300: #aac47b,
+  400: #98b75e,
+  500: #86aa42,
+  600: #7ea33c,
+  700: #739933,
+  800: #69902b,
+  900: #567f1d,
+  A100: #e1ffbb,
+  A200: #caff88,
+  A400: #b3ff55,
+  A700: #a7ff3b,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$agri-gaia-primary: mat.define-palette($primary-palette);
+$agri-gaia-accent: mat.define-palette($accent-palette);
+
+$warn-palette: mat.define-palette(mat.$red-palette);
+$success-palette: mat.define-palette(mat.$green-palette);
+$info-palette: mat.define-palette(mat.$light-blue-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$agri-gaia-theme: mat.define-light-theme(
+    (
+      color: (
+        primary: $agri-gaia-primary,
+        accent: $agri-gaia-accent,
+        warn: $warn-palette,
+      ),
+    )
+);
+
+@include mat.all-component-themes($agri-gaia-theme);
+
+
+@font-face {
+  font-family: 'Calluna Sans';
+  src: url('/src/assets/theme/fonts/CallunaSans-Regular.otf');
+}
+@font-face {
+  font-family: 'Calluna Sans';
+  src: url('/src/assets/theme/fonts/CallunaSans-Italic.otf');
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Calluna Sans';
+  src: url('/src/assets/theme/fonts/CallunaSans-Bold.otf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Calluna Sans';
+  src: url('/src/assets/theme/fonts/CallunaSans-BoldItalic.otf');
+  font-weight: bold;
+  font-style: italic;
+}

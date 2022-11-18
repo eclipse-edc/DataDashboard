@@ -1,0 +1,25 @@
+.toolbar {
+  background: white;
+  box-shadow: 2px 0 8px 2px rgba(0, 25, 0, 0.1);
+  height: 72px;
+
+  display: flex;
+
+  .search {
+    margin-left: 15px;
+    min-width: 450px;
+    font-size: 14px;
+
+    #wrapper {
+      padding: unset !important;
+      margin: unset !important;
+    }
+  }
+
+  .context-switcher {
+    min-width: 300px;
+    font-size: 14px;
+  }
+}
+
+

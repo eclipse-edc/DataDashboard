@@ -1,0 +1,9 @@
+<mat-toolbar class="toolbar" fxLayout="row">
+  <mat-form-field class="search" appearance="standard" *ngIf="!hideSearch">
+    <mat-label>Suche</mat-label>
+    <input matInput [(ngModel)]="searchTerm"  (input)="onSearch.emit(searchTerm)">
+  </mat-form-field>
+  <button mat-icon-button (click)="searchPressed.emit(searchTerm)" *ngIf="!hideSearch"><mat-icon>search</mat-icon></button>
+  <div fxFlex="100"></div>
+  <app-context-switcher fxLayoutAlign="end" class="context-switcher"></app-context-switcher>
+</mat-toolbar>

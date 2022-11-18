@@ -20,8 +20,6 @@ export class NavigationComponent {
 
   routes = routes;
 
-  constructor(
-    public titleService: Title,
-    private breakpointObserver: BreakpointObserver) {
+  constructor(    private breakpointObserver: BreakpointObserver) {
   }
 }

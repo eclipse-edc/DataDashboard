@@ -1,7 +1,8 @@
-@import './theme.scss';
+@import 'modules/styles/theme';
+@import 'modules/styles/mixins';
 
 html, body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
@@ -18,7 +19,26 @@ body {
   color: black;
 }
 
-.code{
+.code {
   font-family: monospace;
   font-size: larger;
+}
+
+.headline {
+  @include calluna-font();
+  color: $primary;
+  font-size: 36px !important;
+  font-weight: bold !important;
+
+  padding-bottom: 15px;
+}
+
+.content {
+  background-color: white;
+
+  flex-grow: 100;
+  height: calc(100% - 76px - 60px - 60px);
+  margin: 30px;
+  padding: 30px;
+  border-radius: 6px;
 }

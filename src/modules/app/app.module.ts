@@ -17,6 +17,7 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {AppConfigService} from "./app-config.service";
 import {API_KEY, CONNECTOR_CATALOG_API, CONNECTOR_DATAMANAGEMENT_API} from "../edc-dmgmt-client";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { CurrentUserComponent } from './components/navigation/current-user/current-user.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
   declarations: [
     AppComponent,
     NavigationComponent,
+    CurrentUserComponent,
   ],
   providers: [
     {
@@ -56,15 +58,11 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
       deps: [AppConfigService]
     },
     {
-      provide: 'HOME_CONNECTOR_STORAGE_ACCOUNT',
-      useFactory: (s: AppConfigService) => s.getConfig()?.storageAccount,
+      provide: 'HOME_CONNECTOR_STORAGES',
+      useFactory: (s: AppConfigService) => s.getConfig()?.storages,
       deps: [AppConfigService]
     },
     {provide: API_KEY, useFactory: (s: AppConfigService) => s.getConfig()?.apiKey, deps: [AppConfigService]},
-    {
-      provide: 'STORAGE_TYPES',
-      useFactory: () => [{id: "AzureStorage", name: "AzureStorage"}, {id: "AmazonS3", name: "AmazonS3"}],
-    },
   ],
   bootstrap: [AppComponent]
 })

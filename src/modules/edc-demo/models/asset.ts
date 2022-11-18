@@ -7,6 +7,7 @@ export class Asset {
     private static readonly PROPERTY_POLICY_ID = "asset:prop:policy-id";
     private static readonly PROPERTY_ORIGINATOR = "asset:prop:originator";
     private static readonly PROPERTY_TYPE = "type";
+    private static readonly PROPERTY_DESCRIPTION ="asset:prop:description";
     private static readonly KNOWN_PROPERTY_KEYS = [
         Asset.PROPERTY_ID,
         Asset.PROPERTY_NAME,
@@ -14,7 +15,8 @@ export class Asset {
         Asset.PROPERTY_CONTENT_TYPE,
         Asset.PROPERTY_POLICY_ID,
         Asset.PROPERTY_TYPE,
-        Asset.PROPERTY_ORIGINATOR
+        Asset.PROPERTY_ORIGINATOR,
+        Asset.PROPERTY_DESCRIPTION,
     ];
 
     constructor(public properties: { [key: string]: string; }) {
@@ -74,6 +76,14 @@ export class Asset {
 
     public set originator(value: string) {
         this.properties[Asset.PROPERTY_ORIGINATOR] = value;
+    }
+
+    public get description() {
+            return this.properties[Asset.PROPERTY_DESCRIPTION];
+        }
+
+    public set description(value: string) {
+        this.properties[Asset.PROPERTY_DESCRIPTION] = value;
     }
 
     public get additionalPropertyKeys() {
