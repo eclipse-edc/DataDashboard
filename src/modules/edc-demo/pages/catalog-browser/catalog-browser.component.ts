@@ -1,11 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {BehaviorSubject, Observable, of} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {BehaviorSubject, debounceTime, Observable, of, skip} from 'rxjs';
 import {CatalogBrowserService} from "../../services/catalog-browser.service";
-import {ContractNegotiationDto, NegotiationInitiateRequestDto} from "../../../edc-dmgmt-client";
-import {NotificationService} from "../../services/notification.service";
-import {Router} from "@angular/router";
+import {ContractNegotiationDto} from "../../../edc-dmgmt-client";
 import {TransferProcessStates} from "../../models/transfer-process-states";
 import {ContractOffer} from "../../models/contract-offer";
 import {NegotiationResult} from "../../models/negotiation-result";
@@ -26,11 +23,10 @@ interface RunningTransferProcess {
 export class CatalogBrowserComponent implements OnInit {
 
   filteredContractOffers$: Observable<ContractOffer[]> = of([]);
-  searchText = '';
   runningTransferProcesses: RunningTransferProcess[] = [];
   runningNegotiations: Map<string, NegotiationResult> = new Map<string, NegotiationResult>(); // contractOfferId, NegotiationResult
   finishedNegotiations: Map<string, ContractNegotiationDto> = new Map<string, ContractNegotiationDto>(); // contractOfferId, contractAgreementId
-  private fetch$ = new BehaviorSubject(null);
+  private fetch$ = new BehaviorSubject<string>('');
 
   constructor(private apiService: CatalogBrowserService,
               public dialog: MatDialog,
@@ -38,20 +34,15 @@ export class CatalogBrowserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filteredContractOffers$ = this.fetch$
-      .pipe(
-        switchMap(() => {
-          const contractOffers$ = this.apiService.getContractOffers();
-          return !!this.searchText ?
-            contractOffers$.pipe(map(contractOffers => contractOffers.filter(contractOffer => contractOffer.asset.name.toLowerCase().includes(this.searchText))))
-            :
-            contractOffers$;
-        }));
+    this.filteredContractOffers$ = this.apiService.getContractOffers();
+
+    this.fetch$
+      .pipe(debounceTime(300), skip(1))
+      .subscribe((searchTerm) => this.filteredContractOffers$ = this.apiService.getFilteredContractOffers(searchTerm));
   }
 
   onSearch(event: string) {
-    this.searchText = event;
-    this.fetch$.next(null);
+    this.fetch$.next(event);
   }
 
 

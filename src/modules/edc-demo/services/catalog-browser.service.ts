@@ -9,14 +9,20 @@ import {
   CONNECTOR_CATALOG_API,
   ContractNegotiationDto,
   ContractNegotiationService,
-  NegotiationId,
   NegotiationInitiateRequestDto,
-  TransferId,
   TransferProcessDto,
   TransferProcessService,
   TransferRequestDto
 } from "../../edc-dmgmt-client";
 
+type Operand = 'label' | 'startDate' | 'endDate' | 'location';
+type Operator = 'equals' | 'contains' | '>' | '<' | '>=' | '<=' | '=' | 'and' | 'or';
+
+interface SearchBody {
+  operandLeft: SearchBody | Operand;
+  operator: Operator;
+  operandRight: SearchBody | string;
+}
 
 /**
  * Combines several services that are used from the {@link CatalogBrowserComponent}
@@ -35,6 +41,25 @@ export class CatalogBrowserService {
 
   getContractOffers(): Observable<ContractOffer[]> {
     return this.post<ContractOffer[]>(this.catalogApiUrl)
+      .pipe(map(contractOffers => contractOffers.map(contractOffer => {
+        contractOffer.asset = new Asset(contractOffer.asset.properties)
+        return contractOffer;
+      })));
+  }
+
+
+  getFilteredContractOffers(searchTerm: string): Observable<ContractOffer[]> {
+    if (!searchTerm) {
+      return this.getContractOffers();
+    }
+
+    let searchBody: SearchBody = {
+      operandLeft: 'label',
+      operator: 'contains',
+      operandRight: searchTerm
+    }
+
+    return this.postWithBody<ContractOffer[]>(this.catalogApiUrl, {where: searchBody})
       .pipe(map(contractOffers => contractOffers.map(contractOffer => {
         contractOffer.asset = new Asset(contractOffer.asset.properties)
         return contractOffer;
@@ -67,6 +92,15 @@ export class CatalogBrowserService {
     const url = `${urlPath}`;
     let headers = new HttpHeaders({'X-Api-Key': this.apiKey});
     return this.catchError(this.httpClient.post<T>(url, {headers, params}), url, 'POST');
+  }
+
+  private postWithBody<T>(urlPath: string,
+                          body: any,
+                          params?: HttpParams | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>; })
+    : Observable<T> {
+    const url = `${urlPath}`;
+    let headers = new HttpHeaders({'X-Api-Key': this.apiKey});
+    return this.catchError(this.httpClient.post<T>(url, {...body, headers, params}), url, 'POST');
   }
 
   private catchError<T>(observable: Observable<T>, url: string, method: string): Observable<T> {
