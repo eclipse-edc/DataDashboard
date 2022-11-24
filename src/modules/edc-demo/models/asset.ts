@@ -6,7 +6,7 @@ export class Asset {
     private static readonly PROPERTY_CONTENT_TYPE = "asset:prop:contenttype";
     private static readonly PROPERTY_POLICY_ID = "asset:prop:policy-id";
     private static readonly PROPERTY_ORIGINATOR = "asset:prop:originator";
-    private static readonly PROPERTY_TYPE = "type";
+    private static readonly PROPERTY_TYPE = "@type";
     private static readonly PROPERTY_DESCRIPTION ="asset:prop:description";
     private static readonly KNOWN_PROPERTY_KEYS = [
         Asset.PROPERTY_ID,
@@ -19,7 +19,7 @@ export class Asset {
         Asset.PROPERTY_DESCRIPTION,
     ];
 
-    constructor(public properties: { [key: string]: string; }) {
+    constructor(public properties: { [key: string]: any; }) {
     }
 
     public get id() {

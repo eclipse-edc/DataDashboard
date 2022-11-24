@@ -23,7 +23,7 @@ export class AssetDetailsComponent implements OnInit {
               private notificationService: NotificationService,
               private router: Router,
               public dialog: MatDialogRef<AssetDetailsComponent>) {
-    console.log(contractOffer)
+
   }
 
   ngOnInit(): void {
@@ -66,9 +66,10 @@ export class AssetDetailsComponent implements OnInit {
 
               if (updatedNegotiation.state === "CONFIRMED") {
                 this.finishedNegotiation = updatedNegotiation;
-                this.notificationService.showInfo("Purchase complete!", "Show me!", () => {
+                this.notificationService.showInfo("Der Kauf wurde erfolgreich abgeschlossen", "Zu meinen Käufen", () => {
                   this.router.navigate(['/contracts'])
                 })
+                this.dialog.close();
               }
             }
 

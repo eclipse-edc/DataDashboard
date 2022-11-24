@@ -71,9 +71,10 @@ export class CatalogBrowserComponent implements OnInit {
   openDetails(contractOffer: ContractOffer) {
     this.dialog.open(AssetDetailsComponent, {
       data: contractOffer,
-      height: '80%',
-      width: '50%',
-      minWidth: '1000px'
+      width: '100em',
+      height: '60em',
+      maxHeight: '95%',
+      maxWidth: '80%'
     })
   }
 }

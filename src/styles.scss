@@ -10,8 +10,8 @@ body {
 }
 
 .snackbar-info-style {
-  background-color: orange;
-  color: black;
+  background-color: $primary;
+  color: white;
 }
 
 .snackbar-error-style {
@@ -41,4 +41,13 @@ body {
   margin: 30px;
   padding: 30px;
   border-radius: 6px;
+}
+
+.catalogue-meta-data-list {
+  mat-list-item {
+    flex: 1 1 50%;
+    span {
+      place-items: flex-start !important;
+    }
+  }
 }
