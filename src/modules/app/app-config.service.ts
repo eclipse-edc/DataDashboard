@@ -1,16 +1,18 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable} from '@angular/core';
+import {BehaviorSubject, firstValueFrom, Observable} from "rxjs";
+import {API_KEY, BACKEND_URL} from "../edc-dmgmt-client";
 
 export interface AppConfig {
-  id: string
-  apiKey: string;
+  name: string
   catalogUrl: string;
-  dataManagementApiUrl: string;
+  dataConnectorUrl: string;
   theme: string;
-  name: string;
-  logo: string;
+  logoUrl: string;
   storages: StorageOption[];
+  firstName: string;
+  lastName: string;
+  url: string;
 }
 
 export interface StorageOption {
@@ -34,16 +36,19 @@ export class AppConfigService {
   allConfigs: BehaviorSubject<AppConfig[]> = new BehaviorSubject<AppConfig[]>([]);
   private dataDashboardId = "data-dashboard-id.v2";
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              @Inject(BACKEND_URL) private catalogApiUrl: string,
+              @Inject(API_KEY) private apiKey: string,
+  ) {
   }
 
   loadConfig(): Promise<void> {
-    return this.http
-      .get<AppConfig[]>('/assets/config/app.config.json')
-      .toPromise()
+    const headers = new HttpHeaders({'X-Api-Key': this.apiKey, "Origin": "agrigaia"});
+
+    return firstValueFrom(this.http.get<AppConfig[]>(`${this.catalogApiUrl}/dataspaceparticipants`, {headers}))
       .then(data => {
-        let id = localStorage.getItem(this.dataDashboardId) ?? "lmis";
-        this.config = data?.find(c => c.id === id)
+        let name = localStorage.getItem(this.dataDashboardId) ?? "lmis";
+        this.config = data?.find(c => c.name === name)
         this.allConfigs.next(data!);
       });
   }

@@ -15,9 +15,9 @@ import {NavigationComponent} from './components/navigation/navigation.component'
 import {EdcDemoModule} from '../edc-demo/edc-demo.module';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {AppConfigService} from "./app-config.service";
-import {API_KEY, CONNECTOR_CATALOG_API, CONNECTOR_DATAMANAGEMENT_API} from "../edc-dmgmt-client";
+import {API_KEY, BACKEND_URL, CONNECTOR_DATAMANAGEMENT_API,} from "../edc-dmgmt-client";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { CurrentUserComponent } from './components/navigation/current-user/current-user.component';
+import {CurrentUserComponent} from './components/navigation/current-user/current-user.component';
 
 
 @NgModule({
@@ -49,20 +49,16 @@ import { CurrentUserComponent } from './components/navigation/current-user/curre
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     {
       provide: CONNECTOR_DATAMANAGEMENT_API,
-      useFactory: (s: AppConfigService) => s.getConfig()?.dataManagementApiUrl,
+      useFactory: (s: AppConfigService) => s.getConfig()?.dataConnectorUrl,
       deps: [AppConfigService]
     },
-    {
-      provide: CONNECTOR_CATALOG_API,
-      useFactory: (s: AppConfigService) => s.getConfig()?.catalogUrl,
-      deps: [AppConfigService]
-    },
+    {provide: BACKEND_URL, useValue: 'http://20.103.180.67:8080'},
     {
       provide: 'HOME_CONNECTOR_STORAGES',
       useFactory: (s: AppConfigService) => s.getConfig()?.storages,
       deps: [AppConfigService]
     },
-    {provide: API_KEY, useFactory: (s: AppConfigService) => s.getConfig()?.apiKey, deps: [AppConfigService]},
+    {provide: API_KEY, useValue: "c0me_Closer"},
   ],
   bootstrap: [AppComponent]
 })

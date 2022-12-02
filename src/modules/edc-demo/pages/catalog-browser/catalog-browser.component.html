@@ -12,12 +12,6 @@
         </mat-card-header>
         <mat-card-content>
           <mat-list dense>
-<!--            Is currently always empty, so removed for now -->
-            <mat-list-item>
-              <mat-icon mat-list-icon>category</mat-icon>
-              <div class="asset-property-name" mat-line>Typ</div>
-              <div mat-line>{{contractOffer.asset.type}}</div>
-            </mat-list-item>
             <mat-list-item>
               <mat-icon mat-list-icon>key</mat-icon>
               <div class="asset-property-name" mat-line>Id</div>
@@ -27,6 +21,11 @@
               <mat-icon mat-list-icon>content_paste</mat-icon>
               <div class="asset-property-name" mat-line>Content-Type</div>
               <div mat-line>{{contractOffer.asset.contentType}}</div>
+            </mat-list-item>
+            <mat-list-item *ngIf="contractOffer.asset.description">
+              <mat-icon mat-list-icon>description</mat-icon>
+              <div class="asset-property-name" mat-line>Beschreibung</div>
+              <div mat-line class="break-lines">{{contractOffer.asset.description}}</div>
             </mat-list-item>
           </mat-list>
 

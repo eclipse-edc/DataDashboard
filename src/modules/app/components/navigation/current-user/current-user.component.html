@@ -4,9 +4,9 @@
        routerLink="#"
        routerLinkActive="active-link"
     >
-      <img class="image" src="/assets/theme/company-logos/{{this.currentConfig.logo}}"/>
+      <img class="image" src="{{this.currentConfig.logoUrl}}"/>
     </a>
-    <div class="name">{{this.currentConfig.name}}</div>
+    <div class="name">{{this.currentConfig.firstName}} {{this.currentConfig.lastName}}</div>
     <!--    <div class="name">{{this.curId| async}}</div>-->
   </div>
 

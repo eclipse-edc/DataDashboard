@@ -10,7 +10,7 @@
   </div>
   <mat-list dense class="catalogue-meta-data-list" fxLayout="row wrap">
     <mat-list-item>
-      <mat-icon mat-list-icon>fingerprint</mat-icon>
+      <mat-icon mat-list-icon>key</mat-icon>
       <div class="asset-property-name" mat-line>Id</div>
       <div mat-line>{{contractOffer.asset.id}}</div>
     </mat-list-item>
@@ -26,7 +26,7 @@
     </mat-list-item>
     <mat-list-item *ngIf="contractOffer.asset.contentType">
       <mat-icon mat-list-icon>content_paste</mat-icon>
-      <div class="asset-property-name" mat-line>Content-Type</div>
+      <div class="asset-property-name" mat-line>Datentyp</div>
       <div mat-line>{{contractOffer.asset.contentType}}</div>
     </mat-list-item>
 
@@ -49,18 +49,19 @@
     <mat-list-item>
       <mat-icon mat-list-icon>date_range</mat-icon>
       <div class="asset-property-name" mat-line>Zeitraum</div>
-      <div mat-line>{{contractOffer.asset.properties.temporal ?? '- -'}}</div>
+      <div mat-line>{{!!contractOffer.asset.properties.temporal ? contractOffer.asset.properties.temporal : '- -'}}</div>
     </mat-list-item>
     <mat-list-item>
       <mat-icon mat-list-icon>category</mat-icon>
       <div class="asset-property-name" mat-line>Agrovoc Kontext</div>
-      <div mat-line *ngFor="let theme of contractOffer.asset.properties.theme">{{theme}}</div>
+      <a mat-line *ngFor="let theme of contractOffer.asset.properties.theme" [href]="theme" target="_blank">{{theme}}</a>
       <div mat-line *ngIf="contractOffer.asset.properties.theme?.length === 0">- -</div>
     </mat-list-item>
     <mat-list-item>
       <mat-icon mat-list-icon>location_on</mat-icon>
       <div class="asset-property-name" mat-line>Ort</div>
-      <div mat-line>{{contractOffer.asset.properties?.spatial ?? '- -'}}</div>
+      <a mat-line *ngIf="contractOffer.asset.properties?.spatial as spatial" [href]="spatial">{{spatial}}</a>
+      <div mat-line *ngIf="!contractOffer.asset.properties?.spatial">- -</div>
     </mat-list-item>
   </mat-list>
   <mat-divider class="divider"></mat-divider>
@@ -72,7 +73,7 @@
     <mat-list-item>
       <mat-icon mat-list-icon>policy</mat-icon>
       <div mat-line class="asset-property-name">Policy ID</div>
-      <div mat-line>{{contractOffer.asset.policyId}}</div>
+      <div mat-line>{{contractOffer.id}}</div>
     </mat-list-item>
     <mat-list-item>
       <mat-icon mat-list-icon>ads_click</mat-icon>
@@ -96,7 +97,7 @@
     <div fxFlex fxLayoutAlign="end">
       <button (click)="onNegotiateClicked(contractOffer)"
               *ngIf="!runningNegotiation"
-              [disabled]="!contractOffer.asset.isAsync || isBusy(contractOffer) || isNegotiated(contractOffer)"
+              [disabled]="!contractOffer.asset.isAsync || isBusy(contractOffer) || isNegotiated(contractOffer) || isMyAsset"
               color="primary" mat-raised-button
               class="footer-button"
       >

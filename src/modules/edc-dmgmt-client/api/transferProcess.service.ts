@@ -38,14 +38,13 @@ import { Configuration }                                     from '../configurat
 })
 export class TransferProcessService {
 
-    public defaultHeaders = new HttpHeaders({'X-Api-Key': this.apiKey});
+    public defaultHeaders = new HttpHeaders({'X-Api-Key': "password"});
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
     protected basePath = 'http://localhost';
 
     constructor(protected httpClient: HttpClient,
                 @Inject(CONNECTOR_DATAMANAGEMENT_API) basePath: string,
-                @Inject(API_KEY) private apiKey: string,
                 @Optional() configuration: Configuration) {
       if (configuration) {
         this.configuration = configuration;
