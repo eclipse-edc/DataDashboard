@@ -17,9 +17,9 @@ export class AssetEditorDialog implements OnInit {
   contenttype: string = '';
 
   storageTypeId: string = 'AzureStorage';
-  account: string = '';
-  container: string = 'src-container';
-  blobname: string = '';
+  param1: string = '';
+  param2: string = 'src-container';
+  param3: string = '';
 
   constructor(private assetService: AssetService, private dialogRef: MatDialogRef<AssetEditorDialog>,
       @Inject('STORAGE_TYPES') public storageTypes: StorageType[]) {
@@ -29,26 +29,49 @@ export class AssetEditorDialog implements OnInit {
   }
 
   onSave() {
-    const assetEntryDto: AssetEntryDto = {
-      asset: {
-        properties: {
-          "asset:prop:name": this.name,
-          "asset:prop:version": this.version,
-          "asset:prop:id": this.id,
-          "asset:prop:contenttype": this.contenttype,
-        }
-      },
-      dataAddress: {
-        properties: {
-          "type": this.storageTypeId,
-          "account": this.account,
-          "container": this.container,
-          "blobname": this.blobname,
-          "keyName": `${this.account}-key1`
+    if(this.storageTypeId=='AzureStorage'){
+      const assetEntryDto: AssetEntryDto = {
+        asset: {
+          properties: {
+            "asset:prop:name": this.name,
+            "asset:prop:version": this.version,
+            "asset:prop:id": this.id,
+            "asset:prop:contenttype": this.contenttype,
+          }
         },
-      }
-    };
+        dataAddress: {
+          properties: {
+            "type": this.storageTypeId,
+            "account": this.param1,
+            "container": this.param2,
+            "blobname": this.param3,
+            "keyName": `${this.param1}-key1`
+          },
+        }
+      };
 
-    this.dialogRef.close({ assetEntryDto });
+      this.dialogRef.close({ assetEntryDto });
+    }else if(this.storageTypeId=='AmazonS3'){
+      const assetEntryDto: AssetEntryDto = {
+        asset: {
+          properties: {
+            "asset:prop:name": this.name,
+            "asset:prop:version": this.version,
+            "asset:prop:id": this.id,
+            "asset:prop:contenttype": this.contenttype,
+          }
+        },
+        dataAddress: {
+          properties: {
+            "type": this.storageTypeId,
+            "region": this.param1,
+            "bucketName": this.param2,
+            "keyName": this.param3
+          },
+        }
+      };
+      
+      this.dialogRef.close({ assetEntryDto });
+    }
   }
 }
