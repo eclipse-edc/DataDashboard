@@ -15,8 +15,11 @@ import {NavigationComponent} from './components/navigation/navigation.component'
 import {EdcDemoModule} from '../edc-demo/edc-demo.module';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {AppConfigService} from "./app-config.service";
-import {API_KEY, CONNECTOR_CATALOG_API, CONNECTOR_DATAMANAGEMENT_API} from "../edc-dmgmt-client";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {API_KEY, CONNECTOR_MANAGEMENT_API} from "./variables";
+import {Configuration} from "../mgmt-api-client";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {EdcApiKeyInterceptor} from "./edc.apikey.interceptor";
 
 
 @NgModule({
@@ -46,13 +49,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     },
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     {
-      provide: CONNECTOR_DATAMANAGEMENT_API,
+      provide: CONNECTOR_MANAGEMENT_API,
       useFactory: (s: AppConfigService) => s.getConfig()?.dataManagementApiUrl,
-      deps: [AppConfigService]
-    },
-    {
-      provide: CONNECTOR_CATALOG_API,
-      useFactory: (s: AppConfigService) => s.getConfig()?.catalogUrl,
       deps: [AppConfigService]
     },
     {
@@ -65,6 +63,24 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
       provide: 'STORAGE_TYPES',
       useFactory: () => [{id: "AzureStorage", name: "AzureStorage"}, {id: "AmazonS3", name: "AmazonS3"}],
     },
+    {
+      provide: Configuration,
+      useFactory: (s: AppConfigService) => {
+        return new Configuration({
+          basePath: s.getConfig()?.dataManagementApiUrl
+        });
+      },
+      deps: [AppConfigService]
+    },
+    {
+      provide: HTTP_INTERCEPTORS, multi: true, useFactory: () => {
+        let i = new EdcApiKeyInterceptor();
+        // TODO: read this from app.config.json??
+        i.apiKey = "ApiKeyDefaultValue"
+        return i;
+      }, deps: [AppConfigService]
+    }
+
   ],
   bootstrap: [AppComponent]
 })
