@@ -16,10 +16,11 @@ import {EdcDemoModule} from '../edc-demo/edc-demo.module';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {AppConfigService} from "./app-config.service";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import {API_KEY, CONNECTOR_MANAGEMENT_API} from "./variables";
+import { CONNECTOR_MANAGEMENT_API} from "./variables";
 import {Configuration} from "../mgmt-api-client";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {EdcApiKeyInterceptor} from "./edc.apikey.interceptor";
+import {environment} from "../../environments/environment";
 
 
 @NgModule({
@@ -58,7 +59,6 @@ import {EdcApiKeyInterceptor} from "./edc.apikey.interceptor";
       useFactory: (s: AppConfigService) => s.getConfig()?.storageAccount,
       deps: [AppConfigService]
     },
-    {provide: API_KEY, useFactory: (s: AppConfigService) => s.getConfig()?.apiKey, deps: [AppConfigService]},
     {
       provide: 'STORAGE_TYPES',
       useFactory: () => [{id: "AzureStorage", name: "AzureStorage"}, {id: "AmazonS3", name: "AmazonS3"}],
@@ -76,7 +76,7 @@ import {EdcApiKeyInterceptor} from "./edc.apikey.interceptor";
       provide: HTTP_INTERCEPTORS, multi: true, useFactory: () => {
         let i = new EdcApiKeyInterceptor();
         // TODO: read this from app.config.json??
-        i.apiKey = "ApiKeyDefaultValue"
+        i.apiKey = environment.apiKey
         return i;
       }, deps: [AppConfigService]
     }

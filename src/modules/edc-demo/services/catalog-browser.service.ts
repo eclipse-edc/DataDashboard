@@ -12,7 +12,7 @@ import {
   TransferProcessService,
   TransferRequestDto,
 } from "../../mgmt-api-client";
-import {API_KEY, CONNECTOR_MANAGEMENT_API} from "../../app/variables";
+import {CONNECTOR_MANAGEMENT_API} from "../../app/variables";
 
 
 /**
@@ -26,7 +26,6 @@ export class CatalogBrowserService {
   constructor(private httpClient: HttpClient,
               private transferProcessService: TransferProcessService,
               private negotiationService: ContractNegotiationService,
-              @Inject(API_KEY) private apiKey: string,
               @Inject(CONNECTOR_MANAGEMENT_API) private managementApiUrl: string) {
   }
 
@@ -62,8 +61,7 @@ export class CatalogBrowserService {
                   params?: HttpParams | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>; })
     : Observable<T> {
     const url = `${urlPath}`;
-    let headers = new HttpHeaders({'X-Api-Key': this.apiKey});
-    headers = headers.set("Content-type", "application/json")
+    let headers = new HttpHeaders({"Content-type": "application/json"});
     return this.catchError(this.httpClient.post<T>(url, "{}", {headers, params}), url, 'POST');
   }
 
