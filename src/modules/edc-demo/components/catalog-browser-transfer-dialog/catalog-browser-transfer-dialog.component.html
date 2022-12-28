@@ -1,14 +1,40 @@
 <mat-dialog-content *ngIf="storageTypes as storageTypes">
+  <div>
+    <mat-form-field class="form-field" color="accent" id="form-field-destination">
+      <mat-label>Destination</mat-label>
+      <mat-select [(ngModel)]="storageTypeId">
+        <mat-option *ngFor="let storageType of storageTypes" [value]="storageType.id">
+          {{storageType.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-  <mat-form-field class="form-field" color="accent" id="form-field-destination">
-    <mat-label>Destination</mat-label>
-    <mat-select [(ngModel)]="storageTypeId">
-      <mat-option *ngFor="let storageType of storageTypes" [value]="storageType.id">
-        {{storageType.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div>
+    <mat-form-field class="form-field" color="accent" id="form-field-region" *ngIf="storageTypeId==='AmazonS3'">
+      <mat-label>Region</mat-label>
+      <mat-select [(ngModel)]="param1">
+        <mat-option *ngFor="let awsRegion of awsRegions" [value]="awsRegion">
+          {{awsRegion}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
+  <div>
+    <mat-form-field class="form-field" color="accent" id="form-field-param1" *ngIf="storageTypeId==='AzureStorage'">
+      <mat-label >Account</mat-label>
+      <input [(ngModel)]="param1" matInput>
+    </mat-form-field>
+  </div>
 
+  <div>
+    <mat-form-field class="form-field" color="accent" id="form-field-param2">
+      <mat-label *ngIf="storageTypeId==='AmazonS3'">Bucket</mat-label>
+      <mat-label *ngIf="storageTypeId==='AzureStorage'">Container Name</mat-label>
+      <input [(ngModel)]="param2" matInput>
+    </mat-form-field>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>

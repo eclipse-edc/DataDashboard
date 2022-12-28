@@ -11,9 +11,12 @@ import {StorageType} from '../../models/storage-type';
 export class CatalogBrowserTransferDialog implements OnInit {
 
   name: string = '';
-  storageTypeId = '';
+  storageTypeId: string = 'AzureStorage';
+  param1: string = '';
+  param2: string = '';
 
   constructor(@Inject('STORAGE_TYPES') public storageTypes: StorageType[],
+              @Inject('AWS_REGIONS') public awsRegions: string[],
               private dialogRef: MatDialogRef<CatalogBrowserTransferDialog>,
               @Inject(MAT_DIALOG_DATA) contractDefinition?: any) {
   }
@@ -23,7 +26,7 @@ export class CatalogBrowserTransferDialog implements OnInit {
 
 
   onTransfer() {
-    this.dialogRef.close({storageTypeId: this.storageTypeId});
+    this.dialogRef.close({storageTypeId: this.storageTypeId, param1 : this.param1, param2 : this.param2});
   }
 
 }

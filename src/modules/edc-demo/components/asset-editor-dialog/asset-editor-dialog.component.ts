@@ -22,7 +22,7 @@ export class AssetEditorDialog implements OnInit {
   param3: string = '';
 
   constructor(private assetService: AssetService, private dialogRef: MatDialogRef<AssetEditorDialog>,
-      @Inject('STORAGE_TYPES') public storageTypes: StorageType[]) {
+    @Inject('AWS_REGIONS') public awsRegions: string[], @Inject('STORAGE_TYPES') public storageTypes: StorageType[]) {
   }
 
   ngOnInit(): void {

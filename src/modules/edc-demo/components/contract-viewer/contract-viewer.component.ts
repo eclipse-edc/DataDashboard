@@ -77,7 +77,9 @@ export class ContractViewerComponent implements OnInit {
     dialogRef.afterClosed().pipe(first()).subscribe(result => {
       const storageTypeId: string = result.storageTypeId;
       if (storageTypeId == 'AmazonS3') {
-        this.createTransferRequests3(contract, storageTypeId)
+        const region: string = result.param1;
+        const bucket: string = result.param2;
+        this.createTransferRequests3(contract, storageTypeId, region, bucket)
         .pipe(switchMap(trq => this.transferService.initiateTransfer(trq)))
         .subscribe(transferId => {
           this.startPolling(transferId, contract.id!);
@@ -126,28 +128,52 @@ export class ContractViewerComponent implements OnInit {
 
   }
 
-  private createTransferRequests3(contract: ContractAgreementDto, storageTypeId: string): Observable<TransferRequestDto> {
-    return this.getOfferedAssetForId(contract.assetId!).pipe(map(offeredAsset => {
-      return {
-        assetId: offeredAsset.id,
-        contractId: contract.id,
-        connectorId: "consumer", //doesn't matter, but cannot be null
-        dataDestination: {
-          properties: {
-            type: "AmazonS3",
-            region: "eu-west-1",
+  private createTransferRequests3(contract: ContractAgreementDto, storageTypeId: string, region: string, bucket: string): Observable<TransferRequestDto> {
+    
+    if (region && bucket) {
+      return this.getOfferedAssetForId(contract.assetId!).pipe(map(offeredAsset => {
+        return {
+          assetId: offeredAsset.id,
+          contractId: contract.id,
+          connectorId: "consumer", //doesn't matter, but cannot be null
+          dataDestination: {
+            properties: {
+              type: "AmazonS3",
+              region: region,
+              bucketName: bucket,
+            },
+            type: "AmazonS3"
           },
-          type: "AmazonS3"
-        },
-        managedResources: true,
-        transferType: {
-          isFinite: true
-        }, //must be there, otherwise NPE on backend
-        connectorAddress: offeredAsset.originator,
-        protocol: 'ids-multipart'
-      };
-    }));
-  
+          managedResources: true,
+          transferType: {
+            isFinite: true
+          }, //must be there, otherwise NPE on backend
+          connectorAddress: offeredAsset.originator,
+          protocol: 'ids-multipart'
+        };
+      }));
+    }else{
+      return this.getOfferedAssetForId(contract.assetId!).pipe(map(offeredAsset => {
+        return {
+          assetId: offeredAsset.id,
+          contractId: contract.id,
+          connectorId: "consumer", //doesn't matter, but cannot be null
+          dataDestination: {
+            properties: {
+              type: "AmazonS3",
+              region: "eu-west-1",
+            },
+            type: "AmazonS3"
+          },
+          managedResources: true,
+          transferType: {
+            isFinite: true
+          }, //must be there, otherwise NPE on backend
+          connectorAddress: offeredAsset.originator,
+          protocol: 'ids-multipart'
+        };
+      }));
+    }
 
 }
 
