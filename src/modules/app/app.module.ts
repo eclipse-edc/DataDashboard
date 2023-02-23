@@ -15,8 +15,12 @@ import {NavigationComponent} from './components/navigation/navigation.component'
 import {EdcDemoModule} from '../edc-demo/edc-demo.module';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {AppConfigService} from "./app-config.service";
-import {API_KEY, CONNECTOR_CATALOG_API, CONNECTOR_DATAMANAGEMENT_API} from "../edc-dmgmt-client";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "./variables";
+import {Configuration} from "../mgmt-api-client";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {EdcApiKeyInterceptor} from "./edc.apikey.interceptor";
+import {environment} from "../../environments/environment";
 
 
 @NgModule({
@@ -46,13 +50,13 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     },
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     {
-      provide: CONNECTOR_DATAMANAGEMENT_API,
+      provide: CONNECTOR_MANAGEMENT_API,
       useFactory: (s: AppConfigService) => s.getConfig()?.dataManagementApiUrl,
       deps: [AppConfigService]
     },
     {
       provide: CONNECTOR_CATALOG_API,
-      useFactory: (s: AppConfigService) => s.getConfig()?.catalogUrl,
+      useFactory:  (s: AppConfigService) => s.getConfig()?.catalogUrl,
       deps: [AppConfigService]
     },
     {
@@ -60,7 +64,6 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
       useFactory: (s: AppConfigService) => s.getConfig()?.storageAccount,
       deps: [AppConfigService]
     },
-    {provide: API_KEY, useFactory: (s: AppConfigService) => s.getConfig()?.apiKey, deps: [AppConfigService]},
     {
       provide: 'STORAGE_TYPES',
       useFactory: () => [{id: "AzureStorage", name: "AzureStorage"}, {id: "AmazonS3", name: "AmazonS3"}],
@@ -69,6 +72,24 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
       provide: 'AWS_REGIONS',
       useFactory: () => ["us-east-1", "us-east-2", "us-west-1", "us-west-2", "ap-south-1", "ap-northeast-3", "ap-northeast-2", "ap-southeast-1", "ap-southeast-2", "ap-northeast-1", "ca-central-1", "eu-central-1", "eu-west-1", "eu-west-2", "eu-west-3", "eu-north-1", "sa-east-1", "af-south-1", "ap-east-1", "ap-south-2", "ap-southeast-3", "eu-south-1", "eu-south-2", "eu-central-2", "me-south-1", "me-central-1"],
     },
+    {
+      provide: Configuration,
+      useFactory: (s: AppConfigService) => {
+        return new Configuration({
+          basePath: s.getConfig()?.dataManagementApiUrl
+        });
+      },
+      deps: [AppConfigService]
+    },
+    {
+      provide: HTTP_INTERCEPTORS, multi: true, useFactory: () => {
+        let i = new EdcApiKeyInterceptor();
+        // TODO: read this from app.config.json??
+        i.apiKey = environment.apiKey
+        return i;
+      }, deps: [AppConfigService]
+    }
+
   ],
   bootstrap: [AppComponent]
 })
