@@ -74,11 +74,10 @@ export class ContractViewerComponent implements OnInit {
 
     dialogRef.afterClosed().pipe(first()).subscribe(result => {
       const storageTypeId: string = result.storageTypeId;
-      if (storageTypeId !== 'AzureStorage') {
-        this.notificationService.showError("Only storage type \"AzureStorage\" is implemented currently!")
-        return;
-      }
-      this.createTransferRequest(contract, storageTypeId)
+      if (storageTypeId == 'AmazonS3') {
+        const region: string = result.param1;
+        const bucket: string = result.param2;
+        this.createTransferRequests3(contract, storageTypeId, region, bucket)
         .pipe(switchMap(trq => this.transferService.initiateTransfer(trq)))
         .subscribe(transferId => {
           this.startPolling(transferId, contract.id!);
@@ -86,6 +85,17 @@ export class ContractViewerComponent implements OnInit {
           console.error(error);
           this.notificationService.showError("Error initiating transfer");
         });
+      }else if (storageTypeId == 'AzureStorage'){
+        this.createTransferRequest(contract, storageTypeId)
+        .pipe(switchMap(trq => this.transferService.initiateTransfer(trq)))
+        .subscribe(transferId => {
+          this.startPolling(transferId, contract.id!);
+        }, error => {
+          console.error(error);
+          this.notificationService.showError("Error initiating transfer");
+        });
+      }
+      
     });
   }
 
@@ -94,26 +104,76 @@ export class ContractViewerComponent implements OnInit {
   }
 
   private createTransferRequest(contract: ContractAgreementDto, storageTypeId: string): Observable<TransferRequestDto> {
-    return this.getOfferedAssetForId(contract.assetId!).pipe(map(offeredAsset => {
-      return {
-        assetId: offeredAsset.id,
-        contractId: contract.id,
-        connectorId: "consumer", //doesn't matter, but cannot be null
-        dataDestination: {
-          properties: {
-            "type": storageTypeId,
-            account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
-            // container: omitted, so it will be auto-assigned by the EDC runtime
-          }
-        },
-        managedResources: true,
-        transferType: {isFinite: true}, //must be there, otherwise NPE on backend
-        connectorAddress: offeredAsset.originator,
-        protocol: 'ids-multipart'
-      };
-    }));
+      return this.getOfferedAssetForId(contract.assetId!).pipe(map(offeredAsset => {
+        return {
+          assetId: offeredAsset.id,
+          contractId: contract.id,
+          connectorId: "consumer", //doesn't matter, but cannot be null
+          dataDestination: {
+            properties: {
+              "type": storageTypeId,
+              account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
+              // container: omitted, so it will be auto-assigned by the EDC runtime
+            }
+          },
+          managedResources: true,
+          transferType: {isFinite: true}, //must be there, otherwise NPE on backend
+          connectorAddress: offeredAsset.originator,
+          protocol: 'ids-multipart'
+        };
+      }));
+    
 
   }
+
+  private createTransferRequests3(contract: ContractAgreementDto, storageTypeId: string, region: string, bucket: string): Observable<TransferRequestDto> {
+    
+    if (region && bucket) {
+      return this.getOfferedAssetForId(contract.assetId!).pipe(map(offeredAsset => {
+        return {
+          assetId: offeredAsset.id,
+          contractId: contract.id,
+          connectorId: "consumer", //doesn't matter, but cannot be null
+          dataDestination: {
+            properties: {
+              type: "AmazonS3",
+              region: region,
+              bucketName: bucket,
+            },
+            type: "AmazonS3"
+          },
+          managedResources: true,
+          transferType: {
+            isFinite: true
+          }, //must be there, otherwise NPE on backend
+          connectorAddress: offeredAsset.originator,
+          protocol: 'ids-multipart'
+        };
+      }));
+    }else{
+      return this.getOfferedAssetForId(contract.assetId!).pipe(map(offeredAsset => {
+        return {
+          assetId: offeredAsset.id,
+          contractId: contract.id,
+          connectorId: "consumer", //doesn't matter, but cannot be null
+          dataDestination: {
+            properties: {
+              type: "AmazonS3",
+              region: "eu-west-1",
+            },
+            type: "AmazonS3"
+          },
+          managedResources: true,
+          transferType: {
+            isFinite: true
+          }, //must be there, otherwise NPE on backend
+          connectorAddress: offeredAsset.originator,
+          protocol: 'ids-multipart'
+        };
+      }));
+    }
+
+}
 
   /**
    * This method is used to obtain that URL of the connector that is offering a particular asset from the catalog.
