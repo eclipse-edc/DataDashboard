@@ -17,8 +17,13 @@ export class AssetEditorDialog implements OnInit {
   contenttype: string = '';
 
   storageTypeId: string = 'AzureStorage';
+  // Azure Account or AWS Region (dependent on selected storage type)
   param1: string = '';
+
+  // Azure Container or AWS S3 Bucket (dependent on selected storage type)
   param2: string = 'src-container';
+
+  //Azure Blob Name or AWS S3 Object Key (dependent on selected storage type)
   param3: string = '';
 
   constructor(private assetService: AssetService, private dialogRef: MatDialogRef<AssetEditorDialog>,

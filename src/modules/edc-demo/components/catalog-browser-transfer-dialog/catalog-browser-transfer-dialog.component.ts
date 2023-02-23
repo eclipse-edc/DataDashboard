@@ -12,7 +12,11 @@ export class CatalogBrowserTransferDialog implements OnInit {
 
   name: string = '';
   storageTypeId: string = 'AzureStorage';
+
+  // Azure Account or AWS Region (dependent on selected storage type)
   param1: string = '';
+  
+  // Azure Container or AWS S3 Bucket (dependent on selected storage type)
   param2: string = '';
 
   constructor(@Inject('STORAGE_TYPES') public storageTypes: StorageType[],
