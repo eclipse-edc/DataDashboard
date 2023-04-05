@@ -52,13 +52,13 @@ import {CurrentUserComponent} from './components/navigation/current-user/current
       useFactory: (s: AppConfigService) => s.getConfig()?.dataConnectorUrl,
       deps: [AppConfigService]
     },
-    {provide: BACKEND_URL, useValue: 'http://20.103.180.67:8080'},
+    {provide: BACKEND_URL, useValue: 'https://marktplatz-backend.platform.agri-gaia.com'},
     {
       provide: 'HOME_CONNECTOR_STORAGES',
       useFactory: (s: AppConfigService) => s.getConfig()?.storages,
       deps: [AppConfigService]
     },
-    {provide: API_KEY, useValue: "c0me_Closer"},
+    {provide: API_KEY, useValue: "0bc87c93-3a83-4a1c-9080-ac61e0f7e75c"},
   ],
   bootstrap: [AppComponent]
 })
