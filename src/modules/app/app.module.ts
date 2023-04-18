@@ -26,13 +26,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: 'https://account.platform.agri-gaia.com',
         realm: 'agri-gaia-platform',
-        clientId: 'ag-test-marktplatz',
+        clientId: 'ag-test-marktplatz'
       },
       initOptions: {
-        onLoad: 'check-sso',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html'
+        onLoad: 'login-required',
       }
+      
     });
 }
 
