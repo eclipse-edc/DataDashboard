@@ -6,6 +6,7 @@ import {CatalogBrowserService} from "../../../services/catalog-browser.service";
 import {NegotiationResult} from "../../../models/negotiation-result";
 import {NotificationService} from "../../../services/notification.service";
 import {Router} from "@angular/router";
+import {AppConfigService} from "../../../../app/app-config.service";
 
 @Component({
   selector: 'app-asset-details',
@@ -18,12 +19,19 @@ export class AssetDetailsComponent implements OnInit {
   finishedNegotiation?: ContractNegotiationDto;
   private pollingHandleNegotiation?: any;
 
+  isMyAsset: boolean = false;
+
   constructor(@Inject(MAT_DIALOG_DATA) public contractOffer: ContractOffer,
               private apiService: CatalogBrowserService,
               private notificationService: NotificationService,
               private router: Router,
-              public dialog: MatDialogRef<AssetDetailsComponent>) {
-
+              public dialog: MatDialogRef<AssetDetailsComponent>,
+              private appConfig: AppConfigService) {
+    console.log(appConfig.getConfig()?.url)
+    console.log(contractOffer.asset.originator)
+    if (appConfig.getConfig()?.url === contractOffer.asset.originator) {
+      this.isMyAsset = true;
+    }
   }
 
   ngOnInit(): void {

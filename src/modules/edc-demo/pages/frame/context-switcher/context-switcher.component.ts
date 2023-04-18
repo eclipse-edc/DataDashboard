@@ -21,7 +21,7 @@ export class ContextSwitcherComponent implements OnInit {
     this.configService.getAllConfigs().subscribe(configs => {
       this.appConfigs = configs;
       this.currentConfig = this.configService.getConfig()!;
-      this.platformForm.patchValue(this.currentConfig!.id);
+      this.platformForm.patchValue(this.currentConfig!.name);
       this.platformForm.valueChanges.subscribe((v: string) => {
         this.configService.setCurId(v)
       })

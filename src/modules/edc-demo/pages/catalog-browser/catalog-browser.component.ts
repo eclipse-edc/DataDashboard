@@ -8,6 +8,7 @@ import {ContractOffer} from "../../models/contract-offer";
 import {NegotiationResult} from "../../models/negotiation-result";
 import {Title} from "@angular/platform-browser";
 import {AssetDetailsComponent} from "./asset-details/asset-details.component";
+import {SearchParams} from "../frame/app-toolbar/app-toolbar.component";
 
 interface RunningTransferProcess {
   processId: string;
@@ -26,7 +27,7 @@ export class CatalogBrowserComponent implements OnInit {
   runningTransferProcesses: RunningTransferProcess[] = [];
   runningNegotiations: Map<string, NegotiationResult> = new Map<string, NegotiationResult>(); // contractOfferId, NegotiationResult
   finishedNegotiations: Map<string, ContractNegotiationDto> = new Map<string, ContractNegotiationDto>(); // contractOfferId, contractAgreementId
-  private fetch$ = new BehaviorSubject<string>('');
+  private fetch$ = new BehaviorSubject<SearchParams>({label: '', location: ''});
 
   constructor(private apiService: CatalogBrowserService,
               public dialog: MatDialog,
@@ -41,7 +42,7 @@ export class CatalogBrowserComponent implements OnInit {
       .subscribe((searchTerm) => this.filteredContractOffers$ = this.apiService.getFilteredContractOffers(searchTerm));
   }
 
-  onSearch(event: string) {
+  onSearch(event: SearchParams) {
     this.fetch$.next(event);
   }
 

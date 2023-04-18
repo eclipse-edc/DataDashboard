@@ -6,14 +6,16 @@ import {Asset} from '../models/asset';
 import {ContractOffer} from '../models/contract-offer';
 import {
   API_KEY,
-  CONNECTOR_CATALOG_API,
+  BACKEND_URL,
   ContractNegotiationDto,
-  ContractNegotiationService,
+  ContractNegotiationService, ContractOfferDescription,
   NegotiationInitiateRequestDto,
   TransferProcessDto,
   TransferProcessService,
   TransferRequestDto
 } from "../../edc-dmgmt-client";
+import {SearchParams} from "../pages/frame/app-toolbar/app-toolbar.component";
+import {AppConfigService} from "../../app/app-config.service";
 
 type Operand = 'label' | 'startDate' | 'endDate' | 'location';
 type Operator = 'equals' | 'contains' | '>' | '<' | '>=' | '<=' | '=' | 'and' | 'or';
@@ -35,12 +37,15 @@ export class CatalogBrowserService {
   constructor(private httpClient: HttpClient,
               private transferProcessService: TransferProcessService,
               private negotiationService: ContractNegotiationService,
+              private config: AppConfigService,
               @Inject(API_KEY) private apiKey: string,
-              @Inject(CONNECTOR_CATALOG_API) private catalogApiUrl: string) {
+              @Inject(BACKEND_URL) private catalogApiUrl: string) {
   }
 
+  private cataloguePath = `${this.catalogApiUrl}/contractoffers`;
+
   getContractOffers(): Observable<ContractOffer[]> {
-    return this.post<ContractOffer[]>(this.catalogApiUrl)
+    return this.post<ContractOffer[]>(this.cataloguePath)
       .pipe(map(contractOffers => contractOffers.map(contractOffer => {
         contractOffer.asset = new Asset(contractOffer.asset.properties)
         return contractOffer;
@@ -48,22 +53,48 @@ export class CatalogBrowserService {
   }
 
 
-  getFilteredContractOffers(searchTerm: string): Observable<ContractOffer[]> {
-    if (!searchTerm) {
+  getFilteredContractOffers(searchTerm: SearchParams): Observable<ContractOffer[]> {
+    let operandLeft: SearchBody = {
+      operandLeft: 'label',
+      operator: 'contains',
+      operandRight: searchTerm.label
+    };
+    let operandRight: SearchBody = {
+      operandLeft: 'location',
+      operator: 'contains',
+      operandRight: searchTerm.location
+    };
+    let searchBody = this.appendSearchBodyTo(operandLeft)
+    searchBody = this.appendSearchBodyTo(operandRight, searchBody)
+
+    if (!searchBody) {
       return this.getContractOffers();
     }
 
-    let searchBody: SearchBody = {
-      operandLeft: 'label',
-      operator: 'contains',
-      operandRight: searchTerm
-    }
-
-    return this.postWithBody<ContractOffer[]>(this.catalogApiUrl, {where: searchBody})
+    return this.postWithBody<ContractOffer[]>(this.cataloguePath, {where: searchBody})
       .pipe(map(contractOffers => contractOffers.map(contractOffer => {
         contractOffer.asset = new Asset(contractOffer.asset.properties)
         return contractOffer;
       })));
+  }
+
+  private appendSearchBodyTo(toAppend: SearchBody, baseBody?: SearchBody): SearchBody | undefined {
+    if (!baseBody) {
+      if (toAppend.operandRight === "" || toAppend.operandRight === null || toAppend.operandRight === undefined) {
+        return undefined;
+      }
+      return toAppend;
+    }
+
+    if (toAppend.operandRight === "" || toAppend.operandRight === null || toAppend.operandRight === undefined) {
+      return baseBody;
+    }
+
+    return {
+      operandLeft: baseBody,
+      operator: "and",
+      operandRight: toAppend
+    };
   }
 
   initiateTransfer(transferRequest: TransferRequestDto): Observable<string> {
@@ -91,7 +122,7 @@ export class CatalogBrowserService {
     : Observable<T> {
     const url = `${urlPath}`;
     let headers = new HttpHeaders({'X-Api-Key': this.apiKey});
-    return this.catchError(this.httpClient.post<T>(url, {headers, params}), url, 'POST');
+    return this.catchError(this.httpClient.post<T>(url, {}, {headers, params}), url, 'POST');
   }
 
   private postWithBody<T>(urlPath: string,
@@ -100,7 +131,7 @@ export class CatalogBrowserService {
     : Observable<T> {
     const url = `${urlPath}`;
     let headers = new HttpHeaders({'X-Api-Key': this.apiKey});
-    return this.catchError(this.httpClient.post<T>(url, {...body, headers, params}), url, 'POST');
+    return this.catchError(this.httpClient.post<T>(url, body, {headers, params}), url, 'POST');
   }
 
   private catchError<T>(observable: Observable<T>, url: string, method: string): Observable<T> {

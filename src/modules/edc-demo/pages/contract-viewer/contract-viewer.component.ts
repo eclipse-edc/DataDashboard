@@ -155,7 +155,7 @@ export class ContractViewerComponent implements OnInit {
           tap(tpDto => {
             // remove from in-progress
             this.runningTransfers = this.runningTransfers.filter(rtp => rtp.processId !== tpDto.id)
-            this.notificationService.showInfo(`Transfer [${tpDto.id}] complete!`, "Show me!", () => {
+            this.notificationService.showInfo(`Der Transfer [${tpDto.id}] wurde abgeschlossen!`, "Zu meinen Downloads", () => {
               this.router.navigate(['/transfer-history'])
             })
           }),
