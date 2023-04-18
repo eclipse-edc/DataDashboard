@@ -26,12 +26,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: 'https://account.platform.agri-gaia.com',
         realm: 'agri-gaia-platform',
-        clientId: 'ag-test-platform-ui',
+        clientId: 'ag-test-marktplatz',
       },
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html'
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        pkceMethod: 'S256'
       }
     });
 }
@@ -59,6 +59,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
   providers: [
     {
       provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    },
+    {
+      provide: APP_INITIALIZER,
       useFactory: (configService: AppConfigService) => () => configService.loadConfig(),
       deps: [AppConfigService],
       multi: true
@@ -76,12 +82,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
       deps: [AppConfigService]
     },
     {provide: API_KEY, useValue: "0bc87c93-3a83-4a1c-9080-ac61e0f7e75c"},
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService]
-    },
   ],
   bootstrap: [AppComponent]
 })
