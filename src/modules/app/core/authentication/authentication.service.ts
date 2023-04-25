@@ -9,7 +9,7 @@ import { UserProfile } from '../../shared/user-profile';
 export class AuthenticationService {
   public isAuthenticated$: Observable<boolean>;
   public userProfile$: Observable<UserProfile | null>;
-
+  
   constructor(private keycloakService: KeycloakService) {
     this.isAuthenticated$ = fromPromise(this.keycloakService.isLoggedIn());
 
