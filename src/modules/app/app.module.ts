@@ -17,7 +17,6 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {AppConfigService} from "./app-config.service";
 import {API_KEY, BACKEND_URL, CONNECTOR_DATAMANAGEMENT_API,} from "../edc-dmgmt-client";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import {CurrentUserComponent} from './components/navigation/current-user/current-user.component';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 
@@ -54,7 +53,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
   declarations: [
     AppComponent,
     NavigationComponent,
-    CurrentUserComponent,
   ],
   providers: [
     {
@@ -62,12 +60,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService]
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (configService: AppConfigService) => () => configService.loadConfig(),
-      deps: [AppConfigService, KeycloakService],
-      multi: true
     },
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     {

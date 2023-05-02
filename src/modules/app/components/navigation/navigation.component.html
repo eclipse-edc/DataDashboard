@@ -5,7 +5,6 @@
         <img class="logo" src="/assets/theme/logo-agrigaia.svg"/>
       </div>
     </mat-toolbar>
-    <app-current-user></app-current-user>
     <mat-nav-list class="links">
       <a [routerLink]="[route.path]" *ngFor="let route of routes" routerLinkActive="router-link-active">
         <mat-list-item *ngIf="route.component">
