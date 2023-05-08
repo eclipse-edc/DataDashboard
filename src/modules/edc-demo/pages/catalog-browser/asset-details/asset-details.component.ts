@@ -6,6 +6,7 @@ import {CatalogBrowserService} from "../../../services/catalog-browser.service";
 import {NegotiationResult} from "../../../models/negotiation-result";
 import {NotificationService} from "../../../services/notification.service";
 import {Router} from "@angular/router";
+import { AuthenticationService } from 'src/modules/app/core/authentication/authentication.service';
 @Component({
   selector: 'app-asset-details',
   templateUrl: './asset-details.component.html',
@@ -16,6 +17,7 @@ export class AssetDetailsComponent implements OnInit {
   runningNegotiation?: NegotiationResult;
   finishedNegotiation?: ContractNegotiationDto;
   private pollingHandleNegotiation?: any;
+  public url: string = "";
 
   isMyAsset: boolean = false;
 
@@ -23,8 +25,19 @@ export class AssetDetailsComponent implements OnInit {
               private apiService: CatalogBrowserService,
               private notificationService: NotificationService,
               private router: Router,
+              private authenticationService: AuthenticationService,
               public dialog: MatDialogRef<AssetDetailsComponent>,
               ) {
+
+    this.authenticationService.userProfile$.subscribe(userProfile => {
+      if (!userProfile) {
+        throw new Error('UserProfile is null or undefined.');
+      }
+      this.url = userProfile!.url;
+      if (this.url[0] === contractOffer.asset.originator) {	
+        this.isMyAsset = true;	
+      }
+      })
   }
 
   ngOnInit(): void {

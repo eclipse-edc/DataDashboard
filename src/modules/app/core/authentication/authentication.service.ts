@@ -7,6 +7,7 @@ import { KeycloakProfile } from 'keycloak-js';
 interface CustomKeycloakProfile extends KeycloakProfile {
   attributes?: {
     dataConnectorUrl?: string;
+    url?: string;
   };
 }
 
@@ -31,7 +32,8 @@ export class AuthenticationService {
                   lastName: keycloakProfile.lastName,
                   email: keycloakProfile.email,
                   username: keycloakProfile.username,
-                  dataConnectorUrl: keycloakProfile.attributes?.dataConnectorUrl
+                  dataConnectorUrl: keycloakProfile.attributes?.dataConnectorUrl,
+                  url: keycloakProfile.attributes?.url
                 };
               })
             )
