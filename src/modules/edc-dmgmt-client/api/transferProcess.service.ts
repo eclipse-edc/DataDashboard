@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
         }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom }                                        from 'rxjs';
 
 // @ts-ignore
 import { TransferId } from '../model/transferId';
@@ -28,8 +28,8 @@ import { TransferRequestDto } from '../model/transferRequestDto';
 import { TransferState } from '../model/transferState';
 
 // @ts-ignore
-import {API_KEY, BASE_PATH, COLLECTION_FORMATS, CONNECTOR_DATAMANAGEMENT_API} from '../variables';
 import { Configuration }                                     from '../configuration';
+import { AuthenticationService } from 'src/modules/app/core/authentication/authentication.service';
 
 
 
@@ -38,21 +38,24 @@ import { Configuration }                                     from '../configurat
 })
 export class TransferProcessService {
 
-    public defaultHeaders = new HttpHeaders({'X-Api-Key': "password"});
+    public defaultHeaders = new HttpHeaders({'X-Api-Key': 'password'});
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
-    protected basePath = 'http://localhost';
+    public dataConnectorUrl: string = "";
 
     constructor(protected httpClient: HttpClient,
-                @Inject(CONNECTOR_DATAMANAGEMENT_API) basePath: string,
+                private authenticationService: AuthenticationService,
                 @Optional() configuration: Configuration) {
       if (configuration) {
         this.configuration = configuration;
       }
-      if (typeof this.configuration.basePath !== 'string') {
-        this.configuration.basePath = basePath;
-      }
       this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+      this.authenticationService.userProfile$.subscribe(userProfile => {
+        if (!userProfile) {
+          throw new Error('UserProfile is null or undefined.');
+        }
+        this.dataConnectorUrl = userProfile!.dataConnectorUrl;
+        })
     }
 
 
@@ -137,7 +140,7 @@ export class TransferProcessService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/transferprocess/${encodeURIComponent(String(id))}/cancel`,
+        return this.httpClient.post<any>(`${this.dataConnectorUrl}/transferprocess/${encodeURIComponent(String(id))}/cancel`,
             null,
             {
                 context: localVarHttpContext,
@@ -195,7 +198,7 @@ export class TransferProcessService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/transferprocess/${encodeURIComponent(String(id))}/deprovision`,
+        return this.httpClient.post<any>(`${this.dataConnectorUrl}/transferprocess/${encodeURIComponent(String(id))}/deprovision`,
             null,
             {
                 context: localVarHttpContext,
@@ -276,7 +279,7 @@ export class TransferProcessService {
             }
         }
 
-        return this.httpClient.get<Array<TransferProcessDto>>(`${this.configuration.basePath}/transferprocess`,
+        return this.httpClient.get<Array<TransferProcessDto>>(`${this.dataConnectorUrl}/transferprocess`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -334,7 +337,7 @@ export class TransferProcessService {
             }
         }
 
-        return this.httpClient.get<TransferProcessDto>(`${this.configuration.basePath}/transferprocess/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<TransferProcessDto>(`${this.dataConnectorUrl}/transferprocess/${encodeURIComponent(String(id))}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -391,7 +394,7 @@ export class TransferProcessService {
             }
         }
 
-        return this.httpClient.get<TransferState>(`${this.configuration.basePath}/transferprocess/${encodeURIComponent(String(id))}/state`,
+        return this.httpClient.get<TransferState>(`${this.dataConnectorUrl}/transferprocess/${encodeURIComponent(String(id))}/state`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -456,7 +459,7 @@ export class TransferProcessService {
 
         console.log(this.configuration.basePath)
 
-        return this.httpClient.post<TransferId>(`${this.configuration.basePath}/transferprocess`,
+        return this.httpClient.post<TransferId>(`${this.dataConnectorUrl}/transferprocess`,
             transferRequestDto,
             {
                 context: localVarHttpContext,

@@ -37,31 +37,11 @@ export class AppConfigService {
   allConfigs: BehaviorSubject<AppConfig[]> = new BehaviorSubject<AppConfig[]>([]);
   private dataDashboardId = "data-dashboard-id.v2";
 
-  constructor(private http: HttpClient,
-              @Inject(BACKEND_URL) private catalogApiUrl: string,
-              @Inject(API_KEY) private apiKey: string,
-              private authenticationService: AuthenticationService
+  constructor(
   ) {
   }
 
-  loadConfig(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.authenticationService.userProfile$.subscribe(userProfile => {
-        if (!userProfile) {
-          throw new Error('UserProfile is null or undefined.');
-        }
-        const firstName = userProfile!.firstName;
-        console.log(`First name: ${firstName}`);
-  
-        const headers = new HttpHeaders({'X-Api-Key': this.apiKey, "Origin": "agrigaia"});
-  
-        firstValueFrom(this.http.get<AppConfig>(`${this.catalogApiUrl}/dataspaceparticipants/{firstName}`, {headers}))
-          .then(data => {
-            this.config = data;
-            resolve();
-          });
-      });
-    });
+  loadConfig(): void {
   }
 
   getConfig(): AppConfig | undefined {

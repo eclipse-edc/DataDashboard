@@ -16,14 +16,14 @@ import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
         }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom }                                        from 'rxjs';
 
 // @ts-ignore
 import { ContractAgreementDto } from '../model/contractAgreementDto';
 
 // @ts-ignore
-import {API_KEY, BASE_PATH, COLLECTION_FORMATS, CONNECTOR_DATAMANAGEMENT_API} from '../variables';
 import { Configuration }                                     from '../configuration';
+import { AuthenticationService } from 'src/modules/app/core/authentication/authentication.service';
 
 
 
@@ -35,17 +35,22 @@ export class ContractAgreementService {
     public defaultHeaders = new HttpHeaders({'X-Api-Key': "password"});
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
+    public dataConnectorUrl: string = "";
 
   constructor(protected httpClient: HttpClient,
-              @Inject(CONNECTOR_DATAMANAGEMENT_API) basePath: string,
+              private authenticationService: AuthenticationService,
               @Optional() configuration: Configuration) {
     if (configuration) {
       this.configuration = configuration;
     }
-    if (typeof this.configuration.basePath !== 'string') {
-      this.configuration.basePath = basePath;
-    }
+
     this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
+    this.authenticationService.userProfile$.subscribe(userProfile => {
+        if (!userProfile) {
+          throw new Error('UserProfile is null or undefined.');
+        }
+        this.dataConnectorUrl = userProfile!.dataConnectorUrl;
+        })
   }
 
 
@@ -153,7 +158,7 @@ export class ContractAgreementService {
             }
         }
 
-        return this.httpClient.get<Array<ContractAgreementDto>>(`${this.configuration.basePath}/contractagreements`,
+        return this.httpClient.get<Array<ContractAgreementDto>>(`${this.dataConnectorUrl}/contractagreements`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -211,7 +216,7 @@ export class ContractAgreementService {
             }
         }
 
-        return this.httpClient.get<ContractAgreementDto>(`${this.configuration.basePath}/contractagreements/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<ContractAgreementDto>(`${this.dataConnectorUrl}/contractagreements/${encodeURIComponent(String(id))}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

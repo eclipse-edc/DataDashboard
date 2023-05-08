@@ -31,7 +31,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
       },
       initOptions: {
         onLoad: 'login-required',
-      }
+      },
+      enableBearerInterceptor: true,
+      bearerPrefix: 'Bearer',
+      bearerExcludedUrls: [
+          '/assets',
+          '/clients/public']
     });
 }
 

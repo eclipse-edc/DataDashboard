@@ -1,18 +1,31 @@
-<mat-dialog-content *ngIf="storageTypes as storageTypes">
+<!-- <mat-dialog-content *ngIf="storageTypes as storageTypes"> -->
+<mat-dialog-content>
 
-  <mat-form-field class="form-field" color="accent" id="form-field-destination">
+<!--  <mat-form-field class="form-field" color="accent" id="form-field-destination">
     <mat-label>Zielspeicher</mat-label>
     <mat-select [(ngModel)]="storageType" (valueChange)="changed($event)">
       <mat-option *ngFor="let storageType of storageTypes" [value]="storageType">
         {{storageType.label}}
       </mat-option>
     </mat-select>
-  </mat-form-field>
+  </mat-form-field>-->
 
   <form [formGroup]="form">
-    <mat-form-field *ngFor="let textField of this.storageType?.additionalTextFields">
+<!--    <mat-form-field *ngFor="let textField of this.storageType?.additionalTextFields">
       <mat-label>{{textField.label}}</mat-label>
       <input matInput [formControlName]="textField.id">
+    </mat-form-field>-->
+    <mat-form-field>
+      <mat-label>Bucketname</mat-label>
+      <input matInput formControlName="bucketName">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Speicherort</mat-label>
+      <input matInput formControlName="endpoint">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Asset-Name</mat-label>
+      <input matInput formControlName="assetName">
     </mat-form-field>
   </form>
 </mat-dialog-content>

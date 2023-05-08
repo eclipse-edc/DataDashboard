@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders, HttpParams,
          HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
         }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
-import { Observable }                                        from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom }                                        from 'rxjs';
 
 // @ts-ignore
 import { ContractNegotiationDto } from '../model/contractNegotiationDto';
@@ -28,7 +28,6 @@ import { NegotiationInitiateRequestDto } from '../model/negotiationInitiateReque
 import { NegotiationState } from '../model/negotiationState';
 
 // @ts-ignore
-import {API_KEY, BACKEND_URL, BASE_PATH, COLLECTION_FORMATS, CONNECTOR_DATAMANAGEMENT_API} from '../variables';
 import { Configuration }                                     from '../configuration';
 import { AuthenticationService } from 'src/modules/app/core/authentication/authentication.service';
 
@@ -39,31 +38,25 @@ import { AuthenticationService } from 'src/modules/app/core/authentication/authe
 })
 export class ContractNegotiationService {
 
-    public defaultHeaders = new HttpHeaders({'X-Api-Key': this.apiKey});
+    public defaultHeaders = new HttpHeaders({'X-Api-Key': 'password'});
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
-    protected basePath = 'http://localhost';
-    public userName: string = "";
+    public dataConnectorUrl: string = "";
 
     constructor(protected httpClient: HttpClient,
-                @Inject(CONNECTOR_DATAMANAGEMENT_API) basePath: string,
                 private authenticationService: AuthenticationService,
-                @Inject(API_KEY) private apiKey: string,
-                @Inject(BACKEND_URL) private catalogApiUrl: string,
                 @Optional() configuration: Configuration)
                  {
       if (configuration) {
         this.configuration = configuration;
       }
-      if (typeof this.configuration.basePath !== 'string') {
-        this.configuration.basePath = basePath;
-      }
       this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
       this.authenticationService.userProfile$.subscribe(userProfile => {
-        if (userProfile === null) throw Error('userProfile was null.');
-        this.userName = userProfile.username;
-      });
-
+        if (!userProfile) {
+          throw new Error('UserProfile is null or undefined.');
+        }
+        this.dataConnectorUrl = userProfile!.dataConnectorUrl;
+    })
     }
 
 
@@ -148,7 +141,7 @@ export class ContractNegotiationService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/contractnegotiations/${encodeURIComponent(String(id))}/cancel`,
+        return this.httpClient.post<any>(`${this.dataConnectorUrl}/contractnegotiations/${encodeURIComponent(String(id))}/cancel`,
             null,
             {
                 context: localVarHttpContext,
@@ -206,7 +199,7 @@ export class ContractNegotiationService {
             }
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/contractnegotiations/${encodeURIComponent(String(id))}/decline`,
+        return this.httpClient.post<any>(`${this.dataConnectorUrl}/contractnegotiations/${encodeURIComponent(String(id))}/decline`,
             null,
             {
                 context: localVarHttpContext,
@@ -264,7 +257,7 @@ export class ContractNegotiationService {
             }
         }
 
-        return this.httpClient.get<ContractNegotiationDto>(`${this.configuration.basePath}/contractnegotiations/${encodeURIComponent(String(id))}/agreement`,
+        return this.httpClient.get<ContractNegotiationDto>(`${this.dataConnectorUrl}/contractnegotiations/${encodeURIComponent(String(id))}/agreement`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -321,7 +314,7 @@ export class ContractNegotiationService {
             }
         }
 
-        return this.httpClient.get<ContractNegotiationDto>(`https://marktplatz-backend.platform.agri-gaia.com/dataspaceparticipants/${this.userName}/negotiations/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<ContractNegotiationDto>(`${this.dataConnectorUrl}/contractnegotiations/${encodeURIComponent(String(id))}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -378,7 +371,7 @@ export class ContractNegotiationService {
             }
         }
 
-        return this.httpClient.get<NegotiationState>(`${this.configuration.basePath}/contractnegotiations/${encodeURIComponent(String(id))}/state`,
+        return this.httpClient.get<NegotiationState>(`${this.dataConnectorUrl}/contractnegotiations/${encodeURIComponent(String(id))}/state`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -458,7 +451,7 @@ export class ContractNegotiationService {
             }
         }
 
-        return this.httpClient.get<Array<ContractNegotiationDto>>(`${this.configuration.basePath}/contractnegotiations`,
+        return this.httpClient.get<Array<ContractNegotiationDto>>(`${this.dataConnectorUrl}/contractnegotiations`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -523,7 +516,7 @@ export class ContractNegotiationService {
         }
 
 
-        return this.httpClient.post<NegotiationId>(`https://marktplatz-backend.platform.agri-gaia.com/dataspaceparticipants/${this.userName}/negotiations`,
+        return this.httpClient.post<NegotiationId>(`${this.dataConnectorUrl}/contractnegotiations`,
             negotiationInitiateRequestDto,
             {
                 context: localVarHttpContext,

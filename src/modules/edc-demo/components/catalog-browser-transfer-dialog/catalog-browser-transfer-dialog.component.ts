@@ -12,7 +12,11 @@ import {FormBuilder, Validators} from "@angular/forms";
 export class CatalogBrowserTransferDialog {
 
   storageType?: StorageOption;
-  form = this.fb.group({});
+  form = this.fb.group({
+    bucketName: [,[Validators.required]],
+    endpoint: [,[Validators.required]],
+    assetName: [,[Validators.required]]
+  });
 
   constructor(@Inject('HOME_CONNECTOR_STORAGES') public storageTypes: StorageOption[],
               private dialogRef: MatDialogRef<CatalogBrowserTransferDialog>,

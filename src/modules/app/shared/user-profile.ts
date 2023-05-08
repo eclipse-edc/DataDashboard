@@ -3,4 +3,5 @@ export interface UserProfile {
   lastName: string;
   email: string;
   username: string;
+  dataConnectorUrl: string;
 }

@@ -6,8 +6,6 @@ import {CatalogBrowserService} from "../../../services/catalog-browser.service";
 import {NegotiationResult} from "../../../models/negotiation-result";
 import {NotificationService} from "../../../services/notification.service";
 import {Router} from "@angular/router";
-import {AppConfigService} from "../../../../app/app-config.service";
-
 @Component({
   selector: 'app-asset-details',
   templateUrl: './asset-details.component.html',
@@ -26,12 +24,7 @@ export class AssetDetailsComponent implements OnInit {
               private notificationService: NotificationService,
               private router: Router,
               public dialog: MatDialogRef<AssetDetailsComponent>,
-              private appConfig: AppConfigService) {
-    console.log(appConfig.getConfig()?.url)
-    console.log(contractOffer.asset.originator)
-    if (appConfig.getConfig()?.url === contractOffer.asset.originator) {
-      this.isMyAsset = true;
-    }
+              ) {
   }
 
   ngOnInit(): void {
