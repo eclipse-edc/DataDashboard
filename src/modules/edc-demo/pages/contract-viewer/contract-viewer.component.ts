@@ -1,15 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {
-  API_KEY,
   AssetService,
-  BACKEND_URL,
   ContractAgreementDto,
   ContractAgreementService,
   TransferId,
   TransferProcessService,
   TransferRequestDto
 } from "../../../edc-dmgmt-client";
-import {BehaviorSubject, firstValueFrom, from, Observable, of} from "rxjs";
+import { from, Observable, of} from "rxjs";
 import {Asset} from "../../models/asset";
 import {filter, first, map, switchMap, tap} from "rxjs/operators";
 import {NotificationService} from "../../services/notification.service";
@@ -22,9 +20,7 @@ import {Router} from "@angular/router";
 import {TransferProcessStates} from "../../models/transfer-process-states";
 import {Title} from "@angular/platform-browser";
 import { AuthenticationService } from 'src/modules/app/core/authentication/authentication.service';
-import { Inject }                      from '@angular/core';
-import { AppConfig, StorageOption } from 'src/modules/app/app-config.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 interface RunningTransferProcess {
   processId: string;
@@ -44,7 +40,6 @@ export class ContractViewerComponent implements OnInit {
   private pollingHandleTransfer?: any;
   public userName: string = "";
   public dataConnectorUrl: string = "";
-  storageProperties: StorageOption[] = [];
 
   constructor(private contractAgreementService: ContractAgreementService,
               private assetService: AssetService,

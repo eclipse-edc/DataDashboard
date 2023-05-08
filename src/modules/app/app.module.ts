@@ -14,8 +14,7 @@ import {MatListModule} from '@angular/material/list';
 import {NavigationComponent} from './components/navigation/navigation.component';
 import {EdcDemoModule} from '../edc-demo/edc-demo.module';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
-import {AppConfigService} from "./app-config.service";
-import {API_KEY, BACKEND_URL, CONNECTOR_DATAMANAGEMENT_API,} from "../edc-dmgmt-client";
+import {API_KEY, BACKEND_URL} from "../edc-dmgmt-client";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
@@ -67,17 +66,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
       deps: [KeycloakService]
     },
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
-    {
-      provide: CONNECTOR_DATAMANAGEMENT_API,
-      useFactory: (s: AppConfigService) => s.getConfig()?.dataConnectorUrl,
-      deps: [AppConfigService]
-    },
+    
     {provide: BACKEND_URL, useValue: 'https://marktplatz-backend.platform.agri-gaia.com'},
-    {
-      provide: 'HOME_CONNECTOR_STORAGES',
-      useFactory: (s: AppConfigService) => s.getConfig()?.storages,
-      deps: [AppConfigService]
-    },
+
     {provide: API_KEY, useValue: "0bc87c93-3a83-4a1c-9080-ac61e0f7e75c"},
   ],
   bootstrap: [AppComponent]

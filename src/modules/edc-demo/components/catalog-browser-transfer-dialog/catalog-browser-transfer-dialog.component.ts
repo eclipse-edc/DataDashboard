@@ -1,8 +1,21 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {StorageOption} from "../../../app/app-config.service";
+//import {StorageOption} from "../../../app/app-config.service";
 import {FormBuilder, Validators} from "@angular/forms";
+//import { AdditionalTextField } from 'src/modules/app/app-config.service';
 
+interface StorageOption {
+  "label": string;
+  "type": string;
+  "region": string;
+
+  "additionalTextFields": AdditionalTextField[],
+}
+
+interface AdditionalTextField {
+  "id": string;
+  "label": string;
+}
 
 @Component({
   selector: 'edc-demo-catalog-browser-transfer-dialog',

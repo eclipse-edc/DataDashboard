@@ -15,7 +15,6 @@ import {
   TransferRequestDto
 } from "../../edc-dmgmt-client";
 import {SearchParams} from "../pages/frame/app-toolbar/app-toolbar.component";
-import {AppConfigService} from "../../app/app-config.service";
 
 type Operand = 'label' | 'startDate' | 'endDate' | 'location';
 type Operator = 'equals' | 'contains' | '>' | '<' | '>=' | '<=' | '=' | 'and' | 'or';
@@ -37,7 +36,6 @@ export class CatalogBrowserService {
   constructor(private httpClient: HttpClient,
               private transferProcessService: TransferProcessService,
               private negotiationService: ContractNegotiationService,
-              private config: AppConfigService,
               @Inject(API_KEY) private apiKey: string,
               @Inject(BACKEND_URL) private catalogApiUrl: string) {
   }

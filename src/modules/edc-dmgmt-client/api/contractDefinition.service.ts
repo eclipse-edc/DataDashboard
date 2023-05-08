@@ -22,7 +22,7 @@ import { Observable }                                        from 'rxjs';
 import { ContractDefinitionDto } from '../model/contractDefinitionDto';
 
 // @ts-ignore
-import {API_KEY, BASE_PATH, COLLECTION_FORMATS, CONNECTOR_DATAMANAGEMENT_API} from '../variables';
+import {API_KEY} from '../variables';
 import { Configuration }                                     from '../configuration';
 
 
@@ -35,17 +35,12 @@ export class ContractDefinitionService {
   public defaultHeaders = new HttpHeaders({'X-Api-Key': this.apiKey});
   public configuration = new Configuration();
   public encoder: HttpParameterCodec;
-  protected basePath = 'http://localhost';
 
   constructor(protected httpClient: HttpClient,
-              @Inject(CONNECTOR_DATAMANAGEMENT_API) basePath: string,
               @Inject(API_KEY) private apiKey: string,
               @Optional() configuration: Configuration) {
     if (configuration) {
       this.configuration = configuration;
-    }
-    if (typeof this.configuration.basePath !== 'string') {
-      this.configuration.basePath = basePath;
     }
     this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
   }
