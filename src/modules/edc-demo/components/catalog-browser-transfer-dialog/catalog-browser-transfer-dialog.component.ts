@@ -1,8 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-//import {StorageOption} from "../../../app/app-config.service";
 import {FormBuilder, Validators} from "@angular/forms";
-//import { AdditionalTextField } from 'src/modules/app/app-config.service';
 
 interface StorageOption {
   "label": string;
@@ -31,7 +29,7 @@ export class CatalogBrowserTransferDialog {
     assetName: [,[Validators.required]]
   });
 
-  constructor(@Inject('HOME_CONNECTOR_STORAGES') public storageTypes: StorageOption[],
+  constructor(
               private dialogRef: MatDialogRef<CatalogBrowserTransferDialog>,
               private fb: FormBuilder,
               @Inject(MAT_DIALOG_DATA) contractDefinition?: any) {
