@@ -5,4 +5,5 @@ export interface UserProfile {
   username: string;
   dataConnectorUrl: string;
   url: string;
+  storageEndpoint: string;
 }

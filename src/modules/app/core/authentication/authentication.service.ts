@@ -11,6 +11,7 @@ interface DecodedToken {
   username: string;
   dataConnectorUrl: string;
   url: string;
+  storageEndpoint: string;
 }
 
 @Injectable({
@@ -36,7 +37,8 @@ export class AuthenticationService {
                   email: decodedToken.email,
                   username: decodedToken.username,
                   dataConnectorUrl: decodedToken.dataConnectorUrl,
-                  url: decodedToken.url
+                  url: decodedToken.url,
+                  storageEndpoint: decodedToken.storageEndpoint,
                 };
               })
             )

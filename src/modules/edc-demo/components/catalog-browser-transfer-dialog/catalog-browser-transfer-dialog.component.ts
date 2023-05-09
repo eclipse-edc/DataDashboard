@@ -1,6 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, Validators} from "@angular/forms";
+import { AuthenticationService } from 'src/modules/app/core/authentication/authentication.service';
 
 interface StorageOption {
   "label": string;
@@ -21,18 +22,27 @@ interface AdditionalTextField {
   styleUrls: ['./catalog-browser-transfer-dialog.component.scss']
 })
 export class CatalogBrowserTransferDialog {
-
+  endpoint = '';
   storageType?: StorageOption;
   form = this.fb.group({
     bucketName: [,[Validators.required]],
-    endpoint: [,[Validators.required]],
+    endpoint: [this.endpoint,[Validators.required]],
     assetName: [,[Validators.required]]
   });
 
   constructor(
               private dialogRef: MatDialogRef<CatalogBrowserTransferDialog>,
               private fb: FormBuilder,
+              private authenticationService: AuthenticationService,
               @Inject(MAT_DIALOG_DATA) contractDefinition?: any) {
+
+    this.authenticationService.userProfile$.subscribe(userProfile => {
+      if (!userProfile) {
+        throw new Error('UserProfile is null or undefined.');
+      }
+      this.endpoint = userProfile!.storageEndpoint;
+      this.form.get('endpoint')?.setValue(this.endpoint);
+      })
   }
 
   onTransfer() {
