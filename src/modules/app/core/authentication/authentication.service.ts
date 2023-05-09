@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { from as fromPromise, Observable, of, switchMap } from 'rxjs';
 import { UserProfile } from '../../shared/user-profile';
-import { KeycloakProfile } from 'keycloak-js';
+import jwt_decode from 'jwt-decode';
 
-interface CustomKeycloakProfile extends KeycloakProfile {
-  attributes?: {
-    dataConnectorUrl?: string;
-    url?: string;
-  };
+interface DecodedToken {
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  dataConnectorUrl: string;
+  url: string;
 }
 
 @Injectable({
@@ -26,14 +28,15 @@ export class AuthenticationService {
       switchMap(isAuthenticated =>
         isAuthenticated
           ? fromPromise(
-              this.keycloakService.loadUserProfile().then((keycloakProfile: CustomKeycloakProfile) => {
+              this.keycloakService.getToken().then(token => {
+                const decodedToken = jwt_decode<DecodedToken>(token);
                 return <UserProfile>{
-                  firstName: keycloakProfile.firstName,
-                  lastName: keycloakProfile.lastName,
-                  email: keycloakProfile.email,
-                  username: keycloakProfile.username,
-                  dataConnectorUrl: keycloakProfile.attributes?.dataConnectorUrl,
-                  url: keycloakProfile.attributes?.url
+                  firstName: decodedToken.firstName,
+                  lastName: decodedToken.lastName,
+                  email: decodedToken.email,
+                  username: decodedToken.username,
+                  dataConnectorUrl: decodedToken.dataConnectorUrl,
+                  url: decodedToken.url
                 };
               })
             )

@@ -34,7 +34,7 @@ export class AssetDetailsComponent implements OnInit {
         throw new Error('UserProfile is null or undefined.');
       }
       this.url = userProfile!.url;
-      if (this.url[0] === contractOffer.asset.originator) {	
+      if (this.url === contractOffer.asset.originator) {	
         this.isMyAsset = true;	
       }
       })
