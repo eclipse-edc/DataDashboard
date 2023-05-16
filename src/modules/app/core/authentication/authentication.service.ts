@@ -8,10 +8,11 @@ interface DecodedToken {
   firstName: string;
   lastName: string;
   email: string;
-  username: string;
+  preferred_username: string;
   dataConnectorUrl: string;
   url: string;
   storageEndpoint: string;
+  group: string;
 }
 
 @Injectable({
@@ -35,10 +36,11 @@ export class AuthenticationService {
                   firstName: decodedToken.firstName,
                   lastName: decodedToken.lastName,
                   email: decodedToken.email,
-                  username: decodedToken.username,
+                  username: decodedToken.preferred_username,
                   dataConnectorUrl: decodedToken.dataConnectorUrl,
                   url: decodedToken.url,
                   storageEndpoint: decodedToken.storageEndpoint,
+                  group: decodedToken.group
                 };
               })
             )

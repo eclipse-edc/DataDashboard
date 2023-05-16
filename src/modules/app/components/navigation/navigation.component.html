@@ -2,16 +2,30 @@
   <mat-sidenav class="sidenav" fixedInViewport mode="side" opened="true" disableClose>
     <mat-toolbar>
       <div class="logo-container">
-        <img class="logo" src="/assets/theme/logo-agrigaia.svg"/>
+        <img class="logo" src="/assets/theme/logo-agrigaia.svg" />
       </div>
     </mat-toolbar>
     <mat-nav-list class="links">
-      <a [routerLink]="[route.path]" *ngFor="let route of routes" routerLinkActive="router-link-active">
-        <mat-list-item *ngIf="route.component">
-          <mat-icon mat-list-icon color="primary">{{route.data?.icon}}</mat-icon>
-          <span matLine>{{route.data?.title ?? route.path}}</span>
-        </mat-list-item>
-      </a>
+      <mat-list-item fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="user-profile">
+          <!-- Group Logo -->
+          <img class="logo group-logo" [src]="getGroupLogoSource()" />
+          <!-- Group Name -->
+          <div class="group">{{ profile?.username }}</div>
+        </div>
+        <!-- Logout Button -->
+        <button mat-icon-button (click)="logout()" class="logout-button">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </mat-list-item>
+      <ng-container *ngFor="let route of routes">
+        <a [routerLink]="[route.path]" routerLinkActive="router-link-active">
+          <mat-list-item *ngIf="route.component">
+            <mat-icon mat-list-icon color="primary">{{ route.data?.icon }}</mat-icon>
+            <span matLine>{{ route.data?.title ?? route.path }}</span>
+          </mat-list-item>
+        </a>
+      </ng-container>
     </mat-nav-list>
     <div style="flex-grow: 100"></div>
   </mat-sidenav>

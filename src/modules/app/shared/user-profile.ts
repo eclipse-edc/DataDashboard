@@ -6,4 +6,5 @@ export interface UserProfile {
   dataConnectorUrl: string;
   url: string;
   storageEndpoint: string;
+  group: string;
 }

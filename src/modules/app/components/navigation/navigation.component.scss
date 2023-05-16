@@ -1,4 +1,47 @@
 @import "../../../styles/variables";
+@import '../../../styles/mixins';
+
+@mixin menu-item-font() {
+  @include calluna-font();
+  color: $primary;
+  font-size: 12px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+}
+
+.group-logo {
+  height: 15px; 
+  margin-right: 5px; 
+}
+
+.group {
+  @include menu-item-font();
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-left: 16px;
+  padding-right: 2px;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+
+.logout-button {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-right: 16px; 
+  margin-left: auto
+}
+
+.username {
+  font-size: 12px;
+  font-weight: normal;
+  font-family: unset;
+  color: $gray;
+}
 
 .sidenav-container {
   height: 100%;
