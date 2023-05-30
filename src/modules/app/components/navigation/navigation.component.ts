@@ -23,16 +23,15 @@ export class NavigationComponent implements OnInit {
 
   @Output() public toggleMenuEvent = new EventEmitter<number>();
 
-  constructor(private authenticationService: AuthenticationService) {
-    this.authenticationService.userProfile$.subscribe(userProfile => {
-      this.profile = userProfile
-      if (!userProfile) {
-        throw new Error('UserProfile is null or undefined.');
-      }})
-  }
+  constructor(private authenticationService: AuthenticationService) {}
 
   public ngOnInit(): void {
-    this.authenticationService.userProfile$.pipe(take(1)).subscribe(profile => (this.profile = profile));
+    this.authenticationService.userProfile$.subscribe(userProfile => {
+      if (!userProfile) {
+        throw new Error('UserProfile is null or undefined.');
+      }
+      this.profile = userProfile
+      })
   }
 
   public logout(): void {
