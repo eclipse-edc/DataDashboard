@@ -27,20 +27,18 @@ export class AssetDetailsComponent implements OnInit {
               private router: Router,
               private authenticationService: AuthenticationService,
               public dialog: MatDialogRef<AssetDetailsComponent>,
-              ) {
+              ) {}
 
+  ngOnInit(): void {
     this.authenticationService.userProfile$.subscribe(userProfile => {
       if (!userProfile) {
         throw new Error('UserProfile is null or undefined.');
       }
       this.url = userProfile.url;
-      if (this.url === contractOffer.asset.originator) {	
+      if (this.url === this.contractOffer.asset.originator) {	
         this.isMyAsset = true;	
       }
       })
-  }
-
-  ngOnInit(): void {
   }
 
 
