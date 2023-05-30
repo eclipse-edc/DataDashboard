@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-context-switcher',
@@ -7,9 +6,6 @@ import {FormControl} from "@angular/forms";
   styleUrls: ['./context-switcher.component.scss']
 })
 export class ContextSwitcherComponent implements OnInit {
-
-
-  platformForm = new FormControl();
 
   constructor() {
   }
