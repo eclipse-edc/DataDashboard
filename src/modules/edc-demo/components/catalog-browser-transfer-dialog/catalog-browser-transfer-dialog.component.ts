@@ -30,7 +30,7 @@ export class CatalogBrowserTransferDialog implements OnInit {
       if (!userProfile) {
         throw new Error('UserProfile is null or undefined.');
       }
-      this.endpoint = userProfile!.storageEndpoint;
+      this.endpoint = userProfile.storageEndpoint;
       this.form.get('endpoint')?.setValue(this.endpoint);
       })
   }
