@@ -34,9 +34,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
       },
       enableBearerInterceptor: true,
       bearerPrefix: 'Bearer',
-      bearerExcludedUrls: [
-          '/assets',
-          '/clients/public']
     });
 }
 
@@ -67,8 +64,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
       deps: [KeycloakService]
     },
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
-    { provide: BACKEND_URL, useValue: process.env.BACKEND_URL || environment.backendUrl },
-    { provide: API_KEY, useValue: process.env.API_KEY || environment.backendUrlKey },
+    { provide: BACKEND_URL, useValue: environment.backendUrl },
+    { provide: API_KEY, useValue: environment.backendUrlKey },
   ],
   bootstrap: [AppComponent]
 })
