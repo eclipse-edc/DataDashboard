@@ -3,18 +3,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, Validators} from "@angular/forms";
 import { AuthenticationService } from 'src/modules/app/core/authentication/authentication.service';
 
-interface StorageOption {
-  "label": string;
-  "type": string;
-  "region": string;
-
-  "additionalTextFields": AdditionalTextField[],
-}
-
-interface AdditionalTextField {
-  "id": string;
-  "label": string;
-}
 
 @Component({
   selector: 'edc-demo-catalog-browser-transfer-dialog',
@@ -23,7 +11,6 @@ interface AdditionalTextField {
 })
 export class CatalogBrowserTransferDialog {
   endpoint = '';
-  storageType?: StorageOption;
   form = this.fb.group({
     bucketName: [,[Validators.required]],
     endpoint: [this.endpoint,[Validators.required]],
@@ -50,7 +37,6 @@ export class CatalogBrowserTransferDialog {
       return;
     }
     let dialogResult = {
-      ...this.storageType,
       ...this.form.value
     };
     delete dialogResult.additionalTextFields;
@@ -59,10 +45,4 @@ export class CatalogBrowserTransferDialog {
 
   }
 
-  changed(storageOption: StorageOption) {
-    this.form = this.fb.group({});
-    storageOption.additionalTextFields.forEach(field => {
-      this.form.addControl(field.id, this.fb.control("", [Validators.required]))
-    })
-  }
 }
