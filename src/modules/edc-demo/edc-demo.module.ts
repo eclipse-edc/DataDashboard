@@ -34,7 +34,6 @@ import {ConfirmationDialogComponent} from './components/confirmation-dialog/conf
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {AppToolbarComponent} from "./pages/frame/app-toolbar/app-toolbar.component";
 import {AssetDetailsComponent} from './pages/catalog-browser/asset-details/asset-details.component';
-import {ContextSwitcherComponent} from "./pages/frame/context-switcher/context-switcher.component";
 
 @NgModule({
   imports: [
@@ -74,7 +73,6 @@ import {ContextSwitcherComponent} from "./pages/frame/context-switcher/context-s
     ConfirmationDialogComponent,
     AppToolbarComponent,
     AssetDetailsComponent,
-    ContextSwitcherComponent
   ],
   exports: [
     CatalogBrowserComponent,
