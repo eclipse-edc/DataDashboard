@@ -45,15 +45,16 @@ export class NavigationComponent implements OnInit {
   }
   
   getGroupLogoSource(): string {
+    let logoDir = "/assets/theme/company-logos/"
     switch (this.profile?.group) {
       case Group.LMIS:
-        return '/assets/theme/company-logos/lmis.svg';
+        return logoDir + "lmis.svg"
       case Group.HSOS:
-        return '/assets/theme/company-logos/hsos.svg';
+        return logoDir + "hsos.svg"
       case Group.AgBRAIN:
-        return '/assets/theme/company-logos/agbrain.svg';
+        return logoDir + "agbrain.svg"
       default:
-        return '/assets/theme/company-logos/default-logo.svg';
+        throw new Error("Could not determine groupLogoPath.");
     }
   }
 
