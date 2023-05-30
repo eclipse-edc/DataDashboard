@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, Validators} from "@angular/forms";
 import { AuthenticationService } from 'src/modules/app/core/authentication/authentication.service';
@@ -9,7 +9,7 @@ import { AuthenticationService } from 'src/modules/app/core/authentication/authe
   templateUrl: './catalog-browser-transfer-dialog.component.html',
   styleUrls: ['./catalog-browser-transfer-dialog.component.scss']
 })
-export class CatalogBrowserTransferDialog {
+export class CatalogBrowserTransferDialog implements OnInit {
   endpoint = '';
   form = this.fb.group({
     bucketName: [,[Validators.required]],
@@ -23,6 +23,9 @@ export class CatalogBrowserTransferDialog {
               private authenticationService: AuthenticationService,
               @Inject(MAT_DIALOG_DATA) contractDefinition?: any) {
 
+  }
+
+  public ngOnInit(): void {
     this.authenticationService.userProfile$.subscribe(userProfile => {
       if (!userProfile) {
         throw new Error('UserProfile is null or undefined.');
