@@ -70,7 +70,7 @@ export class ContractViewerComponent implements OnInit {
         if (!userProfile) {
           throw new Error('UserProfile is null or undefined.');
         }
-        this.dataConnectorUrl = userProfile!.dataConnectorUrl;
+        this.dataConnectorUrl = userProfile.dataConnectorUrl;
         })
   }
 
