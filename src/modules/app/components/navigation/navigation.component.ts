@@ -40,11 +40,11 @@ export class NavigationComponent implements OnInit {
 
   getGroupLogoSource(): string {
     if (this.profile?.group === 'LMIS') {
-      return '/assets/theme/company-logos/lmis-ag-logo-ohne-slogan-default.svg';
+      return '/assets/theme/company-logos/lmis.svg';
     } else if (this.profile?.group === 'HSOS') {
-      return '/assets/theme/company-logos/lmis-ag-logos-forschungspartner-hochschule-osnabrueck-default.svg';
+      return '/assets/theme/company-logos/hsos.svg';
     } else if (this.profile?.group === 'AgBRAIN') {
-      return '/assets/theme/company-logos/lmis-ag-logos-forschungspartner-agbrain-default.svg';
+      return '/assets/theme/company-logos/agbrain.svg';
     } else {
       return '/assets/theme/company-logos/default-logo.svg';
     }

@@ -25,7 +25,7 @@ export class AuthenticationService {
                   firstName: userProfile.firstName,
                   lastName: userProfile.lastName,
                   email: userProfile.email,
-                  username: userProfile.username,
+                  preferred_username: userProfile.preferred_username,
                   dataConnectorUrl: userProfile.dataConnectorUrl,
                   url: userProfile.url,
                   storageEndpoint: userProfile.storageEndpoint,
