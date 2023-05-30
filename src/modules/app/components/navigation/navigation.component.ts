@@ -4,6 +4,12 @@ import { routes } from '../../app-routing.module';
 import { UserProfile } from '../../shared/user-profile';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 
+enum Group {
+  LMIS = 'LMIS',
+  HSOS = 'HSOS',
+  AgBRAIN = 'AgBRAIN'
+}
+
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -37,17 +43,18 @@ export class NavigationComponent implements OnInit {
     this.isMenuOpen = !this.isMenuOpen;
     this.toggleMenuEvent.emit(this.isMenuOpen ? 295 : 75);
   }
-
+  
   getGroupLogoSource(): string {
-    if (this.profile?.group === 'LMIS') {
-      return '/assets/theme/company-logos/lmis.svg';
-    } else if (this.profile?.group === 'HSOS') {
-      return '/assets/theme/company-logos/hsos.svg';
-    } else if (this.profile?.group === 'AgBRAIN') {
-      return '/assets/theme/company-logos/agbrain.svg';
-    } else {
-      return '/assets/theme/company-logos/default-logo.svg';
+    switch (this.profile?.group) {
+      case Group.LMIS:
+        return '/assets/theme/company-logos/lmis.svg';
+      case Group.HSOS:
+        return '/assets/theme/company-logos/hsos.svg';
+      case Group.AgBRAIN:
+        return '/assets/theme/company-logos/agbrain.svg';
+      default:
+        return '/assets/theme/company-logos/default-logo.svg';
     }
   }
-  
+
 }
