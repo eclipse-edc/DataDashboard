@@ -4,17 +4,6 @@ import { from as fromPromise, Observable, of, switchMap } from 'rxjs';
 import { UserProfile } from '../../shared/user-profile';
 import jwt_decode from 'jwt-decode';
 
-interface DecodedToken {
-  firstName: string;
-  lastName: string;
-  email: string;
-  preferred_username: string;
-  dataConnectorUrl: string;
-  url: string;
-  storageEndpoint: string;
-  group: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -31,16 +20,16 @@ export class AuthenticationService {
         isAuthenticated
           ? fromPromise(
               this.keycloakService.getToken().then(token => {
-                const decodedToken = jwt_decode<DecodedToken>(token);
+                const userProfile = jwt_decode<UserProfile>(token);
                 return <UserProfile>{
-                  firstName: decodedToken.firstName,
-                  lastName: decodedToken.lastName,
-                  email: decodedToken.email,
-                  username: decodedToken.preferred_username,
-                  dataConnectorUrl: decodedToken.dataConnectorUrl,
-                  url: decodedToken.url,
-                  storageEndpoint: decodedToken.storageEndpoint,
-                  group: decodedToken.group
+                  firstName: userProfile.firstName,
+                  lastName: userProfile.lastName,
+                  email: userProfile.email,
+                  username: userProfile.username,
+                  dataConnectorUrl: userProfile.dataConnectorUrl,
+                  url: userProfile.url,
+                  storageEndpoint: userProfile.storageEndpoint,
+                  group: userProfile.group
                 };
               })
             )
