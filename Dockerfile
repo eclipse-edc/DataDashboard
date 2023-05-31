@@ -4,7 +4,7 @@ FROM node:lts as build
 WORKDIR /app
 COPY ./ /app/
 RUN npm install
-RUN npm run build
+RUN npm run build --deployment
 
 # Stage 2: Serve app with nginx
 FROM nginx:latest
