@@ -17,7 +17,7 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {API_KEY, BACKEND_URL} from "../edc-dmgmt-client";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import { environment } from "src/environments/environment"
+import { environment } from "src/environments/environment.deployment"
 
 
 
@@ -64,8 +64,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
       deps: [KeycloakService]
     },
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
-    {provide: BACKEND_URL, useValue: 'https://marktplatz-backend.platform.agri-gaia.com'},
-    {provide: API_KEY, useValue: '0bc87c93-3a83-4a1c-9080-ac61e0f7e75c'},
+    {provide: BACKEND_URL, useValue: environment.envVar.BACKEND_URL},
+    {provide: API_KEY, useValue: environment.envVar.API_KEY},
   ],
   bootstrap: [AppComponent]
 })
