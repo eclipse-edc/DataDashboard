@@ -9,7 +9,7 @@ import {
   sampleTime,
 } from 'rxjs';
 import {map} from 'rxjs/operators';
-import {AssetDetailDialogData} from '../../../../component-library/catalog/asset-detail-dialog/asset-detail-dialog-data';
+import {AssetDetailDialogDataService} from '../../../../component-library/catalog/asset-detail-dialog/asset-detail-dialog-data.service';
 import {AssetDetailDialogResult} from '../../../../component-library/catalog/asset-detail-dialog/asset-detail-dialog-result';
 import {AssetDetailDialogComponent} from '../../../../component-library/catalog/asset-detail-dialog/asset-detail-dialog.component';
 import {value$} from '../../../../core/utils/form-group-utils';
@@ -29,6 +29,7 @@ export class CatalogBrowserPageComponent implements OnInit, OnDestroy {
   private fetch$ = new BehaviorSubject(null);
 
   constructor(
+    private assetDetailDialogDataService: AssetDetailDialogDataService,
     private catalogBrowserPageService: CatalogPageDataService,
     private matDialog: MatDialog,
   ) {}
@@ -46,7 +47,8 @@ export class CatalogBrowserPageComponent implements OnInit, OnDestroy {
   }
 
   onDataOfferClick(dataOffer: BrokerDataOffer) {
-    const data = AssetDetailDialogData.forBrokerDataOffer(dataOffer);
+    const data =
+      this.assetDetailDialogDataService.brokerDataOfferDetails(dataOffer);
     const ref = this.matDialog.open(AssetDetailDialogComponent, {data});
     ref.afterClosed().subscribe((result: AssetDetailDialogResult) => {
       if (result?.refreshList) {
