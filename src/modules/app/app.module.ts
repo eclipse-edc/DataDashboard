@@ -64,8 +64,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
       deps: [KeycloakService]
     },
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
-    { provide: BACKEND_URL, useValue: environment.backendUrl },
-    { provide: API_KEY, useValue: environment.backendUrlKey },
+    {provide: BACKEND_URL, useValue: 'https://marktplatz-backend.platform.agri-gaia.com'},
+    {provide: API_KEY, useValue: '0bc87c93-3a83-4a1c-9080-ac61e0f7e75c'},
   ],
   bootstrap: [AppComponent]
 })
