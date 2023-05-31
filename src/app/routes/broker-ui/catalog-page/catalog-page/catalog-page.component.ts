@@ -18,11 +18,11 @@ import {CatalogPageDataService} from './catalog-page-data.service';
 import {BrokerDataOffer} from './mapping/broker-data-offer';
 
 @Component({
-  selector: 'catalog-browser-page',
-  templateUrl: './catalog-browser-page.component.html',
-  styleUrls: ['./catalog-browser-page.component.scss'],
+  selector: 'catalog-page',
+  templateUrl: './catalog-page.component.html',
+  styleUrls: ['./catalog-page.component.scss'],
 })
-export class CatalogBrowserPageComponent implements OnInit, OnDestroy {
+export class CatalogPageComponent implements OnInit, OnDestroy {
   data = emptyCatalogPageStateModel();
   data$ = new BehaviorSubject(this.data);
   searchText = new FormControl('');
@@ -36,10 +36,7 @@ export class CatalogBrowserPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.catalogBrowserPageService
-      .contractOfferPageData$(
-        this.fetch$.pipe(sampleTime(200)),
-        this.searchText$(),
-      )
+      .catalogPageData$(this.fetch$.pipe(sampleTime(200)), this.searchText$())
       .subscribe((data) => {
         this.data = data;
         this.data$.next(data);

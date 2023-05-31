@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Policy} from '../../../core/services/api/legacy-managent-api-client';
 import {Asset} from '../../../core/services/models/asset';
 import {ContractOffer} from '../../../core/services/models/contract-offer';
-import {BrokerDataOffer} from '../../../routes/broker-ui/catalog-browser-page/catalog-page/mapping/broker-data-offer';
+import {BrokerDataOffer} from '../../../routes/broker-ui/catalog-page/catalog-page/mapping/broker-data-offer';
 import {ContractAgreementCardMapped} from '../../../routes/connector-ui/contract-agreement-page/contract-agreement-cards/contract-agreement-card-mapped';
 import {AssetDetailDialogData} from './asset-detail-dialog-data';
 import {AssetPropertyGridGroupBuilder} from './asset-property-grid-group-builder';
@@ -82,14 +82,11 @@ export class AssetDetailDialogDataService {
     let asset = dataOffer.asset;
 
     const propertyGridGroups = [
-      this.assetPropertyGridGroupBuilder.buildBrokerDataOfferConnectorEndpointFocusGroup(
-        dataOffer,
-      ),
+      this.assetPropertyGridGroupBuilder.buildBrokerDataOfferGroup(dataOffer),
       this.assetPropertyGridGroupBuilder.buildAssetPropertiesGroup(
         asset,
-        'Data Offer',
+        'Asset',
       ),
-      this.assetPropertyGridGroupBuilder.buildBrokerDataOfferGroup(dataOffer),
       this.assetPropertyGridGroupBuilder.buildAdditionalPropertiesGroup(asset),
       ...dataOffer.contractOffers.map((contractOffer, i) =>
         this.assetPropertyGridGroupBuilder.buildContractOfferGroup(

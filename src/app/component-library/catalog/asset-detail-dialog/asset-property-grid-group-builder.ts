@@ -5,7 +5,7 @@ import {ActiveFeatureSet} from '../../../core/config/active-feature-set';
 import {Policy} from '../../../core/services/api/legacy-managent-api-client';
 import {AssetProperties} from '../../../core/services/asset-properties';
 import {Asset} from '../../../core/services/models/asset';
-import {BrokerDataOffer} from '../../../routes/broker-ui/catalog-browser-page/catalog-page/mapping/broker-data-offer';
+import {BrokerDataOffer} from '../../../routes/broker-ui/catalog-page/catalog-page/mapping/broker-data-offer';
 import {ContractAgreementCardMapped} from '../../../routes/connector-ui/contract-agreement-page/contract-agreement-cards/contract-agreement-card-mapped';
 import {JsonDialogComponent} from '../../json-dialog/json-dialog/json-dialog.component';
 import {JsonDialogData} from '../../json-dialog/json-dialog/json-dialog.data';
@@ -193,7 +193,7 @@ export class AssetPropertyGridGroupBuilder {
       },
       {
         icon: 'category',
-        label: 'ID',
+        label: 'Contract Offer ID',
         ...this.propertyGridUtils.guessValue(contractOffer.contractOfferId),
       },
       {
@@ -296,9 +296,7 @@ export class AssetPropertyGridGroupBuilder {
     };
   }
 
-  buildBrokerDataOfferConnectorEndpointFocusGroup(
-    dataOffer: BrokerDataOffer,
-  ): PropertyGridGroup {
+  buildBrokerDataOfferGroup(dataOffer: BrokerDataOffer): PropertyGridGroup {
     const lastUpdate = formatDateAgo(
       dataOffer.connectorOfflineSinceOrLastUpdatedAt,
     );
@@ -306,40 +304,26 @@ export class AssetPropertyGridGroupBuilder {
       groupLabel: null,
       properties: [
         {
+          icon: 'today',
+          label: 'Updated At',
+          ...this.propertyGridUtils.guessValue(
+            this.propertyGridUtils.formatDate(dataOffer.updatedAt),
+          ),
+        },
+        {
           ...this.buildConnectorEndpointField(dataOffer.connectorEndpoint),
           copyButton: true,
         },
         {
           icon: 'link',
           label: 'Status',
+          labelTitle: `Last updated ${lastUpdate}`,
           text:
             dataOffer.connectorOnlineStatus == 'ONLINE'
-              ? `Online, ${lastUpdate}`
+              ? `Online`
               : `Offline since ${lastUpdate}`,
           additionalClasses:
             dataOffer.connectorOnlineStatus == 'ONLINE' ? '' : 'text-warn',
-        },
-      ],
-    };
-  }
-
-  buildBrokerDataOfferGroup(dataOffer: BrokerDataOffer): PropertyGridGroup {
-    return {
-      groupLabel: 'Data Offer',
-      properties: [
-        {
-          icon: 'today',
-          label: 'Created At',
-          ...this.propertyGridUtils.guessValue(
-            this.propertyGridUtils.formatDate(dataOffer.createdAt),
-          ),
-        },
-        {
-          icon: 'today',
-          label: 'Updated At',
-          ...this.propertyGridUtils.guessValue(
-            this.propertyGridUtils.formatDate(dataOffer.updatedAt),
-          ),
         },
       ],
     };
