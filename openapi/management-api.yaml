@@ -55,7 +55,7 @@ paths:
           type: string
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all contract negotiations
           content:
             application/json:
               schema:
@@ -84,7 +84,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all contract agreements
           content:
             application/json:
               schema:
@@ -115,7 +115,7 @@ paths:
           type: string
       responses:
         "200":
-          description: The contract agreement
+          description: Successfully retrieved the contract agreement
           content:
             application/json:
               schema:
@@ -185,7 +185,7 @@ paths:
           type: string
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all contract negotiations
           content:
             application/json:
               schema:
@@ -248,7 +248,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all contract negotiations
           content:
             application/json:
               schema:
@@ -279,7 +279,7 @@ paths:
           type: string
       responses:
         "200":
-          description: The contract negotiation
+          description: Successfully retrieved the contract negotiation
           content:
             application/json:
               schema:
@@ -505,7 +505,7 @@ paths:
           type: string
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all transfer processes
           content:
             application/json:
               schema:
@@ -567,7 +567,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all transfer processes
           content:
             application/json:
               schema:
@@ -598,7 +598,7 @@ paths:
           type: string
       responses:
         "200":
-          description: The transfer process
+          description: Successfully retrieved the transfer process
           content:
             application/json:
               schema:
@@ -876,7 +876,7 @@ paths:
           type: string
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all policy definitions
           content:
             application/json:
               schema:
@@ -940,7 +940,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all policy definitions
           content:
             application/json:
               schema:
@@ -971,7 +971,7 @@ paths:
           type: string
       responses:
         "200":
-          description: The  policy definition
+          description: Successfully retrieved the policy definition
           content:
             application/json:
               schema:
@@ -1046,7 +1046,7 @@ paths:
       operationId: checkHealth
       responses:
         "200":
-          description: OK
+          description: Runtime status description
           content:
             application/json:
               schema:
@@ -1062,7 +1062,7 @@ paths:
       operationId: getLiveness
       responses:
         "200":
-          description: OK
+          description: Runtime is working
           content:
             application/json:
               schema:
@@ -1078,7 +1078,7 @@ paths:
       operationId: getReadiness
       responses:
         "200":
-          description: OK
+          description: Runtime is ready
           content:
             application/json:
               schema:
@@ -1094,7 +1094,7 @@ paths:
       operationId: getStartup
       responses:
         "200":
-          description: OK
+          description: Runtime has completed startup
           content:
             application/json:
               schema:
@@ -1150,7 +1150,7 @@ paths:
           type: string
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all contract definitions
           content:
             application/json:
               schema:
@@ -1214,7 +1214,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all contract definitions
           content:
             application/json:
               schema:
@@ -1429,7 +1429,7 @@ paths:
           type: string
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all assets
           content:
             application/json:
               schema:
@@ -1493,7 +1493,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
-          description: OK
+          description: Successfully retrieved all assets
           content:
             application/json:
               schema:
