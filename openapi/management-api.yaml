@@ -55,6 +55,7 @@ paths:
           type: string
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -83,6 +84,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -183,6 +185,7 @@ paths:
           type: string
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -245,6 +248,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -501,6 +505,7 @@ paths:
           type: string
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -562,6 +567,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -870,6 +876,7 @@ paths:
           type: string
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -933,6 +940,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1038,6 +1046,7 @@ paths:
       operationId: checkHealth
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1053,6 +1062,7 @@ paths:
       operationId: getLiveness
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1068,6 +1078,7 @@ paths:
       operationId: getReadiness
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1083,6 +1094,7 @@ paths:
       operationId: getStartup
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1138,6 +1150,7 @@ paths:
           type: string
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1201,6 +1214,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1415,6 +1429,7 @@ paths:
           type: string
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
@@ -1478,6 +1493,7 @@ paths:
               $ref: '#/components/schemas/QuerySpecDto'
       responses:
         "200":
+          description: OK
           content:
             application/json:
               schema:
