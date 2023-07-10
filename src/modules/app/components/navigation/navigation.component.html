@@ -3,7 +3,8 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>EDC Demo</mat-toolbar>
+    <mat-toolbar></mat-toolbar>
+    <img alt="truzzt" style="width:135px;margin-left:40px;margin-bottom:20px" src="../../../../assets/logo.png">
     <mat-nav-list>
       <a [routerLink]="[route.path]" *ngFor="let route of routes">
       <mat-list-item *ngIf="route.component">
@@ -11,7 +12,7 @@
         <span matLine>{{route.data?.title ?? route.path}}</span>
       </mat-list-item>
     </a>
-    </mat-nav-list>
+    </mat-nav-list>  
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">

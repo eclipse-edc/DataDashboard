@@ -56,8 +56,22 @@ $theming-material-components-theme: mat-dark-theme(
 $custom-typography: mat.define-typography-config($font-family: 'Open Sans');
 @include mat.core($custom-typography);
 
-:root {
-    --theme-color-primary: #{mat-color($theming-material-components-primary)};
-    --theme-color-accent: #{mat-color($theming-material-components-accent)};
-    --theme-color-warn: #{mat-color($theming-material-components-warn)};
+
+.mat-sidenav-container{
+  background: var(--bk, linear-gradient(225deg, #101010 0%, #232425 100%)) !important;
+  border: none;
+}
+
+.theme-2 .mat-drawer {
+  background: none;
+  border: none;
+}
+
+.theme-2 .mat-toolbar.mat-primary {
+  background: var(--bk, linear-gradient(225deg, #101010 0%, #232425 100%)) !important;
+  display: none;
+}
+
+.theme-2 .mat-card{  
+  background: var(--grad-gray-1, linear-gradient(224deg, #232323 0%, #1A1A1A 100%)) !important;
 }
