@@ -34,7 +34,7 @@ export class AssetViewerComponent implements OnInit {
     this.filteredAssets$ = this.fetch$
       .pipe(
         switchMap(() => {
-          const assets$ = this.assetService.getAllAssets().pipe(map(assets => assets.map(asset => new Asset(asset.properties!))));
+          const assets$ = this.assetService.requestAssets().pipe(map(assets => assets.map(asset => new Asset(asset["edc:properties"]!))));
           return !!this.searchText ?
             assets$.pipe(map(assets => assets.filter(asset => asset.name.includes(this.searchText))))
             :

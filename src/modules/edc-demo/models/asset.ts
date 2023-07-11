@@ -1,11 +1,11 @@
 
 export class Asset {
-    private static readonly PROPERTY_ID:string = "asset:prop:id";
-    private static readonly PROPERTY_NAME = "asset:prop:name";
-    private static readonly PROPERTY_VERSION = "asset:prop:version";
-    private static readonly PROPERTY_CONTENT_TYPE = "asset:prop:contenttype";
-    private static readonly PROPERTY_POLICY_ID = "asset:prop:policy-id";
-    private static readonly PROPERTY_ORIGINATOR = "asset:prop:originator";
+    private static readonly PROPERTY_ID:string = "edc:id";
+    private static readonly PROPERTY_NAME = "edc:name";
+    private static readonly PROPERTY_VERSION = "edc:version";
+    private static readonly PROPERTY_CONTENT_TYPE = "edc:contenttype";
+    private static readonly PROPERTY_POLICY_ID = "edc:policy-id";
+    private static readonly PROPERTY_ORIGINATOR = "edc:originator";
     private static readonly PROPERTY_TYPE = "type";
     private static readonly KNOWN_PROPERTY_KEYS = [
         Asset.PROPERTY_ID,
