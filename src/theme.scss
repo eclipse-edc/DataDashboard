@@ -53,7 +53,7 @@ $theming-material-components-theme: mat-dark-theme(
   @include angular-material-theme($theming-material-components-theme);
 }
 
-$custom-typography: mat.define-typography-config($font-family: 'Open Sans');
+$custom-typography: mat.define-typography-config($font-family: 'Montserrat');
 @include mat.core($custom-typography);
 
 
@@ -61,6 +61,8 @@ $custom-typography: mat.define-typography-config($font-family: 'Open Sans');
   background: var(--bk, linear-gradient(225deg, #101010 0%, #232425 100%)) !important;
   border: none;
 }
+
+// truzzt design
 
 .theme-2 .mat-drawer {
   background: none;
@@ -74,4 +76,117 @@ $custom-typography: mat.define-typography-config($font-family: 'Open Sans');
 
 .theme-2 .mat-card{  
   background: var(--grad-gray-1, linear-gradient(224deg, #232323 0%, #1A1A1A 100%)) !important;
+}
+
+.blackbutton {
+  display: flex !important;
+  width: 210px !important;
+  height: 35px !important;
+  padding: 8px 48px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 50px !important;
+  border: 1px solid var(--yello, #F3AF0E) !important;
+  margin-top: -70px !important;
+  margin-bottom: 24px !important;
+  margin-left: 1100px !important;
+}
+
+.yellowbutton {
+  display: flex !important;
+  width: 210px !important;
+  height: 35px !important;
+  padding: 8px 48px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 50px !important;
+  background: var(--yello, #F3AF0E) !important;
+  margin-left: 1100px !important;
+}
+
+.whitebutton1 {
+  display: flex !important;
+  width: 116px !important;
+  height: 34px !important;
+  padding: 8px 48px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--white, #FFF) !important;
+  margin-left: 1100px !important;
+  margin-top: 70px !important;
+}
+
+.whitebutton2 {
+  display: flex !important;
+  width: 150px !important;
+  height: 34px !important;
+  padding: 8px 48px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--white, #FFF) !important;
+  margin-left: 1230px !important;
+  margin-top: -34px !important;
+}
+
+.list {
+  margin-left: 700px;
+}
+
+.cards {
+  display: flex !important;
+  width: 34px !important;
+  height: 34px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 20px !important;
+  fill: var(--yello, #F3AF0E);
+  margin-left: 790px !important;
+  margin-top: -35px !important;
+}
+
+.card-list {
+  margin-right: 200px !important;
+  border-radius: 16px !important;
+}
+
+.select {
+  display: flex !important;
+  width: 240px !important;
+  height: 24px !important; 
+  padding: 8px 24px !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-radius: 50px !important;
+  border: 1px solid var(--white, #FFF) !important;
+  background: black !important;
+  box-shadow: -4px 4px 8px 0px rgba(0, 0, 0, 0.20) !important;
+  margin-left: 890px !important;
+  margin-top: -30px !important;
+  color: white;
+  cursor: pointer;
+}
+
+.select2 {
+  display: flex !important;
+  width: 240px !important;
+  height: 24px !important; 
+  padding: 8px 24px !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-radius: 50px !important;
+  border: 1px solid var(--white, #FFF) !important;
+  background: transparent !important;
+  background-color: black !important;
+  box-shadow: -4px 4px 8px 0px rgba(0, 0, 0, 0.20) !important;
+  margin-left: 1140px !important;
+  margin-top: -24px !important;
+  color: white;
+  cursor: pointer;
 }
