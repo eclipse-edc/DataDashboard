@@ -16,37 +16,37 @@ export const routes: Routes = [
   {
     path: 'introduction',
     component: IntroductionComponent,
-    data: {title: 'Getting Started', icon: 'info_outline'}
+    data: {title: 'Getting Started', icon: ''}
   },
   {
     path: 'catalog-browser',
     component: CatalogBrowserComponent,
-    data: {title: 'Catalog Browser', icon: 'sim_card'}
+    data: {title: 'Catalog Browser', icon: ''}
   },
   {
     path: 'contracts',
     component: ContractViewerComponent,
-    data: {title: 'Contracts', icon: 'attachment'}
+    data: {title: 'Contracts', icon: ''}
   },
   {
     path: 'transfer-history',
     component: TransferHistoryViewerComponent,
-    data: {title: 'Transfer History', icon: 'assignment'}
+    data: {title: 'Transfer History', icon: ''}
   },
   {
     path: 'contract-definitions',
     component: ContractDefinitionViewerComponent,
-    data: {title: 'Contract Definitions', icon: 'rule'}
+    data: {title: 'Contract Definitions', icon: ''}
   },
   {
     path: 'policies',
     component: PolicyViewComponent,
-    data: {title: 'Policies', icon: 'policy'}
+    data: {title: 'Policies', icon: ''}
   },
   {
     path: 'my-assets', // must not be "assets" to prevent conflict with assets directory
     component: AssetViewerComponent,
-    data: {title: 'Assets', icon: 'upload'}
+    data: {title: 'Assets', icon: ''}
   },
   {
     path: '', redirectTo: 'introduction', pathMatch: 'full'

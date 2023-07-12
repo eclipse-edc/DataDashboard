@@ -91,6 +91,7 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   margin-top: -70px !important;
   margin-bottom: 24px !important;
   margin-left: 1100px !important;
+  color: var(--yello, #F3AF0E) !important; 
 }
 
 .yellowbutton {
@@ -104,6 +105,7 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   border-radius: 50px !important;
   background: var(--yello, #F3AF0E) !important;
   margin-left: 1100px !important;
+  color: var(--gray-text, #202020) !important;
 }
 
 .whitebutton1 {
@@ -135,7 +137,9 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
 }
 
 .list {
-  margin-left: 700px;
+  margin-left: 730px;
+  position: absolute;
+  margin-top: 45px !important;
 }
 
 .cards {
@@ -146,9 +150,8 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   align-items: center !important;
   gap: 10px !important;
   border-radius: 20px !important;
-  fill: var(--yello, #F3AF0E);
   margin-left: 790px !important;
-  margin-top: -35px !important;
+  margin-top: 45px !important;
 }
 
 .card-list {
@@ -158,8 +161,8 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
 
 .select {
   display: flex !important;
-  width: 240px !important;
-  height: 24px !important; 
+  width: 200px !important;
+  height: 16px !important;
   padding: 8px 24px !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -167,16 +170,18 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   border: 1px solid var(--white, #FFF) !important;
   background: black !important;
   box-shadow: -4px 4px 8px 0px rgba(0, 0, 0, 0.20) !important;
-  margin-left: 890px !important;
-  margin-top: -30px !important;
+  margin-left: 860px !important;
+  margin-top: -39px !important;
   color: white;
   cursor: pointer;
+  all: unset;
+  text-indent: 20px;
 }
 
 .select2 {
   display: flex !important;
-  width: 240px !important;
-  height: 24px !important; 
+  width: 200px !important;
+  height: 16px !important; 
   padding: 8px 24px !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -185,8 +190,73 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   background: transparent !important;
   background-color: black !important;
   box-shadow: -4px 4px 8px 0px rgba(0, 0, 0, 0.20) !important;
-  margin-left: 1140px !important;
-  margin-top: -24px !important;
+  margin-left: 1125px !important;
+  margin-top: -34px !important;
   color: white;
   cursor: pointer;
+  all:unset;
+  text-indent: 20px;
+}
+
+.line1 {
+  position: fixed;
+  margin-left: 34px;
+  margin-top: 120px;
+  width: 1660px;
+  border: 0.1px solid #474747;
+  z-index: 10;
+}
+
+.line2 {
+  position: absolute;
+  margin-left: 34px;
+  margin-top: 185px;
+  width: 262px;
+  border: 0.1px solid #474747;
+  z-index: 10;
+}
+
+.line3 {
+  position: absolute;
+  margin-left: 34px;
+  margin-top: 240px;
+  width: 262px;
+  border: 0.1px solid #474747;
+  z-index: 10;
+}
+
+.line4 {
+  position: absolute;
+  margin-left: 34px;
+  margin-top: 295px;
+  width: 262px;
+  border: 0.1px solid #474747;
+  z-index: 10;
+}
+
+.line5 {
+  position: absolute;
+  margin-left: 34px;
+  margin-top: 350px;
+  width: 262px;
+  border: 0.1px solid #474747;
+  z-index: 10;
+}
+
+.line6 {
+  position: absolute;
+  margin-left: 34px;
+  margin-top: 405px;
+  width: 262px;
+  border: 0.1px solid #474747;
+  z-index: 10;
+}
+
+.line7 {
+  position: absolute;
+  margin-left: 34px;
+  margin-top: 460px;
+  width: 262px;
+  border: 0.1px solid #474747;
+  z-index: 10;
 }
