@@ -1,0 +1,51 @@
+[
+    {
+        "id": "1:a555325b-eada-4bb9-b6ce-8b7e85b2e396",
+        "policy": {
+            "permissions": [
+                {
+                    "edctype": "dataspaceconnector:permission",
+                    "uid": null,
+                    "target": "assetId",
+                    "action": {
+                        "type": "USE",
+                        "includedIn": null,
+                        "constraint": null
+                    },
+                    "assignee": null,
+                    "assigner": null,
+                    "constraints": [],
+                    "duties": []
+                }
+            ],
+            "prohibitions": [],
+            "obligations": [],
+            "extensibleProperties": {},
+            "inheritsFrom": null,
+            "assigner": null,
+            "assignee": null,
+            "target": "assetId",
+            "@type": {
+                "@policytype": "set"
+            }
+        },
+        "asset": {
+            "id": "assetId",
+            "createdAt": 1689313238895,
+            "properties": {
+                "asset:prop:byteSize": null,
+                "asset:prop:name": "product description",
+                "asset:prop:contenttype": "application/json",
+                "asset:prop:id": "assetId",
+                "asset:prop:fileName": null,
+                "asset:prop:originator": "http://proxy:13103//api/v1/ids/data"
+            }
+        },
+        "provider": "urn:connector:example-connector",
+        "consumer": "urn:connector:broker",
+        "offerStart": null,
+        "offerEnd": null,
+        "contractStart": "2023-07-14T05:40:38.616Z",
+        "contractEnd": "2024-07-13T05:40:38.616Z"
+    }
+]

@@ -1,17 +1,15 @@
-# Stage 1: Compile and Build angular codebase
-FROM node:lts as build
+FROM node:16-alpine AS build
 
 WORKDIR /app
-COPY ./ /app/
+
+COPY package*.json ./
+
 RUN npm install
+
+COPY . .
+
 RUN npm run build
 
-# Stage 2: Serve app with nginx
-FROM nginx:alpine
-COPY --from=build /app/deployment/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist/edc-demo-client /usr/share/nginx/html
-COPY --from=build /app/src/assets /usr/share/nginx/html/assets
-EXPOSE 80
+EXPOSE 4200
 
-HEALTHCHECK --interval=2s --timeout=5s --retries=10 \
-  CMD curl -f http://localhost/ || exit 1
+CMD ["npm", "start"]
