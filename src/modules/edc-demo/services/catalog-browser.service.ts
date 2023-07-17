@@ -8,12 +8,15 @@ import {
   ContractNegotiationDto,
   ContractNegotiationService,
   NegotiationInitiateRequestDto,
+  Policy,
   TransferProcessDto,
   TransferProcessService,
   TransferRequestDto,
 } from "../../mgmt-api-client";
 import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "../../app/variables";
 import {DataSet} from "../models/data-set";
+import TypeEnum = Policy.TypeEnum;
+import {Duty} from "../../edc-dmgmt-client";
 
 
 /**
@@ -54,7 +57,15 @@ export class CatalogBrowserService {
             id = key;
           }
 
-          console.log(contractOffer.policy);
+          //Currently only no restriction policy is implemented
+          contractOffer.policy = {
+            "@type": TypeEnum.Set,
+            "@id": id,
+            "odrl:obligation": [],
+            "odrl:permission": [],
+            "odrl:prohibition": [],
+            "odrl:target": asset.name
+          };
 
           if(isFirst){
             contractOffer.id = id;
@@ -88,7 +99,7 @@ export class CatalogBrowserService {
   }
 
   initiateTransfer(transferRequest: TransferRequestDto): Observable<string> {
-    return this.transferProcessService.initiateTransfer(transferRequest).pipe(map(t => t.id!))
+    return this.transferProcessService.initiateTransfer(transferRequest).pipe(map(t => t["@id"]!))
   }
 
   getTransferProcessesById(id: string): Observable<TransferProcessDto> {
@@ -96,7 +107,7 @@ export class CatalogBrowserService {
   }
 
   initiateNegotiation(initiateDto: NegotiationInitiateRequestDto): Observable<string> {
-    return this.negotiationService.initiateContractNegotiation(initiateDto, 'body', false,).pipe(map(t => t.id!))
+    return this.negotiationService.initiateContractNegotiation(initiateDto, 'body', false,).pipe(map(t => t["@id"]!))
   }
 
   getNegotiationState(id: string): Observable<ContractNegotiationDto> {

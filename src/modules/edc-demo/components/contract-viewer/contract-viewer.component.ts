@@ -53,7 +53,7 @@ export class ContractViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.contracts$ = this.contractAgreementService.getAllAgreements();
+    this.contracts$ = this.contractAgreementService.queryAllAgreements();
   }
 
   asDate(epochSeconds?: number): string {
@@ -134,7 +134,7 @@ export class ContractViewerComponent implements OnInit {
   private startPolling(transferProcessId: IdResponseDto, contractId: string) {
     // track this transfer process
     this.runningTransfers.push({
-      processId: transferProcessId.id!,
+      processId: transferProcessId["@id"]!,
       state: TransferProcessStates.REQUESTED,
       contractId: contractId
     });

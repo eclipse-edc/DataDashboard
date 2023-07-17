@@ -21,10 +21,10 @@ export interface Policy {
     assigner?: string;
     extensibleProperties?: { [key: string]: object; };
     inheritsFrom?: string;
-    obligations?: Array<Duty>;
-    permissions?: Array<Permission>;
-    prohibitions?: Array<Prohibition>;
-    target?: string;
+    "odrl:obligation"?: Array<Duty>;
+    "odrl:permission"?: Array<Permission>;
+    "odrl:prohibition"?: Array<Prohibition>;
+    "odrl:target"?: string;
 }
 export namespace Policy {
     export type TypeEnum = 'SET' | 'OFFER' | 'CONTRACT';
