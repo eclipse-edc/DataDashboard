@@ -44,7 +44,7 @@ export class CatalogBrowserComponent implements OnInit {
         switchMap(() => {
           const contractOffers$ = this.apiService.getContractOffers();
           return !!this.searchText ?
-            contractOffers$.pipe(map(contractOffers => contractOffers.filter(contractOffer => contractOffer.asset.name.toLowerCase().includes(this.searchText))))
+            contractOffers$.pipe(map(contractOffers => contractOffers.filter(contractOffer => contractOffer.id.toLowerCase().includes(this.searchText))))
             :
             contractOffers$;
         }));
@@ -56,14 +56,14 @@ export class CatalogBrowserComponent implements OnInit {
 
   onNegotiateClicked(contractOffer: ContractOffer) {
     const initiateRequest: NegotiationInitiateRequestDto = {
-      connectorAddress: contractOffer.asset.originator,
+      connectorAddress: contractOffer.originator,
 
       offer: {
         offerId: contractOffer.id,
         assetId: contractOffer.asset.id,
         policy: contractOffer.policy,
       },
-      connectorId: 'yomama',
+      connectorId: 'connector',
       protocol: 'ids-multipart'
     };
 

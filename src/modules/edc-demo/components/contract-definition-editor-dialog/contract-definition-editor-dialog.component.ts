@@ -46,7 +46,7 @@ export class ContractDefinitionEditorDialog implements OnInit {
       this.accessPolicy = this.policies.find(policy => policy.id === this.contractDefinition.accessPolicyId);
       this.contractPolicy = this.policies.find(policy => policy.id === this.contractDefinition.contractPolicyId);
     });
-    this.assetService.getAllAssets().pipe(map(asset => asset.map(a => new Asset(a.properties!)))).subscribe(assets => {
+    this.assetService.getAllAssets().pipe(map(asset => asset.map(a => new Asset(a["edc:properties"]!)))).subscribe(assets => {
       this.availableAssets = assets;
       // preselection
       if (this.contractDefinition) {

@@ -11,7 +11,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 export class NewPolicyDialogComponent implements OnInit {
   editMode: boolean = false;
   policy: Policy = {
-    type: TypeEnum.Set
+    "@type": TypeEnum.Set
   };
   policyDefinition: PolicyDefinitionResponseDto = {
     policy: this.policy,

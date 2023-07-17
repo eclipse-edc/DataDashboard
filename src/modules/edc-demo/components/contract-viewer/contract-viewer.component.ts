@@ -66,7 +66,7 @@ export class ContractViewerComponent implements OnInit {
   }
 
   getAsset(assetId?: string): Observable<Asset> {
-    return assetId ? this.assetService.getAsset(assetId).pipe(map(a => new Asset(a.properties!))) : of();
+    return assetId ? this.assetService.getAsset(assetId).pipe(map(a => new Asset(a["edc:properties"]!))) : of();
   }
 
   onTransferClicked(contract: ContractAgreementDto) {
@@ -101,15 +101,15 @@ export class ContractViewerComponent implements OnInit {
         connectorId: "consumer", //doesn't matter, but cannot be null
         dataDestination: {
           properties: {
-            "type": storageTypeId,
-            account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
+            "type": "HttpData",
+            "baseUrl": "http://localhost:4000/api/consumer/store", // CAUTION: hardcoded value for AzureBlob
             // container: omitted, so it will be auto-assigned by the EDC runtime
           }
         },
         managedResources: true,
         transferType: {isFinite: true}, //must be there, otherwise NPE on backend
         connectorAddress: offeredAsset.originator,
-        protocol: 'ids-multipart'
+        protocol: 'dataspace-protocol-http'
       };
     }));
 

@@ -1,7 +1,7 @@
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
 import {EMPTY, Observable} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, reduce} from 'rxjs/operators';
 import {Asset} from '../models/asset';
 import {ContractOffer} from '../models/contract-offer';
 import {
@@ -13,6 +13,7 @@ import {
   TransferRequestDto,
 } from "../../mgmt-api-client";
 import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "../../app/variables";
+import {DataSet} from "../models/data-set";
 
 
 /**
@@ -34,9 +35,56 @@ export class CatalogBrowserService {
     let url = this.catalogApiUrl || this.managementApiUrl;
     return this.post<ContractOffer[]>(url + "/federatedcatalog")
       .pipe(map(contractOffers => contractOffers.map(contractOffer => {
-        contractOffer.asset = new Asset(contractOffer.asset.properties)
-        return contractOffer;
-      })));
+        const arr = Array<ContractOffer>();
+        let isFirst = true;
+        //divides multiple offers in dataSets into separate contractOffers.
+        for(let i = 0; i<contractOffer.datasets.length; i++){
+          const dataSet: DataSet = contractOffer.datasets[i];
+          const properties: { [key: string]: string; } = {
+            "edc:id": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/id"],
+            "edc:name": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/name"],
+            "edc:version": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/version"],
+            "type": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/type"],
+            "edc:contenttype": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/contenttype"]
+          }
+          const asset: Asset = new Asset(properties);
+
+          let id: string = "";
+          for(const key in dataSet.offers){
+            id = key;
+          }
+
+          console.log(contractOffer.policy);
+
+          if(isFirst){
+            contractOffer.id = id;
+            contractOffer.asset = asset
+            contractOffer.originator = contractOffer.properties!["https://w3id.org/edc/v0.0.1/ns/originator"];
+
+            arr.push(contractOffer)
+            isFirst = false;
+          } else {
+            const newContractOffer: ContractOffer = {
+              asset: asset,
+              contractOffers: contractOffer.contractOffers,
+              dataServices: contractOffer.dataServices,
+              datasets: contractOffer.datasets,
+              id: id,
+              originator: contractOffer.properties!["https://w3id.org/edc/v0.0.1/ns/originator"],
+              policy: contractOffer.policy
+            };
+            arr.push(newContractOffer);
+          }
+        }
+        return arr;
+      })), reduce((acc, val) => {
+        for(let i = 0; i < val.length; i++){
+          for(let j = 0; j < val[i].length; j++){
+            acc.push(val[i][j]);
+          }
+        }
+        return acc;
+      }, new Array<ContractOffer>()));
   }
 
   initiateTransfer(transferRequest: TransferRequestDto): Observable<string> {
@@ -64,7 +112,7 @@ export class CatalogBrowserService {
     : Observable<T> {
     const url = `${urlPath}`;
     let headers = new HttpHeaders({"Content-type": "application/json"});
-    return this.catchError(this.httpClient.post<T>(url, "{}", {headers, params}), url, 'POST');
+    return this.catchError(this.httpClient.post<T>(url, "{\"edc:operandLeft\": \"\",\"edc:operandRight\": \"\",\"edc:operator\": \"\",\"edc:Criterion\":\"\"}", {headers, params}), url, 'POST');
   }
 
   private catchError<T>(observable: Observable<T>, url: string, method: string): Observable<T> {
