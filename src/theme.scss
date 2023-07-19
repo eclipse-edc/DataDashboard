@@ -80,7 +80,7 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
 
 .blackbutton {
   display: flex !important;
-  width: 210px !important;
+  width: 15% !important;
   height: 35px !important;
   padding: 8px 48px !important;
   justify-content: center !important;
@@ -90,13 +90,13 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   border: 1px solid var(--yello, #F3AF0E) !important;
   margin-top: -70px !important;
   margin-bottom: 24px !important;
-  margin-left: 1100px !important;
+  margin-left: 80% !important;
   color: var(--yello, #F3AF0E) !important; 
 }
 
 .yellowbutton {
   display: flex !important;
-  width: 210px !important;
+  width: 15% !important;
   height: 35px !important;
   padding: 8px 48px !important;
   justify-content: center !important;
@@ -104,45 +104,45 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   gap: 10px !important;
   border-radius: 50px !important;
   background: var(--yello, #F3AF0E) !important;
-  margin-left: 1100px !important;
+  margin-left: 80% !important;
   color: var(--gray-text, #202020) !important;
 }
 
 .whitebutton1 {
   display: flex !important;
-  width: 116px !important;
-  height: 34px !important;
+  width: 6% !important;
+  height: 3.5% !important;
   padding: 8px 48px !important;
   justify-content: center !important;
   align-items: center !important;
   gap: 10px !important;
   border-radius: 20px !important;
   border: 1px solid var(--white, #FFF) !important;
-  margin-left: 1100px !important;
-  margin-top: 35px !important;
+  margin-left: 56.5% !important;
+  margin-top: 2% !important;
   position:fixed !important;
   z-index: 100;
 }
 
 .whitebutton2 {
   display: flex !important;
-  width: 150px !important;
-  height: 34px !important;
+  width: 7.5% !important;
+  height: 3.5% !important;
   padding: 8px 48px !important;
   justify-content: center !important;
   align-items: center !important;
   gap: 10px !important;
   border-radius: 20px !important;
   border: 1px solid var(--white, #FFF) !important;
-  margin-left: 1230px !important;
-  margin-top: 35px !important;
+  margin-left: 64% !important;
+  margin-top: 2% !important;
   position:fixed !important;
   z-index: 100;
 }
 
 .whitebutton3 {
-  width: 1980px !important;
-  height: 195px !important;
+  width: 100% !important;
+  height: 22% !important;
   justify-content: center !important;
   align-items: center !important;
   gap: 10px !important;
@@ -155,37 +155,36 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
 }
 
 .list {
-  margin-left: 730px;
+  margin-left: 38%;
   position: absolute;
-  margin-top: 103px !important;
+  margin-top: 5.4% !important;
   position:fixed !important;
   z-index: 100;
 }
 
 .cards {
   display: flex !important;
-  width: 34px !important;
   height: 34px !important;
   justify-content: center !important;
   align-items: center !important;
   gap: 10px !important;
   border-radius: 20px !important;
-  margin-left: 790px !important;
-  margin-top: 103px !important;
+  margin-left: 41.2% !important;
+  margin-top: 5.4% !important;
   position:fixed !important;
   z-index: 100;
 }
 
 .card-list {
-  margin-right: 200px !important;
+  margin-right: 12% !important;
   border-radius: 16px !important;
   top: 210px;
 }
 
 .select {
   display: flex !important;
-  width: 200px !important;
-  height: 16px !important;
+  width: 10% !important;
+  height: 2% !important;
   padding: 8px 24px !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -193,8 +192,8 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   border: 1px solid var(--white, #FFF) !important;
   background: black !important;
   box-shadow: -4px 4px 8px 0px rgba(0, 0, 0, 0.20) !important;
-  margin-left: 860px !important;
-  margin-top: 104px !important;
+  margin-left: 45% !important;
+  margin-top: 5.5% !important;
   color: white;
   cursor: pointer;
   all: unset;
@@ -205,8 +204,8 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
 
 .select2 {
   display: flex !important;
-  width: 200px !important;
-  height: 16px !important; 
+  width: 10% !important;
+  height: 2% !important; 
   padding: 8px 24px !important;
   justify-content: space-between !important;
   align-items: center !important;
@@ -215,8 +214,8 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   background: transparent !important;
   background-color: black !important;
   box-shadow: -4px 4px 8px 0px rgba(0, 0, 0, 0.20) !important;
-  margin-left: 1125px !important;
-  margin-top: 104px !important;
+  margin-left: 59% !important;
+  margin-top: 5.5% !important;
   color: white;
   cursor: pointer;
   all:unset;
@@ -227,11 +226,12 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
 
 .line1 {
   position: fixed;
-  margin-left: 34px;
-  margin-top: 120px;
-  width: 1660px;
+  margin-left: 1.5%;
+  margin-top: 6%;
+  width: 87%;
   border: 0.1px solid #474747;
   z-index: 10;
+  display: none;
 }
 
 .line2 {

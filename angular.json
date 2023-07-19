@@ -84,7 +84,8 @@
             }
           },
           "options": {
-            "browserTarget": "project-name:build"
+            "browserTarget": "project-name:build",
+            "disableHostCheck": true
           },
           "defaultConfiguration": "development"
         },
