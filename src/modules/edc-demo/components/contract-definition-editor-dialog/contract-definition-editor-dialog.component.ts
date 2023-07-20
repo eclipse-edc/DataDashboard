@@ -43,8 +43,8 @@ export class ContractDefinitionEditorDialog implements OnInit {
   ngOnInit(): void {
     this.policyService.queryAllPolicies().subscribe(policyDefinitions => {
       this.policies = policyDefinitions;
-      this.accessPolicy = this.policies.find(policy => policy.id === this.contractDefinition.accessPolicyId);
-      this.contractPolicy = this.policies.find(policy => policy.id === this.contractDefinition.contractPolicyId);
+      this.accessPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.accessPolicyId);
+      this.contractPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.contractPolicyId);
     });
     this.assetService.requestAssets().pipe(map(asset => asset.map(a => new Asset(a["edc:properties"]!)))).subscribe(assets => {
       this.availableAssets = assets;
@@ -57,8 +57,8 @@ export class ContractDefinitionEditorDialog implements OnInit {
   }
 
   onSave() {
-    this.contractDefinition.accessPolicyId = this.accessPolicy!.id!;
-    this.contractDefinition.contractPolicyId = this.contractPolicy!.id!;
+    this.contractDefinition.accessPolicyId = this.accessPolicy!['@id']!;
+    this.contractDefinition.contractPolicyId = this.contractPolicy!['@id']!;
     this.contractDefinition.criteria = [];
 
     const ids = this.assets.map(asset => asset.id);

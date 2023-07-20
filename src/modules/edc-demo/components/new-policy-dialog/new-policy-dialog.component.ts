@@ -14,8 +14,8 @@ export class NewPolicyDialogComponent implements OnInit {
     "@type": TypeEnum.Set
   };
   policyDefinition: PolicyDefinitionResponseDto = {
-    policy: this.policy,
-    id: ''
+    "edc:policy": this.policy,
+    "@id": ''
   };
   permissionsJson: string = '';
   prohibitionsJson: string = '';
@@ -42,8 +42,8 @@ export class NewPolicyDialogComponent implements OnInit {
     }
 
     this.dialogRef.close({
-      policy: this.policyDefinition.policy,
-      id: this.policyDefinition.id
+      policy: this.policyDefinition['edc:policy'],
+      id: this.policyDefinition['@id']
     })
   }
 }
