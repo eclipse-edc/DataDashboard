@@ -81,7 +81,7 @@ export class ContractViewerComponent implements OnInit {
       this.createTransferRequest(contract, storageTypeId)
         .pipe(switchMap(trq => this.transferService.initiateTransfer(trq)))
         .subscribe(transferId => {
-          this.startPolling(transferId, contract.id!);
+          this.startPolling(transferId, contract["@id"]!);
         }, error => {
           console.error(error);
           this.notificationService.showError("Error initiating transfer");
@@ -94,10 +94,10 @@ export class ContractViewerComponent implements OnInit {
   }
 
   private createTransferRequest(contract: ContractAgreementDto, storageTypeId: string): Observable<TransferRequestDto> {
-    return this.getOfferedAssetForId(contract.assetId!).pipe(map(offeredAsset => {
+    return this.getOfferedAssetForId(contract["edc:assetId"]!).pipe(map(offeredAsset => {
       return {
         assetId: offeredAsset.id,
-        contractId: contract.id,
+        contractId: contract["@id"],
         connectorId: "consumer", //doesn't matter, but cannot be null
         dataDestination: {
           properties: {
@@ -108,8 +108,11 @@ export class ContractViewerComponent implements OnInit {
         },
         managedResources: true,
         transferType: {isFinite: true}, //must be there, otherwise NPE on backend
-        connectorAddress: offeredAsset.originator,
-        protocol: 'dataspace-protocol-http'
+        connectorAddress: offeredAsset.properties.originator,
+        protocol: 'dataspace-protocol-http',
+        "@context": {
+          "edc": "https://w3id.org/edc/v0.0.1/ns/"
+        }
       };
     }));
 

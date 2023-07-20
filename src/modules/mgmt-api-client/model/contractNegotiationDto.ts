@@ -12,14 +12,14 @@
 
 
 export interface ContractNegotiationDto {
-    contractAgreementId?: string;
-    counterPartyAddress?: string;
+    "edc:contractAgreementId"?: string;
+    "edc:counterPartyAddress"?: string;
     createdAt?: number;
     errorDetail?: string;
     id?: string;
-    protocol?: string;
+    "edc:protocol"?: string;
     "edc:state"?: string;
-    type?: ContractNegotiationDto.TypeEnum;
+    "edc:type"?: ContractNegotiationDto.TypeEnum;
     updatedAt?: number;
 }
 export namespace ContractNegotiationDto {

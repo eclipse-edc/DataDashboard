@@ -16,7 +16,6 @@ import {
 import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "../../app/variables";
 import {DataSet} from "../models/data-set";
 import TypeEnum = Policy.TypeEnum;
-import {Duty} from "../../edc-dmgmt-client";
 
 
 /**
@@ -48,7 +47,8 @@ export class CatalogBrowserService {
             "edc:name": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/name"],
             "edc:version": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/version"],
             "type": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/type"],
-            "edc:contenttype": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/contenttype"]
+            "edc:contenttype": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/contenttype"],
+            originator: contractOffer.properties!["https://w3id.org/edc/v0.0.1/ns/originator"]
           }
           const asset: Asset = new Asset(properties);
 
@@ -112,10 +112,6 @@ export class CatalogBrowserService {
 
   getNegotiationState(id: string): Observable<ContractNegotiationDto> {
     return this.negotiationService.getNegotiation(id);
-  }
-
-  getAgreementForNegotiation(contractId: string): Observable<ContractNegotiationDto> {
-    return this.negotiationService.getAgreementForNegotiation(contractId);
   }
 
   private post<T>(urlPath: string,

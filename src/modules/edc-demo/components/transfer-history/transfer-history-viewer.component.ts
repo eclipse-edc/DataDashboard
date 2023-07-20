@@ -50,7 +50,7 @@ export class TransferHistoryViewerComponent implements OnInit {
   }
 
   loadTransferProcesses() {
-    this.transferProcesses$ = this.transferProcessService.getAllTransferProcesses();
+    this.transferProcesses$ = this.transferProcessService.queryAllTransferProcesses();
   }
 
   asDate(epochMillis?: number) {
