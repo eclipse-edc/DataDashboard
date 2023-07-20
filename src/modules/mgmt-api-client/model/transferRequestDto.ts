@@ -18,7 +18,7 @@ export interface TransferRequestDto {
     connectorAddress: string;
     connectorId: string;
     contractId: string;
-    dataDestination: DataAddress;
+    dataDestination: { [key: string]: string; };
     id?: string;
     managedResources?: boolean;
     properties?: { [key: string]: string; };

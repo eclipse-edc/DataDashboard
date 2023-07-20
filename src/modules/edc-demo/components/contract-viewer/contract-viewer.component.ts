@@ -100,11 +100,9 @@ export class ContractViewerComponent implements OnInit {
         contractId: contract["@id"],
         connectorId: "consumer", //doesn't matter, but cannot be null
         dataDestination: {
-          properties: {
-            "type": "HttpData",
-            "baseUrl": "http://localhost:4000/api/consumer/store", // CAUTION: hardcoded value for AzureBlob
-            // container: omitted, so it will be auto-assigned by the EDC runtime
-          }
+          "type": storageTypeId,
+          account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
+          // container: omitted, so it will be auto-assigned by the EDC runtime
         },
         managedResources: true,
         transferType: {isFinite: true}, //must be there, otherwise NPE on backend
