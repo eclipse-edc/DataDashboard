@@ -14,7 +14,6 @@ import {
   TransferRequestDto,
 } from "../../mgmt-api-client";
 import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "../../app/variables";
-import {DataSet} from "../models/data-set";
 import TypeEnum = Policy.TypeEnum;
 
 
@@ -41,7 +40,7 @@ export class CatalogBrowserService {
         let isFirst = true;
         //divides multiple offers in dataSets into separate contractOffers.
         for(let i = 0; i<contractOffer.datasets.length; i++){
-          const dataSet: DataSet = contractOffer.datasets[i];
+          const dataSet: any = contractOffer.datasets[i];
           const properties: { [key: string]: string; } = {
             "edc:id": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/id"],
             "edc:name": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/name"],
@@ -53,24 +52,27 @@ export class CatalogBrowserService {
           const asset: Asset = new Asset(properties);
 
           let id: string = "";
+          let policy: Policy = {
+            //currently hardcoded to SET since parsed type is {"@policytype": "set"}
+            "@type": TypeEnum.Set,
+          };
+          //hack to get first and only key value in offers
           for(const key in dataSet.offers){
             id = key;
+            policy["@id"] = id;
+            policy["assignee"] = dataSet.offers[key]["assignee"];
+            policy["assigner"] = dataSet.offers[key]["assigner"];
+            policy["odrl:obligation"] = dataSet.offers[key]["obligations"];
+            policy["odrl:permission"] = dataSet.offers[key]["permissions"];
+            policy["odrl:prohibition"] = dataSet.offers[key]["prohibitions"];
+            policy["odrl:target"] = dataSet.offers[key]["target"];
           }
-
-          //Currently only no restriction policy is implemented
-          contractOffer.policy = {
-            "@type": TypeEnum.Set,
-            "@id": id,
-            "odrl:obligation": [],
-            "odrl:permission": [],
-            "odrl:prohibition": [],
-            "odrl:target": asset.name
-          };
 
           if(isFirst){
             contractOffer.id = id;
             contractOffer.asset = asset
             contractOffer.originator = contractOffer.properties!["https://w3id.org/edc/v0.0.1/ns/originator"];
+            contractOffer.policy = policy;
 
             arr.push(contractOffer)
             isFirst = false;
@@ -82,7 +84,7 @@ export class CatalogBrowserService {
               datasets: contractOffer.datasets,
               id: id,
               originator: contractOffer.properties!["https://w3id.org/edc/v0.0.1/ns/originator"],
-              policy: contractOffer.policy
+              policy: policy
             };
             arr.push(newContractOffer);
           }

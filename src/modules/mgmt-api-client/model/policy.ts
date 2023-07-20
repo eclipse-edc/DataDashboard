@@ -15,11 +15,10 @@ import { Permission } from './permission';
 
 
 export interface Policy {
-    "@type"?: Policy.TypeEnum;
+    "@type": Policy.TypeEnum;
     "@id"?: string;
     assignee?: string;
     assigner?: string;
-    extensibleProperties?: { [key: string]: object; };
     inheritsFrom?: string;
     "odrl:obligation"?: Array<Duty>;
     "odrl:permission"?: Array<Permission>;
