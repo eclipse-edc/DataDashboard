@@ -106,7 +106,7 @@ export class ContractViewerComponent implements OnInit {
         },
         managedResources: true,
         transferType: {isFinite: true}, //must be there, otherwise NPE on backend
-        connectorAddress: offeredAsset.properties.originator,
+        connectorAddress: offeredAsset.originator,
         protocol: 'dataspace-protocol-http',
         "@context": {
           "edc": "https://w3id.org/edc/v0.0.1/ns/"
@@ -150,11 +150,11 @@ export class ContractViewerComponent implements OnInit {
     return () => {
       from(this.runningTransfers) //create from array
         .pipe(switchMap(t => this.catalogService.getTransferProcessesById(t.processId)), // fetch from API
-          filter(tpDto => ContractViewerComponent.isFinishedState(tpDto.state!)), // only use finished ones
+          filter(tpDto => ContractViewerComponent.isFinishedState(tpDto["edc:state"]!)), // only use finished ones
           tap(tpDto => {
             // remove from in-progress
-            this.runningTransfers = this.runningTransfers.filter(rtp => rtp.processId !== tpDto.id)
-            this.notificationService.showInfo(`Transfer [${tpDto.id}] complete!`, "Show me!", () => {
+            this.runningTransfers = this.runningTransfers.filter(rtp => rtp.processId !== tpDto["@id"])
+            this.notificationService.showInfo(`Transfer [${tpDto["@id"]}] complete!`, "Show me!", () => {
               this.router.navigate(['/transfer-history'])
             })
           }),

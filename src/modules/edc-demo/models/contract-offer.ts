@@ -5,10 +5,9 @@ import {DataService} from "./data-service";
 export interface ContractOffer {
   id: string;
   contractOffers: Array<string>;
-  datasets: Array<any>;
-  dataServices: Array<DataService>;
-  properties?: { [key: string]: string; };
+  "dcat:dataset": Array<any>;
+  "dcat:service": DataService;
   asset: Asset;
   policy: Policy;
-  originator: string;
+  "edc:originator": string;
 }

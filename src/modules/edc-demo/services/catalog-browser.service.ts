@@ -39,15 +39,15 @@ export class CatalogBrowserService {
         const arr = Array<ContractOffer>();
         let isFirst = true;
         //divides multiple offers in dataSets into separate contractOffers.
-        for(let i = 0; i<contractOffer.datasets.length; i++){
-          const dataSet: any = contractOffer.datasets[i];
+        for(let i = 0; i<contractOffer["dcat:dataset"].length; i++){
+          const dataSet: any = contractOffer["dcat:dataset"][i];
           const properties: { [key: string]: string; } = {
-            "edc:id": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/id"],
-            "edc:name": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/name"],
-            "edc:version": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/version"],
-            "type": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/type"],
-            "edc:contenttype": dataSet.properties!["https://w3id.org/edc/v0.0.1/ns/contenttype"],
-            originator: contractOffer.properties!["https://w3id.org/edc/v0.0.1/ns/originator"]
+            "edc:id": dataSet["edc:id"],
+            "edc:name": dataSet["edc:name"],
+            "edc:version": dataSet["edc:version"],
+            "type": dataSet["edc:type"],
+            "edc:contenttype": dataSet["edc:contenttype"],
+            "edc:originator": contractOffer["edc:originator"]
           }
           const asset: Asset = new Asset(properties);
 
@@ -55,23 +55,18 @@ export class CatalogBrowserService {
           let policy: Policy = {
             //currently hardcoded to SET since parsed type is {"@policytype": "set"}
             "@type": TypeEnum.Set,
+            "@id": dataSet["odrl:hasPolicy"]["@id"],
+            "assignee": dataSet["odrl:hasPolicy"]["assignee"],
+            "assigner": dataSet["odrl:hasPolicy"]["assigner"],
+            "odrl:obligation": dataSet["odrl:hasPolicy"]["odrl:obligations"],
+            "odrl:permission": dataSet["odrl:hasPolicy"]["odrl:permissions"],
+            "odrl:prohibition": dataSet["odrl:hasPolicy"]["odrl:prohibitions"],
+            "odrl:target": dataSet["odrl:hasPolicy"]["odrl:target"]
           };
-          //hack to get first and only key value in offers
-          for(const key in dataSet.offers){
-            id = key;
-            policy["@id"] = id;
-            policy["assignee"] = dataSet.offers[key]["assignee"];
-            policy["assigner"] = dataSet.offers[key]["assigner"];
-            policy["odrl:obligation"] = dataSet.offers[key]["obligations"];
-            policy["odrl:permission"] = dataSet.offers[key]["permissions"];
-            policy["odrl:prohibition"] = dataSet.offers[key]["prohibitions"];
-            policy["odrl:target"] = dataSet.offers[key]["target"];
-          }
 
           if(isFirst){
-            contractOffer.id = id;
+            contractOffer.id = dataSet["odrl:hasPolicy"]["@id"];
             contractOffer.asset = asset
-            contractOffer.originator = contractOffer.properties!["https://w3id.org/edc/v0.0.1/ns/originator"];
             contractOffer.policy = policy;
 
             arr.push(contractOffer)
@@ -80,10 +75,10 @@ export class CatalogBrowserService {
             const newContractOffer: ContractOffer = {
               asset: asset,
               contractOffers: contractOffer.contractOffers,
-              dataServices: contractOffer.dataServices,
-              datasets: contractOffer.datasets,
-              id: id,
-              originator: contractOffer.properties!["https://w3id.org/edc/v0.0.1/ns/originator"],
+              "dcat:service": contractOffer["dcat:service"],
+              "dcat:dataset": contractOffer["dcat:dataset"],
+              id: dataSet["odrl:hasPolicy"]["@id"],
+              "edc:originator": contractOffer["edc:originator"],
               policy: policy
             };
             arr.push(newContractOffer);

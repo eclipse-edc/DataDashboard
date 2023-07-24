@@ -56,7 +56,7 @@ export class CatalogBrowserComponent implements OnInit {
 
   onNegotiateClicked(contractOffer: ContractOffer) {
     const initiateRequest: NegotiationInitiateRequestDto = {
-      connectorAddress: contractOffer.originator,
+      connectorAddress: contractOffer["edc:originator"],
       "@context": {
         "edc": "https://w3id.org/edc/v0.0.1/ns/",
         "odrl": "http://www.w3.org/ns/odrl/2/"
