@@ -94,6 +94,37 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   color: var(--yello, #F3AF0E) !important; 
 }
 
+.blackbutton-confirmation {
+  display: flex !important;
+  width: 15% !important;
+  height: 35px !important;
+  padding: 8px 48px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 50px !important;
+  border: 1px solid var(--yello, #F3AF0E) !important;
+  margin-top: 2% !important;
+  margin-left: 30% !important;
+  color: var(--yello, #F3AF0E) !important; 
+}
+
+.yellowbutton-confirmation {
+  display: flex !important;
+  width: 15% !important;
+  height: 35px !important;
+  padding: 8px 48px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 50px !important;
+  background: var(--yello, #F3AF0E) !important;
+  margin-left: 60% !important;
+  margin-top: -4.5% !important;
+  margin-bottom: 5% !important;
+  color: var(--gray-text, #202020) !important;
+}
+
 .yellowbutton {
   display: flex !important;
   width: 15% !important;
@@ -179,6 +210,17 @@ $custom-typography: mat.define-typography-config($font-family: 'Montserrat');
   margin-right: 12% !important;
   border-radius: 16px !important;
   top: 210px;
+}
+
+.confirmation-card {
+  margin-right: 12% !important;
+  border-radius: 16px !important;
+  box-shadow: -8px 16px 24px 0px rgba(0, 0, 0, 0.10);
+  margin-top: 20% !important;
+  margin-left: 20% !important;
+  width: 150% !important;
+  height: 210% !important;
+  background: var(--grad-gray-1, linear-gradient(224deg, #232323 0%, #1A1A1A 100%));
 }
 
 .select {

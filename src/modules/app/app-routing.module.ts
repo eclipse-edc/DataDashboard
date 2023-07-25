@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AssetViewerComponent} from '../edc-demo/components/asset-viewer/asset-viewer.component';
 import {CatalogBrowserComponent} from '../edc-demo/components/catalog-browser/catalog-browser.component';
 import {IntroductionComponent} from '../edc-demo/components/introduction/introduction.component';
+import {CatalogBrowserConfirmation} from '../edc-demo/components/catalog-browser-confirmation/catalog-browser-confirmation.component';
 import {
   ContractDefinitionViewerComponent
 } from '../edc-demo/components/contract-definition-viewer/contract-definition-viewer.component';
@@ -21,6 +22,11 @@ export const routes: Routes = [
   {
     path: 'catalog-browser',
     component: CatalogBrowserComponent,
+    data: {title: 'Catalog Browser', icon: ''}
+  },
+  {
+    path: 'catalog-browser-confirmation',
+    component: CatalogBrowserConfirmation,
     data: {title: 'Catalog Browser', icon: ''}
   },
   {
