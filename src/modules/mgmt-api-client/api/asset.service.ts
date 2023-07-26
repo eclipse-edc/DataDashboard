@@ -427,5 +427,4 @@ export class AssetService {
             }
         );
     }
-
 }
