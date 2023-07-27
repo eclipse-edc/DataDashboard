@@ -1,28 +1,30 @@
-import {Component, OnInit} from '@angular/core';
-import data from '../../../../data.json';
-import { PostService } from './post.service';
-
+import { Component } from '@angular/core';
+import { CatalogBrowserService } from '../../services/catalog-browser.service';
 
 @Component({
-  selector: 'edc-demo-introduction',
+  selector: 'app-your-component',
   templateUrl: './catalog-browser-confirmation.component.html',
   styleUrls: ['./catalog-browser-confirmation.component.scss']
 })
 
-export class CatalogBrowserConfirmation implements OnInit{
-  id = data[0].id;
-  provider = data[0].provider;
-  start = data[0].contractStart;
-  consumer = data[0].consumer;
+export class CatalogBrowserConfirmation {
+  contractOffers: any = [];
 
-  posts:any;
-  
-  constructor(private service:PostService) {}
-  
+  constructor(private catalogBrowserService: CatalogBrowserService) { }
+
   ngOnInit() {
-      this.service.getPosts()
-        .subscribe(response => {
-          this.posts = response;
-        });
-  } 
+    this.fetchContractOffers();
+  }
+  
+  fetchContractOffers() {
+    this.catalogBrowserService.getContractOffers().subscribe(
+      (contractOffers) => {
+        this.contractOffers = contractOffers;
+        console.log(contractOffers)
+      },
+      (error) => {
+        console.error('Error fetching contract offers:', error);
+      }
+    );
+  }
 }

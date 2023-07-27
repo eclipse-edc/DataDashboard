@@ -32,7 +32,7 @@ export class CatalogBrowserService {
 
   getContractOffers(): Observable<ContractOffer[]> {
     let url = this.catalogApiUrl || this.managementApiUrl;
-    return this.post<ContractOffer[]>(url + "/federatedcatalog")
+    return this.post<ContractOffer[]>("http://broker.demo.truzztport.com" + "/federatedcatalog")
       .pipe(map(contractOffers => contractOffers.map(contractOffer => {
         contractOffer.asset = new Asset(contractOffer.asset.properties)
         return contractOffer;
