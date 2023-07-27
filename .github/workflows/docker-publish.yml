@@ -7,11 +7,11 @@ name: Docker
 
 on:
   push:
-    branches: [ "truzzt-design" ]
+    branches: [ "truzzt-design-rebase" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "truzzt-design" ]
+    branches: [ "truzzt-design-rebase" ]
 
 env:
   # Use docker.io for Docker Hub if empty
