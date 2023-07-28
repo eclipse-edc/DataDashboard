@@ -146,7 +146,7 @@ export class TransferProcessService {
             }
         }
 
-        let localVarPath = `/transferprocesses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/cancel`;
+        let localVarPath = `/v2/transferprocesses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/cancel`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -204,7 +204,7 @@ export class TransferProcessService {
             }
         }
 
-        let localVarPath = `/transferprocesses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/deprovision`;
+        let localVarPath = `/v2/transferprocesses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/deprovision`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -286,7 +286,7 @@ export class TransferProcessService {
             }
         }
 
-        let localVarPath = `/transferprocesses`;
+        let localVarPath = `/v2/transferprocesses`;
         return this.httpClient.request<Array<TransferProcessDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -345,7 +345,7 @@ export class TransferProcessService {
             }
         }
 
-        let localVarPath = `/transferprocesses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/v2/transferprocesses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<TransferProcessDto>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -403,7 +403,7 @@ export class TransferProcessService {
             }
         }
 
-        let localVarPath = `/transferprocesses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/state`;
+        let localVarPath = `/v2/transferprocesses/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/state`;
         return this.httpClient.request<TransferState>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -467,7 +467,7 @@ export class TransferProcessService {
             }
         }
 
-        let localVarPath = `/transferprocesses`;
+        let localVarPath = `/v2/transferprocesses`;
         return this.httpClient.request<IdResponseDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -532,7 +532,7 @@ export class TransferProcessService {
             }
         }
 
-        let localVarPath = `/transferprocesses/request`;
+        let localVarPath = `/v2/transferprocesses/request`;
         return this.httpClient.request<Array<TransferProcessDto>>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
