@@ -11,11 +11,11 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 export class NewPolicyDialogComponent implements OnInit {
   editMode: boolean = false;
   policy: Policy = {
-    type: TypeEnum.Set
+    "@type": TypeEnum.Set
   };
   policyDefinition: PolicyDefinitionResponseDto = {
-    policy: this.policy,
-    id: ''
+    "edc:policy": this.policy,
+    "@id": ''
   };
   permissionsJson: string = '';
   prohibitionsJson: string = '';
@@ -30,20 +30,20 @@ export class NewPolicyDialogComponent implements OnInit {
 
   onSave() {
     if (this.permissionsJson && this.permissionsJson !== '') {
-      this.policy.permissions = JSON.parse(this.permissionsJson);
+      this.policy["odrl:permission"] = JSON.parse(this.permissionsJson);
     }
 
     if (this.prohibitionsJson && this.prohibitionsJson !== '') {
-      this.policy.prohibitions = JSON.parse(this.prohibitionsJson);
+      this.policy["odrl:prohibition"] = JSON.parse(this.prohibitionsJson);
     }
 
     if (this.obligationsJson && this.obligationsJson !== '') {
-      this.policy.obligations = JSON.parse(this.obligationsJson);
+      this.policy["odrl:obligation"] = JSON.parse(this.obligationsJson);
     }
 
     this.dialogRef.close({
-      policy: this.policyDefinition.policy,
-      id: this.policyDefinition.id
+      policy: this.policyDefinition['edc:policy'],
+      id: this.policyDefinition['@id']
     })
   }
 }

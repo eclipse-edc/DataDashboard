@@ -10,10 +10,10 @@ Developer documentation can be found under [docs/developer](docs/developer/), wh
 
 ## Generate client code for EDC REST APIs
 
-1. [optional] copy the current version of EDC's `openapi.yaml` file to `openapi/`. There is one checked in, so this is not required.
+1. [optional] copy the current version of EDC's `management-api.yaml` file to `openapi/`. There is one checked in, so this is not required.
 2. in a shell execute
    ```shell
-   docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate -i /local/openapi/openapi.yaml -g typescript-angular -o /local/src/modules/edc-dmgmt-client/
+   docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate -i /local/openapi/management-api.yaml -g typescript-angular -o /local/src/modules/edc-dmgmt-client/
    ```
    This re-generates the service and model classes. 
 

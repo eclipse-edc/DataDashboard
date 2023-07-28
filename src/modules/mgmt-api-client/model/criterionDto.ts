@@ -12,8 +12,8 @@
 
 
 export interface CriterionDto {
-    operandLeft: string;
-    operandRight?: object;
-    operator: string;
+    "edc:operandLeft": string;
+    "edc:operandRight"?: object;
+    "edc:operator": string;
 }
 

@@ -41,31 +41,31 @@ export class ContractDefinitionEditorDialog implements OnInit {
   }
 
   ngOnInit(): void {
-    this.policyService.getAllPolicies().subscribe(policyDefinitions => {
+    this.policyService.queryAllPolicies().subscribe(policyDefinitions => {
       this.policies = policyDefinitions;
-      this.accessPolicy = this.policies.find(policy => policy.id === this.contractDefinition.accessPolicyId);
-      this.contractPolicy = this.policies.find(policy => policy.id === this.contractDefinition.contractPolicyId);
+      this.accessPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.accessPolicyId);
+      this.contractPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.contractPolicyId);
     });
-    this.assetService.getAllAssets().pipe(map(asset => asset.map(a => new Asset(a.properties!)))).subscribe(assets => {
+    this.assetService.requestAssets().pipe(map(asset => asset.map(a => new Asset(a["edc:properties"]!)))).subscribe(assets => {
       this.availableAssets = assets;
       // preselection
       if (this.contractDefinition) {
-        const assetIds = this.contractDefinition.criteria.map((c: CriterionDto) => c.operandRight?.toString());
+        const assetIds = this.contractDefinition.criteria.map((c: CriterionDto) => c['edc:operandRight']?.toString());
         this.assets = this.availableAssets.filter(asset => assetIds.includes(asset.id));
       }
     })
   }
 
   onSave() {
-    this.contractDefinition.accessPolicyId = this.accessPolicy!.id!;
-    this.contractDefinition.contractPolicyId = this.contractPolicy!.id!;
+    this.contractDefinition.accessPolicyId = this.accessPolicy!['@id']!;
+    this.contractDefinition.contractPolicyId = this.contractPolicy!['@id']!;
     this.contractDefinition.criteria = [];
 
     const ids = this.assets.map(asset => asset.id);
     this.contractDefinition.criteria = [...this.contractDefinition.criteria, {
-      operandLeft: 'asset:prop:id',
-      operator: 'in',
-      operandRight: ids,
+      'edc:operandLeft': 'asset:prop:id',
+      'edc:operator': 'in',
+      'edc:operandRight': ids,
     }];
 
     this.dialogRef.close({

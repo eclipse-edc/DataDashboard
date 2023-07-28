@@ -14,6 +14,6 @@
 export interface AssetResponseDto {
     createdAt?: number;
     id?: string;
-    properties?: { [key: string]: string; };
+    "edc:properties"?: { [key: string]: string; };
 }
 

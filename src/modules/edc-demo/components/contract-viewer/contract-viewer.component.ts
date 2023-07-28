@@ -53,7 +53,7 @@ export class ContractViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.contracts$ = this.contractAgreementService.getAllAgreements();
+    this.contracts$ = this.contractAgreementService.queryAllAgreements();
   }
 
   asDate(epochSeconds?: number): string {
@@ -66,7 +66,7 @@ export class ContractViewerComponent implements OnInit {
   }
 
   getAsset(assetId?: string): Observable<Asset> {
-    return assetId ? this.assetService.getAsset(assetId).pipe(map(a => new Asset(a.properties!))) : of();
+    return assetId ? this.assetService.getAsset(assetId).pipe(map(a => new Asset(a["edc:properties"]!))) : of();
   }
 
   onTransferClicked(contract: ContractAgreementDto) {
@@ -81,7 +81,7 @@ export class ContractViewerComponent implements OnInit {
       this.createTransferRequest(contract, storageTypeId)
         .pipe(switchMap(trq => this.transferService.initiateTransfer(trq)))
         .subscribe(transferId => {
-          this.startPolling(transferId, contract.id!);
+          this.startPolling(transferId, contract["@id"]!);
         }, error => {
           console.error(error);
           this.notificationService.showError("Error initiating transfer");
@@ -94,22 +94,23 @@ export class ContractViewerComponent implements OnInit {
   }
 
   private createTransferRequest(contract: ContractAgreementDto, storageTypeId: string): Observable<TransferRequestDto> {
-    return this.getOfferedAssetForId(contract.assetId!).pipe(map(offeredAsset => {
+    return this.getOfferedAssetForId(contract["edc:assetId"]!).pipe(map(offeredAsset => {
       return {
         assetId: offeredAsset.id,
-        contractId: contract.id,
+        contractId: contract["@id"],
         connectorId: "consumer", //doesn't matter, but cannot be null
         dataDestination: {
-          properties: {
-            "type": storageTypeId,
-            account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
-            // container: omitted, so it will be auto-assigned by the EDC runtime
-          }
+          "type": storageTypeId,
+          account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
+          // container: omitted, so it will be auto-assigned by the EDC runtime
         },
         managedResources: true,
         transferType: {isFinite: true}, //must be there, otherwise NPE on backend
         connectorAddress: offeredAsset.originator,
-        protocol: 'ids-multipart'
+        protocol: 'dataspace-protocol-http',
+        "@context": {
+          "edc": "https://w3id.org/edc/v0.0.1/ns/"
+        }
       };
     }));
 
@@ -134,7 +135,7 @@ export class ContractViewerComponent implements OnInit {
   private startPolling(transferProcessId: IdResponseDto, contractId: string) {
     // track this transfer process
     this.runningTransfers.push({
-      processId: transferProcessId.id!,
+      processId: transferProcessId["@id"]!,
       state: TransferProcessStates.REQUESTED,
       contractId: contractId
     });
@@ -149,11 +150,11 @@ export class ContractViewerComponent implements OnInit {
     return () => {
       from(this.runningTransfers) //create from array
         .pipe(switchMap(t => this.catalogService.getTransferProcessesById(t.processId)), // fetch from API
-          filter(tpDto => ContractViewerComponent.isFinishedState(tpDto.state!)), // only use finished ones
+          filter(tpDto => ContractViewerComponent.isFinishedState(tpDto["edc:state"]!)), // only use finished ones
           tap(tpDto => {
             // remove from in-progress
-            this.runningTransfers = this.runningTransfers.filter(rtp => rtp.processId !== tpDto.id)
-            this.notificationService.showInfo(`Transfer [${tpDto.id}] complete!`, "Show me!", () => {
+            this.runningTransfers = this.runningTransfers.filter(rtp => rtp.processId !== tpDto["@id"])
+            this.notificationService.showInfo(`Transfer [${tpDto["@id"]}] complete!`, "Show me!", () => {
               this.router.navigate(['/transfer-history'])
             })
           }),

@@ -44,7 +44,7 @@ export class CatalogBrowserComponent implements OnInit {
         switchMap(() => {
           const contractOffers$ = this.apiService.getContractOffers();
           return !!this.searchText ?
-            contractOffers$.pipe(map(contractOffers => contractOffers.filter(contractOffer => contractOffer.asset.name.toLowerCase().includes(this.searchText))))
+            contractOffers$.pipe(map(contractOffers => contractOffers.filter(contractOffer => contractOffer.id.toLowerCase().includes(this.searchText))))
             :
             contractOffers$;
         }));
@@ -56,20 +56,23 @@ export class CatalogBrowserComponent implements OnInit {
 
   onNegotiateClicked(contractOffer: ContractOffer) {
     const initiateRequest: NegotiationInitiateRequestDto = {
-      connectorAddress: contractOffer.asset.originator,
-
+      connectorAddress: contractOffer["edc:originator"],
+      "@context": {
+        "edc": "https://w3id.org/edc/v0.0.1/ns/",
+        "odrl": "http://www.w3.org/ns/odrl/2/"
+      },
       offer: {
         offerId: contractOffer.id,
         assetId: contractOffer.asset.id,
         policy: contractOffer.policy,
       },
-      connectorId: 'yomama',
-      protocol: 'ids-multipart'
+      connectorId: 'connector',
+      protocol: 'dataspace-protocol-http'
     };
 
     const finishedNegotiationStates = [
-      "CONFIRMED",
-      "DECLINED",
+      "VERIFIED",
+      "TERMINATED",
       "ERROR"];
 
     this.apiService.initiateNegotiation(initiateRequest).subscribe(negotiationId => {
@@ -86,10 +89,10 @@ export class CatalogBrowserComponent implements OnInit {
 
           for (const negotiation of this.runningNegotiations.values()) {
             this.apiService.getNegotiationState(negotiation.id).subscribe(updatedNegotiation => {
-              if (finishedNegotiationStates.includes(updatedNegotiation.state!)) {
+              if (finishedNegotiationStates.includes(updatedNegotiation["edc:state"]!)) {
                 let offerId = negotiation.offerId;
                 this.runningNegotiations.delete(offerId);
-                if (updatedNegotiation.state === "CONFIRMED") {
+                if (updatedNegotiation["edc:state"] === "VERIFIED") {
                   this.finishedNegotiations.set(offerId, updatedNegotiation);
                   this.notificationService.showInfo("Contract Negotiation complete!", "Show me!", () => {
                     this.router.navigate(['/contracts'])

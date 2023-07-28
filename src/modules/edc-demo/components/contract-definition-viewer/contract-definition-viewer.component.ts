@@ -34,9 +34,9 @@ export class ContractDefinitionViewerComponent implements OnInit {
     this.filteredContractDefinitions$ = this.fetch$
       .pipe(
         switchMap(() => {
-          const contractDefinitions$ = this.contractDefinitionService.getAllContractDefinitions();
+          const contractDefinitions$ = this.contractDefinitionService.queryAllContractDefinitions();
           return !!this.searchText ?
-            contractDefinitions$.pipe(map(contractDefinitions => contractDefinitions.filter(contractDefinition => contractDefinition.id!.toLowerCase().includes(this.searchText))))
+            contractDefinitions$.pipe(map(contractDefinitions => contractDefinitions.filter(contractDefinition => contractDefinition['@id']!.toLowerCase().includes(this.searchText))))
             :
             contractDefinitions$;
         }));
@@ -47,13 +47,13 @@ export class ContractDefinitionViewerComponent implements OnInit {
   }
 
   onDelete(contractDefinition: ContractDefinitionResponseDto) {
-    const dialogData = ConfirmDialogModel.forDelete("contract definition", contractDefinition.id!);
+    const dialogData = ConfirmDialogModel.forDelete("contract definition", contractDefinition['@id']!);
 
     const ref = this.dialog.open(ConfirmationDialogComponent, {maxWidth: '20%', data: dialogData});
 
     ref.afterClosed().subscribe(res => {
       if (res) {
-        this.contractDefinitionService.deleteContractDefinition(contractDefinition.id!).subscribe(() => this.fetch$.next(null));
+        this.contractDefinitionService.deleteContractDefinition(contractDefinition['@id']!).subscribe(() => this.fetch$.next(null));
       }
     });
 

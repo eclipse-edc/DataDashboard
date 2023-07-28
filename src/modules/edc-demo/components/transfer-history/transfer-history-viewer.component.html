@@ -20,43 +20,38 @@
 
           <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef scope="col">Id</th>
-              <td mat-cell *matCellDef="let item">{{item.id}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="creationDate">
-              <th mat-header-cell *matHeaderCellDef scope="col">Created</th>
-              <td mat-cell *matCellDef="let item">{{asDate(item.createdTimestamp)}}</td>
+              <td mat-cell *matCellDef="let item">{{item['@id']}}</td>
           </ng-container>
 
           <ng-container matColumnDef="state">
               <th mat-header-cell *matHeaderCellDef scope="col">State</th>
-              <td mat-cell *matCellDef="let item">{{item.state}}</td>
+              <td mat-cell *matCellDef="let item">{{item['edc:state']}}</td>
           </ng-container>
 
           <ng-container matColumnDef="lastUpdated">
               <th mat-header-cell *matHeaderCellDef scope="col">Last updated</th>
-              <td mat-cell *matCellDef="let item">{{asDate(item.stateTimestamp)}}</td>
+              <td mat-cell *matCellDef="let item">{{asDate(item['edc:stateTimestamp'])}}</td>
           </ng-container>
 
           <ng-container matColumnDef="connectorId">
               <th mat-header-cell *matHeaderCellDef scope="col">ConnectorId</th>
-              <td mat-cell *matCellDef="let item">{{item.dataRequest.connectorId}}</td>
+              <td mat-cell *matCellDef="let item">{{item['edc:dataRequest']['edc:connectorId']}}</td>
           </ng-container>
 
           <ng-container matColumnDef="assetId">
               <th mat-header-cell *matHeaderCellDef scope="col">AssetId</th>
-              <td mat-cell *matCellDef="let item">{{item.dataRequest.assetId}}</td>
+              <td mat-cell *matCellDef="let item">{{item['edc:dataRequest']['edc:assetId']}}</td>
           </ng-container>
 
           <ng-container matColumnDef="contractId">
               <th mat-header-cell *matHeaderCellDef scope="col">ContractId</th>
-              <td mat-cell *matCellDef="let item">{{item.dataRequest.contractId}}</td>
+              <td mat-cell *matCellDef="let item">{{item['edc:dataRequest']['edc:contractId']}}</td>
           </ng-container>
 
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef scope="col">Actions</th>
             <td mat-cell *matCellDef="let item" class="singleline-cell">
-              <a *ngIf="showStorageExplorerLink(item)" mat-stroked-button mat-button color="accent" [href]="storageExplorerLinkTemplate | replace: item.dataDestination.properties | safe: 'url'" class="action-button">
+              <a *ngIf="showStorageExplorerLink(item)" mat-stroked-button mat-button color="accent" [href]="storageExplorerLinkTemplate | replace: item['edc:dataDestination'].properties | safe: 'url'" class="action-button">
                 <mat-icon>loupe</mat-icon> Open Storage Explorer
               </a>
               <button *ngIf="showDeprovisionButton(item)" (click)="onDeprovision(item)" color="warn" mat-stroked-button  class="action-button">
