@@ -51,7 +51,7 @@ import {environment} from "../../environments/environment";
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     {
       provide: CONNECTOR_MANAGEMENT_API,
-      useFactory: (s: AppConfigService) => s.getConfig()?.dataManagementApiUrl,
+      useFactory: (s: AppConfigService) => s.getConfig()?.managementApiUrl,
       deps: [AppConfigService]
     },
     {
@@ -72,7 +72,7 @@ import {environment} from "../../environments/environment";
       provide: Configuration,
       useFactory: (s: AppConfigService) => {
         return new Configuration({
-          basePath: s.getConfig()?.dataManagementApiUrl
+          basePath: s.getConfig()?.managementApiUrl
         });
       },
       deps: [AppConfigService]
