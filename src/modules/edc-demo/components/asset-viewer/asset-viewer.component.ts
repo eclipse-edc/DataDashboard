@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {AssetEntryDto, AssetService,} from "../../../mgmt-api-client";
+import { EdcConnectorClient, EdcConnectorClientContext, AssetInput } from "@think-it-labs/edc-connector-client";
+import {AssetService} from "../../../mgmt-api-client";
 import {AssetEditorDialog} from "../asset-editor-dialog/asset-editor-dialog.component";
 import {Asset} from "../../models/asset";
 import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
@@ -21,6 +22,8 @@ export class AssetViewerComponent implements OnInit {
   private fetch$ = new BehaviorSubject(null);
 
   constructor(private assetService: AssetService,
+              private edcConnectorClient: EdcConnectorClient,
+              private edcConnectorClientContext: EdcConnectorClientContext,
               private notificationService: NotificationService,
               private readonly dialog: MatDialog) {
 }
@@ -53,7 +56,7 @@ export class AssetViewerComponent implements OnInit {
   onDelete(asset: Asset) {
     const dialogData = ConfirmDialogModel.forDelete("asset", `"${asset.id}"`)
     const ref = this.dialog.open(ConfirmationDialogComponent, {maxWidth: "20%", data: dialogData});
-  
+
     ref.afterClosed().subscribe({
       next: res => {
         if (res) {
@@ -66,19 +69,16 @@ export class AssetViewerComponent implements OnInit {
       }
     });
   }
-  
+
   onCreate() {
     const dialogRef = this.dialog.open(AssetEditorDialog);
-    dialogRef.afterClosed().pipe(first()).subscribe({
-      next: (result: { assetEntryDto?: AssetEntryDto }) => {
-        const newAsset = result?.assetEntryDto;
-        if (newAsset) {
-          this.assetService.createAsset(newAsset).subscribe({
-            next: () => this.fetch$.next(null),
-            error: error => this.showError(error, "This asset cannot be created"),
-            complete: () => this.notificationService.showInfo("Successfully created")
-          });
-        }
+    dialogRef.afterClosed().pipe(first()).subscribe((result: { assetInput?: AssetInput }) => {
+      const newAsset = result?.assetInput;
+      if (newAsset) {
+        this.edcConnectorClient.management.assets.create(this.edcConnectorClientContext, newAsset)
+          .then(() => this.fetch$.next(null))
+          .then(() => this.notificationService.showInfo("Successfully created"))
+          .catch(error => this.showError(error, "This asset cannot be created"));
       }
     });
   }
