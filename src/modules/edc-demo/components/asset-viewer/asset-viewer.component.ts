@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import { EdcConnectorClient, EdcConnectorClientContext, AssetInput } from "@think-it-labs/edc-connector-client";
+import {AssetInput } from "../../../mgmt-api-client/model";
 import {AssetService} from "../../../mgmt-api-client";
 import {AssetEditorDialog} from "../asset-editor-dialog/asset-editor-dialog.component";
-import {Asset} from "../../models/asset";
 import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
 import {NotificationService} from "../../services/notification.service";
+import { Asset } from '../../models/asset';
 
 @Component({
   selector: 'edc-demo-asset-viewer',
@@ -22,8 +22,6 @@ export class AssetViewerComponent implements OnInit {
   private fetch$ = new BehaviorSubject(null);
 
   constructor(private assetService: AssetService,
-              private edcConnectorClient: EdcConnectorClient,
-              private edcConnectorClientContext: EdcConnectorClientContext,
               private notificationService: NotificationService,
               private readonly dialog: MatDialog) {
 }
@@ -37,7 +35,7 @@ export class AssetViewerComponent implements OnInit {
     this.filteredAssets$ = this.fetch$
       .pipe(
         switchMap(() => {
-          const assets$ = this.assetService.requestAssets().pipe(map(assets => assets.map(asset => new Asset(asset["edc:properties"]!))));
+          const assets$ = this.assetService.requestAssets().pipe(map(assets => assets.map(asset => new Asset(asset["edc:properties"]))));
           return !!this.searchText ?
             assets$.pipe(map(assets => assets.filter(asset => asset.name.includes(this.searchText))))
             :
@@ -75,11 +73,11 @@ export class AssetViewerComponent implements OnInit {
     dialogRef.afterClosed().pipe(first()).subscribe((result: { assetInput?: AssetInput }) => {
       const newAsset = result?.assetInput;
       if (newAsset) {
-        this.edcConnectorClient.management.assets.create(this.edcConnectorClientContext, newAsset)
-          .then(() => this.fetch$.next(null))
-          .then(() => this.notificationService.showInfo("Successfully created"))
-          .catch(error => this.showError(error, "This asset cannot be created"));
+        this.assetService.createAsset(newAsset).subscribe(()=> this.fetch$.next(null),
+        err => this.showError(err),
+        () => this.notificationService.showInfo("Successfully created"),
+        )
       }
-    });
-  }
+  })
+}
 }

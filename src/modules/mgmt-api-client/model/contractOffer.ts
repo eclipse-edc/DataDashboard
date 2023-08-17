@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { Policy } from './policy';
-import { Asset } from './asset';
+import { Asset } from '.';
 
 
 export interface ContractOffer { 
