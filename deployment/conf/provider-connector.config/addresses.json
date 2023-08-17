@@ -1,6 +1,6 @@
 {
   "uid": "2",
-  "name": "provider.edc.think-it.io",
+  "name": "provider.edc.connector.io",
   "addresses": {
     "default": "http://localhost:29191/api",
     "management": "http://localhost:29193/management",
