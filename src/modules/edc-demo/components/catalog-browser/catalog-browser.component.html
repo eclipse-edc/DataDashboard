@@ -1,5 +1,5 @@
 <div *ngIf="filteredContractOffers$ | async as filteredContractOffers" id="wrapper">
-  <div>
+  <div class="container">
     <mat-form-field class="search-form-field" color="accent">
       <mat-label>Search catalog</mat-label>
       <input (input)="onSearch()" [(ngModel)]="searchText" matInput>

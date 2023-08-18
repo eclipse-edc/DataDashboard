@@ -10,12 +10,14 @@
     </mat-card>
 
     <div *ngIf="transferProcesses$ | async as transferProcesses">
+      <div class="table-header-container">
       <button mat-stroked-button (click)="loadTransferProcesses()" color="accent">
         <mat-icon>cached</mat-icon>
         Refresh
       </button>
       <mat-paginator [length]="transferProcesses.length" pageSize="transferProcesses.length" hidePageSize="true"></mat-paginator>
-
+    </div>
+    
       <table mat-table [dataSource]="transferProcesses" class="transfer-history-table">
 
           <ng-container matColumnDef="id">

@@ -19,6 +19,7 @@
 .search-form-field {
   min-width: 200px;
   width: 30%;
+  margin-top: 18px;
 }
 
 .card-actions {
@@ -34,4 +35,10 @@
 mat-paginator {
   display: inline-block;
   background-color: transparent;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
