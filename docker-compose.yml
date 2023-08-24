@@ -25,20 +25,3 @@ services:
       EDC_FS_CONFIG: /config/configuration.properties
     volumes:
       - ./deployment/conf/consumer-connector.config:/config
-
-  # provider-connector:
-  #   build: deployment/connector
-  #   platform: ${DOCKER_PLATFORM:-linux/amd64}
-  #   ports:
-  #     - "29191:9191" # connector default
-  #     - "29192:9192" # connector control
-  #     - "29193:9193" # connector management
-  #     - "29194:9194" # connector protocol
-  #     - "29291:9291" # data-plane public
-  #   environment:
-  #     EDC_VAULT: /config/vault.properties
-  #     EDC_KEYSTORE: /config/vault-keys.p12
-  #     EDC_KEYSTORE_PASSWORD: 123456
-  #     EDC_FS_CONFIG: /config/configuration.properties
-  #   volumes:
-  #     - ./deployment/conf/provider-connector.config:/config

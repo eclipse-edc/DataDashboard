@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AssetService } from "../../../mgmt-api-client";
 import { AssetInput } from "@think-it-labs/edc-connector-client";
 import { MatDialogRef } from "@angular/material/dialog";
 import { StorageType } from "../../models/storage-type";
@@ -22,7 +21,7 @@ export class AssetEditorDialog implements OnInit {
   container: string = 'src-container';
   blobname: string = '';
 
-  constructor(private assetService: AssetService, private dialogRef: MatDialogRef<AssetEditorDialog>,
+  constructor(private dialogRef: MatDialogRef<AssetEditorDialog>,
       @Inject('STORAGE_TYPES') public storageTypes: StorageType[]) {
   }
 

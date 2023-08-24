@@ -36,10 +36,9 @@ export class AssetViewerComponent implements OnInit {
       .pipe(
         switchMap(() => {
           const assets$ = this.assetService.requestAssets().pipe(map(assets => assets.map(asset => new Asset(asset["edc:properties"]))));
-          return !!this.searchText ?
-            assets$.pipe(map(assets => assets.filter(asset => asset.name.includes(this.searchText))))
-            :
-            assets$;
+          return !!this.searchText
+            ? assets$.pipe(map(assets => assets.filter(asset => asset.name.includes(this.searchText))))
+            : assets$;
         }));
   }
 
@@ -73,10 +72,11 @@ export class AssetViewerComponent implements OnInit {
     dialogRef.afterClosed().pipe(first()).subscribe((result: { assetInput?: AssetInput }) => {
       const newAsset = result?.assetInput;
       if (newAsset) {
-        this.assetService.createAsset(newAsset).subscribe(()=> this.fetch$.next(null),
-        err => this.showError(err),
-        () => this.notificationService.showInfo("Successfully created"),
-        )
+        this.assetService.createAsset(newAsset).subscribe({
+          next: ()=> this.fetch$.next(null),
+          error: err => this.showError(err, "This asset cannot be created"),
+          complete: () => this.notificationService.showInfo("Successfully created"),
+        })
       }
   })
 }

@@ -11,83 +11,22 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext
-        }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
+import { Injectable } from '@angular/core';
+import { HttpResponse, HttpEvent, HttpContext } from '@angular/common/http';
 import { Observable, from }                                        from 'rxjs';
 
-// @ts-ignore
-import { BASE_PATH }                     from '../variables';
-import { Configuration }                                     from '../configuration';
 import { EdcConnectorClient, EdcConnectorClientContext } from '@think-it-labs/edc-connector-client';
 import { AssetInput, AssetResponse, IdResponse, QuerySpec } from "../model"
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssetService {
 
+    private assets = this.edcConnectorClient.management.assets;
     protected basePath = 'http://localhost';
-    public defaultHeaders = new HttpHeaders();
-    public configuration = new Configuration();
-    public encoder: HttpParameterCodec;
 
-    constructor(protected httpClient: HttpClient, private edcConnectorClient: EdcConnectorClient, private edcConnectorClientContext: EdcConnectorClientContext, @Optional()@Inject(BASE_PATH) basePath: string|string[], 
-    @Optional() configuration: Configuration) {
-        if (configuration) {
-            this.configuration = configuration;
-        }
-        if (typeof this.configuration.basePath !== 'string') {
-            if (Array.isArray(basePath) && basePath.length > 0) {
-                basePath = basePath[0];
-            }
-
-            if (typeof basePath !== 'string') {
-                basePath = this.basePath;
-            }
-            this.configuration.basePath = basePath;
-        }
-        this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
-    }
-
-
-    // @ts-ignore
-    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
-        if (typeof value === "object" && value instanceof Date === false) {
-            httpParams = this.addToHttpParamsRecursive(httpParams, value);
-        } else {
-            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
-        }
-        return httpParams;
-    }
-
-    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
-        if (value == null) {
-            return httpParams;
-        }
-
-        if (typeof value === "object") {
-            if (Array.isArray(value)) {
-                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
-            } else if (value instanceof Date) {
-                if (key != null) {
-                    httpParams = httpParams.append(key, (value as Date).toISOString().substr(0, 10));
-                } else {
-                   throw Error("key may not be null if value is Date");
-                }
-            } else {
-                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
-                    httpParams, value[k], key != null ? `${key}.${k}` : k));
-            }
-        } else if (key != null) {
-            httpParams = httpParams.append(key, value);
-        } else {
-            throw Error("key may not be null if value is not object or array");
-        }
-        return httpParams;
+    constructor(private edcConnectorClient: EdcConnectorClient, private edcConnectorClientContext: EdcConnectorClientContext) {
     }
 
     /**
@@ -99,92 +38,9 @@ export class AssetService {
     public createAsset(assetEntryDto: AssetInput, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<IdResponse>;
     public createAsset(assetEntryDto: AssetInput, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<IdResponse>>;
     public createAsset(assetEntryDto: AssetInput, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<IdResponse>>;
-    public createAsset(assetEntryDto: AssetInput): Observable<any> {       
-        return from(this.edcConnectorClient.management.assets.create(this.edcConnectorClientContext, assetEntryDto))
+    public createAsset(assetEntryDto: AssetInput): Observable<any> {
+        return from(this.assets.create(this.edcConnectorClientContext, assetEntryDto))
     }
-
-    /**
-     * Gets all assets according to a particular query
-     * @param offset
-     * @param limit
-     * @param filter
-     * @param sort
-     * @param sortField
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     * @deprecated
-     */
-    public getAllAssets(offset?: number, limit?: number, filter?: string, sort?: 'ASC' | 'DESC', sortField?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<AssetResponse>>;
-    public getAllAssets(offset?: number, limit?: number, filter?: string, sort?: 'ASC' | 'DESC', sortField?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<AssetResponse>>>;
-    public getAllAssets(offset?: number, limit?: number, filter?: string, sort?: 'ASC' | 'DESC', sortField?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<AssetResponse>>>;
-    public getAllAssets(offset?: number, limit?: number, filter?: string, sort?: 'ASC' | 'DESC', sortField?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (offset !== undefined && offset !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>offset, 'offset');
-        }
-        if (limit !== undefined && limit !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>limit, 'limit');
-        }
-        if (filter !== undefined && filter !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>filter, 'filter');
-        }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'sort');
-        }
-        if (sortField !== undefined && sortField !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sortField, 'sortField');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/v3/assets`;
-        return this.httpClient.request<Array<AssetResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
-        {
-            context: localVarHttpContext,
-            params: localVarQueryParameters,
-            responseType: <any>responseType_,
-            withCredentials: this.configuration.withCredentials,
-            headers: localVarHeaders,
-            observe: observe,
-            reportProgress: reportProgress
-        }
-    );    
-}
 
     /**
      * Gets an asset with the given ID
@@ -200,7 +56,7 @@ export class AssetService {
             throw new Error('Required parameter id was null or undefined when calling getAsset.');
         }
 
-        return from(this.edcConnectorClient.management.assets.get(this.edcConnectorClientContext, id))
+        return from(this.assets.get(this.edcConnectorClientContext, id))
 
     }
 
@@ -218,8 +74,7 @@ export class AssetService {
             throw new Error('Required parameter id was null or undefined when calling removeAsset.');
         }
 
-        return from(this.edcConnectorClient.management.assets.delete(this.edcConnectorClientContext, id))
-
+        return from(this.assets.delete(this.edcConnectorClientContext, id))
     }
 
     /**
@@ -232,8 +87,7 @@ export class AssetService {
     public requestAssets(querySpecDto?: QuerySpec, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<AssetResponse>>>;
     public requestAssets(querySpecDto?: QuerySpec, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<AssetResponse>>>;
     public requestAssets(querySpecDto?: QuerySpec): Observable<any> {
-        console.log("context", this.edcConnectorClientContext)
-        return from(this.edcConnectorClient.management.assets.queryAll(this.edcConnectorClientContext, querySpecDto))
+        return from(this.assets.queryAll(this.edcConnectorClientContext, querySpecDto))
     }
 
 }
