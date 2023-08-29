@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  data-dashboard:
+    build: .
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
+    ports:
+      - "8080:80"
+    volumes:
+      - ./deployment/nginx.compose.conf:/etc/nginx/nginx.conf
+
+  consumer-connector:
+    build: deployment/connector
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
+    ports:
+      - "19191:9191" # connector default
+      - "19192:9192" # connector control
+      - "19193:9193" # connector management
+      - "19194:9194" # connector protocol
+      - "19291:9291" # data-plane public
+    environment:
+      EDC_VAULT: /config/vault.properties
+      EDC_KEYSTORE: /config/vault-keys.p12
+      EDC_KEYSTORE_PASSWORD: 123456
+      EDC_FS_CONFIG: /config/configuration.properties
+    volumes:
+      - ./deployment/conf/consumer-connector.config:/config

@@ -2,11 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {AssetEntryDto, AssetService,} from "../../../mgmt-api-client";
+import {AssetInput } from "../../../mgmt-api-client/model";
+import {AssetService} from "../../../mgmt-api-client";
 import {AssetEditorDialog} from "../asset-editor-dialog/asset-editor-dialog.component";
-import {Asset} from "../../models/asset";
 import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
 import {NotificationService} from "../../services/notification.service";
+import { Asset } from '../../models/asset';
 
 @Component({
   selector: 'edc-demo-asset-viewer',
@@ -34,11 +35,10 @@ export class AssetViewerComponent implements OnInit {
     this.filteredAssets$ = this.fetch$
       .pipe(
         switchMap(() => {
-          const assets$ = this.assetService.requestAssets().pipe(map(assets => assets.map(asset => new Asset(asset["edc:properties"]!))));
-          return !!this.searchText ?
-            assets$.pipe(map(assets => assets.filter(asset => asset.name.includes(this.searchText))))
-            :
-            assets$;
+          const assets$ = this.assetService.requestAssets().pipe(map(assets => assets.map(asset => new Asset(asset["edc:properties"]))));
+          return !!this.searchText
+            ? assets$.pipe(map(assets => assets.filter(asset => asset.name.includes(this.searchText))))
+            : assets$;
         }));
   }
 
@@ -53,7 +53,7 @@ export class AssetViewerComponent implements OnInit {
   onDelete(asset: Asset) {
     const dialogData = ConfirmDialogModel.forDelete("asset", `"${asset.id}"`)
     const ref = this.dialog.open(ConfirmationDialogComponent, {maxWidth: "20%", data: dialogData});
-  
+
     ref.afterClosed().subscribe({
       next: res => {
         if (res) {
@@ -66,20 +66,18 @@ export class AssetViewerComponent implements OnInit {
       }
     });
   }
-  
+
   onCreate() {
     const dialogRef = this.dialog.open(AssetEditorDialog);
-    dialogRef.afterClosed().pipe(first()).subscribe({
-      next: (result: { assetEntryDto?: AssetEntryDto }) => {
-        const newAsset = result?.assetEntryDto;
-        if (newAsset) {
-          this.assetService.createAsset(newAsset).subscribe({
-            next: () => this.fetch$.next(null),
-            error: error => this.showError(error, "This asset cannot be created"),
-            complete: () => this.notificationService.showInfo("Successfully created")
-          });
-        }
+    dialogRef.afterClosed().pipe(first()).subscribe((result: { assetInput?: AssetInput }) => {
+      const newAsset = result?.assetInput;
+      if (newAsset) {
+        this.assetService.createAsset(newAsset).subscribe({
+          next: ()=> this.fetch$.next(null),
+          error: err => this.showError(err, "This asset cannot be created"),
+          complete: () => this.notificationService.showInfo("Successfully created"),
+        })
       }
-    });
-  }
+  })
+}
 }

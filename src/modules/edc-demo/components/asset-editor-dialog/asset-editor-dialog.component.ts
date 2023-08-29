@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import { AssetEntryDto, AssetService} from "../../../mgmt-api-client";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {StorageType} from "../../models/storage-type";
+import { Component, Inject, OnInit } from '@angular/core';
+import { AssetInput } from "@think-it-labs/edc-connector-client";
+import { MatDialogRef } from "@angular/material/dialog";
+import { StorageType } from "../../models/storage-type";
 
 
 @Component({
@@ -21,7 +21,7 @@ export class AssetEditorDialog implements OnInit {
   container: string = 'src-container';
   blobname: string = '';
 
-  constructor(private assetService: AssetService, private dialogRef: MatDialogRef<AssetEditorDialog>,
+  constructor(private dialogRef: MatDialogRef<AssetEditorDialog>,
       @Inject('STORAGE_TYPES') public storageTypes: StorageType[]) {
   }
 
@@ -29,26 +29,22 @@ export class AssetEditorDialog implements OnInit {
   }
 
   onSave() {
-    const assetEntryDto: AssetEntryDto = {
-      asset: {
-        properties: {
-          "asset:prop:name": this.name,
-          "asset:prop:version": this.version,
-          "asset:prop:id": this.id,
-          "asset:prop:contenttype": this.contenttype,
-        }
+    const assetInput: AssetInput = {
+      "@id": this.id,
+      properties: {
+        "name": this.name,
+        "version": this.version,
+        "contenttype": this.contenttype,
       },
       dataAddress: {
-        properties: {
-          "type": this.storageTypeId,
-          "account": this.account,
-          "container": this.container,
-          "blobname": this.blobname,
-          "keyName": `${this.account}-key1`
-        },
+        "type": this.storageTypeId,
+        "account": this.account,
+        "container": this.container,
+        "blobname": this.blobname,
+        "keyName": `${this.account}-key1`
       }
     };
 
-    this.dialogRef.close({ assetEntryDto });
+    this.dialogRef.close({ assetInput });
   }
 }

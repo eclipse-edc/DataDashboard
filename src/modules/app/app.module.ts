@@ -21,6 +21,7 @@ import {Configuration} from "../mgmt-api-client";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {EdcApiKeyInterceptor} from "./edc.apikey.interceptor";
 import {environment} from "../../environments/environment";
+import { EdcConnectorClient, EdcConnectorClientContext } from "@think-it-labs/edc-connector-client";
 
 
 @NgModule({
@@ -51,7 +52,7 @@ import {environment} from "../../environments/environment";
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     {
       provide: CONNECTOR_MANAGEMENT_API,
-      useFactory: (s: AppConfigService) => s.getConfig()?.dataManagementApiUrl,
+      useFactory: (s: AppConfigService) => s.getConfig()?.managementApiUrl,
       deps: [AppConfigService]
     },
     {
@@ -72,7 +73,7 @@ import {environment} from "../../environments/environment";
       provide: Configuration,
       useFactory: (s: AppConfigService) => {
         return new Configuration({
-          basePath: s.getConfig()?.dataManagementApiUrl
+          basePath: s.getConfig()?.managementApiUrl
         });
       },
       deps: [AppConfigService]
@@ -84,8 +85,26 @@ import {environment} from "../../environments/environment";
         i.apiKey = environment.apiKey
         return i;
       }, deps: [AppConfigService]
+    },
+    {
+      provide: EdcConnectorClient,
+      useFactory: () => {
+        return new EdcConnectorClient();
+      }
+    },
+    {
+      provide: EdcConnectorClientContext,
+      useFactory: (s: AppConfigService, client: EdcConnectorClient) => {
+        return client.createContext("123456", {
+          default: "https://edc.connector.io/api",
+          management: s.getConfig()?.managementApiUrl as string,
+          protocol: "https://edc.connector.io/protocol",
+          public: "https://edc.connector.io/public",
+          control: "https://edc.connector.io/control",
+        });
+      },
+      deps: [AppConfigService, EdcConnectorClient]
     }
-
   ],
   bootstrap: [AppComponent]
 })
