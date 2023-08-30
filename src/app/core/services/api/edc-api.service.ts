@@ -10,11 +10,13 @@ import {
   EdcClient,
   IdResponse,
   IdResponseDto,
+  PolicyDefinitionPage,
   TransferHistoryPage,
   buildEdcClient,
 } from '@sovity.de/edc-client';
 import {AssetCreateRequest} from '@sovity.de/edc-client/dist/generated/models/AssetCreateRequest';
 import {ContractDefinitionRequest} from '@sovity.de/edc-client/dist/generated/models/ContractDefinitionRequest';
+import {PolicyDefinitionCreateRequest} from '@sovity.de/edc-client/dist/generated/models/PolicyDefinitionCreateRequest';
 import {APP_CONFIG, AppConfig} from '../../config/app-config';
 import {EDC_FAKE_BACKEND} from './fake-backend/edc-fake-backend';
 
@@ -66,6 +68,24 @@ export class EdcApiService {
     return from(
       this.edcClient.uiApi.deleteContractDefinition({contractDefinitionId}),
     );
+  }
+
+  createPolicyDefinition(
+    policyDefinitionCreateRequest: PolicyDefinitionCreateRequest,
+  ): Observable<IdResponseDto> {
+    return from(
+      this.edcClient.uiApi.createPolicyDefinition({
+        policyDefinitionCreateRequest,
+      }),
+    );
+  }
+
+  getPolicyDefinitionPage(): Observable<PolicyDefinitionPage> {
+    return from(this.edcClient.uiApi.policyDefinitionPage());
+  }
+
+  deletePolicyDefinition(policyId: string): Observable<IdResponseDto> {
+    return from(this.edcClient.uiApi.deletePolicyDefinition({policyId}));
   }
 
   getContractAgreementPage(): Observable<ContractAgreementPage> {

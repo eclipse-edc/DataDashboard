@@ -1,4 +1,5 @@
-import {FormControl, FormGroup, ɵFormGroupValue} from '@angular/forms';
+import {FormControl, ɵFormGroupValue} from '@angular/forms';
+import {UiPolicyCreateRequest} from '@sovity.de/edc-client';
 
 /**
  * Form Value Type
@@ -11,14 +12,5 @@ export type NewPolicyDialogFormValue =
  */
 export interface NewPolicyDialogFormModel {
   id: FormControl<string>;
-  policyType: FormControl<PolicyType>;
-  range: FormGroup<{
-    start: FormControl<Date | null>;
-    end: FormControl<Date | null>;
-  }>;
-  connectorId: FormControl<string>;
+  policy: FormControl<UiPolicyCreateRequest>;
 }
-
-export type PolicyType =
-  | 'Time-Period-Restricted'
-  | 'Connector-Restricted-Usage';
