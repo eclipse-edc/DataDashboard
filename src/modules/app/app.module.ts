@@ -95,7 +95,7 @@ import { EdcConnectorClient, EdcConnectorClientContext } from "@think-it-labs/ed
     {
       provide: EdcConnectorClientContext,
       useFactory: (s: AppConfigService, client: EdcConnectorClient) => {
-        return client.createContext("123456", {
+        return client.createContext(environment.apiKey, {
           default: "https://edc.connector.io/api",
           management: s.getConfig()?.managementApiUrl as string,
           protocol: "https://edc.connector.io/protocol",
