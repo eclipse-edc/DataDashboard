@@ -15,7 +15,7 @@ import { Injectable } from '@angular/core';
 import { HttpResponse, HttpEvent, HttpContext } from '@angular/common/http';
 import { Observable, from }                                        from 'rxjs';
 
-import { EdcConnectorClient, EdcConnectorClientContext } from '@think-it-labs/edc-connector-client';
+import { EdcConnectorClient } from '@think-it-labs/edc-connector-client';
 import { AssetInput, AssetResponse, IdResponse, QuerySpec } from "../model"
 
 @Injectable({
@@ -26,7 +26,7 @@ export class AssetService {
     private assets = this.edcConnectorClient.management.assets;
     protected basePath = 'http://localhost';
 
-    constructor(private edcConnectorClient: EdcConnectorClient, private edcConnectorClientContext: EdcConnectorClientContext) {
+    constructor(private edcConnectorClient: EdcConnectorClient) {
     }
 
     /**
@@ -39,7 +39,7 @@ export class AssetService {
     public createAsset(assetEntryDto: AssetInput, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<IdResponse>>;
     public createAsset(assetEntryDto: AssetInput, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<IdResponse>>;
     public createAsset(assetEntryDto: AssetInput): Observable<any> {
-        return from(this.assets.create(this.edcConnectorClientContext, assetEntryDto))
+        return from(this.assets.create(assetEntryDto))
     }
 
     /**
@@ -56,7 +56,7 @@ export class AssetService {
             throw new Error('Required parameter id was null or undefined when calling getAsset.');
         }
 
-        return from(this.assets.get(this.edcConnectorClientContext, id))
+        return from(this.assets.get(id))
 
     }
 
@@ -74,7 +74,7 @@ export class AssetService {
             throw new Error('Required parameter id was null or undefined when calling removeAsset.');
         }
 
-        return from(this.assets.delete(this.edcConnectorClientContext, id))
+        return from(this.assets.delete(id))
     }
 
     /**
@@ -87,7 +87,7 @@ export class AssetService {
     public requestAssets(querySpecDto?: QuerySpec, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<AssetResponse>>>;
     public requestAssets(querySpecDto?: QuerySpec, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<AssetResponse>>>;
     public requestAssets(querySpecDto?: QuerySpec): Observable<any> {
-        return from(this.assets.queryAll(this.edcConnectorClientContext, querySpecDto))
+        return from(this.assets.queryAll(querySpecDto))
     }
 
 }
