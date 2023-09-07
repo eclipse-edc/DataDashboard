@@ -41,7 +41,7 @@ Substitute the values as necessary:
 
 As some extra safety consider running `git udpate-index --assume-unchanged src/assets/config/app.config.json` before changing this file.
 
-## Running a frondend and a connector locally
+## Running a frondend and a connector locally (for demo purpose)
 To test the correct functionality locally you can spin up a local docker compose
 that will load the `data-dashboard` service and the `connector` one.
 First you need to change the `app.config.json` this way:
@@ -61,7 +61,7 @@ docker compose up
 
 The DataDashboard will be available at `http://localhost:8080`
 
-### Running DataDashboard from the host machine
+### Running DataDashboard from the host machine (for debugging purpose)
 To have a quicker development cycle, you can also run the DataDashboard from the
 host machine using `npm start`, sending request against the connector loaded by
 docker compose.

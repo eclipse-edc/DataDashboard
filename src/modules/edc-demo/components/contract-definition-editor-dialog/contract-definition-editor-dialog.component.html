@@ -2,7 +2,7 @@
 
     <mat-form-field class="form-field" color="accent" id="form-field-id">
         <mat-label>Id</mat-label>
-        <input [(ngModel)]="contractDefinition.id" [disabled]="editMode" matInput required>
+        <input [(ngModel)]="contractDefinition['@id']" [disabled]="editMode" matInput required>
     </mat-form-field>
 
     <div>

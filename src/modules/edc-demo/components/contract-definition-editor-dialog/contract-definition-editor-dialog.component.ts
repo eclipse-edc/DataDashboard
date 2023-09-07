@@ -1,12 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {
-  AssetService, ContractDefinitionRequestDto,
-  CriterionDto, Policy, PolicyDefinitionResponseDto,
-  PolicyService
+  AssetService, PolicyDefinitionResponseDto, PolicyService
 } from "../../../mgmt-api-client";
-import {map} from "rxjs/operators";
-import {Asset} from "../../models/asset";
+import { Asset, ContractDefinitionInput } from "../../../mgmt-api-client/model"
 
 
 @Component({
@@ -23,9 +20,9 @@ export class ContractDefinitionEditorDialog implements OnInit {
   accessPolicy?: PolicyDefinitionResponseDto;
   contractPolicy?: PolicyDefinitionResponseDto;
   assets: Asset[] = [];
-  contractDefinition: ContractDefinitionRequestDto = {
-    id: '',
-    criteria: [],
+  contractDefinition: ContractDefinitionInput = {
+    "@id": '',
+    assetsSelector: [],
     accessPolicyId: undefined!,
     contractPolicyId: undefined!
   };
@@ -33,7 +30,7 @@ export class ContractDefinitionEditorDialog implements OnInit {
   constructor(private policyService: PolicyService,
               private assetService: AssetService,
               private dialogRef: MatDialogRef<ContractDefinitionEditorDialog>,
-              @Inject(MAT_DIALOG_DATA) contractDefinition?: ContractDefinitionRequestDto) {
+              @Inject(MAT_DIALOG_DATA) contractDefinition?: ContractDefinitionInput) {
     if (contractDefinition) {
       this.contractDefinition = contractDefinition;
       this.editMode = true;
@@ -46,11 +43,11 @@ export class ContractDefinitionEditorDialog implements OnInit {
       this.accessPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.accessPolicyId);
       this.contractPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.contractPolicyId);
     });
-    this.assetService.requestAssets().pipe(map(asset => asset.map(a => new Asset(a["edc:properties"]!)))).subscribe(assets => {
+    this.assetService.requestAssets().subscribe(assets => {
       this.availableAssets = assets;
       // preselection
       if (this.contractDefinition) {
-        const assetIds = this.contractDefinition.criteria.map((c: CriterionDto) => c['edc:operandRight']?.toString());
+        const assetIds = this.contractDefinition.assetsSelector.map(c => c.operandRight?.toString());
         this.assets = this.availableAssets.filter(asset => assetIds.includes(asset.id));
       }
     })
@@ -59,13 +56,13 @@ export class ContractDefinitionEditorDialog implements OnInit {
   onSave() {
     this.contractDefinition.accessPolicyId = this.accessPolicy!['@id']!;
     this.contractDefinition.contractPolicyId = this.contractPolicy!['@id']!;
-    this.contractDefinition.criteria = [];
+    this.contractDefinition.assetsSelector = [];
 
     const ids = this.assets.map(asset => asset.id);
-    this.contractDefinition.criteria = [...this.contractDefinition.criteria, {
-      'edc:operandLeft': 'asset:prop:id',
-      'edc:operator': 'in',
-      'edc:operandRight': ids,
+    this.contractDefinition.assetsSelector = [...this.contractDefinition.assetsSelector, {
+      operandLeft: 'asset:prop:id',
+      operator: 'in',
+      operandRight: ids,
     }];
 
     this.dialogRef.close({
