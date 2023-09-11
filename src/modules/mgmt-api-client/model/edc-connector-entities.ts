@@ -4,7 +4,6 @@ export type {
   ApiErrorDetail,
   Asset,
   AssetInput,
-  AssetResponse,
   Catalog,
   CatalogRequest,
   Constraint,
@@ -32,5 +31,4 @@ export type {
   TransferProcess,
   TransferProcessInput,
   TransferProcessResponse,
-  TransferType,
 } from "@think-it-labs/edc-connector-client";
