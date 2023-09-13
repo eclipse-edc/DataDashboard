@@ -29,20 +29,24 @@ export class NewPolicyDialogComponent implements OnInit {
 
   onSave() {
     if (this.permissionsJson && this.permissionsJson !== '') {
-      this.policy["permission"] = JSON.parse(this.permissionsJson);
+      this.policy.permission = JSON.parse(this.permissionsJson);
     }
 
     if (this.prohibitionsJson && this.prohibitionsJson !== '') {
-      this.policy["prohibitions"] = JSON.parse(this.prohibitionsJson);
+      this.policy.prohibition = JSON.parse(this.prohibitionsJson);
     }
 
     if (this.obligationsJson && this.obligationsJson !== '') {
-      this.policy["obligations"] = JSON.parse(this.obligationsJson);
+      this.policy.obligation = JSON.parse(this.obligationsJson);
     }
 
+    this.policy["@context"]="http://www.w3.org/ns/odrl.jsonld"
+
+
     this.dialogRef.close({
-      policy: this.policyDefinition.policy,
-      id: this.policyDefinition.id
+
+      policy : this.policyDefinition.policy,
+      '@id': this.policyDefinition.id
     })
   }
 }
