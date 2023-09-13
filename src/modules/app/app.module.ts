@@ -90,6 +90,7 @@ import { EdcConnectorClient } from "@think-it-labs/edc-connector-client";
       provide: EdcConnectorClient,
       useFactory: (s: AppConfigService) => {
         return new EdcConnectorClient.Builder()
+          .apiToken(environment.apiKey)
           .managementUrl(s.getConfig()?.managementApiUrl as string)
           .build();
       },
