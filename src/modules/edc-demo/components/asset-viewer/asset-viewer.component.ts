@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {AssetInput } from "../../../mgmt-api-client/model";
+import {AssetInput, Asset } from "../../../mgmt-api-client/model";
 import {AssetService} from "../../../mgmt-api-client";
 import {AssetEditorDialog} from "../asset-editor-dialog/asset-editor-dialog.component";
 import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
 import {NotificationService} from "../../services/notification.service";
-import { Asset } from '../../models/asset';
+
 
 @Component({
   selector: 'edc-demo-asset-viewer',
@@ -35,7 +35,7 @@ export class AssetViewerComponent implements OnInit {
     this.filteredAssets$ = this.fetch$
       .pipe(
         switchMap(() => {
-          const assets$ = this.assetService.requestAssets().pipe(map(assets => assets.map(asset => new Asset(asset["edc:properties"]))));
+          const assets$ = this.assetService.requestAssets();
           return !!this.searchText
             ? assets$.pipe(map(assets => assets.filter(asset => asset.name.includes(this.searchText))))
             : assets$;

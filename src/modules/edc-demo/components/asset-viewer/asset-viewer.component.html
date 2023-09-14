@@ -30,17 +30,17 @@
           <mat-list-item>
             <mat-icon mat-list-icon>info</mat-icon>
             <div class="asset-property" mat-line>Name</div>
-            <div mat-line>{{asset.name}}</div>
+            <div mat-line>{{asset.properties.optionalValue('edc','name')}}</div>
           </mat-list-item>
           <mat-list-item>
             <mat-icon mat-list-icon>category</mat-icon>
             <div class="asset-property" mat-line>Content Type</div>
-            <div mat-line>{{asset.contentType}}</div>
+            <div mat-line>{{asset.properties.optionalValue('edc','contenttype')}}</div>
           </mat-list-item>
           <mat-list-item>
             <mat-icon mat-list-icon>file_copy</mat-icon>
             <div class="asset-property" mat-line>Version</div>
-            <div mat-line>{{asset.version}}</div>
+            <div mat-line>{{asset.properties.optionalValue('edc','version')}}</div>
           </mat-list-item>
         </mat-list>
       </mat-card-content>
