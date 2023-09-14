@@ -25,6 +25,7 @@ export type {
   Policy,
   PolicyDefinition,
   PolicyDefinitionInput,
+  PolicyInput,
   PolicyType,
   Prohibition,
   QuerySpec,
