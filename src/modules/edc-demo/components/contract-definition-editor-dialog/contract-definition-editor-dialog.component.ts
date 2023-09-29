@@ -60,7 +60,7 @@ export class ContractDefinitionEditorDialog implements OnInit {
 
     const ids = this.assets.map(asset => asset.id);
     this.contractDefinition.assetsSelector = [...this.contractDefinition.assetsSelector, {
-      operandLeft: 'asset:prop:id',
+      operandLeft: 'https://w3id.org/edc/v0.0.1/ns/id',
       operator: 'in',
       operandRight: ids,
     }];
