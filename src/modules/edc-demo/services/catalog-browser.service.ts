@@ -2,7 +2,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/c
 import {Inject, Injectable} from '@angular/core';
 import {EMPTY, Observable} from 'rxjs';
 import {catchError, map, reduce} from 'rxjs/operators';
-import {Asset} from '../models/asset';
+import {Catalog} from '../models/catalog';
 import {ContractOffer} from '../models/contract-offer';
 import {
   ContractNegotiationDto,
@@ -34,55 +34,49 @@ export class CatalogBrowserService {
 
   getContractOffers(): Observable<ContractOffer[]> {
     let url = this.catalogApiUrl || this.managementApiUrl;
-    return this.post<ContractOffer[]>(url + "/federatedcatalog")
-      .pipe(map(contractOffers => contractOffers.map(contractOffer => {
+    return this.post<Catalog[]>(url + "/federatedcatalog")
+      .pipe(map(catalogs => catalogs.map(catalog => {
         const arr = Array<ContractOffer>();
-        let isFirst = true;
-        //divides multiple offers in dataSets into separate contractOffers.
-        for(let i = 0; i<contractOffer["dcat:dataset"].length; i++){
-          const dataSet: any = contractOffer["dcat:dataset"][i];
+        let datasets = catalog["dcat:dataset"];
+        if (!Array.isArray(datasets)) {
+          datasets = [datasets];
+        }
+
+        for(let i = 0; i < datasets.length; i++) {
+          const dataSet: any = datasets[i];
           const properties: { [key: string]: string; } = {
             "edc:id": dataSet["edc:id"],
             "edc:name": dataSet["edc:name"],
             "edc:version": dataSet["edc:version"],
             "type": dataSet["edc:type"],
-            "edc:contenttype": dataSet["edc:contenttype"],
-            "edc:originator": contractOffer["edc:originator"]
+            "edc:contenttype": dataSet["edc:contenttype"]
           }
-          const asset: Asset = new Asset(properties);
+          const assetId = dataSet["@id"];
 
-          let id: string = "";
-          let policy: Policy = {
+          const hasPolicy = dataSet["odrl:hasPolicy"];
+          const policy: Policy = {
             //currently hardcoded to SET since parsed type is {"@policytype": "set"}
             "@type": TypeEnum.Set,
-            "@id": dataSet["odrl:hasPolicy"]["@id"],
-            "assignee": dataSet["odrl:hasPolicy"]["assignee"],
-            "assigner": dataSet["odrl:hasPolicy"]["assigner"],
-            "odrl:obligation": dataSet["odrl:hasPolicy"]["odrl:obligations"],
-            "odrl:permission": dataSet["odrl:hasPolicy"]["odrl:permissions"],
-            "odrl:prohibition": dataSet["odrl:hasPolicy"]["odrl:prohibitions"],
-            "odrl:target": dataSet["odrl:hasPolicy"]["odrl:target"]
+            "@id": hasPolicy["@id"],
+            "assignee": hasPolicy["assignee"],
+            "assigner": hasPolicy["assigner"],
+            "odrl:obligation": hasPolicy["odrl:obligations"],
+            "odrl:permission": hasPolicy["odrl:permissions"],
+            "odrl:prohibition": hasPolicy["odrl:prohibitions"],
+            "odrl:target": hasPolicy["odrl:target"]
           };
 
-          if(isFirst){
-            contractOffer.id = dataSet["odrl:hasPolicy"]["@id"];
-            contractOffer.asset = asset
-            contractOffer.policy = policy;
+          const newContractOffer: ContractOffer = {
+            assetId: assetId,
+            properties: properties,
+            "dcat:service": catalog["dcat:service"],
+            "dcat:dataset": datasets,
+            id: hasPolicy["@id"],
+            originator: catalog["edc:originator"],
+            policy: policy
+          };
 
-            arr.push(contractOffer)
-            isFirst = false;
-          } else {
-            const newContractOffer: ContractOffer = {
-              asset: asset,
-              contractOffers: contractOffer.contractOffers,
-              "dcat:service": contractOffer["dcat:service"],
-              "dcat:dataset": contractOffer["dcat:dataset"],
-              id: dataSet["odrl:hasPolicy"]["@id"],
-              "edc:originator": contractOffer["edc:originator"],
-              policy: policy
-            };
-            arr.push(newContractOffer);
-          }
+          arr.push(newContractOffer)
         }
         return arr;
       })), reduce((acc, val) => {
