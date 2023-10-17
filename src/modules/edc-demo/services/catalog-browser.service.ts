@@ -45,11 +45,11 @@ export class CatalogBrowserService {
         for(let i = 0; i < datasets.length; i++) {
           const dataSet: any = datasets[i];
           const properties: { [key: string]: string; } = {
-            "edc:id": dataSet["edc:id"],
-            "edc:name": dataSet["edc:name"],
-            "edc:version": dataSet["edc:version"],
-            "type": dataSet["edc:type"],
-            "edc:contenttype": dataSet["edc:contenttype"]
+            id: dataSet["edc:id"],
+            name: dataSet["edc:name"],
+            version: dataSet["edc:version"],
+            type: dataSet["edc:type"],
+            contentType: dataSet["edc:contenttype"]
           }
           const assetId = dataSet["@id"];
 
