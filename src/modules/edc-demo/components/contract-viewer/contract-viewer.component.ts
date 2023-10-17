@@ -7,7 +7,8 @@ import {
   TransferRequestDto
 } from "../../../mgmt-api-client";
 import {from, Observable, of} from "rxjs";
-import {Asset} from "../../models/asset";
+import { Asset } from "@think-it-labs/edc-connector-client";
+import {ContractOffer} from "../../models/contract-offer";
 import {filter, first, map, switchMap, tap} from "rxjs/operators";
 import {NotificationService} from "../../services/notification.service";
 import {
@@ -66,7 +67,7 @@ export class ContractViewerComponent implements OnInit {
   }
 
   getAsset(assetId?: string): Observable<Asset> {
-    return assetId ? this.assetService.getAsset(assetId).pipe(map(a => new Asset(a["edc:properties"]!))) : of();
+    return assetId ? this.assetService.getAsset(assetId): of();
   }
 
   onTransferClicked(contract: ContractAgreementDto) {
@@ -94,9 +95,9 @@ export class ContractViewerComponent implements OnInit {
   }
 
   private createTransferRequest(contract: ContractAgreementDto, storageTypeId: string): Observable<TransferRequestDto> {
-    return this.getOfferedAssetForId(contract["edc:assetId"]!).pipe(map(offeredAsset => {
+    return this.getContractOfferForAssetId(contract["edc:assetId"]!).pipe(map(contractOffer => {
       return {
-        assetId: offeredAsset.id,
+        assetId: contractOffer.assetId,
         contractId: contract["@id"],
         connectorId: "consumer", //doesn't matter, but cannot be null
         dataDestination: {
@@ -106,7 +107,7 @@ export class ContractViewerComponent implements OnInit {
         },
         managedResources: true,
         transferType: {isFinite: true}, //must be there, otherwise NPE on backend
-        connectorAddress: offeredAsset.originator,
+        connectorAddress: contractOffer.originator,
         protocol: 'dataspace-protocol-http',
         "@context": {
           "edc": "https://w3id.org/edc/v0.0.1/ns/"
@@ -122,12 +123,12 @@ export class ContractViewerComponent implements OnInit {
    *
    * @param assetId Asset ID of the asset that is associated with the contract.
    */
-  private getOfferedAssetForId(assetId: string): Observable<Asset> {
+  private getContractOfferForAssetId(assetId: string): Observable<ContractOffer> {
     return this.catalogService.getContractOffers()
       .pipe(
-        map(offers => offers.find(o => `${o.asset.id}` === assetId)),
+        map(offers => offers.find(o => o.assetId === assetId)),
         map(o => {
-          if (o) return o.asset;
+          if (o) return o;
           else throw new Error(`No offer found for asset ID ${assetId}`);
         }))
   }

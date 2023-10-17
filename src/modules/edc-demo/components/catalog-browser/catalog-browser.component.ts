@@ -56,14 +56,14 @@ export class CatalogBrowserComponent implements OnInit {
 
   onNegotiateClicked(contractOffer: ContractOffer) {
     const initiateRequest: NegotiationInitiateRequestDto = {
-      connectorAddress: contractOffer["edc:originator"],
+      connectorAddress: contractOffer.originator,
       "@context": {
         "edc": "https://w3id.org/edc/v0.0.1/ns/",
         "odrl": "http://www.w3.org/ns/odrl/2/"
       },
       offer: {
         offerId: contractOffer.id,
-        assetId: contractOffer.asset.id,
+        assetId: contractOffer.assetId,
         policy: contractOffer.policy,
       },
       connectorId: 'connector',
@@ -115,11 +115,11 @@ export class CatalogBrowserComponent implements OnInit {
   }
 
   isBusy(contractOffer: ContractOffer) {
-    return this.runningNegotiations.get(contractOffer.id) !== undefined || !!this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.asset.id);
+    return this.runningNegotiations.get(contractOffer.id) !== undefined || !!this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.assetId);
   }
 
   getState(contractOffer: ContractOffer): string {
-    const transferProcess = this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.asset.id);
+    const transferProcess = this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.assetId);
     if (transferProcess) {
       return TransferProcessStates[transferProcess.state];
     }
