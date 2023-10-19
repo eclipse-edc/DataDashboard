@@ -1,13 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {
   AssetService,
-  ContractAgreementDto,
   ContractAgreementService, IdResponseDto,
   TransferProcessService,
   TransferRequestDto
 } from "../../../mgmt-api-client";
 import {from, Observable, of} from "rxjs";
-import { Asset } from "@think-it-labs/edc-connector-client";
+import { Asset, ContractAgreement } from "@think-it-labs/edc-connector-client";
 import {ContractOffer} from "../../models/contract-offer";
 import {filter, first, map, switchMap, tap} from "rxjs/operators";
 import {NotificationService} from "../../services/notification.service";
@@ -32,7 +31,7 @@ interface RunningTransferProcess {
 })
 export class ContractViewerComponent implements OnInit {
 
-  contracts$: Observable<ContractAgreementDto[]> = of([]);
+  contracts$: Observable<ContractAgreement[]> = of([]);
   private runningTransfers: RunningTransferProcess[] = [];
   private pollingHandleTransfer?: any;
 
@@ -70,7 +69,7 @@ export class ContractViewerComponent implements OnInit {
     return assetId ? this.assetService.getAsset(assetId): of();
   }
 
-  onTransferClicked(contract: ContractAgreementDto) {
+  onTransferClicked(contract: ContractAgreement) {
     const dialogRef = this.dialog.open(CatalogBrowserTransferDialog);
 
     dialogRef.afterClosed().pipe(first()).subscribe(result => {
@@ -94,11 +93,11 @@ export class ContractViewerComponent implements OnInit {
     return !!this.runningTransfers.find(rt => rt.contractId === contractId);
   }
 
-  private createTransferRequest(contract: ContractAgreementDto, storageTypeId: string): Observable<TransferRequestDto> {
+  private createTransferRequest(contract: ContractAgreement, storageTypeId: string): Observable<TransferRequestDto> {
     return this.getContractOfferForAssetId(contract["edc:assetId"]!).pipe(map(contractOffer => {
       return {
         assetId: contractOffer.assetId,
-        contractId: contract["@id"],
+        contractId: contract.id,
         connectorId: "consumer", //doesn't matter, but cannot be null
         dataDestination: {
           "type": storageTypeId,

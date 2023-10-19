@@ -3,7 +3,6 @@ export * from './apiErrorDetail';
 export * from './catalog';
 export * from './catalogRequestDto';
 export * from './constraint';
-export * from './contractAgreementDto';
 export * from './contractDefinitionRequestDto';
 export * from './contractDefinitionResponseDto';
 export * from './contractNegotiationDto';
