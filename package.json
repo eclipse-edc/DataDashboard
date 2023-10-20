@@ -32,7 +32,7 @@
     "@angular/cli": "~15.2.10",
     "@angular/compiler-cli": "~15.2.9",
     "@types/jasmine": "~4.0.3",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.8.7",
     "cypress": "^13.3.2",
     "jasmine-core": "~4.1.0",
     "karma": "~6.3.16",
