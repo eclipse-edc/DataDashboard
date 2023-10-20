@@ -5,16 +5,19 @@ import {catchError, map, reduce} from 'rxjs/operators';
 import {Catalog} from '../models/catalog';
 import {ContractOffer} from '../models/contract-offer';
 import {
-  ContractNegotiationDto,
   ContractNegotiationService,
-  NegotiationInitiateRequestDto,
-  Policy,
   TransferProcessDto,
   TransferProcessService,
   TransferRequestDto,
 } from "../../mgmt-api-client";
 import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "../../app/variables";
-import TypeEnum = Policy.TypeEnum;
+// import TypeEnum = Policy.TypeEnum; //TODO Use TypeEnum https://github.com/Think-iT-Labs/edc-connector-client/issues/103
+import {
+  ContractNegotiationRequest,
+  ContractNegotiation,
+  PolicyInput
+} from "../../mgmt-api-client/model";
+
 
 
 /**
@@ -54,16 +57,17 @@ export class CatalogBrowserService {
           const assetId = dataSet["@id"];
 
           const hasPolicy = dataSet["odrl:hasPolicy"];
-          const policy: Policy = {
+          const policy: PolicyInput = {
             //currently hardcoded to SET since parsed type is {"@policytype": "set"}
-            "@type": TypeEnum.Set,
-            "@id": hasPolicy["@id"],
+            "@type": "set", //TODO Use TypeEnum https://github.com/Think-iT-Labs/edc-connector-client/issues/103
+            "@context" : "http://www.w3.org/ns/odrl.jsonld",
+            "uid": hasPolicy["@id"],
             "assignee": hasPolicy["assignee"],
             "assigner": hasPolicy["assigner"],
-            "odrl:obligation": hasPolicy["odrl:obligations"],
-            "odrl:permission": hasPolicy["odrl:permissions"],
-            "odrl:prohibition": hasPolicy["odrl:prohibitions"],
-            "odrl:target": hasPolicy["odrl:target"]
+            "obligation": hasPolicy["odrl:obligations"],
+            "permission": hasPolicy["odrl:permissions"],
+            "prohibition": hasPolicy["odrl:prohibitions"],
+            "target": hasPolicy["odrl:target"]
           };
 
           const newContractOffer: ContractOffer = {
@@ -97,11 +101,11 @@ export class CatalogBrowserService {
     return this.transferProcessService.getTransferProcess(id);
   }
 
-  initiateNegotiation(initiateDto: NegotiationInitiateRequestDto): Observable<string> {
-    return this.negotiationService.initiateContractNegotiation(initiateDto, 'body', false,).pipe(map(t => t["@id"]!))
+  initiateNegotiation(initiate: ContractNegotiationRequest): Observable<string> {
+    return this.negotiationService.initiateContractNegotiation(initiate).pipe(map(t => t["@id"]!))
   }
 
-  getNegotiationState(id: string): Observable<ContractNegotiationDto> {
+  getNegotiationState(id: string): Observable<ContractNegotiation> {
     return this.negotiationService.getNegotiation(id);
   }
 
