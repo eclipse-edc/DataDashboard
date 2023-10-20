@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { ApplicationObservabilityService } from './api/applicationObservability.service';
 import { AssetService } from './api/asset.service';
-import { CatalogService } from './api/catalog.service';
 import { ContractAgreementService } from './api/contractAgreement.service';
 import { ContractDefinitionService } from './api/contractDefinition.service';
 import { ContractNegotiationService } from './api/contractNegotiation.service';
