@@ -15,6 +15,7 @@ import {
 } from "../../mgmt-api-client";
 import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "../../app/variables";
 import TypeEnum = Policy.TypeEnum;
+import {ContractNegotiationRequest, ContractNegotiation} from "../../mgmt-api-client/model";
 
 
 /**
@@ -97,11 +98,11 @@ export class CatalogBrowserService {
     return this.transferProcessService.getTransferProcess(id);
   }
 
-  initiateNegotiation(initiateDto: NegotiationInitiateRequestDto): Observable<string> {
-    return this.negotiationService.initiateContractNegotiation(initiateDto, 'body', false,).pipe(map(t => t["@id"]!))
+  initiateNegotiation(initiate: ContractNegotiationRequest): Observable<string> {
+    return this.negotiationService.initiateContractNegotiation(initiate).pipe(map(t => t["@id"]!))
   }
 
-  getNegotiationState(id: string): Observable<ContractNegotiationDto> {
+  getNegotiationState(id: string): Observable<ContractNegotiation> {
     return this.negotiationService.getNegotiation(id);
   }
 
