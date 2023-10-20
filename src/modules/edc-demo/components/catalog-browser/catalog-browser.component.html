@@ -25,25 +25,20 @@
             </mat-card-header>
             <mat-card-content>
                 <mat-list dense>
-                    <!-- <mat-list-item>
-                        <mat-icon mat-list-icon>policy</mat-icon>
-                        <div mat-line class="asset-property-name">Policy</div>
-                        <div mat-line>{{contractOffer.properties.policyId}}</div>
-                    </mat-list-item> -->
                     <mat-list-item>
-                        <mat-icon mat-list-icon>category</mat-icon>
-                      <div class="asset-property-name" mat-line>Type</div>
-                        <div mat-line>{{contractOffer.properties.type}}</div>
+                        <mat-icon matListItemIcon>category</mat-icon>
+                      <div class="asset-property-name" matListItemTitle>Type</div>
+                        <div matListItemLine>{{contractOffer.properties.type}}</div>
                     </mat-list-item>
                     <mat-list-item>
-                        <mat-icon mat-list-icon>key</mat-icon>
-                      <div class="asset-property-name" mat-line>Id</div>
-                        <div mat-line>{{contractOffer.assetId}}</div>
+                        <mat-icon matListItemIcon>key</mat-icon>
+                      <div class="asset-property-name" matListItemTitle>Id</div>
+                        <div matListItemLine>{{contractOffer.assetId}}</div>
                     </mat-list-item>
                     <mat-list-item *ngIf="contractOffer.originator">
-                        <mat-icon mat-list-icon>link</mat-icon>
-                      <div class="asset-property-name" mat-line>Originator</div>
-                        <div mat-line>{{contractOffer.originator}}</div>
+                        <mat-icon matListItemIcon>link</mat-icon>
+                      <div class="asset-property-name" matListItemTitle>Originator</div>
+                        <div matListItemLine>{{contractOffer.originator}}</div>
                     </mat-list-item>
                 </mat-list>
 
@@ -55,23 +50,22 @@
                     </mat-expansion-panel-header>
                     <mat-list dense>
                         <mat-list-item>
-                            <mat-icon mat-list-icon>numbers</mat-icon>
-                          <div class="asset-property-name" mat-line>Version</div>
-                            <div mat-line>{{contractOffer.properties.version}}</div>
+                            <mat-icon matListItemIcon>numbers</mat-icon>
+                          <div class="asset-property-name" matListItemTitle>Version</div>
+                            <div matListItemLine>{{contractOffer.properties.version}}</div>
                         </mat-list-item>
                         <mat-list-item *ngIf="contractOffer.properties.contentType">
-                            <mat-icon mat-list-icon>content_paste</mat-icon>
-                          <div class="asset-property-name" mat-line>Content-Type</div>
-                            <div mat-line>{{contractOffer.properties.contentType}}</div>
+                            <mat-icon matListItemIcon>content_paste</mat-icon>
+                          <div class="asset-property-name" matListItemTitle>Content-Type</div>
+                            <div matListItemLine>{{contractOffer.properties.contentType}}</div>
                         </mat-list-item>
                       <mat-list-item *ngFor="let additionalPropertyKey of contractOffer.properties.additionalPropertyKeys">
-                        <mat-icon mat-list-icon>list</mat-icon>
+                        <mat-icon matListItemIcon>list</mat-icon>
                         <div *ngIf="additionalPropertyKey.replace('asset:prop:', '') as name"
-                             class="asset-property-name"
-                             mat-line>
+                             class="asset-property-name" matListItemTitle>
                           {{name.charAt(0).toUpperCase() + name.slice(1)}}
                         </div>
-                        <div mat-line title="{{contractOffer.properties.properties[additionalPropertyKey]}}">
+                        <div matListItemLine title="{{contractOffer.properties.properties[additionalPropertyKey]}}">
                           {{contractOffer.properties.properties[additionalPropertyKey]}}</div>
                       </mat-list-item>
                     </mat-list>
