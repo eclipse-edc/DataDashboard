@@ -1,5 +1,5 @@
-import {Policy} from "../../mgmt-api-client";
 import {DataService} from "./data-service";
+import {PolicyInput} from "../../mgmt-api-client/model";
 
 export interface ContractOffer {
   id: string;
@@ -7,6 +7,6 @@ export interface ContractOffer {
   properties: any;
   "dcat:dataset": Array<any>;
   "dcat:service": DataService;
-  policy: Policy;
+  policy: PolicyInput;
   originator: string;
 }

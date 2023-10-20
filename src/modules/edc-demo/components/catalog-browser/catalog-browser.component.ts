@@ -85,7 +85,7 @@ export class CatalogBrowserComponent implements OnInit {
 
           for (const negotiation of this.runningNegotiations.values()) {
             this.apiService.getNegotiationState(negotiation.id).subscribe(updatedNegotiation => {
-              if (finishedNegotiationStates.includes(updatedNegotiation["edc:state"]!)) {
+              if (finishedNegotiationStates.includes(updatedNegotiation.state!)) {
                 let offerId = negotiation.offerId;
                 this.runningNegotiations.delete(offerId);
                 if (updatedNegotiation["edc:state"] === "VERIFIED") {
