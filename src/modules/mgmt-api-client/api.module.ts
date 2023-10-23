@@ -7,7 +7,6 @@ import { AssetService } from './api/asset.service';
 import { ContractAgreementService } from './api/contractAgreement.service';
 import { ContractDefinitionService } from './api/contractDefinition.service';
 import { ContractNegotiationService } from './api/contractNegotiation.service';
-import { DataplaneSelectorService } from './api/dataplaneSelector.service';
 import { HTTPProvisionerWebhookService } from './api/hTTPProvisionerWebhook.service';
 import { PolicyService } from './api/policy.service';
 import { TransferProcessService } from './api/transferProcess.service';
