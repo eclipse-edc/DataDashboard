@@ -2,7 +2,6 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { ApplicationObservabilityService } from './api/applicationObservability.service';
 import { AssetService } from './api/asset.service';
 import { ContractAgreementService } from './api/contractAgreement.service';
 import { ContractDefinitionService } from './api/contractDefinition.service';
