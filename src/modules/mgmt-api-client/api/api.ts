@@ -1,5 +1,3 @@
-export * from './applicationObservability.service';
-import { ApplicationObservabilityService } from './applicationObservability.service';
 export * from './asset.service';
 import { AssetService } from './asset.service';
 export * from './contractAgreement.service';
@@ -14,4 +12,4 @@ export * from './policy.service';
 import { PolicyService } from './policy.service';
 export * from './transferProcess.service';
 import { TransferProcessService } from './transferProcess.service';
-export const APIS = [ApplicationObservabilityService, AssetService, ContractAgreementService, ContractDefinitionService, ContractNegotiationService, HTTPProvisionerWebhookService, PolicyService, TransferProcessService];
+export const APIS = [AssetService, ContractAgreementService, ContractDefinitionService, ContractNegotiationService, HTTPProvisionerWebhookService, PolicyService, TransferProcessService];
