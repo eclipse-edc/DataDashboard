@@ -18,8 +18,4 @@ describe('ContractViewerComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
-  it('should create', () => {
-    // expect(component).toBeTruthy(); TODO Method doesnt exist on Assertion
-  });
 });
