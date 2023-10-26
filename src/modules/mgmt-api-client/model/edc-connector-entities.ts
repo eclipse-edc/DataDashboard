@@ -31,5 +31,5 @@ export type {
   QuerySpec,
   TransferProcess,
   TransferProcessInput,
-  TransferProcessResponse,
+  TransferProcessState,
 } from "@think-it-labs/edc-connector-client";
