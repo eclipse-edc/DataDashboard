@@ -1,12 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {
   AssetService,
-  ContractAgreementService, IdResponseDto,
-  TransferProcessService,
-  TransferRequestDto
+  ContractAgreementService,
+  TransferProcessService
 } from "../../../mgmt-api-client";
 import {from, Observable, of} from "rxjs";
-import { Asset, ContractAgreement } from "@think-it-labs/edc-connector-client";
+import { Asset, ContractAgreement, TransferProcessInput, IdResponse } from "../../../mgmt-api-client/model";
 import {ContractOffer} from "../../models/contract-offer";
 import {filter, first, map, switchMap, tap} from "rxjs/operators";
 import {NotificationService} from "../../services/notification.service";
@@ -65,10 +64,6 @@ export class ContractViewerComponent implements OnInit {
     return '';
   }
 
-  getAsset(assetId?: string): Observable<Asset> {
-    return assetId ? this.assetService.getAsset(assetId): of();
-  }
-
   onTransferClicked(contract: ContractAgreement) {
     const dialogRef = this.dialog.open(CatalogBrowserTransferDialog);
 
@@ -93,25 +88,23 @@ export class ContractViewerComponent implements OnInit {
     return !!this.runningTransfers.find(rt => rt.contractId === contractId);
   }
 
-  private createTransferRequest(contract: ContractAgreement, storageTypeId: string): Observable<TransferRequestDto> {
-    return this.getContractOfferForAssetId(contract["edc:assetId"]!).pipe(map(contractOffer => {
-      return {
+  private createTransferRequest(contract: ContractAgreement, storageTypeId: string): Observable<TransferProcessInput> {
+    return this.getContractOfferForAssetId(contract.assetId!).pipe(map(contractOffer => {
+
+      const iniateTransfer : TransferProcessInput = {
         assetId: contractOffer.assetId,
-        contractId: contract.id,
+        connectorAddress: contractOffer.originator,
+
         connectorId: "consumer", //doesn't matter, but cannot be null
+        contractId: contract.id,
         dataDestination: {
           "type": storageTypeId,
           account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
           // container: omitted, so it will be auto-assigned by the EDC runtime
-        },
-        managedResources: true,
-        transferType: {isFinite: true}, //must be there, otherwise NPE on backend
-        connectorAddress: contractOffer.originator,
-        protocol: 'dataspace-protocol-http',
-        "@context": {
-          "edc": "https://w3id.org/edc/v0.0.1/ns/"
         }
       };
+
+      return iniateTransfer;
     }));
 
   }
@@ -132,10 +125,10 @@ export class ContractViewerComponent implements OnInit {
         }))
   }
 
-  private startPolling(transferProcessId: IdResponseDto, contractId: string) {
+  private startPolling(transferProcessId: IdResponse, contractId: string) {
     // track this transfer process
     this.runningTransfers.push({
-      processId: transferProcessId["@id"]!,
+      processId: transferProcessId.id!,
       state: TransferProcessStates.REQUESTED,
       contractId: contractId
     });
@@ -149,12 +142,12 @@ export class ContractViewerComponent implements OnInit {
   private pollRunningTransfers() {
     return () => {
       from(this.runningTransfers) //create from array
-        .pipe(switchMap(t => this.catalogService.getTransferProcessesById(t.processId)), // fetch from API
-          filter(tpDto => ContractViewerComponent.isFinishedState(tpDto["edc:state"]!)), // only use finished ones
-          tap(tpDto => {
+        .pipe(switchMap(runningTransferProcess => this.catalogService.getTransferProcessesById(runningTransferProcess.processId)), // fetch from API
+          filter(transferprocess => ContractViewerComponent.isFinishedState(transferprocess.state!)), // only use finished ones
+          tap(transferProcess => {
             // remove from in-progress
-            this.runningTransfers = this.runningTransfers.filter(rtp => rtp.processId !== tpDto["@id"])
-            this.notificationService.showInfo(`Transfer [${tpDto["@id"]}] complete!`, "Show me!", () => {
+            this.runningTransfers = this.runningTransfers.filter(rtp => rtp.processId !== transferProcess.id)
+            this.notificationService.showInfo(`Transfer [${transferProcess.id}] complete!`, "Show me!", () => {
               this.router.navigate(['/transfer-history'])
             })
           }),

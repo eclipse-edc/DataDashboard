@@ -6,16 +6,16 @@ import {Catalog} from '../models/catalog';
 import {ContractOffer} from '../models/contract-offer';
 import {
   ContractNegotiationService,
-  TransferProcessDto,
   TransferProcessService,
-  TransferRequestDto,
 } from "../../mgmt-api-client";
 import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "../../app/variables";
 // import TypeEnum = Policy.TypeEnum; //TODO Use TypeEnum https://github.com/Think-iT-Labs/edc-connector-client/issues/103
 import {
   ContractNegotiationRequest,
   ContractNegotiation,
-  PolicyInput
+  PolicyInput,
+  TransferProcess,
+  TransferProcessInput
 } from "../../mgmt-api-client/model";
 
 
@@ -93,16 +93,16 @@ export class CatalogBrowserService {
       }, new Array<ContractOffer>()));
   }
 
-  initiateTransfer(transferRequest: TransferRequestDto): Observable<string> {
-    return this.transferProcessService.initiateTransfer(transferRequest).pipe(map(t => t["@id"]!))
+  initiateTransfer(transferRequest: TransferProcessInput): Observable<string> {
+    return this.transferProcessService.initiateTransfer(transferRequest).pipe(map(t => t.id!))
   }
 
-  getTransferProcessesById(id: string): Observable<TransferProcessDto> {
+  getTransferProcessesById(id: string): Observable<TransferProcess> {
     return this.transferProcessService.getTransferProcess(id);
   }
 
   initiateNegotiation(initiate: ContractNegotiationRequest): Observable<string> {
-    return this.negotiationService.initiateContractNegotiation(initiate).pipe(map(t => t["@id"]!))
+    return this.negotiationService.initiateContractNegotiation(initiate).pipe(map(t => t.id!))
   }
 
   getNegotiationState(id: string): Observable<ContractNegotiation> {
