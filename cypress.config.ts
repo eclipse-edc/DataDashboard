@@ -3,7 +3,8 @@ import { defineConfig } from 'cypress'
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:18080',
-    supportFile: false
+    supportFile: false,
+    experimentalStudio: true
   },
   env: {
     consumerUrl: 'http//localhost:18080',

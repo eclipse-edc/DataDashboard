@@ -37,7 +37,7 @@ export class AssetViewerComponent implements OnInit {
         switchMap(() => {
           const assets$ = this.assetService.requestAssets();
           return !!this.searchText
-            ? assets$.pipe(map(assets => assets.filter(asset => asset.name.includes(this.searchText))))
+            ? assets$.pipe(map(assets => assets.filter(asset => asset.properties.optionalValue<string>('edc', 'name')?.includes(this.searchText))))
             : assets$;
         }));
   }
