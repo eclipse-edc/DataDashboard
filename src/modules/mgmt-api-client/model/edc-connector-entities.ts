@@ -19,8 +19,6 @@ export type {
   Dataplane,
   DataplaneInput,
   Duty,
-  HealthCheckResult,
-  HealthStatus,
   Permission,
   Policy,
   PolicyDefinition,

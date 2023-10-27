@@ -15,7 +15,7 @@ import {Injectable} from '@angular/core';
 import {HttpResponse, HttpEvent, HttpContext} from '@angular/common/http';
 import {Observable, from} from 'rxjs';
 import {EdcConnectorClient} from "@think-it-labs/edc-connector-client";
-import {Policy, PolicyDefinition, PolicyDefinitionInput, IdResponse, QuerySpec} from "../model"
+import { PolicyDefinition, PolicyDefinitionInput, IdResponse, QuerySpec } from "../model"
 
 
 @Injectable({
@@ -31,7 +31,7 @@ export class PolicyService {
 
   /**
    * Creates a new policy definition
-   * @param policyDefinitionRequestDto
+   * @param input
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
@@ -59,24 +59,6 @@ export class PolicyService {
   }
 
   /**
-   * Returns all policy definitions according to a query
-   * @param offset
-   * @param limit
-   * @param filter
-   * @param sort
-   * @param sortField
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   * @deprecated
-   */
-  public getAllPolicies(querySpec?: QuerySpec, observe?: 'body', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext }): Observable<Array<PolicyDefinition>>;
-  public getAllPolicies(querySpec?: QuerySpec, observe?: 'response', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext }): Observable<HttpResponse<Array<PolicyDefinition>>>;
-  public getAllPolicies(querySpec?: QuerySpec, observe?: 'events', reportProgress?: boolean, options?: { httpHeaderAccept?: 'application/json', context?: HttpContext }): Observable<HttpEvent<Array<PolicyDefinition>>>;
-  public getAllPolicies(querySpec?: QuerySpec): Observable<any> {
-    return from(this.policyDefinition.queryAll(querySpec))
-  }
-
-  /**
    * Gets a policy definition with the given ID
    * @param id
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -96,7 +78,7 @@ export class PolicyService {
 
   /**
    * Returns all policy definitions according to a query
-   * @param querySpecDto
+   * @param querySpec
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */

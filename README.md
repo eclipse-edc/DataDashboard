@@ -8,17 +8,6 @@ EDC Data Dashboard is a dev frontend application for [EDC Management API](https:
 
 Developer documentation can be found under [docs/developer](docs/developer/), where the main concepts and decisions are captured as [decision records](docs/developer/decision-records/).
 
-## Generate client code for EDC REST APIs
-
-1. [optional] copy the current version of EDC's `management-api.yaml` file to `openapi/`. There is one checked in, so this is not required.
-2. in a shell execute
-   ```shell
-   docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate -i /local/openapi/management-api.yaml -g typescript-angular -o /local/src/modules/edc-dmgmt-client/
-   ```
-   This re-generates the service and model classes.
-
-> Please note that some of the client classes were edited manually after generation. When regenerating the classes for the API update be careful especially not to overwrite service `constructor` methods using the generator!
-
 ## Running the frontend locally
 Should you want to run the frontend on your development machine, you'll have to configure some backend values. Those are stored in `app.config.json`, and
 by default contain the following:

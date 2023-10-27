@@ -82,7 +82,7 @@ export class TransferProcessService {
 
     /**
      * Initiates a data transfer with the given parameters. Please note that successfully invoking this endpoint only means that the transfer was initiated. Clients must poll the /{id}/state endpoint to track the state
-     * @param transferRequest
+     * @param transferRequestInput
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
