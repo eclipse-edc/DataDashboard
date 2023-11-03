@@ -37,8 +37,9 @@ export class CatalogBrowserService {
 
   getContractOffers(): Observable<ContractOffer[]> {
     let url = this.catalogApiUrl || this.managementApiUrl;
-    return this.post<Catalog[]>(url + "/federatedcatalog")
-      .pipe(map(catalogs => catalogs.map(catalog => {
+    // return this.post<Catalog[]>(url + "/federatedcatalog")
+    return this.post<Catalog[]>(url + "/v2/catalog/request")
+      .pipe(map((catalog: any) => {
         const arr = Array<ContractOffer>();
         let datasets = catalog["dcat:dataset"];
         if (!Array.isArray(datasets)) {
@@ -49,11 +50,13 @@ export class CatalogBrowserService {
           const dataSet: any = datasets[i];
           const properties: { [key: string]: string; } = {
             id: dataSet["edc:id"],
-            name: dataSet["edc:name"],
+            // name: dataSet["edc:name"],
+            name: dataSet["@id"],
             version: dataSet["edc:version"],
             type: dataSet["edc:type"],
             contentType: dataSet["edc:contenttype"]
           }
+          console.log(dataSet)
           const assetId = dataSet["@id"];
 
           const hasPolicy = dataSet["odrl:hasPolicy"];
@@ -75,22 +78,18 @@ export class CatalogBrowserService {
             properties: properties,
             "dcat:service": catalog["dcat:service"],
             "dcat:dataset": datasets,
-            id: hasPolicy["@id"],
-            originator: catalog["edc:originator"],
-            policy: policy
+            // id: hasPolicy["@id"],
+            id: Array.isArray(hasPolicy) ? hasPolicy[1]['@id'] : hasPolicy["@id"],
+            // originator: catalog["edc:originator"]
+            originator: catalog["dcat:service"]["dct:endpointUrl"],
+            // policy: policy
+            policy: hasPolicy[1]
           };
 
           arr.push(newContractOffer)
         }
         return arr;
-      })), reduce((acc, val) => {
-        for(let i = 0; i < val.length; i++){
-          for(let j = 0; j < val[i].length; j++){
-            acc.push(val[i][j]);
-          }
-        }
-        return acc;
-      }, new Array<ContractOffer>()));
+      }));
   }
 
   initiateTransfer(transferRequest: TransferProcessInput): Observable<string> {
@@ -113,8 +112,29 @@ export class CatalogBrowserService {
                   params?: HttpParams | { [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>; })
     : Observable<T> {
     const url = `${urlPath}`;
+
     let headers = new HttpHeaders({"Content-type": "application/json"});
-    return this.catchError(this.httpClient.post<T>(url, "{\"edc:operandLeft\": \"\",\"edc:operandRight\": \"\",\"edc:operator\": \"\",\"edc:Criterion\":\"\"}", {headers, params}), url, 'POST');
+    const payload = {
+      "@context": {},
+      "protocol": "dataspace-protocol-http",
+      "providerUrl": "http://tx-plato-controlplane:8084/api/v1/dsp",
+      "querySpec": {
+        "offset": 0,
+        "limit": 100,
+        "filter": "",
+        "range": {
+          "from": 0,
+          "to": 100
+        },
+        "criterion": ""
+      }
+    };
+    
+    return this.catchError(this.httpClient.post<T>(url, payload, { headers, params }), url, 'POST');
+    
+    // return this.catchError(this.httpClient.post<T>(url, "{\"edc:operandLeft\": \"\",\"edc:operandRight\": \"\",\"edc:operator\": \"\",\"edc:Criterion\":\"\"}", {headers, params}), url, 'POST');
+    
+    // return this.catchError(this.httpClient.post<T>(url, "{\"edc:operandLeft\": \"\",\"edc:operandRight\": \"\",\"edc:operator\": \"\",\"edc:Criterion\":\"\"}", {headers, params}), url, 'POST');
   }
 
   private catchError<T>(observable: Observable<T>, url: string, method: string): Observable<T> {

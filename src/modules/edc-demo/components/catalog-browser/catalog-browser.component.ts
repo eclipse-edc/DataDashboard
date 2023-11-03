@@ -43,11 +43,14 @@ export class CatalogBrowserComponent implements OnInit {
       .pipe(
         switchMap(() => {
           const contractOffers$ = this.apiService.getContractOffers();
-          return !!this.searchText ?
-            contractOffers$.pipe(map(contractOffers => contractOffers.filter(contractOffer => contractOffer.id.toLowerCase().includes(this.searchText))))
-            :
-            contractOffers$;
+          console.log(contractOffers$)
+          return contractOffers$;
+          // !!this.searchText ?
+          //   contractOffers$.pipe(map(contractOffers => contractOffers.filter(contractOffer => contractOffer.id.toLowerCase().includes(this.searchText))))
+          //   :
+            
         }));
+      
   }
 
   onSearch() {
@@ -55,8 +58,11 @@ export class CatalogBrowserComponent implements OnInit {
   }
 
   onNegotiateClicked(contractOffer: ContractOffer) {
+    // debugger
     const initiateRequest: ContractNegotiationRequest = {
-      connectorAddress: contractOffer.originator,
+      // connectorAddress: contractOffer.originator,
+      connectorAddress: "http://tx-plato-controlplane:8084/api/v1/dsp",
+
       offer: {
         offerId: contractOffer.id,
         assetId: contractOffer.assetId,
