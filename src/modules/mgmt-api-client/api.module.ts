@@ -2,14 +2,6 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-import { AssetService } from './api/asset.service';
-import { ContractAgreementService } from './api/contractAgreement.service';
-import { ContractDefinitionService } from './api/contractDefinition.service';
-import { ContractNegotiationService } from './api/contractNegotiation.service';
-import { HTTPProvisionerWebhookService } from './api/hTTPProvisionerWebhook.service';
-import { PolicyService } from './api/policy.service';
-import { TransferProcessService } from './api/transferProcess.service';
-
 @NgModule({
   imports:      [],
   declarations: [],

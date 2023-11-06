@@ -59,20 +59,6 @@ export class ContractDefinitionService {
     }
 
     /**
-     * Returns all contract definitions according to a query
-     * @param querySpec
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     * @deprecated
-     */
-    public getAllContractDefinitions(querySpec?: QuerySpec, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<ContractDefinition>>;
-    public getAllContractDefinitions(querySpec?: QuerySpec, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<ContractDefinition>>>;
-    public getAllContractDefinitions(querySpec?: QuerySpec, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<ContractDefinition>>>;
-    public getAllContractDefinitions(querySpec?: QuerySpec): Observable<any> {
-        return from(this.contractDefinitions.queryAll(querySpec))
-    }
-
-    /**
      * Gets an contract definition with the given ID
      * @param id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

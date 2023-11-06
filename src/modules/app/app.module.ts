@@ -17,7 +17,6 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import {AppConfigService} from "./app-config.service";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "./variables";
-import {Configuration} from "../mgmt-api-client";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {EdcApiKeyInterceptor} from "./edc.apikey.interceptor";
 import {environment} from "../../environments/environment";
@@ -68,15 +67,6 @@ import { EdcConnectorClient } from "@think-it-labs/edc-connector-client";
     {
       provide: 'STORAGE_TYPES',
       useFactory: () => [{id: "AzureStorage", name: "AzureStorage"}, {id: "AmazonS3", name: "AmazonS3"}],
-    },
-    {
-      provide: Configuration,
-      useFactory: (s: AppConfigService) => {
-        return new Configuration({
-          basePath: s.getConfig()?.managementApiUrl
-        });
-      },
-      deps: [AppConfigService]
     },
     {
       provide: HTTP_INTERCEPTORS, multi: true, useFactory: () => {

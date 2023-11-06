@@ -11,7 +11,7 @@
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
+import { Injectable }                      from '@angular/core';
 import { HttpResponse, HttpEvent, HttpContext}       from '@angular/common/http';
 import {from, Observable} from 'rxjs';
 import {EdcConnectorClient, IdResponse, QuerySpec} from "@think-it-labs/edc-connector-client";
@@ -82,7 +82,7 @@ export class ContractNegotiationService {
 
     /**
      * Initiates a contract negotiation for a given offer and with the given counter part. Please note that successfully invoking this endpoint only means that the negotiation was initiated. Clients must poll the /{id}/state endpoint to track the state
-     * @param negotiationInitiateRequestDto
+     * @param negotiationInitiateRequest
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -95,7 +95,7 @@ export class ContractNegotiationService {
 
     /**
      * Returns all contract negotiations according to a query
-     * @param querySpecDto
+     * @param querySpec
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

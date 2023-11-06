@@ -1,7 +1,7 @@
 <div *ngIf="filteredAssets$ | async as assets" id="wrapper">
   <div class="container">
     <mat-form-field appearance="fill" appearance="outline" class="search-form-field" color="accent">
-      <mat-label>Search assets</mat-label>
+      <!-- <mat-label>Search assets</mat-label> -->
       <input (input)="onSearch()" [(ngModel)]="searchText" matInput>
       <mat-icon matPrefix>search</mat-icon>
       <button (click)="searchText=''; onSearch()" *ngIf="searchText" mat-icon-button matSuffix>
@@ -16,7 +16,6 @@
       <mat-icon>add_circle_outline</mat-icon>
       Create asset
     </button>
-
   </div>
 
   <div fxLayout="row wrap" fxLayoutAlign="start start">
