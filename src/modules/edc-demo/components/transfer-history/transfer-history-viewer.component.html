@@ -32,7 +32,7 @@
 
           <ng-container matColumnDef="lastUpdated">
             <th mat-header-cell *matHeaderCellDef scope="col">Last updated</th>
-            <td mat-cell *matCellDef="let item">{{asDate(item.stateTimestamp)}}</td>
+            <td mat-cell *matCellDef="let item">{{asDate(item.mandatoryValue('edc', 'stateTimestamp'))}}</td>
           </ng-container>        
 
           <ng-container matColumnDef="connectorId">
