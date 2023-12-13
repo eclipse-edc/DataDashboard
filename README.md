@@ -41,7 +41,7 @@ Substitute the values as necessary:
 
 As some extra safety consider running `git udpate-index --assume-unchanged src/assets/config/app.config.json` before changing this file.
 
-## Running a frondend and a connector locally (for demo purpose)
+## Running a frontend and a connector locally (for demo purpose)
 To test the correct functionality locally you can spin up a local docker compose
 that will load the `data-dashboard` service and the `connector` one.
 First you need to change the `app.config.json` this way:
@@ -118,4 +118,4 @@ az container create --image ${ACR_NAME}.azurecr.io/edc-showcase/edc-data-dashboa
 
 ## Contributing
 
-See [how to contribute](https://github.com/eclipse-dataspaceconnector/DataSpaceConnector/blob/main/CONTRIBUTING.md) for details.
+See [how to contribute](https://github.com/eclipse-edc/docs/blob/main/CONTRIBUTING.md) for details.
