@@ -25,7 +25,7 @@
     "@angular/router": "~15.2.10",
     "@think-it-labs/edc-connector-client": "^0.2.0-beta-7",
     "rxjs": "~7.8.1",
-    "zone.js": "~0.11.8"
+    "zone.js": "~0.14.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~15.2.10",
@@ -40,6 +40,6 @@
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.2.2"
+    "typescript": "~5.1.6"
   }
 }
