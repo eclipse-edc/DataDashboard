@@ -77,21 +77,21 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "edc-demo-client:build:production"
+              "buildTarget": "edc-demo-client:build:production"
             },
             "development": {
-              "browserTarget": "edc-demo-client:build:development"
+              "buildTarget": "edc-demo-client:build:development"
             }
           },
           "options": {
-            "browserTarget": "project-name:build"
+            "buildTarget": "project-name:build"
           },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "edc-demo-client:build"
+            "buildTarget": "edc-demo-client:build"
           }
         },
         "test": {
@@ -114,6 +114,8 @@
         }
       }
     }
-  },
-  "defaultProject": "edc-demo-client"
+    },
+    "cli": {
+      "analytics": false
+    }
 }
