@@ -23,7 +23,7 @@
     "@angular/platform-browser": "~17.0.8",
     "@angular/platform-browser-dynamic": "~17.0.8",
     "@angular/router": "~17.0.8",
-    "@think-it-labs/edc-connector-client": "^0.2.0-beta-7",
+    "@think-it-labs/edc-connector-client": "^0.2.0",
     "rxjs": "~7.8.1",
     "zone.js": "~0.14.2"
   },
