@@ -19,7 +19,7 @@ export class AppConfigService {
   constructor(private http: HttpClient, private locationStrategy: LocationStrategy) {}
 
   loadConfig(): Promise<void> {
-    const appConfigUrl = this.locationStrategy.prepareExternalUrl('assets/config/app.config.json');
+    let appConfigUrl = this.locationStrategy.prepareExternalUrl('assets/config/app.config.json');
 
     return this.http
       .get<AppConfig>(appConfigUrl)
