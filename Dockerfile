@@ -6,7 +6,7 @@ ARG BASE_PATH
 WORKDIR /app
 COPY ./ /app/
 RUN npm install
-RUN npm run build -- --prod --base-href=$BASE_PATH
+RUN npm run build --base-href=$BASE_PATH
 
 # Stage 2: Serve app with nginx
 FROM nginx:alpine
