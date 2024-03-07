@@ -64,9 +64,9 @@ export class CatalogBrowserService {
             "uid": hasPolicy["@id"],
             "assignee": hasPolicy["assignee"],
             "assigner": hasPolicy["assigner"],
-            "obligation": hasPolicy["odrl:obligations"],
-            "permission": hasPolicy["odrl:permissions"],
-            "prohibition": hasPolicy["odrl:prohibitions"],
+            "obligation": hasPolicy["odrl:obligation"],
+            "permission": hasPolicy["odrl:permission"],
+            "prohibition": hasPolicy["odrl:prohibition"],
             "target": hasPolicy["odrl:target"]
           };
 
