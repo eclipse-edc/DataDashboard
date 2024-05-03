@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {TransferProcessDto, TransferProcessService} from "../../../mgmt-api-client";
+import {TransferProcessService} from "../../../mgmt-api-client";
+import {TransferProcess} from "../../../mgmt-api-client/model";
 import {AppConfigService} from "../../../app/app-config.service";
 import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -13,7 +14,7 @@ import {MatDialog} from "@angular/material/dialog";
 export class TransferHistoryViewerComponent implements OnInit {
 
   columns: string[] = ['id', 'state', 'lastUpdated', 'connectorId', 'assetId', 'contractId', 'action'];
-  transferProcesses$: Observable<TransferProcessDto[]> = of([]);
+  transferProcesses$: Observable<TransferProcess[]> = of([]);
   storageExplorerLinkTemplate: string | undefined;
 
   constructor(private transferProcessService: TransferProcessService,
@@ -26,7 +27,7 @@ export class TransferHistoryViewerComponent implements OnInit {
     this.storageExplorerLinkTemplate = this.appConfigService.getConfig()?.storageExplorerLinkTemplate
   }
 
-  onDeprovision(transferProcess: TransferProcessDto): void {
+  onDeprovision(transferProcess: TransferProcess): void {
 
     const dialogData = new ConfirmDialogModel("Confirm deprovision", `Deprovisioning resources for transfer [${transferProcess["@id"]}] will take some time and once started, it cannot be stopped.`)
     dialogData.confirmColor = "warn";
@@ -36,21 +37,21 @@ export class TransferHistoryViewerComponent implements OnInit {
 
     ref.afterClosed().subscribe(res => {
       if (res) {
-        this.transferProcessService.deprovisionTransferProcess(transferProcess["@id"]!).subscribe(() => this.loadTransferProcesses());
+       this.transferProcessService.deprovisionTransferProcess(transferProcess["@id"]!).subscribe(() => this.loadTransferProcesses());
       }
     });
   }
 
-  showStorageExplorerLink(transferProcess: TransferProcessDto) {
-    return transferProcess["edc:dataDestination"]?.properties?.type === 'AzureStorage' && transferProcess["edc:state"] === 'COMPLETED';
+  showStorageExplorerLink(transferProcess: TransferProcess) {
+    return transferProcess.dataDestination?.properties?.type === 'AzureStorage' && transferProcess.state === 'COMPLETED';
   }
 
-  showDeprovisionButton(transferProcess: TransferProcessDto) {
-    return ['COMPLETED', 'PROVISIONED', 'REQUESTED', 'REQUESTED_ACK', 'IN_PROGRESS', 'STREAMING'].includes(transferProcess["edc:state"]!);
+  showDeprovisionButton(transferProcess: TransferProcess) {
+    return ['COMPLETED', 'PROVISIONED', 'REQUESTED', 'REQUESTED_ACK', 'IN_PROGRESS', 'STREAMING'].includes(transferProcess.state!);
   }
 
   loadTransferProcesses() {
-    this.transferProcesses$ = this.transferProcessService.queryAllTransferProcesses();
+     this.transferProcesses$ = this.transferProcessService.queryAllTransferProcesses();
   }
 
   asDate(epochMillis?: number) {

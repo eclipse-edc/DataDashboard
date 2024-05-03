@@ -1,0 +1,31 @@
+name: E2E
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+          docker compose up -d
+          docker compose logs -f > logs &
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - run: npm install
+
+      - run: npm run cy
+
+      - name: Print docker logs
+        if: failure()
+        run: |
+          cat logs

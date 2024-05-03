@@ -78,15 +78,15 @@ export class AssetService {
 
     /**
      *  all assets according to a particular query
-     * @param querySpecDto
+     * @param querySpec
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public requestAssets(querySpecDto?: QuerySpec, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<Asset>>;
-    public requestAssets(querySpecDto?: QuerySpec, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<Asset>>>;
-    public requestAssets(querySpecDto?: QuerySpec, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<Asset>>>;
-    public requestAssets(querySpecDto?: QuerySpec): Observable<any> {
-        return from(this.assets.queryAll(querySpecDto))
+    public requestAssets(querySpec?: QuerySpec, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<Asset>>;
+    public requestAssets(querySpec?: QuerySpec, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<Asset>>>;
+    public requestAssets(querySpec?: QuerySpec, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<Asset>>>;
+    public requestAssets(querySpec?: QuerySpec): Observable<any> {
+        return from(this.assets.queryAll(querySpec))
     }
 
 }

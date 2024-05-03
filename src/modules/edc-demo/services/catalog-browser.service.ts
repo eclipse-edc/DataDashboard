@@ -2,19 +2,22 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/c
 import {Inject, Injectable} from '@angular/core';
 import {EMPTY, Observable} from 'rxjs';
 import {catchError, map, reduce} from 'rxjs/operators';
-import {Asset} from '../models/asset';
+import {Catalog} from '../models/catalog';
 import {ContractOffer} from '../models/contract-offer';
 import {
-  ContractNegotiationDto,
   ContractNegotiationService,
-  NegotiationInitiateRequestDto,
-  Policy,
-  TransferProcessDto,
   TransferProcessService,
-  TransferRequestDto,
 } from "../../mgmt-api-client";
 import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "../../app/variables";
-import TypeEnum = Policy.TypeEnum;
+// import TypeEnum = Policy.TypeEnum; //TODO Use TypeEnum https://github.com/Think-iT-Labs/edc-connector-client/issues/103
+import {
+  ContractNegotiationRequest,
+  ContractNegotiation,
+  PolicyInput,
+  TransferProcess,
+  TransferProcessInput
+} from "../../mgmt-api-client/model";
+
 
 
 /**
@@ -34,55 +37,50 @@ export class CatalogBrowserService {
 
   getContractOffers(): Observable<ContractOffer[]> {
     let url = this.catalogApiUrl || this.managementApiUrl;
-    return this.post<ContractOffer[]>(url + "/federatedcatalog")
-      .pipe(map(contractOffers => contractOffers.map(contractOffer => {
+    return this.post<Catalog[]>(url + "/federatedcatalog")
+      .pipe(map(catalogs => catalogs.map(catalog => {
         const arr = Array<ContractOffer>();
-        let isFirst = true;
-        //divides multiple offers in dataSets into separate contractOffers.
-        for(let i = 0; i<contractOffer["dcat:dataset"].length; i++){
-          const dataSet: any = contractOffer["dcat:dataset"][i];
-          const properties: { [key: string]: string; } = {
-            "edc:id": dataSet["edc:id"],
-            "edc:name": dataSet["edc:name"],
-            "edc:version": dataSet["edc:version"],
-            "type": dataSet["edc:type"],
-            "edc:contenttype": dataSet["edc:contenttype"],
-            "edc:originator": contractOffer["edc:originator"]
-          }
-          const asset: Asset = new Asset(properties);
+        let datasets = catalog["dcat:dataset"];
+        if (!Array.isArray(datasets)) {
+          datasets = [datasets];
+        }
 
-          let id: string = "";
-          let policy: Policy = {
+        for(let i = 0; i < datasets.length; i++) {
+          const dataSet: any = datasets[i];
+          const properties: { [key: string]: string; } = {
+            id: dataSet["edc:id"],
+            name: dataSet["edc:name"],
+            version: dataSet["edc:version"],
+            type: dataSet["edc:type"],
+            contentType: dataSet["edc:contenttype"]
+          }
+          const assetId = dataSet["@id"];
+
+          const hasPolicy = dataSet["odrl:hasPolicy"];
+          const policy: PolicyInput = {
             //currently hardcoded to SET since parsed type is {"@policytype": "set"}
-            "@type": TypeEnum.Set,
-            "@id": dataSet["odrl:hasPolicy"]["@id"],
-            "assignee": dataSet["odrl:hasPolicy"]["assignee"],
-            "assigner": dataSet["odrl:hasPolicy"]["assigner"],
-            "odrl:obligation": dataSet["odrl:hasPolicy"]["odrl:obligations"],
-            "odrl:permission": dataSet["odrl:hasPolicy"]["odrl:permissions"],
-            "odrl:prohibition": dataSet["odrl:hasPolicy"]["odrl:prohibitions"],
-            "odrl:target": dataSet["odrl:hasPolicy"]["odrl:target"]
+            "@type": "set", //TODO Use TypeEnum https://github.com/Think-iT-Labs/edc-connector-client/issues/103
+            "@context" : "http://www.w3.org/ns/odrl.jsonld",
+            "uid": hasPolicy["@id"],
+            "assignee": hasPolicy["assignee"],
+            "assigner": hasPolicy["assigner"],
+            "obligation": hasPolicy["odrl:obligation"],
+            "permission": hasPolicy["odrl:permission"],
+            "prohibition": hasPolicy["odrl:prohibition"],
+            "target": hasPolicy["odrl:target"]
           };
 
-          if(isFirst){
-            contractOffer.id = dataSet["odrl:hasPolicy"]["@id"];
-            contractOffer.asset = asset
-            contractOffer.policy = policy;
+          const newContractOffer: ContractOffer = {
+            assetId: assetId,
+            properties: properties,
+            "dcat:service": catalog["dcat:service"],
+            "dcat:dataset": datasets,
+            id: hasPolicy["@id"],
+            originator: catalog["edc:originator"],
+            policy: policy
+          };
 
-            arr.push(contractOffer)
-            isFirst = false;
-          } else {
-            const newContractOffer: ContractOffer = {
-              asset: asset,
-              contractOffers: contractOffer.contractOffers,
-              "dcat:service": contractOffer["dcat:service"],
-              "dcat:dataset": contractOffer["dcat:dataset"],
-              id: dataSet["odrl:hasPolicy"]["@id"],
-              "edc:originator": contractOffer["edc:originator"],
-              policy: policy
-            };
-            arr.push(newContractOffer);
-          }
+          arr.push(newContractOffer)
         }
         return arr;
       })), reduce((acc, val) => {
@@ -95,19 +93,19 @@ export class CatalogBrowserService {
       }, new Array<ContractOffer>()));
   }
 
-  initiateTransfer(transferRequest: TransferRequestDto): Observable<string> {
-    return this.transferProcessService.initiateTransfer(transferRequest).pipe(map(t => t["@id"]!))
+  initiateTransfer(transferRequest: TransferProcessInput): Observable<string> {
+    return this.transferProcessService.initiateTransfer(transferRequest).pipe(map(t => t.id!))
   }
 
-  getTransferProcessesById(id: string): Observable<TransferProcessDto> {
+  getTransferProcessesById(id: string): Observable<TransferProcess> {
     return this.transferProcessService.getTransferProcess(id);
   }
 
-  initiateNegotiation(initiateDto: NegotiationInitiateRequestDto): Observable<string> {
-    return this.negotiationService.initiateContractNegotiation(initiateDto, 'body', false,).pipe(map(t => t["@id"]!))
+  initiateNegotiation(initiate: ContractNegotiationRequest): Observable<string> {
+    return this.negotiationService.initiateContractNegotiation(initiate).pipe(map(t => t.id!))
   }
 
-  getNegotiationState(id: string): Observable<ContractNegotiationDto> {
+  getNegotiationState(id: string): Observable<ContractNegotiation> {
     return this.negotiationService.getNegotiation(id);
   }
 

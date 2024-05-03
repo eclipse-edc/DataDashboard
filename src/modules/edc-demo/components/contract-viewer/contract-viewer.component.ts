@@ -1,13 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {
   AssetService,
-  ContractAgreementDto,
-  ContractAgreementService, IdResponseDto,
-  TransferProcessService,
-  TransferRequestDto
+  ContractAgreementService,
+  TransferProcessService
 } from "../../../mgmt-api-client";
 import {from, Observable, of} from "rxjs";
-import {Asset} from "../../models/asset";
+import { Asset, ContractAgreement, TransferProcessInput, IdResponse } from "../../../mgmt-api-client/model";
+import {ContractOffer} from "../../models/contract-offer";
 import {filter, first, map, switchMap, tap} from "rxjs/operators";
 import {NotificationService} from "../../services/notification.service";
 import {
@@ -31,7 +30,7 @@ interface RunningTransferProcess {
 })
 export class ContractViewerComponent implements OnInit {
 
-  contracts$: Observable<ContractAgreementDto[]> = of([]);
+  contracts$: Observable<ContractAgreement[]> = of([]);
   private runningTransfers: RunningTransferProcess[] = [];
   private pollingHandleTransfer?: any;
 
@@ -65,11 +64,7 @@ export class ContractViewerComponent implements OnInit {
     return '';
   }
 
-  getAsset(assetId?: string): Observable<Asset> {
-    return assetId ? this.assetService.getAsset(assetId).pipe(map(a => new Asset(a["edc:properties"]!))) : of();
-  }
-
-  onTransferClicked(contract: ContractAgreementDto) {
+  onTransferClicked(contract: ContractAgreement) {
     const dialogRef = this.dialog.open(CatalogBrowserTransferDialog);
 
     dialogRef.afterClosed().pipe(first()).subscribe(result => {
@@ -93,25 +88,23 @@ export class ContractViewerComponent implements OnInit {
     return !!this.runningTransfers.find(rt => rt.contractId === contractId);
   }
 
-  private createTransferRequest(contract: ContractAgreementDto, storageTypeId: string): Observable<TransferRequestDto> {
-    return this.getOfferedAssetForId(contract["edc:assetId"]!).pipe(map(offeredAsset => {
-      return {
-        assetId: offeredAsset.id,
-        contractId: contract["@id"],
+  private createTransferRequest(contract: ContractAgreement, storageTypeId: string): Observable<TransferProcessInput> {
+    return this.getContractOfferForAssetId(contract.assetId!).pipe(map(contractOffer => {
+
+      const iniateTransfer : TransferProcessInput = {
+        assetId: contractOffer.assetId,
+        connectorAddress: contractOffer.originator,
+
         connectorId: "consumer", //doesn't matter, but cannot be null
+        contractId: contract.id,
         dataDestination: {
           "type": storageTypeId,
           account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
           // container: omitted, so it will be auto-assigned by the EDC runtime
-        },
-        managedResources: true,
-        transferType: {isFinite: true}, //must be there, otherwise NPE on backend
-        connectorAddress: offeredAsset.originator,
-        protocol: 'dataspace-protocol-http',
-        "@context": {
-          "edc": "https://w3id.org/edc/v0.0.1/ns/"
         }
       };
+
+      return iniateTransfer;
     }));
 
   }
@@ -122,20 +115,20 @@ export class ContractViewerComponent implements OnInit {
    *
    * @param assetId Asset ID of the asset that is associated with the contract.
    */
-  private getOfferedAssetForId(assetId: string): Observable<Asset> {
+  private getContractOfferForAssetId(assetId: string): Observable<ContractOffer> {
     return this.catalogService.getContractOffers()
       .pipe(
-        map(offers => offers.find(o => `${o.asset.id}` === assetId)),
+        map(offers => offers.find(o => o.assetId === assetId)),
         map(o => {
-          if (o) return o.asset;
+          if (o) return o;
           else throw new Error(`No offer found for asset ID ${assetId}`);
         }))
   }
 
-  private startPolling(transferProcessId: IdResponseDto, contractId: string) {
+  private startPolling(transferProcessId: IdResponse, contractId: string) {
     // track this transfer process
     this.runningTransfers.push({
-      processId: transferProcessId["@id"]!,
+      processId: transferProcessId.id!,
       state: TransferProcessStates.REQUESTED,
       contractId: contractId
     });
@@ -149,12 +142,12 @@ export class ContractViewerComponent implements OnInit {
   private pollRunningTransfers() {
     return () => {
       from(this.runningTransfers) //create from array
-        .pipe(switchMap(t => this.catalogService.getTransferProcessesById(t.processId)), // fetch from API
-          filter(tpDto => ContractViewerComponent.isFinishedState(tpDto["edc:state"]!)), // only use finished ones
-          tap(tpDto => {
+        .pipe(switchMap(runningTransferProcess => this.catalogService.getTransferProcessesById(runningTransferProcess.processId)), // fetch from API
+          filter(transferprocess => ContractViewerComponent.isFinishedState(transferprocess.state!)), // only use finished ones
+          tap(transferProcess => {
             // remove from in-progress
-            this.runningTransfers = this.runningTransfers.filter(rtp => rtp.processId !== tpDto["@id"])
-            this.notificationService.showInfo(`Transfer [${tpDto["@id"]}] complete!`, "Show me!", () => {
+            this.runningTransfers = this.runningTransfers.filter(rtp => rtp.processId !== transferProcess.id)
+            this.notificationService.showInfo(`Transfer [${transferProcess.id}] complete!`, "Show me!", () => {
               this.router.navigate(['/transfer-history'])
             })
           }),

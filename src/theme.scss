@@ -4,60 +4,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 
-@import "~@angular/material/theming";
+@import "node_modules/@angular/material/theming";
 @include mat-core();
 
-//default theme {
 $theming-material-components-primary: mat-palette($mat-teal);
 $theming-material-components-accent: mat-palette($mat-orange, A200, A100, A400);
 $theming-material-components-warn: mat-palette($mat-red);
+$theming-material-components-typography: mat.define-typography-config($font-family: 'Open Sans');
 
-$theming-material-components-theme: mat-dark-theme(
-    $theming-material-components-primary,
-    $theming-material-components-accent,
-    $theming-material-components-warn
+$theme1: mat-dark-theme(
+  (
+   color: (
+    primary: mat-palette($mat-teal),
+    accent: mat-palette($mat-orange, A200, A100, A400),
+    warn: mat-palette($mat-red),
+  ),
+   typography: $theming-material-components-typography,
+   density: 0,
+  )
 );
 
-@include angular-material-theme($theming-material-components-theme);
-//}
+$theme2: mat-dark-theme(
+  (
+   color: (
+    primary: mat-palette($mat-light-blue),
+    accent: mat-palette($mat-orange, A200, A100, A400),
+    warn: mat-palette($mat-red),
+  ),
+   typography: $theming-material-components-typography,
+   density: 0,
+  )
+);
+
+$theme3: mat-dark-theme(
+  (
+   color: (
+    primary: mat-palette($mat-light-green),
+    accent: mat-palette($mat-orange, A200, A100, A400),
+    warn: mat-palette($mat-red),
+  ),
+   typography: $theming-material-components-typography,
+   density: 0,
+  )
+);
+
+@include mat.all-component-themes($theme1);
 
 .theme-1 {
   // use default
 }
 
 .theme-2 {
-  $theming-material-components-primary: mat-palette($mat-light-blue);
-  $theming-material-components-accent: mat-palette($mat-orange, A200, A100, A400);
-  $theming-material-components-warn: mat-palette($mat-red);
-
-  $theming-material-components-theme: mat-dark-theme(
-      $theming-material-components-primary,
-      $theming-material-components-accent,
-      $theming-material-components-warn
-  );
-
-  @include angular-material-theme($theming-material-components-theme);
+  @include mat.all-component-colors($theme2);
 }
 
 .theme-3 {
-  $theming-material-components-primary: mat-palette($mat-light-green);
-  $theming-material-components-accent: mat-palette($mat-orange, A200, A100, A400);
-  $theming-material-components-warn: mat-palette($mat-red);
-
-  $theming-material-components-theme: mat-dark-theme(
-      $theming-material-components-primary,
-      $theming-material-components-accent,
-      $theming-material-components-warn
-  );
-
-  @include angular-material-theme($theming-material-components-theme);
-}
-
-$custom-typography: mat.define-typography-config($font-family: 'Open Sans');
-@include mat.core($custom-typography);
-
-:root {
-    --theme-color-primary: #{mat-color($theming-material-components-primary)};
-    --theme-color-accent: #{mat-color($theming-material-components-accent)};
-    --theme-color-warn: #{mat-color($theming-material-components-warn)};
+  @include mat.all-component-colors($theme3);
 }

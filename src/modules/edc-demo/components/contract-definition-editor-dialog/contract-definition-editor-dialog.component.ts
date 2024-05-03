@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {
-  AssetService, PolicyDefinitionResponseDto, PolicyService
+  AssetService, PolicyService
 } from "../../../mgmt-api-client";
-import { Asset, ContractDefinitionInput } from "../../../mgmt-api-client/model"
+import { Asset, ContractDefinitionInput, PolicyDefinition } from "../../../mgmt-api-client/model"
 
 
 @Component({
@@ -13,12 +13,12 @@ import { Asset, ContractDefinitionInput } from "../../../mgmt-api-client/model"
 })
 export class ContractDefinitionEditorDialog implements OnInit {
 
-  policies: Array<PolicyDefinitionResponseDto> = [];
+  policies: Array<PolicyDefinition> = [];
   availableAssets: Asset[] = [];
   name: string = '';
   editMode = false;
-  accessPolicy?: PolicyDefinitionResponseDto;
-  contractPolicy?: PolicyDefinitionResponseDto;
+  accessPolicy?: PolicyDefinition;
+  contractPolicy?: PolicyDefinition;
   assets: Asset[] = [];
   contractDefinition: ContractDefinitionInput = {
     "@id": '',
@@ -60,7 +60,7 @@ export class ContractDefinitionEditorDialog implements OnInit {
 
     const ids = this.assets.map(asset => asset.id);
     this.contractDefinition.assetsSelector = [...this.contractDefinition.assetsSelector, {
-      operandLeft: 'asset:prop:id',
+      operandLeft: 'https://w3id.org/edc/v0.0.1/ns/id',
       operator: 'in',
       operandRight: ids,
     }];

@@ -17,37 +17,37 @@
       </button>
       <mat-paginator [length]="transferProcesses.length" pageSize="transferProcesses.length" hidePageSize="true"></mat-paginator>
     </div>
-    
+
       <table mat-table [dataSource]="transferProcesses" class="transfer-history-table">
 
           <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef scope="col">Id</th>
-              <td mat-cell *matCellDef="let item">{{item['@id']}}</td>
+              <td mat-cell *matCellDef="let item">{{item.id}}</td>
           </ng-container>
 
           <ng-container matColumnDef="state">
               <th mat-header-cell *matHeaderCellDef scope="col">State</th>
-              <td mat-cell *matCellDef="let item">{{item['edc:state']}}</td>
+              <td mat-cell *matCellDef="let item">{{item.state}}</td>
           </ng-container>
 
           <ng-container matColumnDef="lastUpdated">
-              <th mat-header-cell *matHeaderCellDef scope="col">Last updated</th>
-              <td mat-cell *matCellDef="let item">{{asDate(item['edc:stateTimestamp'])}}</td>
-          </ng-container>
+            <th mat-header-cell *matHeaderCellDef scope="col">Last updated</th>
+            <td mat-cell *matCellDef="let item">{{asDate(item.mandatoryValue('edc', 'stateTimestamp'))}}</td>
+          </ng-container>        
 
           <ng-container matColumnDef="connectorId">
               <th mat-header-cell *matHeaderCellDef scope="col">ConnectorId</th>
-              <td mat-cell *matCellDef="let item">{{item['edc:connectorId']}}</td>
+              <td mat-cell *matCellDef="let item">{{item.connectorId}}</td>
           </ng-container>
 
           <ng-container matColumnDef="assetId">
               <th mat-header-cell *matHeaderCellDef scope="col">AssetId</th>
-              <td mat-cell *matCellDef="let item">{{item['edc:assetId']}}</td>
+              <td mat-cell *matCellDef="let item">{{item.assetId}}</td>
           </ng-container>
 
           <ng-container matColumnDef="contractId">
               <th mat-header-cell *matHeaderCellDef scope="col">ContractId</th>
-              <td mat-cell *matCellDef="let item">{{item['edc:contractId']}}</td>
+              <td mat-cell *matCellDef="let item">{{item.contractId}}</td>
           </ng-container>
 
           <ng-container matColumnDef="action">

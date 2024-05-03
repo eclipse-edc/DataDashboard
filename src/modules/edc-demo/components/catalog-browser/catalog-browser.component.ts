@@ -3,12 +3,12 @@ import {MatDialog} from '@angular/material/dialog';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {CatalogBrowserService} from "../../services/catalog-browser.service";
-import {ContractNegotiationDto, NegotiationInitiateRequestDto} from "../../../mgmt-api-client";
 import {NotificationService} from "../../services/notification.service";
 import {Router} from "@angular/router";
 import {TransferProcessStates} from "../../models/transfer-process-states";
 import {ContractOffer} from "../../models/contract-offer";
 import {NegotiationResult} from "../../models/negotiation-result";
+import {ContractNegotiation, ContractNegotiationRequest} from "../../../mgmt-api-client/model";
 
 interface RunningTransferProcess {
   processId: string;
@@ -27,7 +27,7 @@ export class CatalogBrowserComponent implements OnInit {
   searchText = '';
   runningTransferProcesses: RunningTransferProcess[] = [];
   runningNegotiations: Map<string, NegotiationResult> = new Map<string, NegotiationResult>(); // contractOfferId, NegotiationResult
-  finishedNegotiations: Map<string, ContractNegotiationDto> = new Map<string, ContractNegotiationDto>(); // contractOfferId, contractAgreementId
+  finishedNegotiations: Map<string, ContractNegotiation> = new Map<string, ContractNegotiation>(); // contractOfferId, contractAgreementId
   private fetch$ = new BehaviorSubject(null);
   private pollingHandleNegotiation?: any;
 
@@ -55,19 +55,15 @@ export class CatalogBrowserComponent implements OnInit {
   }
 
   onNegotiateClicked(contractOffer: ContractOffer) {
-    const initiateRequest: NegotiationInitiateRequestDto = {
-      connectorAddress: contractOffer["edc:originator"],
-      "@context": {
-        "edc": "https://w3id.org/edc/v0.0.1/ns/",
-        "odrl": "http://www.w3.org/ns/odrl/2/"
-      },
+    const initiateRequest: ContractNegotiationRequest = {
+      connectorAddress: contractOffer.originator,
       offer: {
         offerId: contractOffer.id,
-        assetId: contractOffer.asset.id,
+        assetId: contractOffer.assetId,
         policy: contractOffer.policy,
       },
       connectorId: 'connector',
-      protocol: 'dataspace-protocol-http'
+      providerId: contractOffer["dcat:service"].id
     };
 
     const finishedNegotiationStates = [
@@ -89,7 +85,7 @@ export class CatalogBrowserComponent implements OnInit {
 
           for (const negotiation of this.runningNegotiations.values()) {
             this.apiService.getNegotiationState(negotiation.id).subscribe(updatedNegotiation => {
-              if (finishedNegotiationStates.includes(updatedNegotiation["edc:state"]!)) {
+              if (finishedNegotiationStates.includes(updatedNegotiation.state!)) {
                 let offerId = negotiation.offerId;
                 this.runningNegotiations.delete(offerId);
                 if (updatedNegotiation["edc:state"] === "VERIFIED") {
@@ -115,11 +111,11 @@ export class CatalogBrowserComponent implements OnInit {
   }
 
   isBusy(contractOffer: ContractOffer) {
-    return this.runningNegotiations.get(contractOffer.id) !== undefined || !!this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.asset.id);
+    return this.runningNegotiations.get(contractOffer.id) !== undefined || !!this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.assetId);
   }
 
   getState(contractOffer: ContractOffer): string {
-    const transferProcess = this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.asset.id);
+    const transferProcess = this.runningTransferProcesses.find(tp => tp.assetId === contractOffer.assetId);
     if (transferProcess) {
       return TransferProcessStates[transferProcess.state];
     }
