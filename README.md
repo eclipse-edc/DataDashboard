@@ -100,4 +100,4 @@ az container create --image ${ACR_NAME}.azurecr.io/edc-showcase/edc-data-dashboa
 
 ## Contributing
 
-See [how to contribute](https://github.com/eclipse-dataspaceconnector/DataSpaceConnector/blob/main/CONTRIBUTING.md) for details.
+See [how to contribute](https://github.com/eclipse-edc/docs/blob/main/CONTRIBUTING.md) for details.
