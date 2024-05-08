@@ -1,10 +1,12 @@
 # Stage 1: Compile and Build angular codebase
 FROM node:lts as build
 
+ARG BASE_PATH=/
+
 WORKDIR /app
 COPY ./ /app/
 RUN npm install
-RUN npm run build
+RUN npm run build -- --base-href=$BASE_PATH
 
 # Stage 2: Serve app with nginx
 FROM nginx:alpine
