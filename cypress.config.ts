@@ -7,7 +7,7 @@ export default defineConfig({
     experimentalStudio: true
   },
   env: {
-    consumerUrl: 'http//localhost:18080',
-    providerUrl: 'http//localhost:28080',
+    consumerUrl: 'http://localhost:18080',
+    providerUrl: 'http://localhost:28080',
   },
 })
