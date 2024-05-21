@@ -15,7 +15,7 @@ describe('end-to-end', () => {
     const id = uuid()
     const name = `asset-${id}`
 
-    cy.get('[href="/my-assets"]').as('assets-menu-item').click();
+    cy.get('[href="/my-assets"]').first().as('assets-menu-item').click();
     cy.get('#mat-input-0').as('asset-filter')
     cy.get('.container').contains('Create asset').as('open-new-asset-dialog').click();
     cy.get('#mat-input-1').as('asset-id-field').clear();
