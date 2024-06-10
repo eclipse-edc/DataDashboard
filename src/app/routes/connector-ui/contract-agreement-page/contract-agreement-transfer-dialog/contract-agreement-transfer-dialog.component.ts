@@ -1,5 +1,9 @@
 import {Component, Inject, OnDestroy} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import {Observable, Subject} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 import {
@@ -7,6 +11,7 @@ import {
   InitiateCustomTransferRequest,
   InitiateTransferRequest,
 } from '@sovity.de/edc-client';
+import {InitiateTransferConfirmTosDialogComponent} from 'src/app/component-library/initiate-transfer-confirm-tos-dialog/initiate-transfer-confirm-tos-dialog/initiate-transfer-confirm-tos-dialog.component';
 import {EdcApiService} from '../../../../core/services/api/edc-api.service';
 import {DataAddressMapper} from '../../../../core/services/data-address-mapper';
 import {HttpRequestParamsMapper} from '../../../../core/services/http-params-mapper.service';
@@ -77,6 +82,7 @@ export class ContractAgreementTransferDialogComponent implements OnDestroy {
     public form: ContractAgreementTransferDialogForm,
     public validationMessages: ValidationMessages,
     private dialogRef: MatDialogRef<ContractAgreementTransferDialogComponent>,
+    private confirmationDialog: MatDialog,
     private edcApiService: EdcApiService,
     private notificationService: NotificationService,
     private httpRequestParamsMapper: HttpRequestParamsMapper,
@@ -88,37 +94,47 @@ export class ContractAgreementTransferDialogComponent implements OnDestroy {
     if (this.loading && !this.form.all.valid) {
       return;
     }
-    this.loading = true;
-    this.form.all.disable();
 
-    const value = this.form.value;
-    let request$: Observable<IdResponseDto>;
-    if (value.dataAddressType === 'Custom-Transfer-Process-Request') {
-      const request = this.buildCustomTransferRequest(value);
-      request$ = this.edcApiService.initiateCustomTransfer(request);
-    } else {
-      const request = this.buildTransferRequest(value);
-      request$ = this.edcApiService.initiateTransfer(request);
-    }
+    const confirmationDialogRef = this.confirmationDialog.open(
+      InitiateTransferConfirmTosDialogComponent,
+      {maxWidth: '30%'},
+    );
 
-    request$
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-          this.form.all.enable();
-        }),
-      )
-      .subscribe({
-        next: (response) =>
-          this.close({
-            transferProcessId: response.id!,
-            contractId: this.data.contractId,
-          }),
-        error: (err) => {
-          this.notificationService.showError('Failed initiating transfer!');
-          console.error('Failed initiating transfer', err);
-        },
-      });
+    confirmationDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loading = true;
+        this.form.all.disable();
+
+        const value = this.form.value;
+        let request$: Observable<IdResponseDto>;
+        if (value.dataAddressType === 'Custom-Transfer-Process-Request') {
+          const request = this.buildCustomTransferRequest(value);
+          request$ = this.edcApiService.initiateCustomTransfer(request);
+        } else {
+          const request = this.buildTransferRequest(value);
+          request$ = this.edcApiService.initiateTransfer(request);
+        }
+
+        request$
+          .pipe(
+            finalize(() => {
+              this.loading = false;
+              this.form.all.enable();
+            }),
+          )
+          .subscribe({
+            next: (response) =>
+              this.close({
+                transferProcessId: response.id!,
+                contractId: this.data.contractId,
+              }),
+            error: (err) => {
+              this.notificationService.showError('Failed initiating transfer!');
+              console.error('Failed initiating transfer', err);
+            },
+          });
+      }
+    });
   }
 
   private close(params: ContractAgreementTransferDialogResult) {

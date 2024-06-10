@@ -20,6 +20,8 @@ the detailed section referring to by linking pull requests or issues.
 
 #### Patch
 
+- Added Initiate Transfer Confirm ToS Dialog
+
 #### Deployment Migration Notes
 
 ## [v3.2.2] - 2024-04-20
