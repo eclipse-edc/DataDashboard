@@ -1,5 +1,6 @@
 import {
   AssetPageToJSON,
+  ContractAgreementPageQueryFromJSON,
   ContractAgreementPageToJSON,
   ContractDefinitionPageToJSON,
   ContractDefinitionRequestFromJSON,
@@ -167,8 +168,9 @@ export const EDC_FAKE_BACKEND: FetchAPI = async (
     })
 
     .url('pages/contract-agreement-page')
-    .on('GET', () => {
-      const page = contractAgreementPage();
+    .on('POST', () => {
+      const pageQuery = body ? ContractAgreementPageQueryFromJSON(body) : null;
+      const page = contractAgreementPage(pageQuery?.terminationStatus);
       return ok(ContractAgreementPageToJSON(page));
     })
 
