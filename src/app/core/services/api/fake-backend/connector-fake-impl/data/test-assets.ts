@@ -75,14 +75,16 @@ This is a short description text that should be fully rendered without being **c
 
   export const onRequestAsset: UiAsset = {
     dataSourceAvailability: 'ON_REQUEST',
-    assetId: 'on-request-asset',
-    title: 'On Request Asset',
+    assetId: 'comfee-or',
+    title: 'Comfee OR',
     description: '',
     descriptionShortText: '',
     connectorEndpoint: 'https://my-other-connector/api/dsp',
     participantId: 'MDSL1234XX.C1234XX',
     creatorOrganizationName: 'my-org',
     temporalCoverageFrom: new Date('2024-01-01'),
+    onRequestContactEmail: 'mail@mail.mail',
+    onRequestContactEmailSubject: "Request for asset 'comfee-or'",
     isOwnConnector: false,
   };
 
