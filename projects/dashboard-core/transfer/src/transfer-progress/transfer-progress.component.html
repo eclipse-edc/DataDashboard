@@ -1,0 +1,53 @@
+<div class="flex flex-col items-center">
+  <h1 class="text-3xl mb-10">{{ type ? type + ' ' : '' }}Transfer</h1>
+  @if (this.type) {
+    <ul class="steps wider-steps">
+      @if (happyPath) {
+        @for (state of happyPathStates; track state) {
+          <li
+            class="step before:transition-colors before:duration-300 after:transition-colors after:duration-300"
+            [ngClass]="stateHistory.includes(state) ? 'step-success' : ''"
+            [attr.data-content]="stateHistory.includes(state) ? '✓' : '?'"
+          >
+            @if (this.type === 'Pull' && state === TransferProcessStates.STARTED) {
+              READY
+            } @else {
+              {{ state }}
+            }
+          </li>
+        }
+      } @else {
+        @for (state of stateHistory; track state) {
+          <li
+            class="step before:transition-colors before:duration-300 after:transition-colors after:duration-300"
+            [ngClass]="happyPathStates.includes(state) ? 'step-success' : 'step-error before:!bg-error'"
+            [attr.data-content]="happyPathStates.includes(state) ? '✓' : '✕'"
+          >
+            {{ state }}
+          </li>
+        }
+      }
+    </ul>
+  }
+  @if (this.polling) {
+    <span class="loading loading-bars loading-xl mt-10"></span>
+  }
+  @if (errorMsg) {
+    <div role="alert" class="alert alert-error alert-soft mt-10 max-w-xl">
+      <span class="material-symbols-rounded">error_outline</span>
+      <div class="break-all">
+        <h3 class="font-bold">Error</h3>
+        <span>{{ errorMsg }}</span>
+      </div>
+    </div>
+  }
+  @if (this.type === 'Pull' && !this.polling) {
+    <lib-transfer-pull-download
+      class="w-xl"
+      [agreement]="agreement"
+      [negotiation]="negotiation"
+      [transferId]="transferId.id"
+      (errorEvent)="errorMsg = $event"
+    ></lib-transfer-pull-download>
+  }
+</div>

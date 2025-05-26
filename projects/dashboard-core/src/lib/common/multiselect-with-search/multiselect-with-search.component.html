@@ -1,0 +1,37 @@
+<float-ui-content #dropdownSelection>
+  <ul
+    class="dropdown-content bg-base-300 rounded-box z-[1] p-4 shadow-xl overflow-y-auto w-full"
+    [ngStyle]="{ 'max-height': maxHeight + 'px' }"
+  >
+    @if (filteredOptions.length > 0) {
+      @for (option of filteredOptions; track option) {
+        <label class="label cursor-pointer w-full flex items-center mb-2" (click)="toggleItem(option)">
+          <input type="checkbox" class="checkbox checkbox-xs" [checked]="selectedOptions.has(option)" />
+          <span class="label-text text-left w-full truncate pl-4 -ml-2" (click)="$event.stopPropagation()">{{
+            displayFn(option)
+          }}</span>
+        </label>
+      }
+    } @else {
+      <li>No items found</li>
+    }
+  </ul>
+</float-ui-content>
+<div
+  [floatUi]="dropdownSelection"
+  [showTrigger]="NgxFloatUiTriggers.click"
+  [preventOverflow]="true"
+  [placement]="NgxFloatUiPlacements.TOP"
+  [styles]="{ border: 'none', 'box-shadow': 'none', width: '100%', padding: '0' }"
+>
+  <label class="input input-bordered flex items-center gap-2 w-full">
+    <span class="material-symbols-rounded opacity-50">search</span>
+    <input
+      type="text"
+      class="grow"
+      placeholder="Filter items..."
+      [(ngModel)]="searchInput"
+      (input)="updateFilteredOptions()"
+    />
+  </label>
+</div>

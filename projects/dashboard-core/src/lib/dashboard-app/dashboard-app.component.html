@@ -1,0 +1,190 @@
+<div
+  class="fixed z-9999 top-20 left-[50%] -translate-x-1/2 flex flex-col justify-start items-center [&_.alert]:mb-6 [&_.alert]:shadow-2xl"
+>
+  <ng-template #dashboardAlert></ng-template>
+</div>
+
+<dialog class="modal z-10" id="dashboard-dialog">
+  <div class="modal-box w-auto max-w-[90vw] max-h-[95vh] p-12 overflow-hidden flex">
+    <form method="dialog">
+      <button class="btn btn-circle absolute right-3 top-3">✕</button>
+    </form>
+    <ng-template #dashboardModal></ng-template>
+  </div>
+</dialog>
+
+<div class="box-border flex h-screen w-screen max-h-screen max-w-screen flex-col bg-base-100 pt-4">
+  <div class="navbar min-h-fit px-4 mx-4 max-w-[calc(100%-2rem)] rounded-2xl bg-neutral text-neutral-content shadow-xl">
+    <div class="navbar-start">
+      <label
+        class="btn btn-lg btn-circle btn-ghost swap swap-rotate hover:text-primary-content hover:bg-primary border-none"
+      >
+        <input type="checkbox" (change)="stateService.toggleMenuOpen()" />
+        <span
+          class="material-symbols-rounded h7 w-7 !text-[1.75rem]"
+          [ngClass]="openMenuInitially ? 'swap-on' : 'swap-off'"
+          >menu</span
+        >
+        <span
+          class="material-symbols-rounded h7 w-7 !text-[1.75rem]"
+          [ngClass]="openMenuInitially ? 'swap-off' : 'swap-on'"
+          >menu_open</span
+        >
+      </label>
+    </div>
+    <div class="navbar-center">
+      <div class="text-lg">EDC Dashboard</div>
+      @if ((stateService.edcConfigs$ | async) && (stateService.currentEdcConfig$ | async)) {
+        <div class="dropdown dropdown-center dropdown-hover ml-5">
+          <div
+            class="tooltip tooltip-right"
+            [ngClass]="(edcClientService.isHealthy$ | async) ? 'tooltip-success' : 'tooltip-error'"
+            [attr.data-tip]="
+              (edcClientService.isHealthy$ | async)
+                ? 'Connection to connector established'
+                : 'Connection to connector failed'
+            "
+          >
+            <div
+              tabindex="0"
+              role="button"
+              class="btn btn-ghost border-none shadow-none"
+              [ngClass]="[
+                (edcClientService.isHealthy$ | async)
+                  ? 'hover:bg-success/25 hover:text-success'
+                  : 'hover:bg-error/25 hover:text-error',
+                (stateService.edcConfigs$ | async)!.length > 1 ? '' : 'cursor-default',
+              ]"
+            >
+              <div class="inline-grid [&_>*]:[grid-area:1/1] mr-6">
+                <div
+                  class="status status-lg"
+                  [ngClass]="(edcClientService.isHealthy$ | async) ? 'status-success' : 'status-error animate-ping'"
+                ></div>
+                <div
+                  class="status status-lg"
+                  [ngClass]="(edcClientService.isHealthy$ | async) ? 'status-success' : 'status-error'"
+                ></div>
+              </div>
+              <div class="text-lg font-medium">
+                {{ (stateService.currentEdcConfig$ | async)?.connectorName }}
+              </div>
+            </div>
+          </div>
+          <ul
+            tabindex="0"
+            class="dropdown-content menu bg-base-100 text-base-content rounded-box z-1 p-2 shadow-xl text-nowrap [&_>li]:my-1"
+          >
+            @for (config of stateService.edcConfigs$ | async; track config.connectorName) {
+              <li>
+                <input
+                  type="radio"
+                  name="edc-config-dropdown"
+                  class="btn btn-ghost justify-start checked:text-primary-content"
+                  [attr.aria-label]="config.connectorName"
+                  [value]="config.connectorName"
+                  [checked]="config === (stateService.currentEdcConfig$ | async)"
+                  (click)="selectConnector(config)"
+                />
+              </li>
+            }
+            @for (config of stateService.localStorageEdcConfigs$ | async; track config.connectorName) {
+              <li class="group flex flex-row flex-nowrap relative">
+                <input
+                  type="radio"
+                  name="edc-config-dropdown"
+                  class="btn btn-ghost justify-start checked:text-primary-content w-full"
+                  [attr.aria-label]="config.connectorName"
+                  [value]="config.connectorName"
+                  [checked]="config === (stateService.currentEdcConfig$ | async)"
+                  (click)="selectConnector(config)"
+                />
+                <div
+                  class="btn btn-error btn-soft absolute left-[100%] hidden group-hover:inline-flex"
+                  (click)="deleteConnector(config)"
+                >
+                  <span class="material-symbols-rounded">delete</span>
+                </div>
+              </li>
+            }
+            <div class="divider mb-2 mt-0"></div>
+            <li>
+              <button class="btn btn-soft btn-primary" (click)="addConnector()">
+                <span class="material-symbols-rounded">add</span>
+                Add
+              </button>
+            </li>
+          </ul>
+        </div>
+      } @else {
+        <div
+          class="tooltip tooltip-right tooltip-open tooltip-primary"
+          data-tip="Add your first connector configuration"
+        >
+          <button class="ml-5 btn btn-soft btn-primary" (click)="addConnector()">
+            <span class="material-symbols-rounded">add</span>
+            Add Connector
+          </button>
+        </div>
+      }
+    </div>
+    <div class="navbar-end">
+      <div class="dropdown dropdown-end">
+        <div
+          tabindex="0"
+          role="button"
+          class="btn btn-lg btn-circle btn-ghost m-1 hover:text-primary-content hover:bg-primary border-none"
+        >
+          <svg class="h-7 w-7" viewBox="0 -960 960 960" fill="currentColor">
+            <path
+              d="M440-80q-33 0-56.5-23.5T360-160v-160H240q-33 0-56.5-23.5T160-400v-280q0-66 47-113t113-47h480v440q0 33-23.5 56.5T720-320H600v160q0 33-23.5 56.5T520-80h-80ZM240-560h480v-200h-40v160h-80v-160h-40v80h-80v-80H320q-33 0-56.5 23.5T240-680v120Zm0 160h480v-80H240v80Zm0 0v-80 80Z"
+            />
+          </svg>
+        </div>
+        <ul
+          tabindex="0"
+          class="dropdown-content bg-base-100 text-base-content z-1 max-h-96 overflow-y-auto rounded-box p-2 shadow-2xl"
+        >
+          <li *ngFor="let theme of themes">
+            <input
+              type="radio"
+              name="theme-dropdown"
+              class="theme-controller btn btn-ghost btn-sm btn-block justify-start checked:text-primary-content"
+              [attr.aria-label]="theme"
+              [value]="theme"
+              (click)="stateService.setTheme(theme)"
+            />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="box-border py-4 pl-4 flex flex-auto overflow-auto">
+    <ul
+      class="menu flex-nowrap shrink-0 h-full rounded-2xl bg-neutral text-neutral-content shadow-xl [&_li>a]:px-4 overflow-auto"
+    >
+      <ng-container *ngFor="let item of menuItems">
+        <button
+          class="btn btn-lg btn-ghost justify-start shadow-none hover:text-primary-content hover:bg-primary border-none transition-none"
+          routerLink="{{ item.routerPath }}"
+          routerLinkActive="text-primary"
+        >
+          <span class="material-symbols-rounded h-7 w-7 !text-[1.75rem]">{{ item.materialSymbol }}</span>
+          @if (stateService.isMenuOpen$ | async) {
+            <span class="text-sm">{{ item.text }}</span>
+          }
+        </button>
+        @if (item.divider) {
+          <div
+            class="divider after:bg-neutral-content before:bg-neutral-content after:opacity-15 before:opacity-15 my-0 px-2"
+          ></div>
+        }
+      </ng-container>
+    </ul>
+
+    <div id="router-content" class="px-4 box-border w-full overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

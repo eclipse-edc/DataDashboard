@@ -1,0 +1,22 @@
+[
+  {
+    "@id": "aad14d12-a3da-47ad-b901-e6127155272e",
+    "@type": "DataPlaneInstance",
+    "url": "http://dp-provider.dataspace/control/v1/dataflows",
+    "lastActive": 1733319883730,
+    "turnCount": 0,
+    "allowedSourceTypes": "HttpData",
+    "allowedDestTypes": "HttpData",
+    "allowedTransferTypes": [
+      "HttpData-PULL",
+      "HttpData-PUSH"
+    ],
+    "state": "AVAILABLE",
+    "stateTimestamp": 1739284704647,
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+      "edc": "https://w3id.org/edc/v0.0.1/ns/",
+      "odrl": "http://www.w3.org/ns/odrl/2/"
+    }
+  }
+]

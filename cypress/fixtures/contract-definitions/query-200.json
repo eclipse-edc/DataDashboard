@@ -1,0 +1,31 @@
+[
+  {
+    "@id": "test-contractDefinition1",
+    "@type": "ContractDefinition",
+    "accessPolicyId": "test-policy1",
+    "contractPolicyId": "test-policy2",
+    "assetsSelector": [],
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+      "edc": "https://w3id.org/edc/v0.0.1/ns/",
+      "odrl": "http://www.w3.org/ns/odrl/2/"
+    }
+  },
+  {
+    "@id": "test-contractDefinition2",
+    "@type": "ContractDefinition",
+    "accessPolicyId": "test-policy2",
+    "contractPolicyId": "test-policy2",
+    "assetsSelector": {
+      "@type": "Criterion",
+      "operandLeft": "id",
+      "operator": "=",
+      "operandRight": "abc"
+    },
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+      "edc": "https://w3id.org/edc/v0.0.1/ns/",
+      "odrl": "http://www.w3.org/ns/odrl/2/"
+    }
+  }
+]

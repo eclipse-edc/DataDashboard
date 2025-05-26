@@ -1,0 +1,13 @@
+.wider-steps {
+  --step-extension: 80px;
+  & li {
+    padding-right: calc(var(--step-extension) / 2) !important;
+    padding-left: calc(var(--step-extension) / 2) !important;
+    &::before {
+      margin-inline-start: calc(-100% - var(--step-extension)) !important;
+      width: calc(100% + var(--step-extension)) !important;
+    }
+  }
+  margin-left: calc(var(--step-extension) / -2);
+  margin-right: calc(var(--step-extension) / -2);
+}

@@ -1,0 +1,39 @@
+<!-- Only to include the tailwind classes because the dynamic classes won't be recognized at compile time -->
+<ng-container class="alert-error alert-info alert-success alert-warning"></ng-container>
+
+<div role="alert" class="alert" [ngClass]="type ? 'alert-'.concat(type) : ''">
+  <span class="material-symbols-rounded !text-4xl">
+    @if (!type || type === 'info') {
+      info
+    } @else if (type === 'success') {
+      check_circle
+    } @else if (type === 'warning') {
+      warning
+    } @else if (type === 'error') {
+      error_outline
+    }
+  </span>
+  <div>
+    @if (title) {
+      <h3 class="font-bold">{{ title }}</h3>
+    }
+    <span>{{ msg }}</span>
+  </div>
+  @if (showTimer) {
+    <div
+      (click)="close()"
+      class="radial-progress text-neutral hover:cursor-pointer"
+      style="--size: calc(2rem + 10px); --thickness: 6px"
+      [style]="'--value:' + countdown + ';'"
+      role="progressbar"
+    >
+      <button type="button" class="btn btn-circle btn-sm btn-neutral">
+        <span class="material-symbols-rounded !text-lg">close</span>
+      </button>
+    </div>
+  } @else {
+    <button type="button" class="btn btn-circle btn-sm btn-neutral" (click)="close()">
+      <span class="material-symbols-rounded !text-lg">close</span>
+    </button>
+  }
+</div>

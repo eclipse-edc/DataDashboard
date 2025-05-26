@@ -1,13 +1,27 @@
-import { defineConfig } from 'cypress'
+import { defineConfig } from 'cypress';
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:18080',
-    supportFile: false,
-    experimentalStudio: true
+    baseUrl: 'http://localhost:4200',
   },
+
+  component: {
+    devServer: {
+      framework: 'angular',
+      bundler: 'webpack',
+    },
+    specPattern: '**/*.cy.ts',
+  },
+
   env: {
-    consumerUrl: 'http://localhost:18080',
-    providerUrl: 'http://localhost:28080',
+    edcConfig: [
+      {
+        connectorName: 'cypress',
+        managementUrl: 'http://test.connector/management',
+        defaultUrl: 'http://test.connector/api',
+        protocolUrl: 'http://test.connector/protocol',
+        federatedCatalogEnabled: false,
+      },
+    ],
   },
-})
+});

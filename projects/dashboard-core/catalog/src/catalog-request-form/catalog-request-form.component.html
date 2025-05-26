@@ -1,0 +1,54 @@
+<form class="flex flex-col items-center h-full overflow-auto" [formGroup]="requestForm" (submit)="onRequest()">
+  <h1 class="divider text-xl m-0">Catalog Request</h1>
+
+  <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+    <legend class="fieldset-legend text-sm">Counter Party</legend>
+
+    @if (requestForm.get('counterPartyId')) {
+      @if ((stateService.currentEdcConfig$ | async)?.did) {
+        <legend class="fieldset-label">Counter Party DID</legend>
+      } @else {
+        <legend class="fieldset-label">Counter Party ID</legend>
+      }
+      <label
+        class="input w-full"
+        [ngClass]="
+          (stateService.currentEdcConfig$ | async)?.did && requestForm.get('counterPartyId')?.invalid
+            ? 'input-error'
+            : ''
+        "
+      >
+        <span class="material-symbols-rounded opacity-50">link</span>
+        <input
+          type="text"
+          [placeholder]="(stateService.currentEdcConfig$ | async)?.did ? 'Counter Party DID' : 'Counter Party ID'"
+          name="counterPartyId"
+          formControlName="counterPartyId"
+        />
+      </label>
+      @if ((stateService.currentEdcConfig$ | async)?.did && requestForm.get('counterPartyId')?.invalid) {
+        <p class="fieldset-label text-error">Mandatory</p>
+      }
+    }
+
+    <legend class="fieldset-label">Counter Party Address</legend>
+    <label class="input w-full" [ngClass]="requestForm.get('counterPartyAddress')?.invalid ? 'input-error' : ''">
+      <span class="material-symbols-rounded opacity-50">link</span>
+      <input
+        type="text"
+        placeholder="Counter Party Address"
+        name="counterPartyAddress"
+        formControlName="counterPartyAddress"
+      />
+    </label>
+    @if (requestForm.get('counterPartyAddress')?.invalid) {
+      <p class="fieldset-label text-error">Enter a valid URL</p>
+    }
+  </fieldset>
+
+  <div class="divider"></div>
+  <button type="submit" class="btn btn-primary btn-lg w-lg" [disabled]="requestForm.invalid">
+    <span class="material-symbols-rounded">auto_stories</span>
+    Request Catalog
+  </button>
+</form>

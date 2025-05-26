@@ -1,0 +1,14 @@
+[
+  {
+    "message": "mandatory value 'https://w3id.org/edc/v0.0.1/ns/accessPolicyId' is missing or it is blank",
+    "type": "ValidationFailure",
+    "path": "https://w3id.org/edc/v0.0.1/ns/accessPolicyId",
+    "invalidValue": null
+  },
+  {
+    "message": "mandatory value 'https://w3id.org/edc/v0.0.1/ns/contractPolicyId' is missing or it is blank",
+    "type": "ValidationFailure",
+    "path": "https://w3id.org/edc/v0.0.1/ns/contractPolicyId",
+    "invalidValue": null
+  }
+]

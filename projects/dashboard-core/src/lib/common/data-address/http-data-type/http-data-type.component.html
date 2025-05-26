@@ -1,0 +1,54 @@
+<fieldset class="fieldset" [formGroup]="formGroup">
+  <legend class="fieldset-label">Method</legend>
+  <label class="select w-full">
+    <span class="label">HTTP</span>
+    <select class="input" name="method" formControlName="method">
+      <option value="GET">GET</option>
+      <option value="POST">POST</option>
+      <option value="PUT">PUT</option>
+    </select>
+  </label>
+
+  <legend class="fieldset-label">Base URL</legend>
+  <label class="input w-full" [ngClass]="formGroup.get('baseUrl')?.invalid ? 'input-error' : ''">
+    <span class="material-symbols-rounded opacity-50">link</span>
+    <input type="url" placeholder="Base Url" name="baseUrl" formControlName="baseUrl" />
+  </label>
+  @if (formGroup.get('baseUrl')?.invalid) {
+    <p class="fieldset-label text-error">Enter a valid URL</p>
+  }
+
+  @for (property of viewData; track property[0]) {
+    <legend class="fieldset-label">{{ property[1].displayName }}</legend>
+    <label class="input w-full">
+      @if (property[1].icon) {
+        <span class="material-symbols-rounded opacity-50">{{ property[1].icon }}</span>
+      }
+      <input
+        [type]="property[1].inputType ?? 'text'"
+        [placeholder]="property[1].displayName"
+        [name]="property[0]"
+        [formControlName]="property[0]"
+      />
+    </label>
+  }
+
+  <legend class="fieldset-label">Proxy</legend>
+  <input type="checkbox" [checked]="proxy" class="toggle toggle-primary" (change)="proxy = !proxy" />
+  @if (proxy) {
+    @for (property of proxyViewData; track property[0]) {
+      <legend class="fieldset-label">{{ property[1].displayName }}</legend>
+      <label class="input w-full">
+        @if (property[1].icon) {
+          <span class="material-symbols-rounded opacity-50">{{ property[1].icon }}</span>
+        }
+        <input
+          [type]="property[1].inputType ?? 'text'"
+          [placeholder]="property[1].displayName"
+          [name]="property[0]"
+          [formControlName]="property[0]"
+        />
+      </label>
+    }
+  }
+</fieldset>

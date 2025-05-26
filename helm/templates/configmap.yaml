@@ -1,0 +1,29 @@
+{{- if .Values.ingress.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "data-dashboard.fullname" . }}-ingress-config
+  labels:
+    {{- include "data-dashboard.labels" . | nindent 4 }}
+data:
+{{- with (first (first .Values.ingress.hosts).paths).path }}
+  nginx.conf: |-
+    server {
+      listen 8080;
+      port_in_redirect off;
+      root /app;
+      location {{ . | trimSuffix "/" }}/config {
+        alias /app/config/;
+        try_files $uri$args $uri$args/ =404;
+      }
+      location {{ . }} {
+        alias /app/;
+        index index.html;
+        try_files $uri$args $uri$args/ /index.html;
+      }
+    }
+  APP_BASE_HREF.txt: |-
+    {{ . }}
+{{- end }}
+{{- end }}

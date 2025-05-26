@@ -1,0 +1,13 @@
+<label
+  class="select h-full shadow-xl rounded-2xl bg-base-300 focus:outline-hidden focus-within:outline-hidden border-base-300 focus-within:border-primary"
+>
+  <span class="label">Items</span>
+  <select (change)="change($event)" [(ngModel)]="currentItemCount">
+    <option value="5">5</option>
+    <option value="10">10</option>
+    <option value="15">15</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+  </select>
+</label>

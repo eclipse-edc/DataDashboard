@@ -1,0 +1,32 @@
+<div
+  class="tabs tabs-box shadow-xl rounded-2xl bg-base-300 [&_input]:checked:!bg-primary/8 [&_input]:checked:!text-primary [&_input]:hover:text-primary [&_input]:!rounded-xl"
+>
+  <div
+    class="tooltip-left tooltip-primary"
+    [attr.data-tip]="consumerTooltip"
+    [ngClass]="consumerTooltip ? 'tooltip' : ''"
+  >
+    <input
+      type="radio"
+      name="contract-types"
+      class="tab"
+      aria-label="Consuming"
+      [checked]="initialType === 'CONSUMER'"
+      (change)="changed.emit('CONSUMER')"
+    />
+  </div>
+  <div
+    class="tooltip-right tooltip-primary"
+    [attr.data-tip]="providerTooltip"
+    [ngClass]="providerTooltip ? 'tooltip' : ''"
+  >
+    <input
+      type="radio"
+      name="contract-types"
+      class="tab"
+      aria-label="Providing"
+      [checked]="initialType === 'PROVIDER'"
+      (change)="changed.emit('PROVIDER')"
+    />
+  </div>
+</div>

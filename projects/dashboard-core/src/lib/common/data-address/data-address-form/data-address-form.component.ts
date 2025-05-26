@@ -1,0 +1,86 @@
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { from, Observable, of, Subject, takeUntil } from 'rxjs';
+import { DataAddress } from '@think-it-labs/edc-connector-client';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DataTypeRegistryService } from '../../../services/data-type-registry.service';
+
+@Component({
+  selector: 'lib-data-address-form',
+  templateUrl: './data-address-form.component.html',
+  imports: [AsyncPipe, ReactiveFormsModule, NgClass],
+})
+export class DataAddressFormComponent implements OnInit, OnChanges, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+
+  @ViewChild('dataAddressComponent', { read: ViewContainerRef, static: true })
+  private readonly dataAddressComponent!: ViewContainerRef;
+
+  @Input() showDivider = true;
+  @Input() parentForm?: FormGroup;
+  @Input() dataAddress?: DataAddress;
+  @Output() dataAddressChange = new EventEmitter<DataAddress>();
+
+  allowedTypes$: Observable<Set<string>> = of();
+  private validDataAddress = false;
+
+  private readonly FORM_GROUP_NAME = 'dataAddress';
+  dataTypeForm: FormGroup;
+
+  constructor(
+    private readonly dataTypeService: DataTypeRegistryService,
+    private readonly formBuilder: FormBuilder,
+  ) {
+    this.dataTypeForm = this.formBuilder.group({
+      dataType: new FormControl(undefined, {
+        validators: [Validators.required, () => (this.validDataAddress ? null : { invalidDataType: true })],
+      }),
+    });
+    this.dataTypeForm
+      .get('dataType')
+      ?.valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(type => {
+        this.onDataTypeChange(type);
+      });
+  }
+
+  async ngOnInit() {
+    this.allowedTypes$ = from(this.dataTypeService.getAllowedSourceTypes());
+  }
+
+  ngOnChanges() {
+    if (this.dataAddress?.type != this.dataTypeForm.value.dataType) {
+      this.dataTypeForm.get('dataType')?.setValue(this.dataAddress?.type);
+    }
+    this.parentForm?.addControl(this.FORM_GROUP_NAME, this.dataTypeForm);
+  }
+
+  onDataTypeChange(type: string) {
+    this.validDataAddress = false;
+    this.dataAddressComponent.clear();
+    const typeComponent = this.dataTypeService.getComponent(type);
+    const ref = this.dataAddressComponent.createComponent(typeComponent);
+    ref.setInput('type', type);
+    ref.setInput('dataAddress', this.dataAddress);
+    ref.setInput('parentForm', this.dataTypeForm);
+    const sub = ref.instance.changed.subscribe(address => this.dataAddressChange.emit(address));
+    ref.onDestroy(() => sub.unsubscribe());
+    this.validDataAddress = ref.instance.formGroup.valid;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.parentForm?.removeControl(this.FORM_GROUP_NAME);
+  }
+}

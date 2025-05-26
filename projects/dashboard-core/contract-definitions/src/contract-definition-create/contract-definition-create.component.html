@@ -1,0 +1,109 @@
+<form
+  [formGroup]="contractDefinitionForm"
+  (ngSubmit)="contractDefinitionInput ? updateContractDefinition() : createContractDefinition()"
+  class="flex flex-col overflow-y-auto h-full [&_label]:shrink-0"
+>
+  <h1 class="text-xl text-center divider m-0">Contract Definition</h1>
+
+  <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box mb-4">
+    <legend class="fieldset-legend text-sm">Common Fields</legend>
+    <legend class="fieldset-label">ID</legend>
+    <label
+      class="input input-bordered !border-[var(--input-color)] flex items-center w-full"
+      [ngClass]="!contractDefinitionInput ? 'tooltip tooltip-info tooltip-top' : ''"
+      [attr.data-tip]="!contractDefinitionInput ? 'If not set a random UUID will be generated' : ''"
+    >
+      <span class="material-symbols-rounded opacity-50">contract_edit</span>
+      <input type="text" class="grow" placeholder="ID" formControlName="id" name="id" />
+      <span *ngIf="!contractDefinitionInput" class="badge badge-info">Optional</span>
+    </label>
+  </fieldset>
+  @if ((policyDefinitions$ | async)?.length ?? 0 > 0) {
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box mb-4">
+      <legend class="fieldset-legend text-sm">Policy Selections</legend>
+      <legend class="fieldset-label">Access Policy</legend>
+      <label
+        class="select w-full"
+        [ngClass]="contractDefinitionForm.get('accessPolicyId')?.invalid ? 'select-error' : ''"
+      >
+        <span class="material-symbols-rounded opacity-50">policy</span>
+        <select formControlName="accessPolicyId" name="accessPolicyId" required>
+          @for (policy of policyDefinitions$ | async; track policy) {
+            <option [ngValue]="policy.id">{{ policy.id }}</option>
+          }
+        </select>
+      </label>
+      @if (contractDefinitionForm.get('accessPolicyId')?.invalid) {
+        <p class="fieldset-label text-error">Mandatory</p>
+      }
+
+      <legend class="fieldset-label">Contract Policy</legend>
+      <label
+        class="select w-full"
+        [ngClass]="contractDefinitionForm.get('contractPolicyId')?.invalid ? 'select-error' : ''"
+      >
+        <span class="material-symbols-rounded opacity-50">policy</span>
+        <select formControlName="contractPolicyId" name="contractPolicyId" required>
+          @for (policy of policyDefinitions$ | async; track policy) {
+            <option [ngValue]="policy.id">{{ policy.id }}</option>
+          }
+        </select>
+      </label>
+      @if (contractDefinitionForm.get('contractPolicyId')?.invalid) {
+        <p class="fieldset-label text-error">Mandatory</p>
+      }
+    </fieldset>
+  } @else {
+    <div class="skeleton flex justify-center items-center h-56 rounded-2xl mb-3 mt-1">
+      <div
+        class="tooltip tooltip-open tooltip-primary"
+        data-tip="No policies yet! Create a policy first before adding a contract definition."
+      >
+        <button type="button" class="btn btn-primary btn-dash" (click)="createPolicy()">
+          <span class="material-symbols-rounded">policy</span>
+          Policy View
+        </button>
+      </div>
+    </div>
+  }
+
+  <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+    <legend class="fieldset-legend text-sm">Asset Selection</legend>
+    <lib-multiselect-with-search
+      #assetsSelector
+      *ngIf="assetIds$ | async as assetIds"
+      [items]="assetIds"
+      [preSelectedItems]="assetInput"
+      (selectedItemsChange)="handleSelectionChange($event)"
+      class="w-full"
+    ></lib-multiselect-with-search>
+    @if (assetInput.length > 0) {
+      <div class="pt-3"></div>
+    }
+    @for (asset of assetInput; track asset) {
+      <div class="flex items-center ml-4">
+        <span class="material-symbols-rounded mr-2">check</span>
+        <span class="truncate">ID = {{ asset }}</span>
+      </div>
+    }
+  </fieldset>
+
+  <div class="divider"></div>
+  <lib-alert
+    *ngIf="errorMsg"
+    title="Error"
+    [msg]="errorMsg"
+    (closeEvent)="errorMsg = ''"
+    type="error"
+    class="w-lg mb-4"
+  ></lib-alert>
+  <button
+    type="submit"
+    [disabled]="contractDefinitionForm.invalid"
+    class="btn btn-lg w-lg"
+    [ngClass]="contractDefinitionInput ? 'btn-warning' : 'btn-primary'"
+  >
+    <i class="material-symbols-rounded">{{ contractDefinitionInput ? 'update' : 'add' }}</i>
+    {{ contractDefinitionInput ? 'Update' : 'Create' }} Contract Definition
+  </button>
+</form>

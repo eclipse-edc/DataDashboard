@@ -1,0 +1,37 @@
+<div class="flex w-full h-full px-4 gap-3 items-center rounded-2xl bg-base-300">
+  <div class="badge badge-sm badge-base bg-base-100 text-base-content text-xs h-[calc(var(--size-field)*6)]">
+    {{ protocol }}
+  </div>
+  @if ((stateService.edcConfigs$ | async) && (stateService.edcConfigs$ | async)!.length > 1 && !federatedCatalog) {
+    <div
+      class="tooltip-open tooltip-primary tooltip-bottom h-full flex items-center"
+      data-tip="Select a configured connector here or request the catalog manually"
+      [ngClass]="showSearchTooltip ? 'tooltip' : ''"
+    >
+      <select
+        class="select select-ghost select-xs bg-base-100 text-base-content focus:outline-none focus-within:bg-primary/8 focus-within:text-primary hover:bg-primary/8 hover:text-primary hover:cursor-pointer rounded-box"
+        (change)="getCatalog()"
+        [(ngModel)]="selectedConnector"
+        #connectorSelect
+      >
+        <option [ngValue]="undefined" disabled selected>Select ...</option>
+        @for (config of stateService.edcConfigs$ | async; track config.connectorName) {
+          @if (config !== (stateService.currentEdcConfig$ | async)) {
+            <option [ngValue]="config">{{ config.connectorName }}</option>
+          }
+        }
+      </select>
+    </div>
+  } @else if (federatedCatalog) {
+    <div class="badge badge-sm badge-info badge-soft text-xs h-[calc(var(--size-field)*6)]">
+      Federated Catalog Enabled
+    </div>
+  }
+  <div
+    class="btn btn-xs btn-soft rounded-box btn-primary text-xs h-[calc(var(--size-field)*6)]"
+    (click)="openRequestForm()"
+  >
+    <span class="material-symbols-rounded !text-[.9rem]">auto_stories</span>
+    Request Manually
+  </div>
+</div>

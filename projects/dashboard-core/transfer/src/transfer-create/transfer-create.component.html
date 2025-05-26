@@ -1,0 +1,68 @@
+<form [formGroup]="transferForm" (ngSubmit)="createTransfer()" class="overflow-y-auto h-full">
+  <h1 class="text-xl text-center divider mb-1 mt-0">Transfer</h1>
+
+  <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+    <legend class="fieldset-legend text-sm">Contract</legend>
+    <lib-contract-agreement-card
+      class="[&_.card-body]:p-0 [&_.card-body]:bg-base-200"
+      [agreement]="agreement"
+      [showButtons]="false"
+    ></lib-contract-agreement-card>
+  </fieldset>
+
+  <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box mt-3">
+    <legend class="fieldset-legend text-sm">Transfer Types offered by the Provider</legend>
+    @if (initialized) {
+      @if (transferTypes$ | async) {
+        <legend class="fieldset-label">Select</legend>
+        <label class="select w-full" [ngClass]="transferForm.get('transferType')?.invalid ? 'select-error' : ''">
+          <span class="label">Transfer Type</span>
+          <select formControlName="transferType" name="transferType" required>
+            @for (type of transferTypes$ | async; track type) {
+              <option [ngValue]="type">{{ type }}</option>
+            }
+          </select>
+        </label>
+        @if (transferForm.get('transferType')?.invalid) {
+          <p class="fieldset-label text-error">Mandatory</p>
+        }
+      } @else {
+        <div role="alert" class="alert alert-warning alert-soft mb-3">
+          <span class="material-symbols-rounded">warning</span>
+          <span>This dataset does not exist anymore or the provider doesn't offer any transfer types for it!</span>
+        </div>
+      }
+    } @else {
+      <div class="skeleton w-full h-12 flex justify-center items-center rounded-lg">
+        <span class="loading loading-bars loading-md opacity-75 text-primary"></span>
+      </div>
+    }
+  </fieldset>
+
+  @if (isPushTransfer) {
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box mt-3">
+      <legend class="fieldset-legend text-sm">Destination Data Address</legend>
+      <lib-data-address-form
+        [parentForm]="transferForm"
+        (dataAddressChange)="onDestinationChange($event)"
+      ></lib-data-address-form>
+    </fieldset>
+  }
+
+  <div class="flex flex-col items-center">
+    <div class="divider"></div>
+    @if (errorMsg) {
+      <lib-alert
+        class="mb-4 max-w-lg"
+        title="Error"
+        type="error"
+        [msg]="errorMsg"
+        (closeEvent)="errorMsg = ''"
+      ></lib-alert>
+    }
+    <button type="submit" class="btn btn-lg btn-primary w-lg" [disabled]="transferForm.invalid">
+      <i class="material-symbols-rounded">send</i>
+      Start Transfer
+    </button>
+  </div>
+</form>

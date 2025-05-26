@@ -1,0 +1,14 @@
+<div role="alert" class="alert alert-warning alert-soft mb-3">
+  <span class="material-symbols-rounded">warning</span>
+  <span
+    >No input component for this data type found! You have to know the properties of this data type and add them
+    manually.</span
+  >
+</div>
+
+<lib-json-object-input
+  class="w-full mx-auto"
+  [object]="dataAddress"
+  [excludeKeys]="['type', '@type', '@context']"
+  (objectChange)="dataAddressChange($event)"
+></lib-json-object-input>

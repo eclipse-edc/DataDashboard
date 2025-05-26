@@ -1,0 +1,17 @@
+@if (object) {
+  <lib-json-object-table
+    class="w-full mx-auto"
+    [object]="object"
+    [excludeKeys]="excludeKeys"
+    [deleteButton]="true"
+    (delete)="deleteProperty($event)"
+  ></lib-json-object-table>
+}
+<fieldset class="fieldset">
+  <legend class="fieldset-label">New Property</legend>
+  <div class="join w-full" [formGroup]="formGroup">
+    <input class="input input-bordered join-item" placeholder="Key" formControlName="key" name="value" />
+    <input class="input input-bordered join-item" placeholder="Value" formControlName="value" name="value" />
+    <button type="button" class="btn btn-soft btn-primary join-item border-primary" (click)="addProperty()">Add</button>
+  </div>
+</fieldset>

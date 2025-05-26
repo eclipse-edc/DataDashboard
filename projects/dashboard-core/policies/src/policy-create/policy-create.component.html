@@ -1,0 +1,98 @@
+<form #policyForm="ngForm" class="grid grid-cols-1 gap-4 items-start overflow-y-auto h-full">
+  <h1 class="text-xl text-center divider m-0">Policy</h1>
+  <div class="flex flex-col">
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+      <legend class="fieldset-legend text-sm">Common Fields</legend>
+      <legend class="fieldset-label">ID</legend>
+      <label
+        class="input input-bordered !border-[var(--input-color)] flex items-center tooltip tooltip-info tooltip-top w-full"
+        data-tip="If not set a random UUID will be generated"
+      >
+        <span class="material-symbols-rounded opacity-50">deployed_code_update</span>
+        <input type="text" class="w-full" placeholder="ID" [(ngModel)]="id" name="id" [disabled]="mode === 'update'" />
+        <span class="badge badge-info">Optional</span>
+      </label>
+
+      <legend class="fieldset-label">Policy-Type</legend>
+      <label class="select w-full" [ngClass]="{ 'select-error': !policyType }">
+        <span class="label">Type</span>
+        <select class="select w-full" [(ngModel)]="policyType" name="policyType" required>
+          <option value="" disabled selected>Select a type</option>
+          <option value="Set">Set</option>
+          <option value="Offer">Offer</option>
+          <option value="Contract">Contract</option>
+        </select>
+      </label>
+      @if (!policyType) {
+        <p class="fieldset-label text-error">Mandatory</p>
+      }
+    </fieldset>
+  </div>
+
+  <div class="flex flex-col">
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+      <legend class="fieldset-legend text-sm">Properties</legend>
+      <legend class="fieldset-label">Permissions</legend>
+      <label class="input flex items-center tooltip tooltip-info tooltip-top w-full" data-tip="Expects JSON">
+        <span class="material-symbols-rounded opacity-50">file_json</span>
+        <input
+          type="text"
+          class="grow"
+          placeholder="Permissions"
+          [(ngModel)]="permissionsJson"
+          name="permissionsJson"
+        />
+        <span class="badge badge-info">Optional</span>
+      </label>
+      <legend class="fieldset-label">Prohibitions</legend>
+      <label class="input flex items-center tooltip tooltip-info tooltip-top w-full" data-tip="Expects JSON">
+        <span class="material-symbols-rounded opacity-50">file_json</span>
+        <input
+          type="text"
+          class="grow"
+          placeholder="Prohibitions"
+          [(ngModel)]="prohibitionsJson"
+          name="prohibitionsJson"
+        />
+        <span class="badge badge-info">Optional</span>
+      </label>
+      <legend class="fieldset-label">Obligations</legend>
+      <label class="input flex items-center tooltip tooltip-info tooltip-top w-full" data-tip="Expects JSON">
+        <span class="material-symbols-rounded opacity-50">file_json</span>
+        <input
+          type="text"
+          class="grow"
+          placeholder="Obligations"
+          [(ngModel)]="obligationsJson"
+          name="obligationsJson"
+        />
+        <span class="badge badge-info">Optional</span>
+      </label>
+    </fieldset>
+  </div>
+
+  <div class="flex flex-col items-center">
+    <div class="divider mt-0"></div>
+    <lib-alert
+      *ngIf="errorMsg"
+      title="Error"
+      [msg]="errorMsg"
+      (closeEvent)="errorMsg = ''"
+      type="error"
+      class="w-lg mb-4"
+    ></lib-alert>
+    <button
+      *ngIf="mode === 'create'"
+      [disabled]="policyForm.invalid"
+      class="btn btn-lg btn-primary w-lg"
+      (click)="createPolicyDefinition()"
+    >
+      <i class="material-symbols-rounded">add</i>
+      Create Policy
+    </button>
+    <button *ngIf="mode === 'update'" class="btn btn-lg btn-warning w-lg" (click)="editPolicyDefinition()">
+      <i class="material-symbols-rounded">update</i>
+      Update Policy
+    </button>
+  </div>
+</form>

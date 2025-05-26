@@ -1,0 +1,52 @@
+<div class="flex-row flex-nowrap flex mb-4">
+  <lib-filter-input
+    placeholder="Filter for ID ..."
+    [focusShortcut]="['Alt', 'j']"
+    class="mr-4 grow"
+    (inputChange)="filter($event)"
+  ></lib-filter-input>
+  <button
+    class="mr-4 btn btn-lg btn-primary rounded-2xl btn-soft shadow-xl !text-sm border-none"
+    (click)="createContractDefinition()"
+  >
+    <i class="material-symbols-rounded">add</i>
+    Create
+  </button>
+  <lib-item-count-selector
+    class="mr-4"
+    [currentItemCount]="pageItemCount"
+    (itemCountChanged)="pageItemCount = $event"
+  ></lib-item-count-selector>
+  <lib-pagination
+    [items]="filteredContractDefinitions$ | async"
+    [pageItemCount]="10"
+    (pageItems)="paginationEvent($event)"
+    class="shadow-xl rounded-2xl bg-base-300 [&_button:hover]:bg-base-100 [&_.join>button]:first:rounded-l-2xl [&_.join>button]:last:rounded-r-2xl"
+  ></lib-pagination>
+</div>
+
+<div class="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+  @for (contractDefinition of pageContractDefinitions$ | async; track contractDefinition.id) {
+    <lib-contract-definition-card
+      class="shadow-xl rounded-2xl [&_>.card]:h-full"
+      [contractDefinition]="contractDefinition"
+      (openDetailsEvent)="openDetails($event)"
+      (editContractDefinitionEvent)="editContractDefinition($event)"
+      (deleteContractDefinitionEvent)="deleteContractDefinition($event)"
+    ></lib-contract-definition-card>
+  }
+  @if ((contractDefinitions$ | async)?.length === 0) {
+    <div class="skeleton flex justify-center items-center h-72 shadow-xl rounded-2xl">
+      @if (!fetched) {
+        <span class="loading loading-bars loading-lg opacity-75 text-primary"></span>
+      } @else {
+        <div class="tooltip tooltip-open tooltip-primary" data-tip="No contract definitions yet! Create your first ...">
+          <button class="btn btn-primary btn-dash" (click)="createContractDefinition()">
+            <span class="material-symbols-rounded">add</span>
+            Create
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

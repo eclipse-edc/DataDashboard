@@ -1,0 +1,52 @@
+<div class="flex flex-row flex-nowrap mb-4">
+  <lib-filter-input
+    placeholder="Filter for Asset ID or Provider name ..."
+    [focusShortcut]="['Alt', 'j']"
+    class="flex-1 mr-4 grow"
+    (inputChange)="filter($event)"
+  ></lib-filter-input>
+  <lib-catalog-request
+    class="mr-4"
+    [showSearchTooltip]="catalogViewState.showSearchTooltip"
+    [federatedCatalog]="isFederatedCatalogEnabled"
+    (catalogRequested)="getCatalog($event)"
+  ></lib-catalog-request>
+  <lib-item-count-selector
+    class="mr-4"
+    [currentItemCount]="pageItemCount"
+    (itemCountChanged)="pageItemCount = $event"
+  ></lib-item-count-selector>
+  <lib-pagination
+    [items]="filteredCatalogDatasets$ | async"
+    [pageItemCount]="15"
+    (pageItems)="paginationEvent($event)"
+    class="shadow-xl rounded-2xl bg-base-300 [&_button:hover]:bg-base-100 [&_.join>button]:first:rounded-l-2xl [&_.join>button]:last:rounded-r-2xl"
+  ></lib-pagination>
+</div>
+
+<div class="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+  @if (catalogViewState.isLoading) {
+    <div class="skeleton flex justify-center items-center h-72 shadow-xl rounded-2xl">
+      <span class="loading loading-bars loading-lg opacity-75 text-primary"></span>
+    </div>
+  } @else {
+    @if ((hasCatalogDatasets$ | async) === false) {
+      <div class="skeleton flex justify-center items-center h-72 shadow-xl rounded-2xl">
+        <p
+          class="flex flex-col items-center justify-center w-full h-full p-6 text-sm text-center space-y-4 mt-4 opacity-55 transition-opacity duration-500"
+        >
+          {{ catalogViewState.emptyCatalogMsg }}
+        </p>
+      </div>
+    } @else {
+      @for (catalogDataset of pageCatalogDatasets$ | async; track catalogDataset.id + '-' + catalogDataset.assetId) {
+        <lib-catalog-card
+          class="rounded-2xl shadow-xl [&_>.card]:h-full"
+          [catalogDataset]="catalogDataset"
+          (detailsEvent)="openDetails($event)"
+          (negotiateEvent)="negotiateContract($event)"
+        ></lib-catalog-card>
+      }
+    }
+  }
+</div>
