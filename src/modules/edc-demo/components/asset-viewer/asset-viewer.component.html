@@ -1,22 +1,37 @@
 <div *ngIf="filteredAssets$ | async as assets" id="wrapper">
   <div class="container">
-    <mat-form-field appearance="fill" appearance="outline" class="search-form-field" color="accent">
-      <!-- <mat-label>Search assets</mat-label> -->
-      <input (input)="onSearch()" [(ngModel)]="searchText" matInput>
-      <mat-icon matPrefix>search</mat-icon>
-      <button (click)="searchText=''; onSearch()" *ngIf="searchText" mat-icon-button matSuffix>
-        <mat-icon>close</mat-icon>
+    <div class="left-actions">
+      <mat-form-field appearance="outline" class="search-form-field" color="accent">
+        <input
+          (input)="onSearch()"
+          [(ngModel)]="searchText"
+          matInput
+          placeholder="Search assets"
+        >
+        <mat-icon matPrefix>search</mat-icon>
+        <button (click)="searchText=''; onSearch()" *ngIf="searchText" mat-icon-button matSuffix>
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button (click)="onCreate()" color="primary" mat-raised-button class="create-button">
+        <mat-icon>add_circle_outline</mat-icon>
+        Create asset
       </button>
-    </mat-form-field>
+    </div>
 
-    <mat-paginator [length]="assets.length" hidePageSize="true" pageSize="contractDefinitions.length">
-    </mat-paginator>
-
-    <button (click)="onCreate()" color="accent" mat-stroked-button>
-      <mat-icon>add_circle_outline</mat-icon>
-      Create asset
-    </button>
+    <div class="paginator-wrapper">
+      <mat-paginator
+        [length]="assets.length"
+        hidePageSize
+        [pageSize]="assets.length"
+        [pageSizeOptions]="[5, 10, 20]"
+        aria-label="Asset pagination"
+      >
+      </mat-paginator>
+    </div>
   </div>
+
 
   <div fxLayout="row wrap" fxLayoutAlign="start start">
     <mat-card *ngFor="let asset of assets" class="asset-card">

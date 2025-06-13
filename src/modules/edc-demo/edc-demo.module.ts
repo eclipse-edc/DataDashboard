@@ -18,6 +18,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule} from '@angular/material/list';
+import {MatStepperModule} from '@angular/material/stepper';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CatalogBrowserComponent} from './components/catalog-browser/catalog-browser.component';
 import {TransferHistoryViewerComponent} from './components/transfer-history/transfer-history-viewer.component';
@@ -71,6 +72,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatListModule,
     RouterModule,
     MatProgressSpinnerModule,
+    MatStepperModule,
   ],
   declarations: [
     CatalogBrowserComponent,

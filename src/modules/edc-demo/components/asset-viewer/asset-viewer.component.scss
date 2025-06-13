@@ -12,12 +12,6 @@
   font-size: 12px;
 }
 
-.search-form-field {
-  min-width: 200px;
-  width: 30%;
-  margin-top: 18px;
-}
-
 .card-actions {
   margin-left: 0;
 }
@@ -33,6 +27,30 @@ mat-paginator {
 
 .container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px; /* Adjust the gap between elements */
+  flex-wrap: wrap;
+}
+
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-form-field {
+  min-width: 450px;
+  width: 30%;
+  margin-top: 18px;
+}
+
+.paginator-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  background-color: transparent;
+  margin-top: 10px;
+}
+
+.mat-mdc-paginator {
+  background-color: transparent !important;
 }

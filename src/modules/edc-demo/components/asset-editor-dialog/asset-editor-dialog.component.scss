@@ -1,12 +1,69 @@
-mat-dialog-content {
-    width: 800px;
+.dialog-header {
+  padding: 24px 24px 0 24px;
+}
+
+.dialog-title {
+  margin: 24px 0 12px 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+mat-dialog-content.dialog-content {
+  padding: 0 24px 24px 24px;
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stepper {
+  background-color: transparent;
+}
+
+::ng-deep .mat-step-header {
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+::ng-deep .mat-vertical-stepper-header {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 12px 0;
+}
+
+::ng-deep .mat-step-icon {
+  background-color: #e91e63; // pink circle
+  color: #fff;
+}
+
+::ng-deep .mat-step-label {
+  font-weight: 500;
+  font-size: 16px;
+  color: #ccc;
+}
+
+::ng-deep .mat-stepper-vertical-line {
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
 .form-field {
-    margin-right: 10px;
-    width: 350px;
+  flex: 1;
+  min-width: 300px;
 }
 
-mat-card-actions {
-    margin-left: 0;
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-actions {
+  padding: 0 24px 24px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }

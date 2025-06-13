@@ -9,6 +9,7 @@ import {LayoutModule} from '@angular/cdk/layout';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatExpansionModule } from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {NavigationComponent} from './components/navigation/navigation.component';
@@ -35,7 +36,8 @@ import { EdcConnectorClient } from "@think-it-labs/edc-connector-client";
     MatIconModule,
     MatListModule,
     EdcDemoModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatExpansionModule,
   ],
   declarations: [
     AppComponent,

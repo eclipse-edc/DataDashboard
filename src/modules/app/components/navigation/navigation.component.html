@@ -1,16 +1,54 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+
     <mat-toolbar>EDC Demo</mat-toolbar>
+
     <mat-nav-list>
-      <a mat-list-item *ngFor="let route of routes" [routerLink]="[route.path]">
-          <mat-icon matListItemIcon>{{route.data?.icon}}</mat-icon>
-          {{route.data?.title ?? route.path}}
-      </a>
+      <!-- Provide Group -->
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Provide</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <a mat-list-item routerLink="/my-assets">
+          <mat-icon>upload</mat-icon>
+          Assets
+        </a>
+        <a mat-list-item routerLink="/policies">
+          <mat-icon>policy</mat-icon>
+          Policies
+        </a>
+        <a mat-list-item routerLink="/contract-definitions">
+          <mat-icon>rule</mat-icon>
+          Offers
+        </a>
+      </mat-expansion-panel>
+
+      <!-- Consume Group -->
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Consume</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <a mat-list-item routerLink="/catalog-browser">
+          <mat-icon>sim_card</mat-icon>
+          Browse Catalog
+        </a>
+        <a mat-list-item routerLink="/contracts">
+          <mat-icon>attachment</mat-icon>
+          Contracts
+        </a>
+        <a mat-list-item routerLink="/transfer-history">
+          <mat-icon>assignment</mat-icon>
+          Transfers
+        </a>
+      </mat-expansion-panel>
     </mat-nav-list>
   </mat-sidenav>
+
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <button
@@ -23,6 +61,7 @@
       </button>
       <span>{{titleService.getTitle()}}</span>
     </mat-toolbar>
+
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
