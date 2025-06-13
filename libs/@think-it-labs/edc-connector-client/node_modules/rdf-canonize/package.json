@@ -1,0 +1,67 @@
+{
+  "name": "rdf-canonize",
+  "version": "3.4.0",
+  "description": "An implementation of the RDF Dataset Normalization Algorithm in JavaScript",
+  "homepage": "https://github.com/digitalbazaar/rdf-canonize",
+  "author": {
+    "name": "Digital Bazaar, Inc.",
+    "email": "support@digitalbazaar.com",
+    "url": "https://digitalbazaar.com/"
+  },
+  "contributors": [
+    "Dave Longley <dlongley@digitalbazaar.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalbazaar/rdf-canonize"
+  },
+  "bugs": {
+    "url": "https://github.com/digitalbazaar/rdf-canonize/issues",
+    "email": "support@digitalbazaar.com"
+  },
+  "license": "BSD-3-Clause",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "lib/*.js"
+  ],
+  "dependencies": {
+    "setimmediate": "^1.0.5"
+  },
+  "devDependencies": {
+    "benchmark": "^2.1.4",
+    "chai": "^4.2.0",
+    "delay": "^5.0.0",
+    "eslint": "^7.23.0",
+    "eslint-config-digitalbazaar": "^2.6.1",
+    "mocha": "^8.3.2",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nsolid": "0.0.0",
+    "nyc": "^15.1.0"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "keywords": [
+    "JSON",
+    "Linked Data",
+    "JSON-LD",
+    "RDF",
+    "Semantic Web",
+    "jsonld"
+  ],
+  "scripts": {
+    "fetch-test-suite": "if [ ! -e test-suites/rdf-canon ]; then git clone --depth 1 https://github.com/w3c/rdf-canon.git test-suites/rdf-canon; fi",
+    "test": "npm run test-node",
+    "test-node": "NODE_ENV=test mocha -R spec --check-leaks",
+    "benchmark": "node benchmark/benchmark.js",
+    "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text-summary npm test",
+    "coverage-ci": "NODE_ENV=test nyc --reporter=lcovonly npm run test",
+    "coverage-report": "nyc report",
+    "lint": "eslint '*.js' 'lib/*.js' 'test/*.js' 'benchmark/*.js'"
+  },
+  "browser": {
+    "./lib/MessageDigest.js": "./lib/MessageDigest-browser.js",
+    "rdf-canonize-native": false
+  }
+}

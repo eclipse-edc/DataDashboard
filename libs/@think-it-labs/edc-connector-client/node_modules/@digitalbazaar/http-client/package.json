@@ -1,0 +1,93 @@
+{
+  "name": "@digitalbazaar/http-client",
+  "version": "3.4.1",
+  "description": "An opinionated, isomorphic HTTP client.",
+  "license": "BSD-3-Clause",
+  "type": "module",
+  "main": "./dist/cjs/index.cjs",
+  "exports": {
+    "require": "./dist/cjs/index.cjs",
+    "import": "./lib/index.js"
+  },
+  "browser": {
+    "./lib/agentCompatibility.js": "./lib/agentCompatibility-browser.js",
+    "./tests/utils.cjs": "./tests/utils-browser.cjs"
+  },
+  "scripts": {
+    "rollup": "rollup -c rollup.config.js",
+    "build": "npm run clear && npm run rollup",
+    "clear": "rimraf dist/ && mkdir dist",
+    "prepare": "npm run build",
+    "rebuild": "npm run clear && npm run build",
+    "test": "npm run test-node && npm run test-node-cjs",
+    "test-node": "cross-env NODE_ENV=test mocha --preserve-symlinks -t 30000 -A -R ${REPORTER:-spec} --require tests/test-mocha.js tests/*.spec.js",
+    "test-node-cjs": "cross-env NODE_ENV=test mocha --preserve-symlinks -t 30000 -A -R ${REPORTER:-spec} --require tests/test-mocha.cjs tests/*.spec.cjs",
+    "test-karma": "karma start karma.conf.cjs",
+    "test-watch": "cross-env NODE_ENV=test mocha --watch --parallel --preserve-symlinks -t 30000 -A -R ${REPORTER:-spec} --require tests/test-mocha.js tests/*.spec.js",
+    "coverage": "cross-env NODE_ENV=test c8 npm run test-node",
+    "coverage-ci": "cross-env NODE_ENV=test c8 --reporter=lcovonly --reporter=text-summary --reporter=text npm run test-node",
+    "coverage-report": "c8 report",
+    "lint": "eslint --ignore-pattern rollup.config.js ."
+  },
+  "files": [
+    "lib/*",
+    "dist/*"
+  ],
+  "dependencies": {
+    "ky": "^0.33.3",
+    "ky-universal": "^0.11.0",
+    "undici": "^5.21.2"
+  },
+  "devDependencies": {
+    "c8": "^7.13.0",
+    "chai": "^4.3.7",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "delay": "^5.0.0",
+    "detect-node": "^2.1.0",
+    "eslint": "^8.38.0",
+    "eslint-config-digitalbazaar": "^4.2.0",
+    "eslint-plugin-jsdoc": "^41.1.1",
+    "eslint-plugin-unicorn": "^46.0.0",
+    "express": "^4.18.2",
+    "karma": "^6.4.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^3.1.1",
+    "karma-mocha": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-sourcemap-loader": "^0.4.0",
+    "karma-webpack": "^5.0.0",
+    "mocha": "^10.2.0",
+    "rimraf": "^5.0.0",
+    "rollup": "^3.20.2",
+    "webpack": "^5.79.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalbazaar/http-client"
+  },
+  "keywords": [
+    "http",
+    "isomorphic",
+    "http client"
+  ],
+  "author": {
+    "name": "Digital Bazaar, Inc.",
+    "email": "support@digitalbazaar.com",
+    "url": "https://digitalbazaar.com/"
+  },
+  "bugs": {
+    "url": "https://github.com/digitalbazaar/http-client/issues"
+  },
+  "homepage": "https://github.com/digitalbazaar/http-client",
+  "engines": {
+    "node": ">=14.0"
+  },
+  "c8": {
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "text"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+<div class="dialog-header">
+  <h2 class="dialog-title">Create New Asset</h2>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  <mat-vertical-stepper [linear]="false" [disableRipple]="true" class="stepper">
+
+  <!-- STEP 1: General Information -->
+    <mat-step>
+      <ng-template matStepLabel>General Information</ng-template>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Name *</mat-label>
+          <input matInput [(ngModel)]="name" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Id *</mat-label>
+          <input matInput [(ngModel)]="id" required>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput [(ngModel)]="description" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Publisher</mat-label>
+          <input matInput [(ngModel)]="publisher">
+        </mat-form-field>
+      </div>
+    </mat-step>
+
+    <!-- STEP 2: Datasource Information -->
+    <mat-step>
+      <ng-template matStepLabel>Datasource Information</ng-template>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Destination</mat-label>
+          <mat-select [(ngModel)]="storageTypeId" disabled>
+            <mat-option *ngFor="let storageType of storageTypes" [value]="storageType.id">
+              {{ storageType.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Account</mat-label>
+          <input matInput [(ngModel)]="account">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Container</mat-label>
+          <input matInput [(ngModel)]="container" disabled>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Blob Name</mat-label>
+          <input matInput [(ngModel)]="blobname">
+        </mat-form-field>
+      </div>
+    </mat-step>
+
+  </mat-vertical-stepper>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-dialog-close color="accent" mat-stroked-button>
+    <mat-icon>cancel</mat-icon> Cancel
+  </button>
+
+  <button (click)="onSave()" color="accent" mat-stroked-button>
+    <mat-icon>add_circle_outline</mat-icon> Create
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,81 @@
+{
+	"name": "ky-universal",
+	"version": "0.11.0",
+	"description": "Use Ky in both Node.js and browsers",
+	"license": "MIT",
+	"repository": "sindresorhus/ky-universal",
+	"funding": "https://github.com/sindresorhus/ky-universal?sponsor=1",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "https://sindresorhus.com"
+	},
+	"type": "module",
+	"exports": {
+		"node": "./index.js",
+		"default": "./browser.js"
+	},
+	"engines": {
+		"node": ">=14.16"
+	},
+	"scripts": {
+		"test": "xo && ava && tsd"
+	},
+	"files": [
+		"index.js",
+		"index.d.ts",
+		"browser.js",
+		"browser.d.ts"
+	],
+	"keywords": [
+		"ky",
+		"universal",
+		"isomorphic",
+		"browser",
+		"browsers",
+		"node",
+		"react",
+		"vue",
+		"ssr",
+		"fetch",
+		"request",
+		"requests",
+		"http",
+		"https",
+		"fetching",
+		"get",
+		"url",
+		"curl",
+		"wget",
+		"net",
+		"network",
+		"ajax",
+		"api",
+		"rest",
+		"xhr",
+		"browser",
+		"got",
+		"axios",
+		"node-fetch"
+	],
+	"dependencies": {
+		"abort-controller": "^3.0.0",
+		"node-fetch": "^3.2.10"
+	},
+	"devDependencies": {
+		"ava": "^4.3.3",
+		"ky": "^0.31.4",
+		"tsd": "^0.24.1",
+		"xo": "^0.52.4"
+	},
+	"peerDependencies": {
+		"ky": ">=0.31.4",
+		"web-streams-polyfill": ">=3.2.1"
+	},
+	"peerDependenciesMeta": {
+		"web-streams-polyfill": {
+			"optional": true
+		}
+	},
+	"browser": "browser.js"
+}

@@ -1,0 +1,56 @@
+#wrapper {
+  margin: 20px;
+}
+
+.asset-card {
+  width: 500px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+.main-property-icon {
+  font-size: 12px;
+}
+
+.card-actions {
+  margin-left: 0;
+}
+
+.asset-property {
+  font-weight: bold !important;
+}
+
+mat-paginator {
+  display: inline-block;
+  background-color: transparent;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.left-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-form-field {
+  min-width: 450px;
+  width: 30%;
+  margin-top: 18px;
+}
+
+.paginator-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  background-color: transparent;
+  margin-top: 10px;
+}
+
+.mat-mdc-paginator {
+  background-color: transparent !important;
+}
