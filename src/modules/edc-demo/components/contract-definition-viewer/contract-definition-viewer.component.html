@@ -1,23 +1,29 @@
-<div *ngIf="filteredContractDefinitions$ | async as contractDefinitions" id="wrapper">
-    <div class="container">
-        <mat-form-field appearance="outline" class="search-form-field" color="accent">
-            <mat-label>Search definitions</mat-label>
-            <input (input)="onSearch()" [(ngModel)]="searchText" matInput>
-            <mat-icon matPrefix>search</mat-icon>
-            <button (click)="searchText=''; onSearch()" *ngIf="searchText" mat-icon-button matSuffix>
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-
-        <mat-paginator [length]="contractDefinitions.length" hidePageSize="true" pageSize="contractDefinitions.length">
-        </mat-paginator>
-
-        <button (click)="onCreate()" color="accent" mat-stroked-button>
-          <mat-icon>add_circle_outline</mat-icon>
-          Create contract definition
+<div *ngIf="filteredContractDefinitions$ | async as contractDefinitions" class="assets-wrapper">
+  <div class="search-bar-container">
+    <div class="search-left">
+      <div class="search-wrapper">
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Search Contract Definitions"
+          [(ngModel)]="searchText"
+          (input)="onSearch()"
+        />
+        <button class="clear-btn" (click)="searchText=''; onSearch()">
+          <span class="material-icons">close</span>
         </button>
+      </div>
 
+      <button class="search-button" (click)="onSearch()">
+        <span class="material-icons">search</span>
+      </button>
     </div>
+
+    <button (click)="onCreate()" mat-raised-button class="create-button">
+      <mat-icon>add</mat-icon>
+      Create Data Offer
+    </button>
+  </div>
 
     <div fxLayout="row wrap" fxLayoutAlign="start start">
 

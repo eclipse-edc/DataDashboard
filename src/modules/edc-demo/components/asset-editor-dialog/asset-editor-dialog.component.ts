@@ -160,6 +160,14 @@ export class AssetEditorDialog implements OnInit {
     this.clearDatasourceFields();
   }
 
+  // TODO
+  //  -_ in the name is possible, also whitespaces, but whitespaces should be whenever theres a space, replace in ID with -
+  // X in the search bar
+  // Description is required
+  //
+  //
+  // Region is text input
+
   clearDatasourceFields(): void {
     // Clear all types
     this.restMethod = '';

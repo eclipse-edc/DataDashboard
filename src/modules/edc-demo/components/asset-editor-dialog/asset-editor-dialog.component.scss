@@ -144,9 +144,33 @@ mat-form-field {
 
 /* === Footer Buttons === */
 mat-dialog-actions {
-  margin-top: auto;
-  padding: 16px 32px;
+  padding: 0 32px 32px;
   display: flex;
   justify-content: flex-end;
   gap: 12px;
 }
+
+/* Cancel Button (Magenta Border and Text) */
+.cancel-button {
+  color: #e91e63;
+  border-color: #e91e63;
+  font-weight: 500;
+}
+
+/* Create Button */
+.create-button {
+  font-weight: 500;
+
+  // Disabled state
+  &:disabled {
+    background-color: #e0e0e0;
+    color: #666666;
+  }
+
+  // Enabled state
+  &:not(:disabled) {
+    background-color: #e91e63;
+    color: white;
+  }
+}
+

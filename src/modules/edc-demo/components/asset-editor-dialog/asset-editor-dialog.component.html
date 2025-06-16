@@ -94,18 +94,19 @@
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions>
-  <button mat-dialog-close color="accent" mat-stroked-button>
-    <mat-icon>cancel</mat-icon> Cancel
-  </button>
-  <button
-    (click)="onSave()"
-    color="accent"
-    mat-stroked-button
-    [disabled]="!isFormValid()">
-    <mat-icon>add_circle_outline</mat-icon> Create
+<mat-dialog-actions align="end">
+  <button mat-stroked-button class="cancel-button" mat-dialog-close>
+    Cancel
   </button>
 
+  <button
+    mat-flat-button
+    class="create-button"
+    [disabled]="!isGeneralValid() || !isDatasourceValid()"
+    (click)="onSave()"
+  >
+    Create
+  </button>
 </mat-dialog-actions>
 
 
@@ -113,7 +114,7 @@
   <!-- Method + URL -->
   <div class="form-row">
     <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Method *</mat-label>
+      <mat-label>Method</mat-label>
       <mat-select [(ngModel)]="restMethod" required>
         <mat-option value="GET">GET</mat-option>
         <mat-option value="POST">POST</mat-option>

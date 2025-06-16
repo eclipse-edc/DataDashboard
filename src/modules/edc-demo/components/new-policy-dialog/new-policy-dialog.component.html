@@ -1,57 +1,72 @@
+<div class="dialog-header">
+  <h2 class="dialog-title">Create New Policy</h2>
+</div>
+
 <mat-dialog-content>
+  <div class="section">
+    <div class="section-content">
+      <!-- Policy Name -->
+      <mat-form-field appearance="outline" class="form-field full-width" color="accent">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="policyName"
+          placeholder="Enter policy name"
+          required
+        />
+      </mat-form-field>
 
-  <!--  ID -->
-  <mat-form-field class="form-field-stretch" color="accent" id="form-field-id">
-    <mat-label>ID</mat-label>
-    <input [(ngModel)]="policyDefinition.id" matInput required>
-  </mat-form-field>
+      <!-- Access Options -->
+      <div class="form-row">
+        <label class="custom-radio" [class.selected]="accessOption === 'bpn'">
+          <input
+            type="radio"
+            name="accessOption"
+            value="bpn"
+            [(ngModel)]="accessOption"
+          />
+          <span class="radio-circle"></span>
+          Restrict access to the following BPNs
+        </label>
 
-  <!--  Assigner / Assignee-->
-  <div>
-    <mat-form-field class="form-field form-field-half" id="form-field-asignee">
-      <mat-label>Assignee</mat-label>
-      <input [(ngModel)]="policy.assignee" matInput>
-    </mat-form-field>
+        <label class="custom-radio" [class.selected]="accessOption === 'public'">
+          <input
+            type="radio"
+            name="accessOption"
+            value="public"
+            [(ngModel)]="accessOption"
+          />
+          <span class="radio-circle"></span>
+          Everyone should have access (set it to public)
+        </label>
 
-    <mat-form-field class="form-field form-field-half" id="form-field-assigner">
-      <mat-label>Assigner</mat-label>
-      <input [(ngModel)]="policy.assigner" matInput>
-    </mat-form-field>
+      </div>
+
+
+      <!-- BPN Input (only if restricted) -->
+      <mat-form-field
+        *ngIf="accessOption === 'bpn'"
+        appearance="outline"
+        class="form-field full-width"
+      >
+        <mat-label>Business Partner Number</mat-label>
+        <input matInput [(ngModel)]="businessPartnerNumber" required />
+      </mat-form-field>
+    </div>
   </div>
-
-  <!--  Permissions -->
-  <mat-form-field class="form-field-stretch" color="accent" id="form-field-permissions">
-    <mat-label>Permissions (JSON)</mat-label>
-    <input [(ngModel)]="permissionsJson" matInput>
-  </mat-form-field>
-
-  <!--  Prohibitions -->
-  <mat-form-field class="form-field-stretch" color="accent" id="form-field-prohibitions">
-    <mat-label>Prohibitions (JSON)</mat-label>
-    <input [(ngModel)]="prohibitionsJson" matInput>
-  </mat-form-field>
-
-  <!--  Obligations -->
-  <mat-form-field class="form-field-stretch" color="accent" id="form-field-obligations">
-    <mat-label>Obligations (JSON)</mat-label>
-    <input [(ngModel)]="obligationsJson" matInput>
-  </mat-form-field>
-
 </mat-dialog-content>
 
-<mat-dialog-actions>
-  <button (click)="onSave()" *ngIf="editMode" color="accent" mat-stroked-button >
-    <mat-icon>save</mat-icon>
-    Save
-  </button>
-
-  <button (click)="onSave()" *ngIf="!editMode" color="accent" mat-stroked-button>
-    <mat-icon>add_circle_outline</mat-icon>
-    Create
-  </button>
-
-  <button color="accent" mat-dialog-close="true" mat-stroked-button>
-    <mat-icon>cancel</mat-icon>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button class="cancel-button" mat-dialog-close>
     Cancel
+  </button>
+
+  <button
+    mat-flat-button
+    class="create-button"
+    [disabled]="!policyName || (accessOption === 'public' && !businessPartnerNumber)"
+    (click)="onSave()"
+  >
+    Create
   </button>
 </mat-dialog-actions>

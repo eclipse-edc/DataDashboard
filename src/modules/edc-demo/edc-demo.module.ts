@@ -16,6 +16,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatRadioModule} from '@angular/material/radio';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule} from '@angular/material/list';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -74,7 +75,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     RouterModule,
     MatProgressSpinnerModule,
     MatStepperModule,
-    TextFieldModule
+    TextFieldModule,
+    MatRadioModule,
   ],
   declarations: [
     CatalogBrowserComponent,

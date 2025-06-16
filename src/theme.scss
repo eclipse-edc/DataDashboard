@@ -7,40 +7,54 @@
 @import "node_modules/@angular/material/theming";
 @include mat-core();
 
-$theming-material-components-primary: mat-palette($mat-teal);
-$theming-material-components-accent: mat-palette($mat-orange, A200, A100, A400);
+$magenta-palette: mat.define-palette((
+  50: #fce4ec,
+  100: #f8bbd0,
+  200: #f48fb1,
+  300: #f06292,
+  400: #ec407a,
+  500: #e91e63,
+  600: #d81b60,
+  700: #c2185b,
+  800: #ad1457,
+  900: #880e4f,
+  A100: #ff80ab,
+  A200: #ff4081,
+  A400: #f50057,
+  A700: #c51162,
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: black,
+    400: black,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: black,
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+));
+
+$theming-material-components-primary: $magenta-palette;
+$theming-material-components-accent: $magenta-palette;
 $theming-material-components-warn: mat-palette($mat-red);
 $theming-material-components-typography: mat.define-typography-config($font-family: 'Open Sans');
 
 $theme1: mat.define-light-theme((
   color: (
-    primary: mat.define-palette(mat.$teal-palette),
-    accent: mat.define-palette(mat.$orange-palette, A200, A100, A400),
+    primary: $magenta-palette,
+    accent: $magenta-palette,
     warn: mat.define-palette(mat.$red-palette),
   ),
   typography: $theming-material-components-typography,
   density: 0,
 ));
 
-$theme2: mat.define-dark-theme((
-  color: (
-    primary: mat.define-palette(mat.$light-blue-palette),
-    accent: mat.define-palette(mat.$orange-palette, A200, A100, A400),
-    warn: mat.define-palette(mat.$red-palette),
-  ),
-  typography: $theming-material-components-typography,
-  density: 0,
-));
-
-$theme3: mat.define-dark-theme((
-  color: (
-    primary: mat.define-palette(mat.$light-green-palette),
-    accent: mat.define-palette(mat.$orange-palette, A200, A100, A400),
-    warn: mat.define-palette(mat.$red-palette),
-  ),
-  typography: $theming-material-components-typography,
-  density: 0,
-));
 
 /* Default (light) theme */
 @include mat.all-component-themes($theme1);
@@ -50,11 +64,7 @@ $theme3: mat.define-dark-theme((
 }
 
 .theme-2 {
-  @include mat.all-component-colors($theme2);
-}
-
-.theme-3 {
-  @include mat.all-component-colors($theme3);
+  @include mat.all-component-colors($theme1);
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline {
