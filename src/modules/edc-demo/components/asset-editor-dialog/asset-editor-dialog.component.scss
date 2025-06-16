@@ -1,11 +1,8 @@
 :host {
-  display: block;
-  font-size: 14px;
-  font-family: Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
   width: 45vw;
-  max-width: 45vw;
-  height: 45vw;
-  max-height: 40vw;
+  height: 100%; // full height of the dialog
 }
 
 /* === Dialog Layout === */
@@ -20,10 +17,8 @@
 }
 
 mat-dialog-content {
-  padding: 0 32px 24px 32px;
-  max-width: 800px;
-  display: flex;
-  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: auto;
 }
 
 /* === Section Styles === */
@@ -149,8 +144,9 @@ mat-form-field {
 
 /* === Footer Buttons === */
 mat-dialog-actions {
-  padding: 0 32px 24px 32px;
+  margin-top: auto;
+  padding: 16px 32px;
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 12px;
 }
