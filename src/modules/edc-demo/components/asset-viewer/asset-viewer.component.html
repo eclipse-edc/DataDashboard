@@ -1,20 +1,25 @@
 <div *ngIf="filteredAssets$ | async as assets" class="assets-wrapper">
   <div class="search-bar-container">
     <div class="search-left">
-      <input
-        class="search-input"
-        type="text"
-        placeholder="Search Assets"
-        [(ngModel)]="searchText"
-        (input)="onSearch()"
-      />
+      <div class="search-wrapper">
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Search Assets"
+          [(ngModel)]="searchText"
+          (input)="onSearch()"
+        />
+        <button class="clear-btn" (click)="searchText=''; onSearch()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
 
-      <button (click)="onSearch()" class="search-button">
+      <button class="search-button" (click)="onSearch()">
         <span class="material-icons">search</span>
       </button>
     </div>
 
-    <button (click)="onCreate()" color="accent" mat-raised-button class="create-button">
+    <button (click)="onCreate()" mat-raised-button class="create-button">
       <mat-icon>add</mat-icon>
       Create Asset
     </button>

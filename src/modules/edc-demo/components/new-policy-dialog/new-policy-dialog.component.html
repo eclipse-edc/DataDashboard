@@ -1,0 +1,72 @@
+<div class="dialog-header">
+  <h2 class="dialog-title">Create New Policy</h2>
+</div>
+
+<mat-dialog-content>
+  <div class="section">
+    <div class="section-content">
+      <!-- Policy Name -->
+      <mat-form-field appearance="outline" class="form-field full-width" color="accent">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="policyName"
+          placeholder="Enter policy name"
+          required
+        />
+      </mat-form-field>
+
+      <!-- Access Options -->
+      <div class="form-row">
+        <label class="custom-radio" [class.selected]="accessOption === 'bpn'">
+          <input
+            type="radio"
+            name="accessOption"
+            value="bpn"
+            [(ngModel)]="accessOption"
+          />
+          <span class="radio-circle"></span>
+          Restrict access to the following BPNs
+        </label>
+
+        <label class="custom-radio" [class.selected]="accessOption === 'public'">
+          <input
+            type="radio"
+            name="accessOption"
+            value="public"
+            [(ngModel)]="accessOption"
+          />
+          <span class="radio-circle"></span>
+          Everyone should have access (set it to public)
+        </label>
+
+      </div>
+
+
+      <!-- BPN Input (only if restricted) -->
+      <mat-form-field
+        *ngIf="accessOption === 'bpn'"
+        appearance="outline"
+        class="form-field full-width"
+      >
+        <mat-label>Business Partner Number</mat-label>
+        <input matInput [(ngModel)]="businessPartnerNumber" required />
+      </mat-form-field>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button class="cancel-button" mat-dialog-close>
+    Cancel
+  </button>
+
+  <button
+    mat-flat-button
+    class="create-button"
+    [disabled]="!policyName || (accessOption === 'public' && !businessPartnerNumber)"
+    (click)="onSave()"
+  >
+    Create
+  </button>
+</mat-dialog-actions>
