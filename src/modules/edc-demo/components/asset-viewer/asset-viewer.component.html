@@ -1,70 +1,43 @@
-<div *ngIf="filteredAssets$ | async as assets" id="wrapper">
-  <div class="container">
-    <div class="left-actions">
-      <mat-form-field appearance="outline" class="search-form-field" color="accent">
-        <input
-          (input)="onSearch()"
-          [(ngModel)]="searchText"
-          matInput
-          placeholder="Search assets"
-        >
-        <mat-icon matPrefix>search</mat-icon>
-        <button (click)="searchText=''; onSearch()" *ngIf="searchText" mat-icon-button matSuffix>
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+<div *ngIf="filteredAssets$ | async as assets" class="assets-wrapper">
+  <div class="search-bar-container">
+    <div class="search-left">
+      <input
+        class="search-input"
+        type="text"
+        placeholder="Search Assets"
+        [(ngModel)]="searchText"
+        (input)="onSearch()"
+      />
 
-      <button (click)="onCreate()" color="primary" mat-raised-button class="create-button">
-        <mat-icon>add_circle_outline</mat-icon>
-        Create asset
+      <button (click)="onSearch()" class="search-button">
+        <span class="material-icons">search</span>
       </button>
     </div>
 
-    <div class="paginator-wrapper">
-      <mat-paginator
-        [length]="assets.length"
-        hidePageSize
-        [pageSize]="assets.length"
-        [pageSizeOptions]="[5, 10, 20]"
-        aria-label="Asset pagination"
-      >
-      </mat-paginator>
-    </div>
+    <button (click)="onCreate()" color="accent" mat-raised-button class="create-button">
+      <mat-icon>add</mat-icon>
+      Create Asset
+    </button>
   </div>
-
 
   <div fxLayout="row wrap" fxLayoutAlign="start start">
     <mat-card *ngFor="let asset of assets" class="asset-card">
       <mat-card-header>
-        <mat-icon mat-card-avatar>id</mat-icon>
-        <mat-card-title>{{asset.id}}</mat-card-title>
+        <mat-icon mat-card-avatar>description</mat-icon>
+        <mat-card-title>{{asset.properties.optionalValue('edc','name')}}</mat-card-title>
+        <mat-card-subtitle>{{asset.id}}</mat-card-subtitle>
       </mat-card-header>
+
       <mat-card-content>
-        <mat-list dense>
-          <mat-list-item>
-            <mat-icon matListItemIcon>info</mat-icon>
-            <div class="asset-property" matListItemTitle>Name</div>
-            <div matListItemLine>{{asset.properties.optionalValue('edc','name')}}</div>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-icon matListItemIcon>category</mat-icon>
-            <div class="asset-property" matListItemTitle>Content Type</div>
-            <div matListItemLine>{{asset.properties.optionalValue('edc','contenttype')}}</div>
-          </mat-list-item>
-          <mat-list-item>
-            <mat-icon matListItemIcon>file_copy</mat-icon>
-            <div class="asset-property" matListItemTitle>Version</div>
-            <div matListItemLine>{{asset.properties.optionalValue('edc','version')}}</div>
-          </mat-list-item>
-        </mat-list>
+        {{asset.properties.optionalValue('edc','description')}}
       </mat-card-content>
 
-      <mat-divider inset></mat-divider>
       <mat-card-actions class="card-actions">
         <button (click)="onDelete(asset)" [disabled]="isBusy()" color="warn" mat-stroked-button>
-          <mat-icon>delete_sweep</mat-icon> Delete
+          <mat-icon>delete</mat-icon> Delete
         </button>
       </mat-card-actions>
+
       <mat-card-footer>
         <mat-progress-bar *ngIf="isBusy()" color="accent" mode="indeterminate"></mat-progress-bar>
       </mat-card-footer>

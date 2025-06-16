@@ -9,16 +9,31 @@ import { StorageType } from '../../models/storage-type';
   styleUrls: ['./asset-editor-dialog.component.scss']
 })
 export class AssetEditorDialog implements OnInit {
+  // Basic Fields
+  id = '';
+  name = '';
+  description = '';
+  publisher = '';
 
-  id: string = '';
-  name: string = '';
-  description: string = '';
-  publisher: string = '';
+  // Storage
+  storageTypeId = 'AzureStorage';
+  account = '';
+  container = 'src-container';
+  blobname = '';
 
-  storageTypeId: string = 'AzureStorage';
-  account: string = '';
-  container: string = 'src-container';
-  blobname: string = '';
+  // Visibility Toggles
+  authVisible = false;
+  headersVisible = false;
+  payloadVisible = false;
+
+  // Authentication
+  selectedAuthType: 'vault' | 'value' = 'vault';
+
+  ontologyType: string = 'Organization';
+
+  // Headers & Payload
+  additionalHeaders: { name: string; value: string }[] = [];
+  customPayload: { contentType: string; body: string } | null = null;
 
   constructor(
     private dialogRef: MatDialogRef<AssetEditorDialog>,
@@ -27,13 +42,44 @@ export class AssetEditorDialog implements OnInit {
 
   ngOnInit(): void {}
 
+  // Getters
+  get hasPayload(): boolean {
+    return !!this.customPayload;
+  }
+
+  get hasHeaders(): boolean {
+    return this.additionalHeaders.length > 0;
+  }
+
+  // Toggle Methods
+  toggleAuth(): void {
+    this.authVisible = !this.authVisible;
+  }
+
+  toggleHeaders(): void {
+    this.headersVisible = !this.headersVisible;
+  }
+
+  togglePayload(): void {
+    this.customPayload = this.customPayload ? null : { contentType: '', body: '' };
+  }
+
+  addHeader(): void {
+    this.additionalHeaders.push({ name: '', value: '' });
+  }
+
+  removeHeader(index: number): void {
+    this.additionalHeaders.splice(index, 1);
+  }
+
   onSave(): void {
     const assetInput: AssetInput = {
       "@id": this.id,
       properties: {
         name: this.name,
         description: this.description,
-        publisher: this.publisher
+        publisher: this.publisher,
+        ontologyType: this.ontologyType
       },
       dataAddress: {
         type: this.storageTypeId,
@@ -47,3 +93,4 @@ export class AssetEditorDialog implements OnInit {
     this.dialogRef.close({ assetInput });
   }
 }
+

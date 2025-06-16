@@ -2,74 +2,173 @@
   <h2 class="dialog-title">Create New Asset</h2>
 </div>
 
-<mat-dialog-content class="dialog-content">
-  <mat-vertical-stepper [linear]="false" [disableRipple]="true" class="stepper">
+<mat-dialog-content>
+  <mat-accordion multi>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>1. General Information</mat-panel-title>
+      </mat-expansion-panel-header>
 
-  <!-- STEP 1: General Information -->
-    <mat-step>
-      <ng-template matStepLabel>General Information</ng-template>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Name *</mat-label>
+            <input matInput [(ngModel)]="name" required>
+          </mat-form-field>
 
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Name *</mat-label>
-          <input matInput [(ngModel)]="name" required>
-        </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Id *</mat-label>
+            <input matInput [(ngModel)]="id" required>
+          </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Id *</mat-label>
-          <input matInput [(ngModel)]="id" required>
-        </mat-form-field>
-      </div>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput [(ngModel)]="description" rows="3"></textarea>
+          </mat-form-field>
+        </div>
 
-      <div class="form-row">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Publisher</mat-label>
+            <input matInput [(ngModel)]="publisher">
+          </mat-form-field>
+        </div>
+    </mat-expansion-panel>
+
+      <!-- STEP 2: Datasource Information -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>2. Datasource Information</mat-panel-title>
+      </mat-expansion-panel-header>
+
+        <!-- Section title -->
+        <h3 class="section-title">DATASOURCE</h3>
+
+        <!-- TYPE SELECT -->
         <mat-form-field appearance="outline" class="form-field full-width">
-          <mat-label>Description</mat-label>
-          <textarea matInput [(ngModel)]="description" rows="3"></textarea>
-        </mat-form-field>
-      </div>
-
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field full-width">
-          <mat-label>Publisher</mat-label>
-          <input matInput [(ngModel)]="publisher">
-        </mat-form-field>
-      </div>
-    </mat-step>
-
-    <!-- STEP 2: Datasource Information -->
-    <mat-step>
-      <ng-template matStepLabel>Datasource Information</ng-template>
-
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Destination</mat-label>
-          <mat-select [(ngModel)]="storageTypeId" disabled>
-            <mat-option *ngFor="let storageType of storageTypes" [value]="storageType.id">
-              {{ storageType.name }}
-            </mat-option>
+          <mat-label>Type</mat-label>
+          <mat-select>
+            <mat-option value="rest">REST-API Endpoint</mat-option>
+            <mat-option value="s3">Amazon S3</mat-option>
+            <mat-option value="azure">Azure Storage</mat-option>
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Account</mat-label>
-          <input matInput [(ngModel)]="account">
-        </mat-form-field>
-      </div>
+        <!-- Method + URL -->
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Method *</mat-label>
+            <mat-select [value]="'GET'">
+              <mat-option value="GET">GET</mat-option>
+              <mat-option value="POST">POST</mat-option>
+              <mat-option value="PUT">PUT</mat-option>
+              <mat-option value="DELETE">DELETE</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Container</mat-label>
-          <input matInput [(ngModel)]="container" disabled>
-        </mat-form-field>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>URL *</mat-label>
+            <input matInput required>
+          </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Blob Name</mat-label>
-          <input matInput [(ngModel)]="blobname">
-        </mat-form-field>
-      </div>
-    </mat-step>
+        <!-- AUTHENTICATION BLOCK -->
+        <div class="block-row">
+          <div class="inline-row">
+            <span class="section-label">AUTHENTICATION</span>
+            <a class="action-link" *ngIf="!authVisible" (click)="toggleAuth()">Add Authentication</a>
+          </div>
 
-  </mat-vertical-stepper>
+          <div *ngIf="authVisible">
+            <!-- Type Selector -->
+            <mat-form-field appearance="outline" class="form-field full-width">
+              <mat-label>Type</mat-label>
+              <mat-select [(ngModel)]="selectedAuthType">
+                <mat-option value="vault">Header with Vault Secret</mat-option>
+                <mat-option value="value">Header with Value</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Inputs (based on authType) -->
+            <div class="form-row" *ngIf="selectedAuthType === 'vault'">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Auth Header Name **</mat-label>
+                <input matInput required>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Vault Secret Name **</mat-label>
+                <input matInput required>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row" *ngIf="selectedAuthType === 'value'">
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Auth Header Name *</mat-label>
+                <input matInput required>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Auth Header Value *</mat-label>
+                <input matInput required>
+              </mat-form-field>
+            </div>
+
+            <!-- Remove Button -->
+            <a class="action-remove-link" (click)="toggleAuth()">Remove Authentication</a>
+          </div>
+        </div>
+
+
+
+        <!-- HEADERS -->
+        <div class="inline-row">
+          <span class="section-label">ADDITIONAL HEADERS</span>
+          <a class="action-link" (click)="addHeader()">Add Additional Header</a>
+        </div>
+
+        <div *ngFor="let header of additionalHeaders; let i = index" class="form-row align-center">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Header Name *</mat-label>
+            <input matInput [(ngModel)]="header.name" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Header Value *</mat-label>
+            <input matInput [(ngModel)]="header.value" required>
+          </mat-form-field>
+
+          <a class="remove-link" (click)="removeHeader(i)">Remove</a>
+        </div>
+
+
+        <!-- PAYLOAD -->
+        <div class="inline-row">
+          <span class="section-label">PAYLOAD</span>
+          <a class="action-link" *ngIf="!customPayload" (click)="togglePayload()">Add Payload</a>
+        </div>
+
+        <div *ngIf="customPayload">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field full-width">
+              <mat-label>Content Type *</mat-label>
+              <input matInput [(ngModel)]="customPayload.contentType" required>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field full-width">
+              <mat-label>Body *</mat-label>
+              <textarea matInput rows="4" [(ngModel)]="customPayload.body" required></textarea>
+            </mat-form-field>
+          </div>
+
+          <a class="action-remove-link" (click)="togglePayload()">Remove Payload</a>
+        </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
 </mat-dialog-content>
 
 <mat-dialog-actions>
