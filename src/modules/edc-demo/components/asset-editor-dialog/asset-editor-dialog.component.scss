@@ -1,113 +1,140 @@
 :host {
   display: block;
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+  width: 45vw;
+  max-width: 45vw;
+  height: 45vw;
+  max-height: 40vw;
 }
 
 /* === Dialog Layout === */
 .dialog-header {
-  padding: 16px 24px 0 24px;
+  padding: 24px 32px 8px 32px; // Top, Right, Bottom, Left
 }
 
 .dialog-title {
-  margin: 0 0 24px 0;
-  font-size: 24px;
+  font-size: 20px;
+  margin: 0 0 8px 0;
   font-weight: 500;
 }
 
 mat-dialog-content {
-  padding: 0 24px 24px 24px;
-  width: 800px;
+  padding: 0 32px 24px 32px;
+  max-width: 800px;
   display: flex;
   flex-direction: column;
 }
 
-:host ::ng-deep mat-expansion-panel {
-  margin-top: 16px;
-  border-radius: 12px;
-  overflow: visible;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-  background-color: white;
+/* === Section Styles === */
+.section {
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
 }
 
-:host ::ng-deep .mat-expansion-panel-header {
-  border-radius: 12px;
-  padding: 0 24px;
-  min-height: 56px;
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 14px;
   font-weight: 600;
-  font-size: 16px;
-  color: #212121;
-  background-color: #fff;
   border-left: 4px solid transparent;
-  transition: all 0.3s ease;
-  overflow: visible !important;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &.active {
+    color: #e91e63;
+    border-left-color: #e91e63;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    color: #ccc;
+
+    &.green {
+      color: #4caf50;
+    }
+  }
 }
 
-:host ::ng-deep .mat-expansion-panel-header.mat-expanded {
-  border-left: 4px solid #e91e63;
-  color: #e91e63;
+.section-content {
+  padding: 16px 20px 20px;
 }
 
-:host ::ng-deep .mat-expansion-panel-body {
-  padding: 16px 24px 24px;
-}
-
-
-/* === Form Layouts === */
+/* === Form Fields === */
 .form-row {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   flex-wrap: wrap;
-  margin-top: 12px;
-  margin-bottom: 20px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .form-field {
   flex: 1;
-  min-width: 300px;
+  min-width: 240px;
 }
 
 .full-width {
   width: 100%;
 }
 
-/* === Sections === */
-.section-title {
-  margin: 32px 0 16px;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.section-label {
+mat-form-field {
   font-size: 13px;
-  font-weight: 500;
-  text-transform: uppercase;
+
+  ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 2px;
+  }
+
+  ::ng-deep .mat-form-field-label {
+    font-size: 13px;
+  }
+
+  ::ng-deep .mat-input-element::placeholder {
+    font-style: italic;
+    color: #999;
+  }
+
+  ::ng-deep .mat-form-field-infix {
+    padding: 8px 0;
+  }
 }
 
-/* === Inline Layouts === */
+.required-star {
+  color: #e91e63; // or use red if you prefer: #f44336
+  margin-left: 2px;
+}
+
+/* === Section Labels and Links === */
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-transform: none;
+  color: #444;
+}
+
 .inline-row {
   display: flex;
   flex-direction: column;
   margin-top: 24px;
   margin-bottom: 8px;
-
-  .action-link {
-    margin-left: 16px;
-    margin-top: 4px;
-  }
 }
 
 .block-row {
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
-/* === Action Links === */
-.action-link {
-  color: #1976d2;
-  cursor: pointer;
+.action-link,
+.action-remove-link,
+.remove-link {
+  font-size: 13px;
   font-weight: 500;
-  font-size: 14px;
+  color: #e91e63;
+  cursor: pointer;
   text-decoration: none;
   margin-top: 4px;
 
@@ -116,28 +143,14 @@ mat-dialog-content {
   }
 }
 
-.action-remove-link,
-.remove-link {
-  color: #f44336;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  margin-left: 4px;
-
-  &:hover {
-    text-decoration: underline;
-  }
+.align-center {
+  align-items: center;
 }
 
-/* === Dialog Footer Buttons === */
+/* === Footer Buttons === */
 mat-dialog-actions {
-  padding: 0 24px 24px 24px;
+  padding: 0 32px 24px 32px;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-}
-
-/* === Alignment Utility === */
-.align-center {
-  align-items: center;
 }

@@ -20,6 +20,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule} from '@angular/material/list';
 import {MatStepperModule} from '@angular/material/stepper';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {TextFieldModule} from '@angular/cdk/text-field';
 import {CatalogBrowserComponent} from './components/catalog-browser/catalog-browser.component';
 import {TransferHistoryViewerComponent} from './components/transfer-history/transfer-history-viewer.component';
 import {
@@ -73,6 +74,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     RouterModule,
     MatProgressSpinnerModule,
     MatStepperModule,
+    TextFieldModule
   ],
   declarations: [
     CatalogBrowserComponent,

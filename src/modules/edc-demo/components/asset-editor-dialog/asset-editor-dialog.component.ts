@@ -10,16 +10,41 @@ import { StorageType } from '../../models/storage-type';
 })
 export class AssetEditorDialog implements OnInit {
   // Basic Fields
-  id = '';
-  name = '';
-  description = '';
-  publisher = '';
+  private _assetName = '';
+  assetId = '';
+  assetDescription = '';
+  assetOntologyType: string = 'Organization';
+  selectedStorageType: string = 'rest';
+
+  get assetName(): string {
+    return this._assetName;
+  }
+
+  set assetName(value: string) {
+    this._assetName = value;
+    this.assetId = value;
+  }
 
   // Storage
   storageTypeId = 'AzureStorage';
   account = '';
   container = 'src-container';
   blobname = '';
+
+  //REST:
+  restMethod: string = 'GET';
+  restUrl: string = '';
+  //S3:
+  s3Region = '';
+  s3Bucket = '';
+  s3KeyName = '';
+  s3AccessKey = '';
+  s3SecretKey = '';
+  //AZURE
+  azureAccount = '';
+  azureKeyName = '';
+  azureContainer = '';
+  azureBlobName = '';
 
   // Visibility Toggles
   authVisible = false;
@@ -29,7 +54,48 @@ export class AssetEditorDialog implements OnInit {
   // Authentication
   selectedAuthType: 'vault' | 'value' = 'vault';
 
-  ontologyType: string = 'Organization';
+  // UI Sections
+  section = {
+    general: true,
+    datasource: false
+  };
+
+  toggleSection(target: 'general' | 'datasource'): void {
+    if (this.section[target]) return;
+
+    if (target === 'datasource' && !this.isGeneralValid()) return;
+
+    this.section.general = false;
+    this.section.datasource = false;
+    this.section[target] = true;
+  }
+
+  isGeneralValid(): boolean {
+    return !!this.assetName?.trim() && !!this.assetId?.trim();
+  }
+
+  isDatasourceValid(): boolean {
+    switch (this.selectedStorageType) {
+      case 'rest':
+        return !!this.restMethod?.trim() && !!this.restUrl?.trim();
+
+      case 'amazonS3':
+        return !!this.s3Region?.trim() &&
+          !!this.s3Bucket?.trim() &&
+          !!this.s3KeyName?.trim() &&
+          !!this.s3AccessKey?.trim() &&
+          !!this.s3SecretKey?.trim();
+
+      case 'azure':
+        return !!this.azureAccount?.trim() &&
+          !!this.azureKeyName?.trim() &&
+          !!this.azureContainer?.trim() &&
+          !!this.azureBlobName?.trim();
+
+      default:
+        return false;
+    }
+  }
 
   // Headers & Payload
   additionalHeaders: { name: string; value: string }[] = [];
@@ -42,7 +108,6 @@ export class AssetEditorDialog implements OnInit {
 
   ngOnInit(): void {}
 
-  // Getters
   get hasPayload(): boolean {
     return !!this.customPayload;
   }
@@ -51,7 +116,6 @@ export class AssetEditorDialog implements OnInit {
     return this.additionalHeaders.length > 0;
   }
 
-  // Toggle Methods
   toggleAuth(): void {
     this.authVisible = !this.authVisible;
   }
@@ -72,14 +136,54 @@ export class AssetEditorDialog implements OnInit {
     this.additionalHeaders.splice(index, 1);
   }
 
+  isFormValid(): boolean {
+    if (!this.isGeneralValid()) return false;
+
+    return this.selectedStorageType === 'rest' && this.isRestValid()
+      || this.selectedStorageType === 'amazonS3' && this.isS3Valid()
+      || this.selectedStorageType === 'azure' && this.isAzureValid();
+  }
+
+  isRestValid(): boolean {
+    return !!this.restMethod && !!this.restUrl;
+  }
+
+  isS3Valid(): boolean {
+    return !!this.s3Region && !!this.s3Bucket && !!this.s3KeyName && !!this.s3AccessKey && !!this.s3SecretKey;
+  }
+
+  isAzureValid(): boolean {
+    return !!this.azureAccount && !!this.azureKeyName && !!this.azureContainer && !!this.azureBlobName;
+  }
+
+  onStorageTypeChanged(): void {
+    this.clearDatasourceFields();
+  }
+
+  clearDatasourceFields(): void {
+    // Clear all types
+    this.restMethod = '';
+    this.restUrl = '';
+
+    this.s3Region = '';
+    this.s3Bucket = '';
+    this.s3KeyName = '';
+    this.s3AccessKey = '';
+    this.s3SecretKey = '';
+
+    this.azureAccount = '';
+    this.azureKeyName = '';
+    this.azureContainer = '';
+    this.azureBlobName = '';
+  }
+
   onSave(): void {
     const assetInput: AssetInput = {
-      "@id": this.id,
+      "@id": this.assetId,
       properties: {
-        name: this.name,
-        description: this.description,
-        publisher: this.publisher,
-        ontologyType: this.ontologyType
+        name: this.assetName,
+        description: this.assetDescription,
+        ontologyType: this.assetOntologyType
       },
       dataAddress: {
         type: this.storageTypeId,
@@ -93,4 +197,3 @@ export class AssetEditorDialog implements OnInit {
     this.dialogRef.close({ assetInput });
   }
 }
-
