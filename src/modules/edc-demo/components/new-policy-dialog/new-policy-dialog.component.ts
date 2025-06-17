@@ -12,26 +12,19 @@ export class NewPolicyDialogComponent {
   accessOption: 'bpn' | 'public' = 'bpn';
   businessPartnerNumber: string = '';
 
-  permissionsJson: string = '';
-  prohibitionsJson: string = '';
-  obligationsJson: string = '';
-
   policy: PolicyInput = {
-    '@type': 'set',
-    '@context': 'http://www.w3.org/ns/odrl.jsonld'
+    "@type": "set"
   };
-
   policyDefinition: PolicyDefinitionInput = {
-    '@id': '',
-    policy: this.policy
+    "policy": this.policy,
+    "@id": ''
   };
 
   constructor(private dialogRef: MatDialogRef<NewPolicyDialogComponent>) {}
 
   isGeneralValid(): boolean {
     if (!this.policyName.trim()) return false;
-    if (this.accessOption === 'bpn' && !this.businessPartnerNumber.trim()) return false;
-    return true;
+    return !(this.accessOption === 'bpn' && !this.businessPartnerNumber.trim());
   }
 
   onSave(): void {
@@ -41,15 +34,7 @@ export class NewPolicyDialogComponent {
     this.policyDefinition['@id'] = this.policyName;
     this.policyDefinition.policy.assigner = this.accessOption === 'bpn' ? this.businessPartnerNumber.trim() : 'PUBLIC';
 
-    if (this.permissionsJson.trim()) {
-      this.policy.permission = JSON.parse(this.permissionsJson);
-    }
-    if (this.prohibitionsJson.trim()) {
-      this.policy.prohibition = JSON.parse(this.prohibitionsJson);
-    }
-    if (this.obligationsJson.trim()) {
-      this.policy.obligation = JSON.parse(this.obligationsJson);
-    }
+    this.policy["@context"]="http://www.w3.org/ns/odrl.jsonld"
 
     this.dialogRef.close(this.policyDefinition);
   }

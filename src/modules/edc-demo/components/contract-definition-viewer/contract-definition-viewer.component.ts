@@ -28,7 +28,15 @@ export class ContractDefinitionViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filteredContractDefinitions$ = of([]);
+    this.filteredContractDefinitions$ = this.fetch$
+      .pipe(
+        switchMap(() => {
+          const contractDefinitions$ = this.contractDefinitionService.queryAllContractDefinitions();
+          return !!this.searchText ?
+            contractDefinitions$.pipe(map(contractDefinitions => contractDefinitions.filter(contractDefinition => contractDefinition['@id']!.toLowerCase().includes(this.searchText))))
+            :
+            contractDefinitions$;
+        }));
   }
 
   onSearch() {
