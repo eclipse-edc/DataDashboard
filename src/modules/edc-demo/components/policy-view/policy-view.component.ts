@@ -35,7 +35,14 @@ export class PolicyViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filteredPolicies$ = of([]);
+    this.filteredPolicies$ = this.fetch$.pipe(
+      switchMap(() => {
+        const policyDefinitions = this.policyService.queryAllPolicies();
+        return !!this.searchText ?
+          policyDefinitions.pipe(map(policies => policies.filter(policy => this.isFiltered(policy, this.searchText))))
+          :
+          policyDefinitions;
+      }));
   }
 
   onSearch() {
