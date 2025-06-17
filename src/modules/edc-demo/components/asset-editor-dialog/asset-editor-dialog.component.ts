@@ -50,6 +50,7 @@ export class AssetEditorDialog implements OnInit {
     blobName: ''
   }
 
+
   // Authentication
   selectedAuthType: 'vault' | 'value' = 'vault';
 
@@ -58,6 +59,11 @@ export class AssetEditorDialog implements OnInit {
   // Headers & Payload
   additionalHeaders: { name: string; value: string }[] = [];
   customPayload: { contentType: string; body: string } | null = null;
+  // UI Sections
+  section = {
+    general: true,
+    datasource: false
+  };
 
   constructor(
     private dialogRef: MatDialogRef<AssetEditorDialog>,
