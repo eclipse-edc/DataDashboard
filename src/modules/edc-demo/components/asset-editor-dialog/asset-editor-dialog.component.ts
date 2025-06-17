@@ -9,21 +9,34 @@ import { StorageType } from '../../models/storage-type';
   styleUrls: ['./asset-editor-dialog.component.scss']
 })
 export class AssetEditorDialog implements OnInit {
-  // Basic Fields
-  private _assetName = '';
-  assetId = '';
-  assetDescription = '';
-  assetOntologyType: string = 'Organization';
+
+  // General Information
+  assetMetadata = {
+    name: '',
+    id: '',
+    description: '',
+    ontologyType: 'Organization'
+  };
+
+  // Datasource Information
   selectedStorageType: string = 'rest';
+  // REST-API Endpoint
+  restMethod: string = 'GET';
+  restUrl: string = '';
+  selectedAuthType: 'vault' | 'value' = 'vault';
+  authConfig: {
+    type: 'vault' | 'value' | null;
+    headerName: string;
+    vaultSecretName?: string;
+    headerValue?: string;
+  } = {
+    type: null,
+    headerName: '',
+  };
+  authVisible = false;
+  additionalHeaders: { name: string; value: string }[] = [];
+  customPayload: { contentType: string; body: string } | null = null;
 
-  get assetName(): string {
-    return this._assetName;
-  }
-
-  set assetName(value: string) {
-    this._assetName = value;
-    this.assetId = value;
-  }
 
   // Storage
   storageTypeId = 'AzureStorage';
@@ -31,9 +44,6 @@ export class AssetEditorDialog implements OnInit {
   container = 'src-container';
   blobname = '';
 
-  //REST:
-  restMethod: string = 'GET';
-  restUrl: string = '';
   //S3:
   s3Region = '';
   s3Bucket = '';
@@ -46,19 +56,18 @@ export class AssetEditorDialog implements OnInit {
   azureContainer = '';
   azureBlobName = '';
 
-  // Visibility Toggles
-  authVisible = false;
-  headersVisible = false;
-  payloadVisible = false;
-
-  // Authentication
-  selectedAuthType: 'vault' | 'value' = 'vault';
-
   // UI Sections
   section = {
     general: true,
     datasource: false
   };
+
+  constructor(
+    private dialogRef: MatDialogRef<AssetEditorDialog>,
+    @Inject('STORAGE_TYPES') public storageTypes: StorageType[]
+  ) {}
+
+  ngOnInit(): void {}
 
   toggleSection(target: 'general' | 'datasource'): void {
     if (this.section[target]) return;
@@ -71,7 +80,7 @@ export class AssetEditorDialog implements OnInit {
   }
 
   isGeneralValid(): boolean {
-    return !!this.assetName?.trim() && !!this.assetId?.trim();
+    return !!this.assetMetadata.name?.trim() && !!this.assetMetadata.id?.trim();
   }
 
   isDatasourceValid(): boolean {
@@ -97,31 +106,8 @@ export class AssetEditorDialog implements OnInit {
     }
   }
 
-  // Headers & Payload
-  additionalHeaders: { name: string; value: string }[] = [];
-  customPayload: { contentType: string; body: string } | null = null;
-
-  constructor(
-    private dialogRef: MatDialogRef<AssetEditorDialog>,
-    @Inject('STORAGE_TYPES') public storageTypes: StorageType[]
-  ) {}
-
-  ngOnInit(): void {}
-
-  get hasPayload(): boolean {
-    return !!this.customPayload;
-  }
-
-  get hasHeaders(): boolean {
-    return this.additionalHeaders.length > 0;
-  }
-
   toggleAuth(): void {
     this.authVisible = !this.authVisible;
-  }
-
-  toggleHeaders(): void {
-    this.headersVisible = !this.headersVisible;
   }
 
   togglePayload(): void {
@@ -138,6 +124,7 @@ export class AssetEditorDialog implements OnInit {
 
   isFormValid(): boolean {
     if (!this.isGeneralValid()) return false;
+    if (!this.isDatasourceValid()) return false;
 
     return this.selectedStorageType === 'rest' && this.isRestValid()
       || this.selectedStorageType === 'amazonS3' && this.isS3Valid()
@@ -162,7 +149,6 @@ export class AssetEditorDialog implements OnInit {
 
   // TODO
   //  -_ in the name is possible, also whitespaces, but whitespaces should be whenever theres a space, replace in ID with -
-  // X in the search bar
   // Description is required
   //
   //
@@ -187,11 +173,11 @@ export class AssetEditorDialog implements OnInit {
 
   onSave(): void {
     const assetInput: AssetInput = {
-      "@id": this.assetId,
+      "@id": this.assetMetadata.id,
       properties: {
-        name: this.assetName,
-        description: this.assetDescription,
-        ontologyType: this.assetOntologyType
+        name: this.assetMetadata.name,
+        description: this.assetMetadata.description,
+        ontologyType: this.assetMetadata.ontologyType
       },
       dataAddress: {
         type: this.storageTypeId,

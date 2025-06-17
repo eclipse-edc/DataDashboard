@@ -25,27 +25,22 @@
     </button>
   </div>
 
-  <div fxLayout="row wrap" fxLayoutAlign="start start">
+  <div class="asset-grid">
     <mat-card *ngFor="let asset of assets" class="asset-card">
       <mat-card-header>
-        <mat-icon mat-card-avatar>description</mat-icon>
-        <mat-card-title>{{asset.properties.optionalValue('edc','name')}}</mat-card-title>
-        <mat-card-subtitle>{{asset.id}}</mat-card-subtitle>
+        <div mat-card-avatar class="asset-icon">
+          <mat-icon>insert_drive_file</mat-icon>
+        </div>
+        <mat-card-title>{{ asset.properties.optionalValue('edc', 'name') }}</mat-card-title>
+        <mat-card-subtitle>{{ asset.id }}</mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
-        {{asset.properties.optionalValue('edc','description')}}
+        {{ asset.properties.optionalValue('edc', 'description') }}
       </mat-card-content>
 
-      <mat-card-actions class="card-actions">
-        <button (click)="onDelete(asset)" [disabled]="isBusy()" color="warn" mat-stroked-button>
-          <mat-icon>delete</mat-icon> Delete
-        </button>
-      </mat-card-actions>
-
-      <mat-card-footer>
-        <mat-progress-bar *ngIf="isBusy()" color="accent" mode="indeterminate"></mat-progress-bar>
-      </mat-card-footer>
+      <mat-progress-bar *ngIf="isBusy()" color="accent" mode="indeterminate"></mat-progress-bar>
     </mat-card>
   </div>
+
 </div>

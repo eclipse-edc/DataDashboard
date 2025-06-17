@@ -99,7 +99,8 @@ mat-form-field {
 }
 
 .required-star {
-  color: #e91e63; // or use red if you prefer: #f44336
+  //color: #e91e63; // or use red if you prefer: #f44336
+  color: var(--primary-color);
   margin-left: 2px;
 }
 

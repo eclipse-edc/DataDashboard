@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import { LocationStrategy } from '@angular/common';
 
 export interface AppConfig {
+  apiKey: string;
   managementApiUrl: string;
   catalogUrl: string;
   storageAccount: string;

@@ -70,3 +70,8 @@ $theme1: mat.define-light-theme((
 .mat-form-field-appearance-outline .mat-form-field-outline {
   border-radius: 8px;
 }
+
+:root {
+  --primary-color: #{mat.get-color-from-palette($magenta-palette, 500)};
+  --primary-color-contrast: #{mat.get-contrast-color-from-palette($magenta-palette, 500)};
+}

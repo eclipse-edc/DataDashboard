@@ -3,8 +3,6 @@
 </div>
 
 <mat-dialog-content>
-
-  <!-- Section: General Information -->
   <div class="section">
     <div class="section-header" (click)="toggleSection('general')" [class.active]="section.general">
       <span>1. General Information</span>
@@ -15,42 +13,24 @@
 
     <div *ngIf="section.general" class="section-content">
       <div class="form-row">
-        <!-- NAME field -->
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Name</mat-label>
-          <input
-            matInput
-            [(ngModel)]="assetName"
-            required
-            placeholder="Name of the Asset"
-          />
+          <input matInput [(ngModel)]="assetMetadata.name" (ngModelChange)="assetMetadata.id = $event" placeholder="Name of the Asset" required/>
         </mat-form-field>
-
-        <!-- ID field -->
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Id<span class="required-star">*</span></mat-label>
-          <input matInput [(ngModel)]="assetId" readonly [disabled]="true" />
+          <input matInput [(ngModel)]="assetMetadata.id" readonly [disabled]="true" />
         </mat-form-field>
       </div>
 
-
       <mat-form-field appearance="outline" class="form-field full-width">
         <mat-label>Description</mat-label>
-        <textarea
-          matInput
-          [(ngModel)]="assetDescription"
-          rows="3"
-          cdkTextareaAutosize
-          cdkAutosizeMinRows="3"
-          cdkAutosizeMaxRows="3"
-          style="resize: none;"
-          placeholder="Describe"
-        ></textarea>
+        <textarea matInput [(ngModel)]="assetMetadata.description" rows="3" cdkTextareaAutosize placeholder="Describe" required></textarea>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field full-width">
         <mat-label>Ontology type</mat-label>
-        <mat-select [(ngModel)]="assetOntologyType">
+        <mat-select [(ngModel)]="assetMetadata.ontologyType">
           <mat-option value="Organization">Organization</mat-option>
           <mat-option value="TourismService">Tourism Service</mat-option>
           <mat-option value="TourismResource">Tourism Resource</mat-option>
@@ -60,17 +40,15 @@
     </div>
   </div>
 
-  <!-- Section: Datasource Information -->
   <div class="section">
     <div class="section-header" (click)="toggleSection('datasource')" [class.active]="section.datasource">
       <span>2. Datasource Information</span>
-      <mat-icon [ngClass]="{ 'green': isDatasourceValid(), 'empty': !isDatasourceValid() }">
+      <mat-icon [ngClass]="{ 'success': isDatasourceValid() }">
         {{ isDatasourceValid() ? 'radio_button_checked' : 'radio_button_unchecked' }}
       </mat-icon>
     </div>
 
     <div *ngIf="section.datasource" class="section-content">
-      <!-- TYPE SELECT -->
       <mat-form-field appearance="outline" class="form-field full-width">
         <mat-label>Type</mat-label>
         <mat-select [(ngModel)]="selectedStorageType" (selectionChange)="onStorageTypeChanged()">
@@ -79,6 +57,7 @@
           <mat-option value="azure">Azure Storage</mat-option>
         </mat-select>
       </mat-form-field>
+
       <ng-container [ngSwitch]="selectedStorageType">
         <ng-container *ngSwitchCase="'rest'">
           <ng-container *ngTemplateOutlet="restFields"></ng-container>
@@ -95,20 +74,9 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-stroked-button class="cancel-button" mat-dialog-close>
-    Cancel
-  </button>
-
-  <button
-    mat-flat-button
-    class="create-button"
-    [disabled]="!isGeneralValid() || !isDatasourceValid()"
-    (click)="onSave()"
-  >
-    Create
-  </button>
+  <button mat-stroked-button class="cancel-button" mat-dialog-close>Cancel</button>
+  <button mat-flat-button class="create-button" [disabled]="!isFormValid" (click)="onSave()">Create</button>
 </mat-dialog-actions>
-
 
 <ng-template #restFields>
   <!-- Method + URL -->
@@ -131,16 +99,13 @@
     </mat-form-field>
   </div>
 
-
-  <!-- AUTHENTICATION BLOCK -->
   <div class="block-row">
     <div class="inline-row">
       <span class="section-label">AUTHENTICATION</span>
-      <a class="action-link" *ngIf="!authVisible" (click)="toggleAuth()">Add Authentication</a>
+      <a class="action-link" (click)="toggleAuth()">Add Authentication</a>
     </div>
 
     <div *ngIf="authVisible">
-      <!-- Type Selector -->
       <mat-form-field appearance="outline" class="form-field full-width">
         <mat-label>Type</mat-label>
         <mat-select [(ngModel)]="selectedAuthType">
@@ -149,37 +114,34 @@
         </mat-select>
       </mat-form-field>
 
-      <!-- Inputs (based on authType) -->
       <div class="form-row" *ngIf="selectedAuthType === 'vault'">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Auth Header Name</mat-label>
-          <input matInput required>
+          <input matInput required [(ngModel)]="authConfig.headerName">
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Vault Secret Name</mat-label>
-          <input matInput required>
+          <input matInput required [(ngModel)]="authConfig.vaultSecretName">
         </mat-form-field>
       </div>
 
       <div class="form-row" *ngIf="selectedAuthType === 'value'">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Auth Header Name</mat-label>
-          <input matInput required>
+          <input matInput required [(ngModel)]="authConfig.headerName">
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Auth Header Value</mat-label>
-          <input matInput required>
+          <input matInput required [(ngModel)]="authConfig.headerValue">
         </mat-form-field>
       </div>
 
-      <!-- Remove Button -->
       <a class="action-remove-link" (click)="toggleAuth()">Remove Authentication</a>
     </div>
   </div>
 
-  <!-- HEADERS -->
   <div class="inline-row">
     <span class="section-label">ADDITIONAL HEADERS</span>
     <a class="action-link" (click)="addHeader()">Add Additional Header</a>
@@ -190,17 +152,13 @@
       <mat-label>Header Name</mat-label>
       <input matInput [(ngModel)]="header.name" required>
     </mat-form-field>
-
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Header Value</mat-label>
       <input matInput [(ngModel)]="header.value" required>
     </mat-form-field>
-
     <a class="remove-link" (click)="removeHeader(i)">Remove</a>
   </div>
 
-
-  <!-- PAYLOAD -->
   <div class="inline-row">
     <span class="section-label">PAYLOAD</span>
     <a class="action-link" *ngIf="!customPayload" (click)="togglePayload()">Add Payload</a>
@@ -226,39 +184,29 @@
 </ng-template>
 
 <ng-template #s3Fields>
-  <!-- S3-specific fields -->
-
-  <!-- Region + Bucket -->
   <div class="form-row">
-    <!-- Region Dropdown -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Region</mat-label>
       <mat-select [(ngModel)]="s3Region" required>
         <mat-option value="europe">Europe</mat-option>
-        <!-- More options can be added later -->
       </mat-select>
     </mat-form-field>
-
-    <!-- Bucket Input -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Bucket</mat-label>
       <input matInput [(ngModel)]="s3Bucket" placeholder="Bucket" required />
     </mat-form-field>
   </div>
 
-  <!-- Key Name -->
   <mat-form-field appearance="outline" class="form-field full-width">
     <mat-label>Key Name</mat-label>
     <input matInput [(ngModel)]="s3KeyName" placeholder="Enter key name" required />
   </mat-form-field>
 
-  <!-- Access Key + Secret Key -->
   <div class="form-row">
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Access Key</mat-label>
       <input matInput [(ngModel)]="s3AccessKey" type="password" required />
     </mat-form-field>
-
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Secret Key</mat-label>
       <input matInput [(ngModel)]="s3SecretKey" type="password" required />
@@ -267,32 +215,22 @@
 </ng-template>
 
 <ng-template #azureFields>
-  <!-- Azure-specific fields -->
-
-  <!-- Account + Key Name -->
   <div class="form-row">
-    <!-- Account -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Account</mat-label>
       <input matInput [(ngModel)]="azureAccount" placeholder="Select" required />
     </mat-form-field>
-
-    <!-- Key Name -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Key Name</mat-label>
       <input matInput [(ngModel)]="azureKeyName" placeholder="Bucket" required />
     </mat-form-field>
   </div>
 
-  <!-- Container + Blob Name -->
   <div class="form-row">
-    <!-- Container -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Container</mat-label>
       <input matInput [(ngModel)]="azureContainer" placeholder="Name of the Container" required />
     </mat-form-field>
-
-    <!-- Blob Name -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Blob Name</mat-label>
       <input matInput [(ngModel)]="azureBlobName" placeholder="Enter Blob Name" required />
