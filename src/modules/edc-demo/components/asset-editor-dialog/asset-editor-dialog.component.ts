@@ -56,10 +56,6 @@ export class AssetEditorDialog implements OnInit {
     this.authVisible = !this.authVisible;
   }
 
-  toggleHeaders(): void {
-    this.headersVisible = !this.headersVisible;
-  }
-
   togglePayload(): void {
     this.customPayload = this.customPayload ? null : { contentType: '', body: '' };
   }

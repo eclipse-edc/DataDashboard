@@ -33,7 +33,14 @@ export class AssetViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filteredAssets$ = of([]);
+    this.filteredAssets$ = this.fetch$
+      .pipe(
+        switchMap(() => {
+          const assets$ = this.assetService.requestAssets();
+          return !!this.searchText
+            ? assets$.pipe(map(assets => assets.filter(asset => asset.properties.optionalValue<string>('edc', 'name')?.includes(this.searchText))))
+            : assets$;
+        }));
   }
 
   isBusy() {
