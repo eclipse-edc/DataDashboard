@@ -57,6 +57,9 @@ export class ContractDefinitionViewerComponent implements OnInit {
 
   }
 
+  /**
+   * TODO add marketplace checkbox, what do with it? send the offer to marketplace BE? i guess
+   */
   onCreate() {
     const dialogRef = this.dialog.open(ContractDefinitionEditorDialog);
     dialogRef.afterClosed().pipe(first()).subscribe((result: { contractDefinition?: ContractDefinitionInput }) => {

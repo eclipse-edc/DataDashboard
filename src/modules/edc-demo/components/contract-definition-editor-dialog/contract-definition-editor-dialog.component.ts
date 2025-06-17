@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Asset, ContractDefinitionInput, PolicyDefinition } from '../../../mgmt-api-client/model';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {
+  AssetService, PolicyService
+} from "../../../mgmt-api-client";
+import { Asset, ContractDefinitionInput, PolicyDefinition } from "../../../mgmt-api-client/model"
 
 @Component({
   selector: 'edc-demo-contract-definition-editor-dialog',
@@ -10,10 +13,9 @@ import { Asset, ContractDefinitionInput, PolicyDefinition } from '../../../mgmt-
 export class ContractDefinitionEditorDialog implements OnInit {
   policies: Array<PolicyDefinition> = [];
   availableAssets: Asset[] = [];
-
-  accessPolicy: PolicyDefinition | undefined;
-  usagePolicy: PolicyDefinition | undefined;
-  assets: Asset[] = [];
+  accessPolicy?: PolicyDefinition;
+  contractPolicy?: PolicyDefinition;
+  assets: Asset | Asset[] = [];
   publishToMarketplace = false;
 
   contractDefinition: ContractDefinitionInput = {
@@ -23,45 +25,61 @@ export class ContractDefinitionEditorDialog implements OnInit {
     contractPolicyId: undefined!
   };
 
-  constructor(private dialogRef: MatDialogRef<ContractDefinitionEditorDialog>) {}
+  constructor(private policyService: PolicyService,
+              private assetService: AssetService,
+              private dialogRef: MatDialogRef<ContractDefinitionEditorDialog>,
+              @Inject(MAT_DIALOG_DATA) contractDefinition?: ContractDefinitionInput) {
+    if (contractDefinition) {
+      this.contractDefinition = contractDefinition;
+    }
+  }
 
   ngOnInit(): void {
-    // Mock policies
-    (this.policies as any) = [
-      { '@id': 'policy-1' },
-      { '@id': 'policy-2' },
-      { '@id': 'policy-3' }
-    ];
-
-    // Mock assets
-    (this.availableAssets as any) = [
-      { id: 'asset-1' },
-      { id: 'asset-2' },
-      { id: 'asset-3' }
-    ];
-
+    this.policyService.queryAllPolicies().subscribe(policyDefinitions => {
+      this.policies = policyDefinitions;
+      this.accessPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.accessPolicyId);
+      this.contractPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.contractPolicyId);
+    });
+    this.assetService.requestAssets().subscribe(assets => {
+      this.availableAssets = assets;
+      // preselection
+      if (this.contractDefinition) {
+        const assetIds = this.contractDefinition.assetsSelector.map(c => c.operandRight?.toString());
+        this.assets = this.availableAssets.filter(asset => assetIds.includes(asset.id));
+      }
+    })
   }
 
   get isFormValid(): boolean {
+    const hasAsset = Array.isArray(this.assets)
+      ? this.assets.length > 0
+      : !!this.assets;
+
     return !!this.contractDefinition['@id']?.trim()
       && !!this.accessPolicy
-      && !!this.usagePolicy
-      && this.assets.length > 0;
+      && !!this.contractPolicy
+      && hasAsset;
   }
 
 
   onSave(): void {
     this.contractDefinition.accessPolicyId = this.accessPolicy!['@id']!;
-    this.contractDefinition.contractPolicyId = this.usagePolicy!['@id']!;
+    this.contractDefinition.contractPolicyId = this.contractPolicy!['@id']!;
+    this.contractDefinition.assetsSelector = [];
 
-    const ids = this.assets.map(asset => asset.id);
+    const selectedAssets = Array.isArray(this.assets) ? this.assets : [this.assets];
+
+    const ids = selectedAssets.map(asset => asset.id);
+
     this.contractDefinition.assetsSelector = [
+      ...this.contractDefinition.assetsSelector,
       {
         operandLeft: 'https://w3id.org/edc/v0.0.1/ns/id',
         operator: 'in',
         operandRight: ids,
       }
     ];
+
 
     this.dialogRef.close({
       contractDefinition: this.contractDefinition,
