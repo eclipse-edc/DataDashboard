@@ -99,7 +99,6 @@ mat-form-field {
 }
 
 .required-star {
-  //color: #e91e63; // or use red if you prefer: #f44336
   color: var(--primary-color);
   margin-left: 2px;
 }
@@ -172,6 +171,17 @@ mat-dialog-actions {
   &:not(:disabled) {
     background-color: #e91e63;
     color: white;
+  }
+}
+
+.clickable-title {
+  cursor: pointer;
+  color: #d10073;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #a50058;
   }
 }
 

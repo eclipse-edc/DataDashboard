@@ -85,3 +85,72 @@
   background-color: #fff;
   color: #000;
 }
+
+
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); // reduced min-width
+  gap: 20px;
+  padding: 16px;
+}
+
+.asset-card {
+  padding: 12px;
+  min-height: 160px; // add this line to give vertical breathing room
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+  mat-card-content {
+    font-size: 14px;
+    margin: 4px 0 0;
+    color: #444;
+    flex-grow: 1;
+  }
+
+  mat-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  mat-card-subtitle {
+    font-size: 12px;
+    color: #777;
+  }
+
+}
+.asset-card mat-card-header {
+  align-items: center;
+  padding: 0; // remove default vertical padding
+  margin: 0;
+  min-height: unset; // override Angular Material default height
+}
+
+.asset-card mat-card-header .mat-card-header-text {
+  margin: 0; // remove vertical margin between title and subtitle
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px; // reduce spacing between title and subtitle
+}
+
+.asset-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #eaeaea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  margin-left: 8px;
+
+  mat-icon {
+    font-size: 22px;
+    color: var(--primary-color);
+  }
+}
+

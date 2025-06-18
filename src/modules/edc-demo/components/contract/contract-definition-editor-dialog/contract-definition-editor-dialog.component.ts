@@ -2,8 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {
   AssetService, PolicyService
-} from "../../../mgmt-api-client";
-import { Asset, ContractDefinitionInput, PolicyDefinition } from "../../../mgmt-api-client/model"
+} from "../../../../mgmt-api-client";
+import { Asset, ContractDefinitionInput, PolicyDefinition } from "../../../../mgmt-api-client/model"
 
 @Component({
   selector: 'edc-demo-contract-definition-editor-dialog',

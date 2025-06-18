@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { PolicyDefinitionInput, PolicyInput } from '../../../mgmt-api-client/model';
+import { PolicyDefinitionInput, PolicyInput } from '../../../../mgmt-api-client/model';
 
 @Component({
   selector: 'app-new-policy-dialog',

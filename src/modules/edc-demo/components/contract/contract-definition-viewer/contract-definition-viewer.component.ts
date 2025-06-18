@@ -5,10 +5,10 @@ import {MatDialog} from '@angular/material/dialog';
 import {
   ContractDefinitionEditorDialog
 } from '../contract-definition-editor-dialog/contract-definition-editor-dialog.component';
-import { ContractDefinitionService } from "../../../mgmt-api-client";
-import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
-import {NotificationService} from "../../services/notification.service";
-import { ContractDefinitionInput, ContractDefinition } from "../../../mgmt-api-client/model"
+import { ContractDefinitionService } from "../../../../mgmt-api-client";
+import {ConfirmationDialogComponent, ConfirmDialogModel} from "../../confirmation-dialog/confirmation-dialog.component";
+import {NotificationService} from "../../../services/notification.service";
+import { ContractDefinitionInput, ContractDefinition } from "../../../../mgmt-api-client/model"
 
 
 @Component({

@@ -1,0 +1,48 @@
+<div id="wrapper" *ngIf="filteredPolicies$ | async as policyDefinitions" class="policy-wrapper">
+  <div class="search-bar-container">
+    <div class="search-left">
+      <div class="search-wrapper">
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Search Policies"
+          [(ngModel)]="searchText"
+          (input)="onSearch()"
+        />
+        <button class="clear-btn" (click)="searchText=''; onSearch()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+
+      <button class="search-button" (click)="onSearch()">
+        <span class="material-icons">search</span>
+      </button>
+    </div>
+
+    <button (click)="onCreate()" mat-raised-button class="create-button">
+      <mat-icon>add</mat-icon>
+      Create Policy
+    </button>
+  </div>
+
+  <div class="policy-grid">
+    <mat-card *ngFor="let policy of policyDefinitions" class="policy-card">
+      <mat-card-header>
+        <div mat-card-avatar class="policy-icon">
+          <mat-icon>policy</mat-icon>
+        </div>
+        <mat-card-title>
+          <span class="clickable-title" (click)="openPolicyDialog(policy)">
+            {{ policy['@id'] }}
+          </span>
+        </mat-card-title>
+        <mat-card-subtitle>Policy</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div>Constraints</div>
+        <div class="bpn-line">BPN: to be clarified</div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

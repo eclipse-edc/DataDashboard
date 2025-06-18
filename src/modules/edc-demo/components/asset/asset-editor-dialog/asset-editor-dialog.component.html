@@ -24,8 +24,8 @@
       </div>
 
       <mat-form-field appearance="outline" class="form-field full-width">
-        <mat-label>Description</mat-label>
-        <textarea matInput [(ngModel)]="assetMetadata.description" rows="3" cdkTextareaAutosize placeholder="Describe" required></textarea>
+        <mat-label>Body</mat-label>
+        <textarea matInput rows="4" [(ngModel)]="assetMetadata.description" placeholder="Describe" required></textarea>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field full-width">
@@ -34,6 +34,29 @@
           <mat-option value="Organization">Organization</mat-option>
           <mat-option value="TourismService">Tourism Service</mat-option>
           <mat-option value="TourismResource">Tourism Resource</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Keywords</mat-label>
+        <input matInput [(ngModel)]="assetMetadata.keywords" placeholder="Free text field with multiple entries" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Media type</mat-label>
+        <input matInput [(ngModel)]="assetMetadata.mediaType" placeholder="Free text field" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Quality Note</mat-label>
+        <input matInput [(ngModel)]="assetMetadata.qualityNote" placeholder="Free text field" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Language</mat-label>
+        <mat-select [(ngModel)]="assetMetadata.language">
+          <mat-option value="">Select</mat-option>
+          <mat-option value="en">English</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -95,14 +118,26 @@
 
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>URL</mat-label>
-      <input matInput [(ngModel)]="restConfig.url" required>
+      <input
+        matInput
+        [(ngModel)]="restConfig.url"
+        #urlInput="ngModel"
+        (focus)="showPlaceholder = true"
+        (blur)="showPlaceholder = false"
+        [placeholder]="showPlaceholder ? 'https://' : ''"
+        required
+        pattern="https://.*"
+      />
+      <mat-error *ngIf="urlInput.invalid && urlInput.touched">
+        URL must start with <strong>https://</strong>
+      </mat-error>
     </mat-form-field>
   </div>
 
   <div class="block-row">
     <div class="inline-row">
       <span class="section-label">AUTHENTICATION</span>
-      <a class="action-link" (click)="toggleAuth()">Add Authentication</a>
+      <a class="action-link" *ngIf="!restConfig.auth.visible" (click)="toggleAuth()">Add Authentication</a>
     </div>
 
     <div *ngIf="restConfig.auth.visible">
@@ -187,10 +222,9 @@
   <div class="form-row">
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Region</mat-label>
-      <mat-select [(ngModel)]="s3Config.region" required>
-        <mat-option value="europe">Europe</mat-option>
-      </mat-select>
+      <input matInput [(ngModel)]="s3Config.region" required />
     </mat-form-field>
+
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Bucket</mat-label>
       <input matInput [(ngModel)]="s3Config.bucket" placeholder="Bucket" required />
@@ -198,7 +232,7 @@
   </div>
 
   <mat-form-field appearance="outline" class="form-field full-width">
-    <mat-label>Key Name</mat-label>
+    <mat-label>Object Path</mat-label>
     <input matInput [(ngModel)]="s3Config.keyName" placeholder="Enter key name" required />
   </mat-form-field>
 

@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {PolicyService} from "../../../mgmt-api-client";
+import {PolicyService} from "../../../../mgmt-api-client";
 import {BehaviorSubject, Observable, Observer, of} from "rxjs";
 import {first, map, switchMap} from "rxjs/operators";
 import {MatDialog} from "@angular/material/dialog";
 import {NewPolicyDialogComponent} from "../new-policy-dialog/new-policy-dialog.component";
-import {NotificationService} from "../../services/notification.service";
-import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
-import {PolicyDefinition, PolicyDefinitionInput, IdResponse} from "../../../mgmt-api-client/model";
+import {NotificationService} from "../../../services/notification.service";
+import {ConfirmationDialogComponent, ConfirmDialogModel} from "../../confirmation-dialog/confirmation-dialog.component";
+import {PolicyDefinition, PolicyDefinitionInput, IdResponse, Asset} from "../../../../mgmt-api-client/model";
+import {PolicyDetailsDialogComponent} from "../policy-details-dialog/policy-details-dialog.component";
 
 @Component({
   selector: 'app-policy-view',
@@ -44,6 +45,19 @@ export class PolicyViewComponent implements OnInit {
           policyDefinitions;
       }));
   }
+
+  openPolicyDialog(policy: PolicyDefinition): void {
+    const mergedPolicy = {
+      '@id': policy['@id'],
+      'edc:createdAt': policy.createdAt,
+      ...policy.policy
+    };
+
+    this.dialog.open(PolicyDetailsDialogComponent, {
+      data: { policy: mergedPolicy }
+    });
+  }
+
 
   onSearch() {
     this.fetch$.next(null);

@@ -1,0 +1,59 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  height: 100%;
+}
+
+.dialog-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 24px 32px 12px;
+}
+
+.json-card {
+  margin: 0 32px;
+  background-color: #f5f5f5;
+  border-radius: 12px;
+  padding: 16px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 60vh;
+  overflow: auto;
+  font-size: 13px;
+}
+
+.toggle-row {
+  margin: 16px 32px 0;
+  display: flex;
+  align-items: center;
+
+  mat-checkbox {
+    font-size: 14px;
+    color: #d10073;
+
+    ::ng-deep .mat-checkbox-inner-container {
+      margin-right: 8px;
+    }
+  }
+}
+
+mat-dialog-actions {
+  padding: 0 32px 32px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-button {
+  color: #e91e63;
+  border-color: #e91e63;
+  font-weight: 500;
+}
+
+.delete-button {
+  background-color: #e91e63;
+  color: white;
+  font-weight: 500;
+}

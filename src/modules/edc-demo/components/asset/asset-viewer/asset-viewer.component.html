@@ -29,9 +29,13 @@
     <mat-card *ngFor="let asset of assets" class="asset-card">
       <mat-card-header>
         <div mat-card-avatar class="asset-icon">
-          <mat-icon>insert_drive_file</mat-icon>
+          <mat-icon>insert_chart</mat-icon>
         </div>
-        <mat-card-title>{{ asset.properties.optionalValue('edc', 'name') }}</mat-card-title>
+        <mat-card-title>
+          <span class="clickable-title" (click)="openAssetDialog(asset)">
+            {{ asset.properties.optionalValue('edc', 'name') }}
+          </span>
+        </mat-card-title>
         <mat-card-subtitle>{{ asset.id }}</mat-card-subtitle>
       </mat-card-header>
 

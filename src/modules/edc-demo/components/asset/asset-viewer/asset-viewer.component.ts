@@ -2,11 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {first, map, switchMap} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {AssetInput, Asset } from "../../../mgmt-api-client/model";
-import {AssetService} from "../../../mgmt-api-client";
+import {AssetInput, Asset } from "../../../../mgmt-api-client/model";
+import {AssetService} from "../../../../mgmt-api-client";
 import {AssetEditorDialog} from "../asset-editor-dialog/asset-editor-dialog.component";
-import {ConfirmationDialogComponent, ConfirmDialogModel} from "../confirmation-dialog/confirmation-dialog.component";
-import {NotificationService} from "../../services/notification.service";
+import {ConfirmationDialogComponent, ConfirmDialogModel} from "../../confirmation-dialog/confirmation-dialog.component";
+import {NotificationService} from "../../../services/notification.service";
+import {AssetDetailsDialogComponent} from "../asset-details-dialog/asset-details-dialog.component";
 
 
 @Component({
@@ -48,6 +49,12 @@ export class AssetViewerComponent implements OnInit {
 
   onSearch() {
     this.fetch$.next(null);
+  }
+
+  openAssetDialog(asset: Asset) {
+    const dialogRef = this.dialog.open(AssetDetailsDialogComponent, {
+      data: {asset}
+    });
   }
 
   onDelete(asset: Asset) {

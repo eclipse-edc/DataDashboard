@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AssetInput } from '@think-it-labs/edc-connector-client';
 import { MatDialogRef } from '@angular/material/dialog';
-import { StorageType } from '../../models/storage-type';
+import { StorageType } from '../../../models/storage-type';
 
 @Component({
   selector: 'edc-demo-asset-editor-dialog',
@@ -15,11 +15,16 @@ export class AssetEditorDialog implements OnInit {
     name: '',
     id: '',
     description: '',
-    ontologyType: 'Organization'
+    ontologyType: 'Organization',
+    keywords: '',
+    mediaType: '',
+    qualityNote: '',
+    language: ''
   };
 
   // Datasource Information
   selectedStorageType: string = 'rest';
+  showPlaceholder = false;
   // REST-API Endpoint
   restConfig = {
     method: 'GET',
@@ -74,7 +79,12 @@ export class AssetEditorDialog implements OnInit {
   }
 
   isGeneralValid(): boolean {
-    return !!this.assetMetadata.name?.trim() && !!this.assetMetadata.id?.trim();
+    return!!this.assetMetadata.name?.trim()
+      && !!this.assetMetadata.id?.trim()
+      && !!this.assetMetadata.description?.trim()
+      && !!this.assetMetadata.keywords?.trim()
+      && !!this.assetMetadata.mediaType?.trim()
+      && !!this.assetMetadata.qualityNote?.trim();
   }
 
   isDatasourceValid(): boolean {
@@ -213,7 +223,11 @@ export class AssetEditorDialog implements OnInit {
       properties: {
         name: this.assetMetadata.name,
         description: this.assetMetadata.description,
-        ontologyType: this.assetMetadata.ontologyType
+        ontologyType: this.assetMetadata.ontologyType,
+        keyword: this.assetMetadata.keywords,
+        mediaType: this.assetMetadata.mediaType,
+        qualityNote: this.assetMetadata.qualityNote,
+        language: this.assetMetadata.language,
       },
       dataAddress
     };
