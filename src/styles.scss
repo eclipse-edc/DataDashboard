@@ -26,3 +26,9 @@ body {
 mat-icon {
   color: var(--primary-color);
 }
+
+body.theme-1 .logo {
+  content: url('/assets/Segittur_logo.svg');
+  height: 60px;
+  margin-right: 120px;
+}

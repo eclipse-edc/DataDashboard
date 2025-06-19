@@ -23,5 +23,6 @@ export class NavigationComponent {
   constructor(
     public titleService: Title,
     private breakpointObserver: BreakpointObserver) {
+      document.body.classList.add('theme-1');
   }
 }
