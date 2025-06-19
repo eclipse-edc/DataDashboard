@@ -135,7 +135,13 @@
   .pagination-left {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 12px;
+  }
+
+  .pagination-middle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
   .total-label,

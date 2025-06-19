@@ -153,10 +153,6 @@ export class AssetEditorDialog implements OnInit {
 
   // TODO
   //  -_ in the name is possible, also whitespaces, but whitespaces should be whenever theres a space, replace in ID with -
-  // Description is required
-  //
-  //
-  // Region is text input
 
   clearDatasourceFields(): void {
     // Clear all types

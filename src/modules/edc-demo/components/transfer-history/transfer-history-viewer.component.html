@@ -56,6 +56,11 @@
     </table>
 
     <div class="custom-paginator">
+      <button mat-stroked-button color="accent" (click)="loadTransferProcesses()">
+        <mat-icon>cached</mat-icon>
+        Refresh
+      </button>
+
       <div class="pagination-left">
         <span class="range-label">{{ pageStart }}–{{ pageEnd }}</span>
         <span class="total-label"> of {{ totalTransfers }} elements</span>
@@ -75,6 +80,7 @@
         <button mat-icon-button (click)="nextPage()" [disabled]="pageIndex >= pageCount - 1">
           <mat-icon>chevron_right</mat-icon>
         </button>
+      </div>
     </div>
-
+  </div>
 </div>
