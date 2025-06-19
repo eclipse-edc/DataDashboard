@@ -31,7 +31,7 @@
 
   mat-checkbox {
     font-size: 14px;
-    color: #d10073;
+    color: var(--primary-color);
 
     ::ng-deep .mat-checkbox-inner-container {
       margin-right: 8px;
@@ -44,16 +44,4 @@ mat-dialog-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-}
-
-.cancel-button {
-  color: #e91e63;
-  border-color: #e91e63;
-  font-weight: 500;
-}
-
-.delete-button {
-  background-color: #e91e63;
-  color: white;
-  font-weight: 500;
 }

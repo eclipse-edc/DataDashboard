@@ -22,7 +22,8 @@ export class NavigationComponent {
 
   constructor(
     public titleService: Title,
-    private breakpointObserver: BreakpointObserver) {
-      document.body.classList.add('theme-1');
+    private breakpointObserver: BreakpointObserver,) {
+    document.body.classList.remove('theme-1', 'theme-2');
+    document.body.classList.add('theme-1');
   }
 }

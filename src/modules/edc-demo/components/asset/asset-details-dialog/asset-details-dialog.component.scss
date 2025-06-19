@@ -30,7 +30,6 @@
 }
 
 .icon-circle mat-icon {
-  color: #d10073;
   font-size: 42px;
   line-height: 1;
   height: 42px;
@@ -79,7 +78,6 @@
 
 .detail-icon {
   font-size: 40px;
-  color: #d10073;
   line-height: 1;
   margin-top: 2px;
   flex-shrink: 0;
@@ -103,7 +101,6 @@
   color: #111;
 }
 
-
 mat-dialog-actions {
   padding: 0 32px 32px;
   display: flex;
@@ -111,15 +108,3 @@ mat-dialog-actions {
   gap: 12px;
 }
 
-/* Cancel Button (Magenta Border and Text) */
-.cancel-button {
-  color: #e91e63;
-  border-color: #e91e63;
-  font-weight: 500;
-}
-
-.delete-button {
-  font-weight: 500;
-  background-color: #e91e63;
-  color: white;
-}

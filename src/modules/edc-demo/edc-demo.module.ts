@@ -56,6 +56,7 @@ import {PolicyDetailsDialogComponent} from "./components/policy/policy-details-d
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getCustomPaginatorIntl } from './components/transfer-history/custom-paginator-intl';
+import {MatChipsModule} from "@angular/material/chips";
 
 @NgModule({
   imports: [
@@ -87,6 +88,7 @@ import { getCustomPaginatorIntl } from './components/transfer-history/custom-pag
     MatRadioModule,
     MatCheckboxModule,
     MatTooltipModule,
+    MatChipsModule,
   ],
   declarations: [
     CatalogBrowserComponent,

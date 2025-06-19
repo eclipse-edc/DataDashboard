@@ -39,7 +39,24 @@
 
       <mat-form-field appearance="outline" class="form-field full-width">
         <mat-label>Keywords</mat-label>
-        <input matInput [(ngModel)]="assetMetadata.keywords" placeholder="Free text field with multiple entries" required />
+        <mat-chip-grid #chipGrid aria-label="Keyword input">
+          <mat-chip
+            *ngFor="let keyword of assetMetadata.keywords"
+            [removable]="true"
+            (removed)="removeKeyword(keyword)">
+            {{ keyword }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+
+          <input
+            placeholder="Add keyword"
+            [matChipInputFor]="chipGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="true"
+            (matChipInputTokenEnd)="addKeyword($event)" />
+        </mat-chip-grid>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field full-width">
@@ -59,7 +76,6 @@
           <mat-option value="en">English</mat-option>
         </mat-select>
       </mat-form-field>
-
     </div>
   </div>
 

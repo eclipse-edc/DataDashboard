@@ -113,12 +113,6 @@ mat-dialog-actions {
   padding-bottom: 20px;
 }
 
-.cancel-button {
-  color: #e91e63;
-  border-color: #e91e63;
-  font-weight: 500;
-}
-
 .transfer-button {
   font-weight: 500;
 
@@ -128,7 +122,7 @@ mat-dialog-actions {
   }
 
   &:not(:disabled) {
-    background-color: #e91e63;
+    background-color: var(--primary-color);
     color: white;
   }
 }

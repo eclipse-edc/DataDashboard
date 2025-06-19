@@ -66,7 +66,7 @@ mat-form-field {
 
 
 .required-star {
-  color: #e91e63;
+  color: var(--primary-color);
   margin-left: 2px;
 }
 
@@ -81,24 +81,4 @@ mat-dialog-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-}
-
-.cancel-button {
-  color: #e91e63;
-  border-color: #e91e63;
-  font-weight: 500;
-}
-
-.create-button {
-  font-weight: 500;
-
-  &:disabled {
-    background-color: #e0e0e0;
-    color: #666666;
-  }
-
-  &:not(:disabled) {
-    background-color: #e91e63;
-    color: white;
-  }
 }

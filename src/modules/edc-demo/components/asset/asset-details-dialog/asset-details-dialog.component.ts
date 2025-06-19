@@ -13,13 +13,25 @@ export class AssetDetailsDialogComponent {
     description: 'https://w3id.org/edc/v0.0.1/ns/description',
     ontologyType: 'https://w3id.org/edc/v0.0.1/ns/ontologyType',
     datasourceType: 'https://w3id.org/edc/v0.0.1/ns/type',
-    contentType: 'https://w3id.org/edc/v0.0.1/ns/contentType',
+    mediaType: 'https://w3id.org/edc/v0.0.1/ns/mediaType',
+    keywords: 'https://w3id.org/edc/v0.0.1/ns/keyword',
+    qualityNote: 'https://w3id.org/edc/v0.0.1/ns/qualityNote',
+    language: 'https://w3id.org/edc/v0.0.1/ns/language'
   };
+
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { asset: Asset },
     private dialogRef: MatDialogRef<AssetDetailsDialogComponent>
   ) {}
+
+  formatKeywords(raw: any): string {
+    if (Array.isArray(raw)) {
+      return raw.join('; ');
+    }
+    return typeof raw === 'string' ? raw : '-';
+  }
+
 
   mapDatasourceType(raw: string): string {
     const map = {

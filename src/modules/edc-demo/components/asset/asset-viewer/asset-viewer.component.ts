@@ -8,7 +8,7 @@ import {AssetEditorDialog} from "../asset-editor-dialog/asset-editor-dialog.comp
 import {ConfirmationDialogComponent, ConfirmDialogModel} from "../../confirmation-dialog/confirmation-dialog.component";
 import {NotificationService} from "../../../services/notification.service";
 import {AssetDetailsDialogComponent} from "../asset-details-dialog/asset-details-dialog.component";
-
+import { NS, CONTEXT_MAP } from '../../namespaces';
 
 @Component({
   selector: 'edc-demo-asset-viewer',
@@ -24,7 +24,7 @@ export class AssetViewerComponent implements OnInit {
 
   constructor(private assetService: AssetService,
               private notificationService: NotificationService,
-              private readonly dialog: MatDialog) {
+              private readonly dialog: MatDialog,) {
 }
 
   private showError(error: string, errorMessage: string) {
@@ -79,7 +79,11 @@ export class AssetViewerComponent implements OnInit {
     dialogRef.afterClosed().pipe(first()).subscribe((result: { assetInput?: AssetInput }) => {
       const newAsset = result?.assetInput;
       if (newAsset) {
-        this.assetService.createAsset(newAsset).subscribe({
+        const assetWithContext = {
+          ...newAsset,
+          "@context": CONTEXT_MAP
+        } as AssetInput & { "@context": Record<string, string> };
+        this.assetService.createAsset(assetWithContext).subscribe({
           next: ()=> this.fetch$.next(null),
           error: err => this.showError(err, "This asset cannot be created"),
           complete: () => this.notificationService.showInfo("Successfully created"),

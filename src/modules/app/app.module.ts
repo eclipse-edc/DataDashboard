@@ -22,7 +22,9 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {EdcApiKeyInterceptor} from "./edc.apikey.interceptor";
 import {environment} from "../../environments/environment";
 import { EdcConnectorClient } from "@think-it-labs/edc-connector-client";
-
+import {MatMenuModule} from "@angular/material/menu";
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { initializeKeycloak } from './keycloak-init.factory';
 
 @NgModule({
   imports: [
@@ -38,6 +40,8 @@ import { EdcConnectorClient } from "@think-it-labs/edc-connector-client";
     EdcDemoModule,
     MatSnackBarModule,
     MatExpansionModule,
+    MatMenuModule,
+    KeycloakAngularModule,
   ],
   declarations: [
     AppComponent,
@@ -46,9 +50,9 @@ import { EdcConnectorClient } from "@think-it-labs/edc-connector-client";
   providers: [
     {
       provide: APP_INITIALIZER,
-      useFactory: (configService: AppConfigService) => () => configService.loadConfig(),
-      deps: [AppConfigService],
-      multi: true
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService, AppConfigService]
     },
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline'}},
     {

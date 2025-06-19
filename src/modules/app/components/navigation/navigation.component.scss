@@ -11,12 +11,38 @@
   display: flex;
   align-items: center;
   padding: 0 24px;
+  background-color: white !important;
+  color: white !important;
+  border-bottom: 1px solid #ddd;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.user-button {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  text-transform: none;
+
+  mat-icon {
+    font-size: 18px;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+}
+
+.user-button .mat-icon {
+  order: 1; /* Ensure icon is placed after the text */
+  margin-left: 4px; /* Space between text and icon */
+  margin-right: 0;
 }
 
 .page-title {
   font-size: 18px;
-  font-weight: 500;
-  color: white;
+  font-weight: bold;
+  color: var(--primary-color);
 }
 
 /* Layout area */
@@ -30,5 +56,5 @@
 }
 
 .provide-group {
-  margin-top: 60px;
+  margin-top: 50px;
 }

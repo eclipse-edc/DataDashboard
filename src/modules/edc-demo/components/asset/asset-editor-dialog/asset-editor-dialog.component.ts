@@ -1,7 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AssetInput } from '@think-it-labs/edc-connector-client';
 import { MatDialogRef } from '@angular/material/dialog';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { AssetInput } from '@think-it-labs/edc-connector-client';
 import { StorageType } from '../../../models/storage-type';
+import { NS, CONTEXT_MAP } from '../../namespaces';
 
 @Component({
   selector: 'edc-demo-asset-editor-dialog',
@@ -9,23 +12,22 @@ import { StorageType } from '../../../models/storage-type';
   styleUrls: ['./asset-editor-dialog.component.scss']
 })
 export class AssetEditorDialog implements OnInit {
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
-  // General Information
   assetMetadata = {
     name: '',
     id: '',
     description: '',
     ontologyType: 'Organization',
-    keywords: '',
+    keywords: [] as string[],
     mediaType: '',
     qualityNote: '',
     language: ''
   };
 
-  // Datasource Information
   selectedStorageType: string = 'rest';
   showPlaceholder = false;
-  // REST-API Endpoint
+
   restConfig = {
     method: 'GET',
     url: '',
@@ -39,7 +41,7 @@ export class AssetEditorDialog implements OnInit {
     additionalHeaders: [] as { name: string; value: string }[],
     payload: null as { contentType: string; body: string } | null,
   };
-  // Amazon S3
+
   s3Config = {
     region: '',
     bucket: '',
@@ -47,15 +49,14 @@ export class AssetEditorDialog implements OnInit {
     accessKey: '',
     secretKey: ''
   };
-  // AZURE
+
   azureConfig = {
     account: '',
     keyName: '',
     container: '',
     blobName: ''
-  }
+  };
 
-  // UI Sections
   section = {
     general: true,
     datasource: false
@@ -68,9 +69,23 @@ export class AssetEditorDialog implements OnInit {
 
   ngOnInit(): void {}
 
+  addKeyword(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+    if (value) {
+      this.assetMetadata.keywords.push(value);
+    }
+    event.chipInput?.clear();
+  }
+
+  removeKeyword(keyword: string): void {
+    const index = this.assetMetadata.keywords.indexOf(keyword);
+    if (index >= 0) {
+      this.assetMetadata.keywords.splice(index, 1);
+    }
+  }
+
   toggleSection(target: 'general' | 'datasource'): void {
     if (this.section[target]) return;
-
     if (target === 'datasource' && !this.isGeneralValid()) return;
 
     this.section.general = false;
@@ -79,10 +94,10 @@ export class AssetEditorDialog implements OnInit {
   }
 
   isGeneralValid(): boolean {
-    return!!this.assetMetadata.name?.trim()
+    return !!this.assetMetadata.name?.trim()
       && !!this.assetMetadata.id?.trim()
       && !!this.assetMetadata.description?.trim()
-      && !!this.assetMetadata.keywords?.trim()
+      && this.assetMetadata.keywords.length > 0
       && !!this.assetMetadata.mediaType?.trim()
       && !!this.assetMetadata.qualityNote?.trim();
   }
@@ -91,20 +106,17 @@ export class AssetEditorDialog implements OnInit {
     switch (this.selectedStorageType) {
       case 'rest':
         return !!this.restConfig.method?.trim() && !!this.restConfig.url?.trim();
-
       case 'amazonS3':
-        return !!this.s3Config.region?.trim() &&
-          !!this.s3Config.bucket?.trim() &&
-          !!this.s3Config.keyName?.trim() &&
-          !!this.s3Config.accessKey?.trim() &&
-          !!this.s3Config.secretKey?.trim();
-
+        return !!this.s3Config.region?.trim()
+          && !!this.s3Config.bucket?.trim()
+          && !!this.s3Config.keyName?.trim()
+          && !!this.s3Config.accessKey?.trim()
+          && !!this.s3Config.secretKey?.trim();
       case 'azure':
-        return !!this.azureConfig.account?.trim() &&
-          !!this.azureConfig.keyName?.trim() &&
-          !!this.azureConfig.container?.trim() &&
-          !!this.azureConfig.blobName?.trim();
-
+        return !!this.azureConfig.account?.trim()
+          && !!this.azureConfig.keyName?.trim()
+          && !!this.azureConfig.container?.trim()
+          && !!this.azureConfig.blobName?.trim();
       default:
         return false;
     }
@@ -126,36 +138,15 @@ export class AssetEditorDialog implements OnInit {
     this.restConfig.additionalHeaders.splice(index, 1);
   }
 
-  isFormValid(): boolean {
-    if (!this.isGeneralValid()) return false;
-    if (!this.isDatasourceValid()) return false;
-
-    return this.selectedStorageType === 'rest' && this.isRestValid()
-      || this.selectedStorageType === 'amazonS3' && this.isS3Valid()
-      || this.selectedStorageType === 'azure' && this.isAzureValid();
-  }
-
-  isRestValid(): boolean {
-    return !!this.restConfig.method && !!this.restConfig.url;
-  }
-
-  isS3Valid(): boolean {
-    return !!this.s3Config.region && !!this.s3Config.bucket && !!this.s3Config.keyName && !!this.s3Config.accessKey && !!this.s3Config.secretKey;
-  }
-
-  isAzureValid(): boolean {
-    return !!this.azureConfig.account && !!this.azureConfig.keyName && !!this.azureConfig.container && !!this.azureConfig.blobName;
+  get isFormValid(): boolean {
+    return this.isGeneralValid() && this.isDatasourceValid();
   }
 
   onStorageTypeChanged(): void {
     this.clearDatasourceFields();
   }
 
-  // TODO
-  //  -_ in the name is possible, also whitespaces, but whitespaces should be whenever theres a space, replace in ID with -
-
   clearDatasourceFields(): void {
-    // Clear all types
     this.restConfig.method = '';
     this.restConfig.url = '';
 
@@ -180,18 +171,23 @@ export class AssetEditorDialog implements OnInit {
         method: this.restConfig.method,
         baseUrl: this.restConfig.url,
         authentication: this.restConfig.auth.visible
-          ? {
+          ? JSON.stringify({
             type: this.restConfig.auth.type,
             headerName: this.restConfig.auth.headerName,
             ...(this.restConfig.auth.type === 'vault'
               ? { vaultSecretName: this.restConfig.auth.vaultSecretName }
               : { headerValue: this.restConfig.auth.headerValue })
-          }
+          })
           : undefined,
-        headers: this.restConfig.additionalHeaders.length ? this.restConfig.additionalHeaders : undefined,
-        payload: this.restConfig.payload || undefined
+        headers: this.restConfig.additionalHeaders.length
+          ? JSON.stringify(this.restConfig.additionalHeaders)
+          : undefined,
+        payload: this.restConfig.payload
+          ? JSON.stringify(this.restConfig.payload)
+          : undefined
       };
     }
+
 
     if (this.selectedStorageType === 'amazonS3') {
       dataAddress = {
@@ -230,5 +226,18 @@ export class AssetEditorDialog implements OnInit {
 
     this.dialogRef.close({ assetInput });
   }
-
 }
+
+
+/**
+ *         [`${NS.DCTERMS}title`]: this.assetMetadata.name,
+ *         [`${NS.DCTERMS}description`]: this.assetMetadata.description,
+ *         [`${NS.SEGITTURONT}ontologyType`]: this.assetMetadata.ontologyType,
+ *         [`${NS.DCAT}keywords`]: this.assetMetadata.keywords,
+ *         [`${NS.DCAT}mediaType`]: this.assetMetadata.mediaType,
+ *         [`${NS.DQV}hasQualityAnnotation`]: {
+ *           "@type": `${NS.DQV}QualityAnnotation`,
+ *           [`${NS.RDFS}comment`]: this.assetMetadata.qualityNote
+ *         },
+ *         [`${NS.DCTERMS}language`]: this.assetMetadata.language,
+ */

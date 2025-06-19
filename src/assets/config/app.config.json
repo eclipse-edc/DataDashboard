@@ -4,5 +4,7 @@
   "catalogUrl": "http://localhost:4200/management",
   "storageAccount": "company2assets",
   "storageExplorerLinkTemplate": "storageexplorer://v=1",
-  "theme": "theme-2"
+  "keycloakUrl": "https://centralidp-dev-espd.spaincentral.cloudapp.azure.com/auth",
+  "keycloakRealm": "CX-Central",
+  "keycloakClientId": "connector-ui"
 }

@@ -48,7 +48,7 @@ mat-dialog-content {
   .radio-circle {
     width: 20px;
     height: 20px;
-    border: 2px solid #e91e63;
+    border: 2px solid var(--primary-color);
     border-radius: 50%;
     position: relative;
     transition: all 0.2s ease;
@@ -62,7 +62,7 @@ mat-dialog-content {
     left: 3px;
     width: 14px;
     height: 14px;
-    background-color: #e91e63;
+    background-color: var(--primary-color);
     border-radius: 50%;
     z-index: 2;
   }
@@ -72,7 +72,7 @@ mat-dialog-content {
   }
 
   &.selected {
-    color: #e91e63;
+    color: var(--primary-color);
   }
 }
 
@@ -107,16 +107,16 @@ mat-form-field {
 
   // 🔥 Override focus/accent color to magenta
   ::ng-deep .mat-form-field-appearance-outline.mat-accent .mat-form-field-outline-thick {
-    border-color: #e91e63 !important;
+    border-color: var(--primary-color) !important;
   }
 
   ::ng-deep .mat-form-field-appearance-outline.mat-accent .mat-form-field-label {
-    color: #e91e63 !important;
+    color: var(--primary-color) !important;
   }
 
   ::ng-deep .mat-form-field-appearance-outline.mat-accent .mat-form-field-outline-start,
   ::ng-deep .mat-form-field-appearance-outline.mat-accent .mat-form-field-outline-end {
-    border-color: #e91e63 !important;
+    border-color: var(--primary-color) !important;
   }
 }
 
@@ -142,26 +142,4 @@ mat-dialog-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-}
-
-/* Cancel Button (Magenta Border and Text) */
-.cancel-button {
-  color: #e91e63;
-  border-color: #e91e63;
-  font-weight: 500;
-}
-
-/* Create Button */
-.create-button {
-  font-weight: 500;
-
-  &:disabled {
-    background-color: #e0e0e0;
-    color: #666666;
-  }
-
-  &:not(:disabled) {
-    background-color: #e91e63;
-    color: white;
-  }
 }

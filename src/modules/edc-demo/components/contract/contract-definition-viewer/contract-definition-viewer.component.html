@@ -1,4 +1,4 @@
-<div *ngIf="filteredContractDefinitions$ | async as contractDefinitions" class="assets-wrapper">
+<div *ngIf="filteredContractDefinitions$ | async as contractDefinitions" class="card-element-wrapper">
   <div class="search-bar-container">
     <div class="search-left">
       <div class="search-wrapper">
@@ -9,7 +9,7 @@
           [(ngModel)]="searchText"
           (input)="onSearch()"
         />
-        <button class="clear-btn" (click)="searchText=''; onSearch()">
+        <button class="clear-btn-searchbar" (click)="searchText=''; onSearch()">
           <span class="material-icons">close</span>
         </button>
       </div>
@@ -21,10 +21,10 @@
     </button>
   </div>
 
-  <div class="contract-grid">
-    <mat-card *ngFor="let contractDefinition of contractDefinitions" class="contract-card">
+  <div class="card-element-grid">
+    <mat-card *ngFor="let contractDefinition of contractDefinitions" class="card-element">
       <mat-card-header>
-        <div mat-card-avatar class="contract-icon">
+        <div mat-card-avatar class="card-icon">
           <mat-icon>rule</mat-icon>
         </div>
         <mat-card-title>

@@ -1,4 +1,4 @@
-<div id="wrapper" *ngIf="filteredPolicies$ | async as policyDefinitions" class="policy-wrapper">
+<div id="wrapper" *ngIf="filteredPolicies$ | async as policyDefinitions" class="card-element-wrapper">
   <div class="search-bar-container">
     <div class="search-left">
       <div class="search-wrapper">
@@ -9,7 +9,7 @@
           [(ngModel)]="searchText"
           (input)="onSearch()"
         />
-        <button class="clear-btn" (click)="searchText=''; onSearch()">
+        <button class="clear-btn-searchbar" (click)="searchText=''; onSearch()">
           <span class="material-icons">close</span>
         </button>
       </div>
@@ -21,10 +21,10 @@
     </button>
   </div>
 
-  <div class="policy-grid">
-    <mat-card *ngFor="let policy of policyDefinitions" class="policy-card">
+  <div class="card-element-grid">
+    <mat-card *ngFor="let policy of policyDefinitions" class="card-element">
       <mat-card-header>
-        <div mat-card-avatar class="policy-icon">
+        <div mat-card-avatar class="card-icon">
           <mat-icon>policy</mat-icon>
         </div>
         <mat-card-title>

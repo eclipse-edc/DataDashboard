@@ -1,7 +1,17 @@
 <!-- ✅ Full-width toolbar across the top -->
-<mat-toolbar color="primary" class="top-toolbar">
+<mat-toolbar class="top-toolbar">
   <img alt="Logo" class="logo" />
   <span class="page-title">{{ titleService.getTitle() }}</span>
+
+  <span class="toolbar-spacer"></span>
+
+  <button mat-button class="user-button" [matMenuTriggerFor]="userMenu">
+    User name <mat-icon>expand_more</mat-icon>
+  </button>
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item>Profile</button>
+    <button mat-menu-item>Logout</button>
+  </mat-menu>
 </mat-toolbar>
 
 <!-- ✅ Sidenav below the top bar -->

@@ -1,4 +1,4 @@
-<div *ngIf="filteredAssets$ | async as assets" class="assets-wrapper">
+<div *ngIf="filteredAssets$ | async as assets" class="card-element-wrapper">
   <div class="search-bar-container">
     <div class="search-left">
       <div class="search-wrapper">
@@ -9,7 +9,7 @@
           [(ngModel)]="searchText"
           (input)="onSearch()"
         />
-        <button class="clear-btn" (click)="searchText=''; onSearch()">
+        <button class="clear-btn-searchbar" (click)="searchText=''; onSearch()">
           <span class="material-icons">close</span>
         </button>
       </div>
@@ -21,10 +21,10 @@
     </button>
   </div>
 
-  <div class="asset-grid">
-    <mat-card *ngFor="let asset of assets" class="asset-card">
+  <div class="card-element-grid">
+    <mat-card *ngFor="let asset of assets" class="card-element">
       <mat-card-header>
-        <div mat-card-avatar class="asset-icon">
+        <div mat-card-avatar class="card-icon">
           <mat-icon>insert_chart</mat-icon>
         </div>
         <mat-card-title>
