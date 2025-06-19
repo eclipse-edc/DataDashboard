@@ -1,0 +1,14 @@
+<h2 class="dialog-title">Policy details</h2>
+
+<mat-card class="json-card">
+  <pre>{{ displayedJson | json }}</pre>
+</mat-card>
+
+<div class="toggle-row">
+  <mat-checkbox [(ngModel)]="cleaned">Cleaned JSON</mat-checkbox>
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button class="cancel-button" mat-dialog-close>Close</button>
+  <button mat-flat-button class="delete-button" (click)="delete()">Delete</button>
+</mat-dialog-actions>

@@ -1,0 +1,163 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 45vw;
+  height: 100%; // full height of the dialog
+}
+
+/* === Dialog Layout === */
+.dialog-header {
+  padding: 24px 32px 8px 32px; // Top, Right, Bottom, Left
+}
+
+.dialog-title {
+  font-size: 30px;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+mat-dialog-content {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+/* === Section Styles === */
+.section {
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &.active {
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+  }
+
+  mat-icon {
+    font-size: 20px;
+    color: #ccc;
+
+    &.green {
+      color: #4caf50;
+    }
+  }
+}
+
+.section-content {
+  padding: 16px 20px 20px;
+}
+
+/* === Form Fields === */
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.form-field {
+  flex: 1;
+  min-width: 240px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  font-size: 13px;
+
+  ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 2px;
+  }
+
+  ::ng-deep .mat-form-field-label {
+    font-size: 13px;
+  }
+
+  ::ng-deep .mat-input-element::placeholder {
+    font-style: italic;
+    color: #999;
+  }
+
+  ::ng-deep .mat-form-field-infix {
+    padding: 8px 0;
+  }
+}
+
+.required-star {
+  color: var(--primary-color);
+  margin-left: 2px;
+}
+
+/* === Section Labels and Links === */
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-transform: none;
+  color: #444;
+}
+
+.inline-row {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.block-row {
+  margin-top: 24px;
+}
+
+.action-link,
+.action-remove-link,
+.remove-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 4px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.align-center {
+  align-items: center;
+}
+
+/* === Footer Buttons === */
+mat-dialog-actions {
+  padding: 0 32px 32px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.clickable-title {
+  cursor: pointer;
+  color: var(--primary-color);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+

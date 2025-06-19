@@ -1,20 +1,105 @@
+.contract-wrapper {
+  padding: 0 32px; // adds left and right padding
+}
+
+.contracts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(520px, 1fr)); // fits 2 in a row
+  gap: 20px;
+  padding: 20px;
+}
+
 .contract-card {
-  width: 500px;
-  margin-left: 15px;
-  margin-top: 15px;
-}
-.contract-property-header{
-  font-size: small;
-}
-.contract-property-value{
-  font-weight: bold !important;
-  font-size: larger;
-}
-.contract-card-footer{
-  text-align: center;
-  padding: 10px;
-}
-.card-actions{
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
 }
+
+.contract-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  margin-top: 16px;
+}
+
+mat-card-subtitle {
+  font-size: 12px;
+  color: #777;
+}
+
+.contract-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #f3f3f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
+  margin-top: 16px;
+  mat-icon {
+    font-size: 22px;
+  }
+}
+
+.contract-info-row {
+  display: flex;
+  justify-content: start;
+  gap: 80px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  padding: 16px;
+}
+
+.contract-info-row.provider-row {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.contract-info-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  mat-icon {
+    font-size: 28px;
+    margin-top: 5px;
+  }
+
+  .contract-info-text {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.contract-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+  margin-top: 4px;
+}
+
+.contract-value {
+  font-size: 14px;
+  color: #333;
+}
+
+.card-actions {
+
+}
+
+
+.card-actions button {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 30px; // fully rounded
+  padding: 6px 16px;
+
+  mat-icon {
+    color: white;
+  }
+
+}
+

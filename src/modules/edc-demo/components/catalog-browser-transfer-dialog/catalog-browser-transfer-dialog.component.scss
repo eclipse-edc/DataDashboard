@@ -1,7 +1,128 @@
-.form-field {
-    width: 300px;
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 45vw;
+  height: 100%;
 }
 
-mat-card-actions {
-    margin-left: 0;
+/* === Header === */
+.dialog-header {
+  padding: 40px 48px 24px 48px; // more space on top/left/right
+}
+
+.dialog-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* === Dialog Content === */
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+}
+.dialog-body {
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Fields === */
+.form-field {
+  flex: 1;
+  min-width: 240px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  font-size: 13px;
+}
+
+/* === Labels + Link Sections === */
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.block-row {
+  margin-top: 0; // was 24px
+}
+
+.inline-row {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px; // was 24px
+  margin-bottom: 4px; // was 8px
+  padding-left: 0;
+}
+
+.form-row {
+  margin-bottom: 8px; // reduce space after Method + URL
+}
+
+.action-link,
+.action-remove-link,
+.remove-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 4px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.align-center {
+  align-items: center;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  border-radius: 12px;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-start,
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 12px;
+}
+
+
+/* === Footer Buttons === */
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+.transfer-button {
+  font-weight: 500;
+
+  &:disabled {
+    background-color: #e0e0e0;
+    color: #666666;
+  }
+
+  &:not(:disabled) {
+    background-color: var(--primary-color);
+    color: white;
+  }
 }

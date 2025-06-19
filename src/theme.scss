@@ -3,61 +3,85 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-
 @import "node_modules/@angular/material/theming";
 @include mat-core();
 
-$theming-material-components-primary: mat-palette($mat-teal);
-$theming-material-components-accent: mat-palette($mat-orange, A200, A100, A400);
+// === MAGENTA PALETTE (Theme 1) ===
+$magenta-palette: mat.define-palette((
+  50: #fce4ec,
+  100: #f8bbd0,
+  200: #f48fb1,
+  300: #f06292,
+  400: #ec407a,
+  500: #e91e63,
+  600: #d81b60,
+  700: #c2185b,
+  800: #ad1457,
+  900: #880e4f,
+  A100: #ff80ab,
+  A200: #ff4081,
+  A400: #f50057,
+  A700: #c51162,
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: black,
+    400: black,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: black,
+    A200: white,
+    A400: white,
+    A700: white,
+  )
+));
+
+// === ORANGE PALETTE (Theme 2) ===
+$orange-palette: mat.define-palette(mat.$orange-palette);
+
+$theming-material-components-primary: $magenta-palette;
+$theming-material-components-accent: $magenta-palette;
 $theming-material-components-warn: mat-palette($mat-red);
 $theming-material-components-typography: mat.define-typography-config($font-family: 'Open Sans');
 
-$theme1: mat-dark-theme(
-  (
-   color: (
-    primary: mat-palette($mat-teal),
-    accent: mat-palette($mat-orange, A200, A100, A400),
-    warn: mat-palette($mat-red),
+$theme1: mat.define-light-theme((
+  color: (
+    primary: $magenta-palette,
+    accent: $magenta-palette,
+    warn: mat.define-palette(mat.$red-palette),
   ),
-   typography: $theming-material-components-typography,
-   density: 0,
-  )
-);
+  typography: $theming-material-components-typography,
+  density: 0,
+));
 
-$theme2: mat-dark-theme(
-  (
-   color: (
-    primary: mat-palette($mat-light-blue),
-    accent: mat-palette($mat-orange, A200, A100, A400),
-    warn: mat-palette($mat-red),
+// === THEME 2 ===
+$theme2: mat.define-light-theme((
+  color: (
+    primary: $orange-palette,
+    accent: $orange-palette,
+    warn: mat.define-palette(mat.$red-palette),
   ),
-   typography: $theming-material-components-typography,
-   density: 0,
-  )
-);
+  typography: $theming-material-components-typography,
+  density: 0,
+));
 
-$theme3: mat-dark-theme(
-  (
-   color: (
-    primary: mat-palette($mat-light-green),
-    accent: mat-palette($mat-orange, A200, A100, A400),
-    warn: mat-palette($mat-red),
-  ),
-   typography: $theming-material-components-typography,
-   density: 0,
-  )
-);
-
-@include mat.all-component-themes($theme1);
-
-.theme-1 {
-  // use default
+body.theme-1 {
+  @include mat.all-component-themes($theme1);
+  --primary-color: #{mat.get-color-from-palette($magenta-palette, 500)};
+  --primary-color-contrast: #{mat.get-contrast-color-from-palette($magenta-palette, 500)};
 }
 
-.theme-2 {
-  @include mat.all-component-colors($theme2);
+body.theme-2 {
+  @include mat.all-component-themes($theme2);
+  --primary-color: #{mat.get-color-from-palette($orange-palette, 500)};
+  --primary-color-contrast: #{mat.get-contrast-color-from-palette($orange-palette, 500)};
 }
 
-.theme-3 {
-  @include mat.all-component-colors($theme3);
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border-radius: 8px;
 }

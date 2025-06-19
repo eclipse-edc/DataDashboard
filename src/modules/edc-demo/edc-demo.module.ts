@@ -16,19 +16,22 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatRadioModule} from '@angular/material/radio';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule} from '@angular/material/list';
+import {MatStepperModule} from '@angular/material/stepper';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {TextFieldModule} from '@angular/cdk/text-field';
 import {CatalogBrowserComponent} from './components/catalog-browser/catalog-browser.component';
 import {TransferHistoryViewerComponent} from './components/transfer-history/transfer-history-viewer.component';
 import {
   ContractDefinitionViewerComponent
-} from './components/contract-definition-viewer/contract-definition-viewer.component';
+} from './components/contract/contract-definition-viewer/contract-definition-viewer.component';
 import {IntroductionComponent} from './components/introduction/introduction.component';
 import {RouterModule} from '@angular/router';
 import {
   ContractDefinitionEditorDialog
-} from './components/contract-definition-editor-dialog/contract-definition-editor-dialog.component';
+} from './components/contract/contract-definition-editor-dialog/contract-definition-editor-dialog.component';
 import {
   CatalogBrowserTransferDialog
 } from './components/catalog-browser-transfer-dialog/catalog-browser-transfer-dialog.component';
@@ -36,15 +39,24 @@ import {ContractViewerComponent} from './components/contract-viewer/contract-vie
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SafePipe} from "./pipes/safe.pipe";
 import {ReplacePipe} from "./pipes/replace.pipe";
-import {AssetEditorDialog} from "./components/asset-editor-dialog/asset-editor-dialog.component";
-import {AssetViewerComponent} from "./components/asset-viewer/asset-viewer.component";
+import {TruncatePipe} from "./pipes/truncate.pipe";
+import {TooltipIfTruncatedPipe} from "./pipes/tooltip.truncated.pipe";
+import {AssetEditorDialog} from "./components/asset/asset-editor-dialog/asset-editor-dialog.component";
+import {AssetViewerComponent} from "./components/asset/asset-viewer/asset-viewer.component";
 
-import {PolicyViewComponent} from "./components/policy-view/policy-view.component";
+import {PolicyViewComponent} from "./components/policy/policy-view/policy-view.component";
 import {
   PolicyRuleViewerComponent
-} from "./components/policy-rule-viewer/policy-rule-viewer.component";
-import {NewPolicyDialogComponent} from "./components/new-policy-dialog/new-policy-dialog.component";
+} from "./components/policy/policy-rule-viewer/policy-rule-viewer.component";
+import {NewPolicyDialogComponent} from "./components/policy/new-policy-dialog/new-policy-dialog.component";
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {AssetDetailsDialogComponent} from "./components/asset/asset-details-dialog/asset-details-dialog.component";
+import {PolicyDetailsDialogComponent} from "./components/policy/policy-details-dialog/policy-details-dialog.component";
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { getCustomPaginatorIntl } from './components/transfer-history/custom-paginator-intl';
+import {MatChipsModule} from "@angular/material/chips";
 
 @NgModule({
   imports: [
@@ -71,6 +83,12 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatListModule,
     RouterModule,
     MatProgressSpinnerModule,
+    MatStepperModule,
+    TextFieldModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatTooltipModule,
+    MatChipsModule,
   ],
   declarations: [
     CatalogBrowserComponent,
@@ -85,13 +103,17 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     CatalogBrowserTransferDialog,
     SafePipe,
     ReplacePipe,
+    TruncatePipe,
+    TooltipIfTruncatedPipe,
     PolicyViewComponent,
     PolicyRuleViewerComponent,
     CatalogBrowserTransferDialog,
     ContractViewerComponent,
     NewPolicyDialogComponent,
     IntroductionComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    AssetDetailsDialogComponent,
+    PolicyDetailsDialogComponent
   ],
   exports: [
     CatalogBrowserComponent,
@@ -103,6 +125,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     IntroductionComponent,
     NewPolicyDialogComponent,
     ContractViewerComponent
+  ],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() }
   ]
 })
 export class EdcDemoModule {

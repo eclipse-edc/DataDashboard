@@ -39,15 +39,7 @@ export class CatalogBrowserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filteredContractOffers$ = this.fetch$
-      .pipe(
-        switchMap(() => {
-          const contractOffers$ = this.apiService.getContractOffers();
-          return !!this.searchText ?
-            contractOffers$.pipe(map(contractOffers => contractOffers.filter(contractOffer => contractOffer.id.toLowerCase().includes(this.searchText))))
-            :
-            contractOffers$;
-        }));
+    this.filteredContractOffers$ = of([]);
   }
 
   onSearch() {

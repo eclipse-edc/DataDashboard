@@ -1,0 +1,36 @@
+.card-element-grid {
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+.contract-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 12px;
+}
+
+.contract-detail {
+  flex: 1;
+  min-width: 0; // allow text to wrap
+}
+
+.detail-label {
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #333;
+  white-space: nowrap;
+  margin-bottom: 2px;
+}
+
+.detail-value {
+  font-size: 14px;
+  color: #111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+

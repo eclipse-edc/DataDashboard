@@ -1,8 +1,10 @@
 {
-  "apiKey": "ApiKeyDefaultValue",
-  "managementApiUrl": "http://localhost:4200/management",
+  "apiKey": "9QErmuV8p8mhgEPNLuZyyfq58mupeRvz76XZmhSD8kiuARZ2Y9",
+  "managementApiUrl": "https://lilaus-7b61d3fd-de.lila.cx.dev.dih-cloud.com/data",
   "catalogUrl": "http://localhost:4200/management",
   "storageAccount": "company2assets",
   "storageExplorerLinkTemplate": "storageexplorer://v=1",
-  "theme": "theme-2"
+  "keycloakUrl": "https://centralidp-dev-espd.spaincentral.cloudapp.azure.com/auth",
+  "keycloakRealm": "CX-Central",
+  "keycloakClientId": "connector-ui"
 }

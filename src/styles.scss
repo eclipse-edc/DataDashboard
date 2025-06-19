@@ -22,3 +22,214 @@ body {
   font-family: monospace;
   font-size: larger;
 }
+
+mat-icon {
+  color: var(--primary-color);
+}
+
+.icon-circle mat-icon {
+  color: var(--primary-color);
+}
+
+.detail-icon {
+  color: var(--primary-color);
+}
+
+/* === Wrapper Classes === */
+.card-element-wrapper {
+  padding: 24px 32px; // Adds equal left and right padding
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+.card-element-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.card-element {
+  padding: 12px;
+  min-height: 160px; // add this line to give vertical breathing room
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+  mat-card-content {
+    font-size: 14px;
+    margin: 4px 0 0;
+    color: #444 !important;
+    flex-grow: 1;
+  }
+
+  mat-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  mat-card-subtitle {
+    font-size: 12px;
+    color: #777 !important;
+  }
+}
+
+.card-element mat-card-header {
+  align-items: center;
+  padding: 0; // remove default vertical padding
+  margin: 0;
+  min-height: unset; // override Angular Material default height
+}
+
+.card-element mat-card-header .mat-card-header-text {
+  margin: 0; // remove vertical margin between title and subtitle
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px; // reduce spacing between title and subtitle
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #eaeaea !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  margin-left: 8px;
+
+  mat-icon {
+    font-size: 22px;
+    color: var(--primary-color) !important;
+  }
+}
+/* === End of Wrapper Classes === */
+
+/* === Search Bar === */
+.search-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.search-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 500px;
+}
+
+.search-input {
+  width: 100%;
+  height: 40px;
+  padding-right: 36px;
+  padding-left: 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white !important;
+  color: #333 !important;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.search-button .material-icons {
+  font-size: 20px;
+}
+
+.clear-btn-searchbar {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #666 !important;
+  font-size: 18px;
+  padding: 0;
+  line-height: 1;
+}
+/* === End of Search Bar === */
+
+/* === Buttons === */
+.cancel-button {
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  background-color: white !important;
+  font-weight: 500;
+}
+
+.search-button {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.create-button {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  height: 40px;
+  border-radius: 12px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 500;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  mat-icon {
+    color: white !important;
+  }
+}
+
+.create-button[disabled],
+.create-button.cdk-disabled {
+  background-color: white !important;
+  color: #666666 !important;
+  border: 1px solid #ccc; // Optional for clarity
+  cursor: not-allowed;
+  mat-icon {
+    color: #999 !important;
+  }
+}
+
+.delete-button {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  font-weight: 500;
+}
+
+/* === End of Buttons === */
+
+body.theme-1 .logo {
+  content: url('/assets/Segittur_logo.svg');
+  height: 60px;
+  margin-right: 120px;
+}
+
+body.theme-2 .logo {
+  content: url('/assets/Asturiano-logo.svg');
+  height: 40px;
+  margin-right: 160px;
+}
