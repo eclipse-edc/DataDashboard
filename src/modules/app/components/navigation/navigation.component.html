@@ -1,14 +1,20 @@
+<!-- ✅ Full-width toolbar across the top -->
+<mat-toolbar color="primary" class="top-toolbar">
+  <span class="logo">Segittur, to be logo</span>
+  <span class="page-title">{{ titleService.getTitle() }}</span>
+</mat-toolbar>
+
+<!-- ✅ Sidenav below the top bar -->
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
                [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
 
-    <mat-toolbar>EDC Demo</mat-toolbar>
-
+    <!-- Sidebar content -->
     <mat-nav-list>
       <!-- Provide Group -->
-      <mat-expansion-panel expanded>
+      <mat-expansion-panel class="provide-group" expanded>
         <mat-expansion-panel-header>
           <mat-panel-title>Provide</mat-panel-title>
         </mat-expansion-panel-header>
@@ -33,10 +39,6 @@
           <mat-panel-title>Consume</mat-panel-title>
         </mat-expansion-panel-header>
 
-        <a mat-list-item routerLink="/catalog-browser">
-          <mat-icon>sim_card</mat-icon>
-          Browse Catalog
-        </a>
         <a mat-list-item routerLink="/contracts">
           <mat-icon>attachment</mat-icon>
           Contracts
@@ -50,18 +52,6 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span>{{titleService.getTitle()}}</span>
-    </mat-toolbar>
-
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

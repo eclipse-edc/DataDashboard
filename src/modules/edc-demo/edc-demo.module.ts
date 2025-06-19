@@ -39,6 +39,8 @@ import {ContractViewerComponent} from './components/contract-viewer/contract-vie
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {SafePipe} from "./pipes/safe.pipe";
 import {ReplacePipe} from "./pipes/replace.pipe";
+import {TruncatePipe} from "./pipes/truncate.pipe";
+import {TooltipIfTruncatedPipe} from "./pipes/tooltip.truncated.pipe";
 import {AssetEditorDialog} from "./components/asset/asset-editor-dialog/asset-editor-dialog.component";
 import {AssetViewerComponent} from "./components/asset/asset-viewer/asset-viewer.component";
 
@@ -51,6 +53,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {AssetDetailsDialogComponent} from "./components/asset/asset-details-dialog/asset-details-dialog.component";
 import {PolicyDetailsDialogComponent} from "./components/policy/policy-details-dialog/policy-details-dialog.component";
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { getCustomPaginatorIntl } from './components/transfer-history/custom-paginator-intl';
 
 @NgModule({
   imports: [
@@ -81,6 +86,7 @@ import {PolicyDetailsDialogComponent} from "./components/policy/policy-details-d
     TextFieldModule,
     MatRadioModule,
     MatCheckboxModule,
+    MatTooltipModule,
   ],
   declarations: [
     CatalogBrowserComponent,
@@ -95,6 +101,8 @@ import {PolicyDetailsDialogComponent} from "./components/policy/policy-details-d
     CatalogBrowserTransferDialog,
     SafePipe,
     ReplacePipe,
+    TruncatePipe,
+    TooltipIfTruncatedPipe,
     PolicyViewComponent,
     PolicyRuleViewerComponent,
     CatalogBrowserTransferDialog,
@@ -115,6 +123,9 @@ import {PolicyDetailsDialogComponent} from "./components/policy/policy-details-d
     IntroductionComponent,
     NewPolicyDialogComponent,
     ContractViewerComponent
+  ],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: getCustomPaginatorIntl() }
   ]
 })
 export class EdcDemoModule {

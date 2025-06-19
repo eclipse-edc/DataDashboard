@@ -1,47 +1,64 @@
-<div *ngIf="contracts$ | async as contracts" id="wrapper">
-  <div fxLayout="row wrap" fxLayoutAlign="start start">
+<div class="contract-wrapper">
+  <div *ngIf="contracts$ | async as contracts" class="contracts-grid">
     <mat-card *ngFor="let contract of contracts" class="contract-card">
       <mat-card-header>
-        <mat-icon mat-card-avatar>attachment</mat-icon>
-        <mat-card-title>{{contract.id}}</mat-card-title>
+        <div mat-card-avatar class="contract-icon">
+          <mat-icon>link</mat-icon>
+        </div>
+        <mat-card-title [matTooltip]="contract.id" class="contract-title">
+          {{ contract.id | truncate:16 }}
+        </mat-card-title>
+        <mat-card-subtitle>Description</mat-card-subtitle>
       </mat-card-header>
+
       <mat-card-content>
-        <mat-list>
-          <!-- asset -->
-          <mat-list-item>
-            <mat-icon mat-list-icon>category</mat-icon>
-            <div class="contract-property-header" matListItemTitle>Asset</div>
-            <div class="contract-property-value" matListItemLine>{{contract.assetId}}</div>
-          </mat-list-item>
+        <div class="contract-info-row">
+          <!-- Asset -->
+          <div class="contract-info-block">
+            <mat-icon>category</mat-icon>
+            <div class="contract-info-text">
+              <div class="contract-label">ASSET</div>
+              <div [matTooltip]="contract.assetId" class="contract-value">
+                {{ contract.assetId | truncate:16 }}
+              </div>
+            </div>
+          </div>
 
-          <!-- provider -->
-          <mat-list-item>
-            <mat-icon mat-list-icon>person</mat-icon>
-            <div class="contract-property-header" matListItemTitle>Provider</div>
-            <div class="contract-property-value" matListItemLine>{{contract.providerId}}</div>
-          </mat-list-item>
+          <!-- Signing Date -->
+          <div class="contract-info-block">
+            <mat-icon>draw</mat-icon>
+            <div class="contract-info-text">
+            <div class="contract-label">SIGNING DATE</div>
+            <div class="contract-value">{{ asDate(contract.mandatoryValue('edc', 'contractSigningDate')) }}</div>
+            </div>
+          </div>
+        </div>
 
-          <!-- sign date -->
-          <mat-list-item>
-            <mat-icon mat-list-icon>draw</mat-icon>
-            <div class="contract-property-header" matListItemTitle>Signing date</div>
-            <div class="contract-property-value" matListItemLine>{{asDate(contract.mandatoryValue('edc', 'contractSigningDate'))}}</div>
-          </mat-list-item>
+        <!-- Provider (below) -->
+        <div class="contract-info-row provider-row">
+          <div class="contract-info-block">
+            <mat-icon>person</mat-icon>
+            <div class="contract-info-text">
+            <div class="contract-label">PROVIDER</div>
+            <div class="contract-value">{{ contract.providerId }}</div>
+            </div>
+          </div>
+        </div>
 
-          <mat-divider inset></mat-divider>
-          <mat-card-actions class="card-actions">
-            <button (click)="onTransferClicked(contract)" [disabled]="isTransferInProgress(contract.id!)" color="accent"
-                    mat-stroked-button>
-              <mat-icon>downloading</mat-icon>
-              Transfer
-            </button>
-          </mat-card-actions>
-          <mat-card-footer class="contract-card-footer">
-            <mat-progress-bar *ngIf="isTransferInProgress(contract.id!)" color="accent" mode="indeterminate"></mat-progress-bar>
-          </mat-card-footer>
 
-        </mat-list>
+        <!-- Transfer button -->
+        <mat-card-actions class="card-actions">
+          <button (click)="onTransferClicked(contract)" [disabled]="isTransferInProgress(contract.id!)" color="accent" mat-stroked-button>
+            <mat-icon>arrow_forward</mat-icon>
+            Transfer
+          </button>
+        </mat-card-actions>
+
+        <mat-card-footer class="contract-card-footer">
+          <mat-progress-bar *ngIf="isTransferInProgress(contract.id!)" color="accent" mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
       </mat-card-content>
+
     </mat-card>
   </div>
 </div>
