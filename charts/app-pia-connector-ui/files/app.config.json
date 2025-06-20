@@ -1,0 +1,11 @@
+{
+    "apiKey": "{{ .Values.config.edc.apiKey }}",
+    "managementApiUrl":" {{ .Values.config.edc.managementApiUrl }}",
+    "catalogUrl": "{{ .Values.config.edc.managementApiUrl }}",
+    "storageAccount": "{{ .Values.config.edc.storageAccount }}",
+    "storageExplorerLinkTemplate": "{{ .Values.config.edc.storageExplorerLinkTemplate }}",
+    "theme": "{{ .Values.config.edc.theme }}",
+    "keycloakUrl": "{{ .Values.config.keycloak.authUrl }}",
+    "keycloakRealm": "{{ .Values.config.keycloak.realm }}",
+    "keycloakClientId": "{{ .Values.config.keycloak.clientId }}"
+}
