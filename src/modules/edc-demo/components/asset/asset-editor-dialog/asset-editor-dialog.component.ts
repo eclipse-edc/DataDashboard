@@ -213,7 +213,7 @@ export class AssetEditorDialog implements OnInit {
     const assetInput: AssetInput = {
       "@id": this.assetMetadata.id,
       properties: {
-        name: this.assetMetadata.name,
+        ["edc:dcterms"]: this.assetMetadata.name,
         description: this.assetMetadata.description,
         ontologyType: this.assetMetadata.ontologyType,
         keyword: this.assetMetadata.keywords,

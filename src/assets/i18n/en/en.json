@@ -1,0 +1,11 @@
+{
+  "route": {
+    "gettingStarted": "Getting Started",
+    "catalogBrowser": "Catalog Browser",
+    "contracts": "Contracts",
+    "transferHistory": "Transfer History",
+    "contractDefinitions": "Contract Definitions",
+    "policies": "Policies",
+    "myAssets": "Assets"
+  }
+}
