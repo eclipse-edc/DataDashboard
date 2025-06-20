@@ -23,9 +23,10 @@ import {ContractNegotiation, ContractNegotiationState, ContractNegotiationReques
 })
 export class ContractNegotiationService {
 
-    private contractNegotiation = this.edcConnectorClient.management.contractNegotiations;
+    private contractNegotiation;
 
     constructor(private edcConnectorClient: EdcConnectorClient) {
+      this.contractNegotiation = this.edcConnectorClient.management.contractNegotiations;
     }
 
     /**

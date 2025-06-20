@@ -23,9 +23,10 @@ import { ContractDefinitionInput, ContractDefinition, IdResponse, QuerySpec } fr
 })
 export class ContractDefinitionService {
 
-    private contractDefinitions = this.edcConnectorClient.management.contractDefinitions;
+    private contractDefinitions;
 
     constructor(private edcConnectorClient: EdcConnectorClient) {
+      this.contractDefinitions = this.edcConnectorClient.management.contractDefinitions;
     }
 
     /**

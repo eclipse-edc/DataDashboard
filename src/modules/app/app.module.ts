@@ -21,7 +21,7 @@ import {CONNECTOR_CATALOG_API, CONNECTOR_MANAGEMENT_API} from "./variables";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {EdcApiKeyInterceptor} from "./edc.apikey.interceptor";
 import {environment} from "../../environments/environment";
-import { EdcConnectorClient } from "";
+import { EdcConnectorClient } from "@think-it-labs/edc-connector-client";
 import {MatMenuModule} from "@angular/material/menu";
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { initializeKeycloak } from './keycloak-init.factory';

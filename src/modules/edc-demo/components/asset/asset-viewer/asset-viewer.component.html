@@ -29,14 +29,14 @@
         </div>
         <mat-card-title>
           <span class="clickable-title" (click)="openAssetDialog(asset)">
-            {{ asset.properties.optionalValue('edc', 'name') }}
+            {{ asset.properties.optionalValue('dcterms', 'title') }}
           </span>
         </mat-card-title>
         <mat-card-subtitle>{{ asset.id }}</mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
-        {{ asset.properties.optionalValue('edc', 'description') }}
+        {{ asset.properties.optionalValue('dcterms', 'description') }}
       </mat-card-content>
 
       <mat-progress-bar *ngIf="isBusy()" color="accent" mode="indeterminate"></mat-progress-bar>

@@ -23,9 +23,10 @@ import { TransferProcessState, TransferProcess, TransferProcessInput, QuerySpec,
   providedIn: 'root'
 })
 export class TransferProcessService {
-    private transferProcessService = this.edcConnectorClient.management.transferProcesses;
+    private transferProcessService;
 
     constructor(private edcConnectorClient: EdcConnectorClient) {
+      this.transferProcessService = this.edcConnectorClient.management.transferProcesses;
     }
 
     /**

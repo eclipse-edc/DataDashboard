@@ -167,6 +167,7 @@ export class AssetEditorDialog implements OnInit {
 
     if (this.selectedStorageType === 'rest') {
       dataAddress = {
+        "@type": "DataAddress",
         type: 'HttpData',
         method: this.restConfig.method,
         baseUrl: this.restConfig.url,
@@ -187,7 +188,6 @@ export class AssetEditorDialog implements OnInit {
           : undefined
       };
     }
-
 
     if (this.selectedStorageType === 'amazonS3') {
       dataAddress = {
@@ -212,14 +212,15 @@ export class AssetEditorDialog implements OnInit {
 
     const assetInput: AssetInput = {
       "@id": this.assetMetadata.id,
+      "@context": CONTEXT_MAP,
       properties: {
-        ["edc:dcterms"]: this.assetMetadata.name,
-        description: this.assetMetadata.description,
-        ontologyType: this.assetMetadata.ontologyType,
-        keyword: this.assetMetadata.keywords,
-        mediaType: this.assetMetadata.mediaType,
-        qualityNote: this.assetMetadata.qualityNote,
-        language: this.assetMetadata.language,
+        [`${NS.DCTERMS}title`]: this.assetMetadata.name,
+        [`${NS.DCTERMS}description`]: this.assetMetadata.description,
+        [`${NS.SEGITTURONT}concept`]: `segitturont:${this.assetMetadata.ontologyType}`,
+        [`${NS.DCAT}keywords`]: this.assetMetadata.keywords?.join(', '),
+        [`${NS.DCAT}mediaType`]: this.assetMetadata.mediaType,
+        [`${NS.DQV}hasQualityAnnotation`]: this.assetMetadata.qualityNote,
+        [`${NS.DCTERMS}language`]: this.assetMetadata.language,
       },
       dataAddress
     };
@@ -227,17 +228,3 @@ export class AssetEditorDialog implements OnInit {
     this.dialogRef.close({ assetInput });
   }
 }
-
-
-/**
- *         [`${NS.DCTERMS}title`]: this.assetMetadata.name,
- *         [`${NS.DCTERMS}description`]: this.assetMetadata.description,
- *         [`${NS.SEGITTURONT}ontologyType`]: this.assetMetadata.ontologyType,
- *         [`${NS.DCAT}keywords`]: this.assetMetadata.keywords,
- *         [`${NS.DCAT}mediaType`]: this.assetMetadata.mediaType,
- *         [`${NS.DQV}hasQualityAnnotation`]: {
- *           "@type": `${NS.DQV}QualityAnnotation`,
- *           [`${NS.RDFS}comment`]: this.assetMetadata.qualityNote
- *         },
- *         [`${NS.DCTERMS}language`]: this.assetMetadata.language,
- */

@@ -41,6 +41,9 @@ export class AssetViewerComponent implements OnInit {
             ? assets$.pipe(map(assets => assets.filter(asset => asset.properties.optionalValue<string>('edc', 'name')?.includes(this.searchText))))
             : assets$;
         }));
+    this.filteredAssets$.subscribe(filtered => {
+      console.log('Filtered assets:', filtered);
+    });
   }
 
   isBusy() {
@@ -55,11 +58,23 @@ export class AssetViewerComponent implements OnInit {
     const dialogRef = this.dialog.open(AssetDetailsDialogComponent, {
       data: {asset}
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.delete) {
+        this.onDelete(asset);
+      }
+    });
   }
 
   onDelete(asset: Asset) {
     const dialogData = ConfirmDialogModel.forDelete("asset", `"${asset.id}"`)
-    const ref = this.dialog.open(ConfirmationDialogComponent, {maxWidth: "20%", data: dialogData});
+    const ref = this.dialog.open(ConfirmationDialogComponent, {
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      width: 'auto',
+      height: 'auto',
+      data: dialogData
+    });
 
     ref.afterClosed().subscribe({
       next: res => {
@@ -79,11 +94,7 @@ export class AssetViewerComponent implements OnInit {
     dialogRef.afterClosed().pipe(first()).subscribe((result: { assetInput?: AssetInput }) => {
       const newAsset = result?.assetInput;
       if (newAsset) {
-        const assetWithContext = {
-          ...newAsset,
-          "@context": CONTEXT_MAP
-        } as AssetInput & { "@context": Record<string, string> };
-        this.assetService.createAsset(assetWithContext).subscribe({
+        this.assetService.createAsset(newAsset).subscribe({
           next: ()=> this.fetch$.next(null),
           error: err => this.showError(err, "This asset cannot be created"),
           complete: () => this.notificationService.showInfo("Successfully created"),
