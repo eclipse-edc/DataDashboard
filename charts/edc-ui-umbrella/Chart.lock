@@ -1,0 +1,9 @@
+dependencies:
+- name: tractusx-connector
+  repository: file://../tractusx-connector
+  version: 0.5.4
+- name: app-pia-connector-ui
+  repository: file://../app-pia-connector-ui
+  version: 0.1.0
+digest: sha256:d9dea2bf0a6d8824e468c173babe5414740f9aef16aa793db88951fa8db1d532
+generated: "2025-06-20T12:08:06.781327+02:00"

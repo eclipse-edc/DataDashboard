@@ -1,0 +1,1656 @@
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/vault/templates/server-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test-vault
+  namespace: default
+  labels:
+    helm.sh/chart: vault-0.20.0
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/serviceaccount.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test-tractusx-connector
+  labels:
+    helm.sh/chart: tractusx-connector-0.5.4
+    app.kubernetes.io/version: "0.5.4"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: edc-ui-umbrella/charts/app-pia-connector-ui/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-app-pia-connector-ui-edc-config
+  namespace: "default"
+type: StringData
+data:
+  app.config.json: ewogICAgImFwaUtleSI6ICJFRENfQVBJX0tFWSIsCiAgICAibWFuYWdlbWVudEFwaVVybCI6IiBFRENfTUdNVF9VUkwiLAogICAgImNhdGFsb2dVcmwiOiAiRURDX01HTVRfVVJMIiwKICAgICJzdG9yYWdlQWNjb3VudCI6ICJjb21wYW55MmFzc2V0cyIsCiAgICAic3RvcmFnZUV4cGxvcmVyTGlua1RlbXBsYXRlIjogInN0b3JhZ2VleHBsb3JlcjovL3Y9MSIsCiAgICAidGhlbWUiOiAidGhlbWUtMiIsCiAgICAia2V5Y2xvYWtVcmwiOiAiQ0VOVFJBTElEUF9BVVRIX1VSTCIsCiAgICAia2V5Y2xvYWtSZWFsbSI6ICJDWC1DZW50cmFsIiwKICAgICJrZXljbG9ha0NsaWVudElkIjogIkNPTk5FQ1RPUl9VSV9LQ19DTElFTlQiCn0=
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/postgresql/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-12.1.6
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  postgres-password: "SFNsT0F4QXkwdQ=="
+  password: "cGFzc3dvcmQ="
+  # We don't auto-generate LDAP password when it's not provided as we do for other passwords
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/configmap-controlplane.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-tractusx-connector-controlplane
+  namespace: "default"
+  labels:
+    helm.sh/chart: tractusx-connector-0.5.4
+    app.kubernetes.io/name: tractusx-connector-controlplane
+    app.kubernetes.io/instance: test-controlplane
+    app.kubernetes.io/version: "0.5.4"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: edc-controlplane
+    app.kubernetes.io/part-of: edc
+data:
+  opentelemetry.properties: |-
+    otel.javaagent.enabled=false
+    otel.javaagent.debug=false
+
+  logging.properties: |-
+    .level=INFO
+    org.eclipse.edc.level=ALL
+    handlers=java.util.logging.ConsoleHandler
+    java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
+    java.util.logging.ConsoleHandler.level=ALL
+    java.util.logging.SimpleFormatter.format=[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] [%4$-7s] %5$s%6$s%n
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/configmap-dataplane.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-tractusx-connector-dataplane
+  namespace: "default"
+  labels:
+    helm.sh/chart: tractusx-connector-0.5.4
+    app.kubernetes.io/name: tractusx-connector-dataplane
+    app.kubernetes.io/instance: test-dataplane
+    app.kubernetes.io/version: "0.5.4"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: edc-dataplane
+    app.kubernetes.io/part-of: edc
+data:
+  opentelemetry.properties: |-
+    otel.javaagent.enabled=false
+    otel.javaagent.debug=false
+
+  logging.properties: |-
+    .level=INFO
+    org.eclipse.edc.level=ALL
+    handlers=java.util.logging.ConsoleHandler
+    java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
+    java.util.logging.ConsoleHandler.level=ALL
+    java.util.logging.SimpleFormatter.format=[%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS] [%4$-7s] %5$s%6$s%n
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/vault/templates/server-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: test-vault-server-binding
+  labels:
+    helm.sh/chart: vault-0.20.0
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: test-vault
+  namespace: default
+---
+# Source: edc-ui-umbrella/charts/app-pia-connector-ui/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-app-pia-connector-ui
+  labels:
+    helm.sh/chart: app-pia-connector-ui-0.1.0
+    app.kubernetes.io/name: app-pia-connector-ui
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: app-pia-connector-ui
+    app.kubernetes.io/instance: test
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/postgresql/templates/primary/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-postgresql-hl
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-12.1.6
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+    # Use this annotation in addition to the actual publishNotReadyAddresses
+    # field below because the annotation will stop being respected soon but the
+    # field is broken in some versions of Kubernetes:
+    # https://github.com/kubernetes/kubernetes/issues/58662
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  type: ClusterIP
+  clusterIP: None
+  # We want all pods in the StatefulSet to have their addresses published for
+  # the sake of the other Postgresql pods even before they're ready, since they
+  # have to be able to talk to each other in order to become ready.
+  publishNotReadyAddresses: true
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/component: primary
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/postgresql/templates/primary/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-12.1.6
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+  annotations:
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/component: primary
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/vault/templates/server-headless-service.yaml
+# Service for Vault cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-vault-internal
+  namespace: default
+  labels:
+    helm.sh/chart: vault-0.20.0
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - name: "http"
+      port: 8200
+      targetPort: 8200
+    - name: https-internal
+      port: 8201
+      targetPort: 8201
+  selector:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: test
+    component: server
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/vault/templates/server-service.yaml
+# Service for Vault cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-vault
+  namespace: default
+  labels:
+    helm.sh/chart: vault-0.20.0
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+
+spec:
+  # We want the servers to become available even if they're not ready
+  # since this DNS is also used for join operations.
+  publishNotReadyAddresses: true
+  ports:
+    - name: http
+      port: 8200
+      targetPort: 8200
+    - name: https-internal
+      port: 8201
+      targetPort: 8201
+  selector:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: test
+    component: server
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/service-controlplane.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-tractusx-connector-controlplane
+  namespace: "default"
+  labels:
+    helm.sh/chart: tractusx-connector-0.5.4
+    app.kubernetes.io/name: tractusx-connector-controlplane
+    app.kubernetes.io/instance: test-controlplane
+    app.kubernetes.io/version: "0.5.4"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: edc-controlplane
+    app.kubernetes.io/part-of: edc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: default
+      protocol: TCP
+      name: default
+    - port: 8083
+      targetPort: control
+      protocol: TCP
+      name: control
+    - port: 8081
+      targetPort: management
+      protocol: TCP
+      name: management
+    - port: 8084
+      targetPort: protocol
+      protocol: TCP
+      name: protocol
+    - port: 9090
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/name: tractusx-connector-controlplane
+    app.kubernetes.io/instance: test-controlplane
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/service-dataplane.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-tractusx-connector-dataplane
+  namespace: "default"
+  labels:
+    helm.sh/chart: tractusx-connector-0.5.4
+    app.kubernetes.io/name: tractusx-connector-dataplane
+    app.kubernetes.io/instance: test-dataplane
+    app.kubernetes.io/version: "0.5.4"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: edc-dataplane
+    app.kubernetes.io/part-of: edc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: default
+      protocol: TCP
+      name: default
+    - port: 8083
+      targetPort: control
+      protocol: TCP
+      name: control
+    - port: 8081
+      targetPort: public
+      protocol: TCP
+      name: public
+    - port: 9090
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+    - port: 8186
+      targetPort: proxy
+      protocol: TCP
+      name: proxy
+
+  selector:
+    app.kubernetes.io/name: tractusx-connector-dataplane
+    app.kubernetes.io/instance: test-dataplane
+---
+# Source: edc-ui-umbrella/charts/app-pia-connector-ui/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app-pia-connector-ui
+  labels:
+    helm.sh/chart: app-pia-connector-ui-0.1.0
+    app.kubernetes.io/name: app-pia-connector-ui
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-pia-connector-ui
+      app.kubernetes.io/instance: test
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: app-pia-connector-ui-0.1.0
+        app.kubernetes.io/name: app-pia-connector-ui
+        app.kubernetes.io/instance: test
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      imagePullSecrets:
+        - name: acr-cred
+      containers:
+        - name: app-pia-connector-ui
+          image: "acrpiapruspn0002.azurecr.io/app-pia-connector-ui:9e8f1355c0e63202981a712b5515677f9390b4b0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: edc-secret
+              mountPath: /usr/share/nginx/html/assets/config
+              readOnly: true
+      volumes:
+        - name: edc-secret
+          secret:
+            secretName: test-app-pia-connector-ui-edc-config
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/deployment-controlplane.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-tractusx-connector-controlplane
+  labels:
+    helm.sh/chart: tractusx-connector-0.5.4
+    app.kubernetes.io/name: tractusx-connector-controlplane
+    app.kubernetes.io/instance: test-controlplane
+    app.kubernetes.io/version: "0.5.4"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: edc-controlplane
+    app.kubernetes.io/part-of: edc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tractusx-connector-controlplane
+      app.kubernetes.io/instance: test-controlplane
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tractusx-connector-controlplane
+        app.kubernetes.io/instance: test-controlplane
+    spec:
+      serviceAccountName: test-tractusx-connector
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: tractusx-connector
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              add: []
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+
+          # either use the specified image, or use the default one
+          image: "ghcr.io/pia-des-org/tractusx-edc/edc-controlplane-postgresql-hashicorp-vault:0.5.4-beta"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: control
+              containerPort: 8083
+              protocol: TCP
+            - name: default
+              containerPort: 8080
+              protocol: TCP
+            - name: management
+              containerPort: 8081
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+            - name: protocol
+              containerPort: 8084
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/check/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /api/check/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            successThreshold: 1
+          resources:
+            {}
+          env:
+
+            ########################
+            ## ID CONFIGURATION ##
+            ########################
+            - name: EDC_PARTICIPANT_ID
+              value: "changeme"
+
+            ##########################
+            # SSI / MIW CONFIGURATION
+            ##########################
+            - name: "TX_SSI_MIW_URL"
+              value: ""
+            - name: "TX_SSI_MIW_AUTHORITY_ID"
+              value: ""
+            - name: "TX_SSI_OAUTH_TOKEN_URL"
+              value: ""
+            - name: "TX_SSI_OAUTH_CLIENT_ID"
+              value: ""
+            - name: "TX_SSI_OAUTH_CLIENT_SECRET_ALIAS"
+              value: "client-secret"
+            - name: "TX_SSI_ENDPOINT_AUDIENCE"
+              value: "http://test-tractusx-connector-controlplane:8084/api/v1/dsp"
+
+            #######
+            # API #
+            #######
+            - name: "EDC_API_AUTH_KEY"
+              value: "changeme"
+            - name: "WEB_HTTP_DEFAULT_PORT"
+              value: "8080"
+            - name: "WEB_HTTP_DEFAULT_PATH"
+              value: "/api"
+            - name: "WEB_HTTP_MANAGEMENT_PORT"
+              value: "8081"
+            - name: "WEB_HTTP_MANAGEMENT_PATH"
+              value: "/management"
+            - name: "WEB_HTTP_CONTROL_PORT"
+              value: "8083"
+            - name: "WEB_HTTP_CONTROL_PATH"
+              value: "/control"
+            - name: "WEB_HTTP_PROTOCOL_PORT"
+              value: "8084"
+            - name: "WEB_HTTP_PROTOCOL_PATH"
+              value: "/api/v1/dsp"
+
+            #########
+            ## DSP ##
+            #########
+
+            - name: "EDC_DSP_CALLBACK_ADDRESS"
+              value: "http://test-tractusx-connector-controlplane:8084/api/v1/dsp"
+            - name: "EDC_OAUTH_PROVIDER_AUDIENCE"
+              value: "idsc:IDS_CONNECTORS_ALL"
+            - name: "EDC_OAUTH_ENDPOINT_AUDIENCE"
+              value: "http://test-tractusx-connector-controlplane:8084/api/v1/dsp"
+
+            ################
+            ## POSTGRESQL ##
+            ################
+
+            # see extension https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/store/sql/asset-index-sql
+            - name: "EDC_DATASOURCE_ASSET_NAME"
+              value: "asset"
+            - name: "EDC_DATASOURCE_ASSET_USER"
+              value: "user"
+            - name: "EDC_DATASOURCE_ASSET_PASSWORD"
+              value: "password"
+            - name: "EDC_DATASOURCE_ASSET_URL"
+              value: "jdbc:postgresql://test-postgresql:5432/edc"
+
+            # see extension https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/store/sql/contract-definition-store-sql
+            - name: "EDC_DATASOURCE_CONTRACTDEFINITION_NAME"
+              value: "contractdefinition"
+            - name: "EDC_DATASOURCE_CONTRACTDEFINITION_USER"
+              value: "user"
+            - name: "EDC_DATASOURCE_CONTRACTDEFINITION_PASSWORD"
+              value: "password"
+            - name: "EDC_DATASOURCE_CONTRACTDEFINITION_URL"
+              value: "jdbc:postgresql://test-postgresql:5432/edc"
+
+            # see extension https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/store/sql/contract-negotiation-store-sql
+            - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_NAME"
+              value: "contractnegotiation"
+            - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_USER"
+              value: "user"
+            - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_PASSWORD"
+              value: "password"
+            - name: "EDC_DATASOURCE_CONTRACTNEGOTIATION_URL"
+              value: "jdbc:postgresql://test-postgresql:5432/edc"
+
+            # see extension https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/store/sql/policy-store-sql
+            - name: "EDC_DATASOURCE_POLICY_NAME"
+              value: "policy"
+            - name: "EDC_DATASOURCE_POLICY_USER"
+              value: "user"
+            - name: "EDC_DATASOURCE_POLICY_PASSWORD"
+              value: "password"
+            - name: "EDC_DATASOURCE_POLICY_URL"
+              value: "jdbc:postgresql://test-postgresql:5432/edc"
+
+            # see extension https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/store/sql/transfer-process-store-sql
+            - name: "EDC_DATASOURCE_TRANSFERPROCESS_NAME"
+              value: "transferprocess"
+            - name: "EDC_DATASOURCE_TRANSFERPROCESS_USER"
+              value: "user"
+            - name: "EDC_DATASOURCE_TRANSFERPROCESS_PASSWORD"
+              value: "password"
+            - name: "EDC_DATASOURCE_TRANSFERPROCESS_URL"
+              value: "jdbc:postgresql://test-postgresql:5432/edc"
+
+            # see extension https://github.com/eclipse-tractusx/tractusx-edc/tree/main/edc-extensions/edr-cache-sql
+            - name: "EDC_DATASOURCE_EDR_NAME"
+              value: "edr"
+            - name: "EDC_DATASOURCE_EDR_USER"
+              value: "user"
+            - name: "EDC_DATASOURCE_EDR_PASSWORD"
+              value: "password"
+            - name: "EDC_DATASOURCE_EDR_URL"
+              value: "jdbc:postgresql://test-postgresql:5432/edc"
+
+            # see extension https://github.com/eclipse-tractusx/tractusx-edc/tree/main/edc-extensions/bpn-validation/business-partner-store-sql
+            - name: "EDC_DATASOURCE_BPN_NAME"
+              value: "bpn"
+            - name: "EDC_DATASOURCE_BPN_USER"
+              value: "user"
+            - name: "EDC_DATASOURCE_BPN_PASSWORD"
+              value: "password"
+            - name: "EDC_DATASOURCE_BPN_URL"
+              value: "jdbc:postgresql://test-postgresql:5432/edc"
+
+            ################
+            ## DATA PLANE ##
+            ################
+
+            # see extension https://github.com/eclipse-tractusx/tractusx-edc/tree/main/edc-extensions/dataplane-selector-configuration
+            - name: "EDC_DATAPLANE_SELECTOR_DEFAULTPLANE_URL"
+              value: http://test-tractusx-connector-dataplane:8083/api/dataplane/control/transfer
+            - name: "EDC_DATAPLANE_SELECTOR_DEFAULTPLANE_SOURCETYPES"
+              value: "HttpData,AmazonS3"
+            - name: "EDC_DATAPLANE_SELECTOR_DEFAULTPLANE_DESTINATIONTYPES"
+              value: "HttpProxy,AmazonS3"
+            - name: "EDC_DATAPLANE_SELECTOR_DEFAULTPLANE_PROPERTIES"
+              value: |-
+                { "publicApiUrl": "http://test-tractusx-connector-dataplane:8081/api/public" }
+
+            # see extension https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/data-plane-transfer
+            - name: "EDC_TRANSFER_PROXY_ENDPOINT"
+              value: http://test-tractusx-connector-dataplane:8081/api/public
+            - name: "EDC_TRANSFER_PROXY_TOKEN_VALIDITY_SECONDS"
+              value: "2592000"
+
+            # see extension https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-pull-http-dynamic-receiver
+
+            - name: "EDC_RECEIVER_HTTP_DYNAMIC_ENDPOINT"
+              value: "changeme"
+
+            ###########
+            ## VAULT ##
+            ###########
+
+            # see extension https://github.com/eclipse-tractusx/tractusx-edc/tree/main/edc-extensions/hashicorp-vault
+            - name: "EDC_VAULT_HASHICORP_URL"
+              value: "http://test-vault:8200"
+            - name: "EDC_VAULT_HASHICORP_TOKEN"
+              value: "changeme"
+            - name: "EDC_VAULT_HASHICORP_TIMEOUT_SECONDS"
+              value: "30"
+            - name: "EDC_VAULT_HASHICORP_HEALTH_CHECK_ENABLED"
+              value: "true"
+            - name: "EDC_VAULT_HASHICORP_HEALTH_CHECK_STANDBY_OK"
+              value: "true"
+            - name: "EDC_VAULT_HASHICORP_API_SECRET_PATH"
+              value: "/v1/secret"
+            - name: "EDC_VAULT_HASHICORP_API_HEALTH_CHECK_PATH"
+              value: "/v1/sys/health"
+
+            #####################
+            ## DATA ENCRYPTION ##
+            #####################
+
+            # see extension https://github.com/eclipse-tractusx/tractusx-edc/tree/main/edc-extensions/data-encryption
+            - name: "EDC_DATA_ENCRYPTION_KEYS_ALIAS"
+              value: "transfer-proxy-token-encryption-aes-key"
+            - name: "EDC_DATA_ENCRYPTION_ALGORITHM"
+              value: "AES"
+
+            ###########################
+            ## AAS WRAPPER EXTENSION ##
+            ###########################
+            - name: "EDC_CP_ADAPTER_CACHE_CATALOG_EXPIRE_AFTER"
+              value: "0"
+            - name: "EDC_CP_ADAPTER_REUSE_CONTRACT_AGREEMENT"
+              value: "0"
+
+            ###########################
+            ## BUSINESS PARTNER NUMBER VALIDATION EXTENSION ##
+            ###########################
+            - name: "TRACTUSX_BUSINESSPARTNERVALIDATION_LOG_AGREEMENT_VALIDATION"
+              value: "true"
+
+            ######################################
+            ## Additional environment variables ##
+            ######################################
+            - name: "EDC_CONNECTOR_NAME"
+              value: test-tractusx-connector-controlplane
+            - name: "TRANSACTION_OBSERVER_AUDITSERVER_URL"
+              value: "AUDIT_API_URL"
+            - name: "TRANSACTION_OBSERVER_CLIENT_ID"
+              value: "YOUR_CLIENT_ID"
+            - name: "TRANSACTION_OBSERVER_CLIENT_SECRET_KEY"
+              value: "YOUR_CLIENT_SECRET_KEY_NAME_IN_VAULT"
+            - name: "TRANSACTION_OBSERVER_MARKETPLACE_URL"
+              value: "MARKETPLACE_API_URL"
+            - name: "TRANSACTION_OBSERVER_TOKEN_URL"
+              value: "http://keycloak"
+          volumeMounts:
+            - name: "configuration"
+              mountPath: "/app/opentelemetry.properties"
+              subPath: "opentelemetry.properties"
+            - name: "configuration"
+              mountPath: "/app/logging.properties"
+              subPath: "logging.properties"
+            - name: "tmp"
+              mountPath: "/tmp"
+      volumes:
+        - name: "configuration"
+          configMap:
+            name: test-tractusx-connector-controlplane
+            items:
+              - key: "opentelemetry.properties"
+                path: "opentelemetry.properties"
+              - key: "logging.properties"
+                path: "logging.properties"
+        - name: "tmp"
+          emptyDir: { }
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/deployment-dataplane.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-tractusx-connector-dataplane
+  labels:
+    helm.sh/chart: tractusx-connector-0.5.4
+    app.kubernetes.io/name: tractusx-connector-dataplane
+    app.kubernetes.io/instance: test-dataplane
+    app.kubernetes.io/version: "0.5.4"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: edc-dataplane
+    app.kubernetes.io/part-of: edc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tractusx-connector-dataplane
+      app.kubernetes.io/instance: test-dataplane
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tractusx-connector-dataplane
+        app.kubernetes.io/instance: test-dataplane
+    spec:
+      serviceAccountName: test-tractusx-connector
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: tractusx-connector
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              add: []
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+          image: "ghcr.io/pia-des-org/tractusx-edc/edc-dataplane-hashicorp-vault:0.5.4-beta"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: control
+              containerPort: 8083
+              protocol: TCP
+            - name: default
+              containerPort: 8080
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+            - name: proxy
+              containerPort: 8186
+              protocol: TCP
+            - name: public
+              containerPort: 8081
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/check/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /api/check/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            successThreshold: 1
+          resources:
+            {}
+          env:
+
+            ########################
+            ## ID CONFIGURATION ##
+            ########################
+            - name: EDC_PARTICIPANT_ID
+              value: "changeme"
+
+            #######
+            # API #
+            #######
+            - name: "WEB_HTTP_DEFAULT_PORT"
+              value: "8080"
+            - name: "WEB_HTTP_DEFAULT_PATH"
+              value: "/api"
+            - name: "WEB_HTTP_CONTROL_PORT"
+              value: "8083"
+            - name: "WEB_HTTP_CONTROL_PATH"
+              value: "/api/dataplane/control"
+            - name: "WEB_HTTP_PUBLIC_PORT"
+              value: "8081"
+            - name: "WEB_HTTP_PUBLIC_PATH"
+              value: "/api/public"
+            - name: "EDC_DATAPLANE_TOKEN_VALIDATION_ENDPOINT"
+              value: http://test-tractusx-connector-controlplane:8083/control/token
+
+            #######
+            # AWS #
+            #######
+
+            ###############
+            ## EDR CACHE ##
+            ###############
+
+            # see extension https://github.com/eclipse-tractusx/tractusx-edc/tree/main/edc-extensions/edr-cache-sql
+            - name: "EDC_DATASOURCE_EDR_NAME"
+              value: "edr"
+            - name: "EDC_DATASOURCE_EDR_USER"
+              value: "user"
+            - name: "EDC_DATASOURCE_EDR_PASSWORD"
+              value: "password"
+            - name: "EDC_DATASOURCE_EDR_URL"
+              value: "jdbc:postgresql://test-postgresql:5432/edc"
+
+            ###########
+            ## VAULT ##
+            ###########
+
+            # see extension https://github.com/eclipse-tractusx/tractusx-edc/tree/main/edc-extensions/hashicorp-vault
+            - name: "EDC_VAULT_HASHICORP_URL"
+              value: "http://test-vault:8200"
+            - name: "EDC_VAULT_HASHICORP_TOKEN"
+              value: "changeme"
+            - name: "EDC_VAULT_HASHICORP_TIMEOUT_SECONDS"
+              value: "30"
+            - name: "EDC_VAULT_HASHICORP_HEALTH_CHECK_ENABLED"
+              value: "true"
+            - name: "EDC_VAULT_HASHICORP_HEALTH_CHECK_STANDBY_OK"
+              value: "true"
+            - name: "EDC_VAULT_HASHICORP_API_SECRET_PATH"
+              value: "/v1/secret"
+            - name: "EDC_VAULT_HASHICORP_API_HEALTH_CHECK_PATH"
+              value: "/v1/sys/health"
+
+            ######################################
+            ## Additional environment variables ##
+            ######################################
+            - name: "EDC_CONNECTOR_NAME"
+              value: test-tractusx-connector-dataplane
+          volumeMounts:
+            - name: "configuration"
+              mountPath: "/app/opentelemetry.properties"
+              subPath: "opentelemetry.properties"
+            - name: "configuration"
+              mountPath: "/app/logging.properties"
+              subPath: "logging.properties"
+            - name: "tmp"
+              mountPath: "/tmp"
+      volumes:
+        - name: "configuration"
+          configMap:
+            name: test-tractusx-connector-dataplane
+            items:
+              - key: "opentelemetry.properties"
+                path: "opentelemetry.properties"
+              - key: "logging.properties"
+                path: "logging.properties"
+        - name: "tmp"
+          emptyDir: { }
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/postgresql/templates/primary/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: test-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-12.1.6
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+  annotations:
+spec:
+  replicas: 1
+  serviceName: test-postgresql-hl
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/instance: test
+      app.kubernetes.io/component: primary
+  template:
+    metadata:
+      name: test-postgresql
+      labels:
+        app.kubernetes.io/name: postgresql
+        helm.sh/chart: postgresql-12.1.6
+        app.kubernetes.io/instance: test
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: primary
+      annotations:
+    spec:
+      serviceAccountName: default
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: postgresql
+                    app.kubernetes.io/instance: test
+                    app.kubernetes.io/component: primary
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+      hostNetwork: false
+      hostIPC: false
+      initContainers:
+      containers:
+        - name: postgresql
+          image: docker.io/bitnami/postgresql:15.1.0-debian-11-r12
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsUser: 1001
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: POSTGRESQL_PORT_NUMBER
+              value: "5432"
+            - name: POSTGRESQL_VOLUME_DIR
+              value: "/bitnami/postgresql"
+            - name: PGDATA
+              value: "/bitnami/postgresql/data"
+            # Authentication
+            - name: POSTGRES_USER
+              value: "user"
+            - name: POSTGRES_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: test-postgresql
+                  key: postgres-password
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: test-postgresql
+                  key: password
+            - name: POSTGRES_DB
+              value: "edc"
+            # Replication
+            # Initdb
+            # Standby
+            # LDAP
+            - name: POSTGRESQL_ENABLE_LDAP
+              value: "no"
+            # TLS
+            - name: POSTGRESQL_ENABLE_TLS
+              value: "no"
+            # Audit
+            - name: POSTGRESQL_LOG_HOSTNAME
+              value: "false"
+            - name: POSTGRESQL_LOG_CONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_LOG_DISCONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+              value: "off"
+            # Others
+            - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+              value: "error"
+            - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+              value: "pgaudit"
+          ports:
+            - name: tcp-postgresql
+              containerPort: 5432
+          livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - exec pg_isready -U "user" -d "dbname=edc" -h 127.0.0.1 -p 5432
+          readinessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                
+                - |
+                  exec pg_isready -U "user" -d "dbname=edc" -h 127.0.0.1 -p 5432
+                  [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+        - name: data
+          emptyDir: {}
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/vault/templates/server-statefulset.yaml
+# StatefulSet to run the actual vault server cluster.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: test-vault
+  namespace: default
+  labels:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+spec:
+  serviceName: test-vault-internal
+  podManagementPolicy: Parallel
+  replicas: 1
+  updateStrategy:
+    type: OnDelete
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+      app.kubernetes.io/instance: test
+      component: server
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: vault-0.20.0
+        app.kubernetes.io/name: vault
+        app.kubernetes.io/instance: test
+        component: server
+    spec:
+      
+      
+      
+      
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: test-vault
+      
+      securityContext:
+        runAsNonRoot: true
+        runAsGroup: 1000
+        runAsUser: 100
+        fsGroup: 1000
+      volumes:
+        
+        - name: home
+          emptyDir: {}
+      containers:
+        - name: vault
+          
+          image: hashicorp/vault:1.10.3
+          imagePullPolicy: IfNotPresent
+          command:
+          - "/bin/sh"
+          - "-ec"
+          args: 
+          - |
+            /usr/local/bin/docker-entrypoint.sh vault server -dev 
+  
+          securityContext:
+            allowPrivilegeEscalation: false
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: VAULT_K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: VAULT_K8S_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: VAULT_ADDR
+              value: "http://127.0.0.1:8200"
+            - name: VAULT_API_ADDR
+              value: "http://$(POD_IP):8200"
+            - name: SKIP_CHOWN
+              value: "true"
+            - name: SKIP_SETCAP
+              value: "true"
+            - name: HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: VAULT_CLUSTER_ADDR
+              value: "https://$(HOSTNAME).test-vault-internal:8201"
+            - name: HOME
+              value: "/home/vault"
+            
+            - name: VAULT_DEV_ROOT_TOKEN_ID
+              value: root
+            - name: VAULT_DEV_LISTEN_ADDRESS
+              value: "[::]:8200"
+  
+            
+            
+          volumeMounts:
+          
+  
+  
+            - name: home
+              mountPath: /home/vault
+          ports:
+            - containerPort: 8200
+              name: http
+            - containerPort: 8201
+              name: https-internal
+            - containerPort: 8202
+              name: http-rep
+          readinessProbe:
+            # Check status; unsealed vault servers return 0
+            # The exit code reflects the seal status:
+            #   0 - unsealed
+            #   1 - error
+            #   2 - sealed
+            exec:
+              command: ["/bin/sh", "-ec", "vault status -tls-skip-verify"]
+            failureThreshold: 2
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+          lifecycle:
+            # Vault container doesn't receive SIGTERM from Kubernetes
+            # and after the grace period ends, Kube sends SIGKILL.  This
+            # causes issues with graceful shutdowns such as deregistering itself
+            # from Consul (zombie services).
+            preStop:
+              exec:
+                command: [
+                  "/bin/sh", "-c",
+                  # Adding a sleep here to give the pod eviction a
+                  # chance to propagate, so requests will not be made
+                  # to this pod while it's terminating
+                  "sleep 5 && kill -SIGTERM $(pidof vault)",
+                ]
+---
+# Source: edc-ui-umbrella/charts/app-pia-connector-ui/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-app-pia-connector-ui
+  labels:
+    helm.sh/chart: app-pia-connector-ui-0.1.0
+    app.kubernetes.io/name: app-pia-connector-ui
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    kubernetes.io/tls-acme: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "connector-ui.espaciodedatos-pru.segittur.es"
+      secretName: default-tls-secret
+  rules:
+    - host: "connector-ui.espaciodedatos-pru.segittur.es"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: test-app-pia-connector-ui
+                port:
+                  number: 80
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/configmap-controlplane.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/configmap-customcacerts.yaml
+#
+#  Copyright (c) 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/configmap-dataplane.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/deployment-controlplane.yaml
+#
+  #  Copyright (c) 2023 ZF Friedrichshafen AG
+  #  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+  #  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+  #  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+  #
+  #  See the NOTICE file(s) distributed with this work for additional
+  #  information regarding copyright ownership.
+  #
+  #  This program and the accompanying materials are made available under the
+  #  terms of the Apache License, Version 2.0 which is available at
+  #  https://www.apache.org/licenses/LICENSE-2.0
+  #
+  #  Unless required by applicable law or agreed to in writing, software
+  #  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  #  License for the specific language governing permissions and limitations
+  #  under the License.
+  #
+  #  SPDX-License-Identifier: Apache-2.0
+  #
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/deployment-dataplane.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/hpa-controlplane.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/hpa-dataplane.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/ingress-controlplane.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/ingress-dataplane.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/networkpolicy.yaml
+#
+#  Copyright (c) 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/service-controlplane.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/service-dataplane.yaml
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+#  Copyright (c) 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)
+#  Copyright (c) 2021, 2023 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#  License for the specific language governing permissions and limitations
+#  under the License.
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/tests/test-controlplane.yaml
+#
+  #  Copyright (c) 2023 Contributors to the Eclipse Foundation
+  #
+  #  See the NOTICE file(s) distributed with this work for additional
+  #  information regarding copyright ownership.
+  #
+  #  This program and the accompanying materials are made available under the
+  #  terms of the Apache License, Version 2.0 which is available at
+  #  https://www.apache.org/licenses/LICENSE-2.0
+  #
+  #  Unless required by applicable law or agreed to in writing, software
+  #  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  #  License for the specific language governing permissions and limitations
+  #  under the License.
+  #
+  #  SPDX-License-Identifier: Apache-2.0
+  #
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/tests/test-dataplane-readiness.yaml
+#
+  #  Copyright (c) 2023 Contributors to the Eclipse Foundation
+  #
+  #  See the NOTICE file(s) distributed with this work for additional
+  #  information regarding copyright ownership.
+  #
+  #  This program and the accompanying materials are made available under the
+  #  terms of the Apache License, Version 2.0 which is available at
+  #  https://www.apache.org/licenses/LICENSE-2.0
+  #
+  #  Unless required by applicable law or agreed to in writing, software
+  #  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  #  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  #  License for the specific language governing permissions and limitations
+  #  under the License.
+  #
+  #  SPDX-License-Identifier: Apache-2.0
+  #
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/charts/vault/templates/tests/server-test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "test-server-test"
+  namespace: default
+  annotations:
+    "helm.sh/hook": test
+spec:
+  
+  containers:
+    - name: test-server-test
+      image: hashicorp/vault:1.10.3
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: VAULT_ADDR
+          value: http://test-vault.default.svc:8200
+        
+      command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Checking for sealed info in 'vault status' output"
+          ATTEMPTS=10
+          n=0
+          until [ "$n" -ge $ATTEMPTS ]
+          do
+            echo "Attempt" $n...
+            vault status -format yaml | grep -E '^sealed: (true|false)' && break
+            n=$((n+1))
+            sleep 5
+          done
+          if [ $n -ge $ATTEMPTS ]; then
+            echo "timed out looking for sealed info in 'vault status' output"
+            exit 1
+          fi
+
+          exit 0
+      volumeMounts:
+  volumes:
+  restartPolicy: Never
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/tests/test-controlplane.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "test-tractusx-connector-test-controlplane"
+  labels:
+    helm.sh/chart: tractusx-connector-0.5.4
+    app.kubernetes.io/name: tractusx-connector-controlplane
+    app.kubernetes.io/instance: test-controlplane
+    app.kubernetes.io/version: "0.5.4"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: edc-controlplane
+    app.kubernetes.io/part-of: edc
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  containers:
+    
+    - name: readiness
+      image: curlimages/curl
+      command: [ 'curl', '--fail' ]
+      args: [ 'http://test-tractusx-connector-controlplane:8080/api/check/readiness' ]
+
+    
+    - name: bpn-store
+      image: curlimages/curl
+      command: [ 'curl', '-X', 'POST', '--fail','-H','Content-Type: application/json', '-H', 'x-api-key: changeme', '-d', '{
+                    "@context": {
+                        "tx": "https://w3id.org/tractusx/v0.0.1/ns/"
+                    },
+                    "@id": "tx:BPN000001234",
+                    "tx:groups": ["group1", "group2", "group3"]
+                }' ]
+      args: [ 'http://test-tractusx-connector-controlplane:8081/management/business-partner-groups' ]
+  restartPolicy: Never
+  securityContext:
+    fsGroup: 101 # curl_group
+    runAsGroup: 101 # curl_group
+    runAsNonRoot: true
+    runAsUser: 100 # curl_user
+    seccompProfile:
+      type: RuntimeDefault
+---
+# Source: edc-ui-umbrella/charts/tractusx-connector/templates/tests/test-dataplane-readiness.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "test-tractusx-connectortest-dataplane-readiness"
+  labels:
+    helm.sh/chart: tractusx-connector-0.5.4
+    app.kubernetes.io/name: tractusx-connector-dataplane
+    app.kubernetes.io/instance: test-dataplane
+    app.kubernetes.io/version: "0.5.4"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: edc-dataplane
+    app.kubernetes.io/part-of: edc
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  containers:
+    - name: wget
+      image: curlimages/curl
+      command: [ 'curl', '--fail' ]
+      args: [ 'http://test-tractusx-connector-dataplane:8080/api/check/readiness' ]
+  restartPolicy: Never
+  securityContext:
+    fsGroup: 101 # curl_group
+    runAsGroup: 101 # curl_group
+    runAsNonRoot: true
+    runAsUser: 100 # curl_user
+    seccompProfile:
+      type: RuntimeDefault

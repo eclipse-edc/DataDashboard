@@ -1,0 +1,264 @@
+tractusx-connector:
+  enabled: true
+
+  install:
+    postgresql: true
+    vault: true
+  
+  imagePullSecrets: [] # TODO: add ghcr.io secret to access the pia-des-org images
+  # imagePullSecrets:
+  #   - name: ghcr-io-pull-secret
+  
+  participant:
+    # -- BPN Number
+    id: "changeme"
+  
+  controlplane:
+    image:
+      # -- Which derivate of the control plane to use. when left empty the deployment will select the correct image automatically
+      repository: "ghcr.io/pia-des-org/tractusx-edc/edc-controlplane-postgresql-hashicorp-vault"
+      # -- [Kubernetes image pull policy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy) to use
+      pullPolicy: IfNotPresent
+      # -- Overrides the image tag whose default is the chart appVersion
+      tag: "0.5.4-beta"
+
+    endpoints:
+      # -- default api for health checks, should not be added to any ingress
+      default:
+        # -- port for incoming api calls
+        port: 8080
+        # -- path for incoming api calls
+        path: /api
+      # -- data management api, used by internal users, can be added to an ingress and must not be internet facing
+      management:
+        # -- port for incoming api calls
+        port: 8081
+        # -- path for incoming api calls
+        path: /management
+        # -- authentication key, must be attached to each 'X-Api-Key' request header
+        authKey: "changeme"
+      # -- control api, used for internal control calls. can be added to the internal ingress, but should probably not
+      control:
+        # -- port for incoming api calls
+        port: 8083
+        # -- path for incoming api calls
+        path: /control
+      # -- dsp api, used for inter connector communication and must be internet facing
+      protocol:
+        # -- port for incoming api calls
+        port: 8084
+        # -- path for incoming api calls
+        path: /api/v1/dsp
+      # -- metrics api, used for application metrics, must not be internet facing
+      metrics:
+        # -- port for incoming api calls
+        port: 9090
+        # -- path for incoming api calls
+        path: /metrics
+
+    # SSI configuration
+    ssi:
+      miw:
+        # -- MIW URL
+        url: ""
+        # -- The BPN of the issuer authority
+        authorityId: ""
+      oauth:
+        # -- The URL (of KeyCloak), where access tokens can be obtained
+        tokenurl: ""
+        client:
+          # -- The client ID for KeyCloak
+          id: ""
+          # -- The alias under which the client secret is stored in the vault.
+          secretAlias: "client-secret"
+
+    env:
+      TRANSACTION_OBSERVER_AUDITSERVER_URL: AUDIT_API_URL
+      TRANSACTION_OBSERVER_MARKETPLACE_URL: MARKETPLACE_API_URL
+      TRANSACTION_OBSERVER_TOKEN_URL: http://keycloak
+      TRANSACTION_OBSERVER_CLIENT_ID: YOUR_CLIENT_ID
+      TRANSACTION_OBSERVER_CLIENT_SECRET_KEY: YOUR_CLIENT_SECRET_KEY_NAME_IN_VAULT
+
+    ## Ingress declaration to expose the network service.
+    ingresses:
+      ## Public / Internet facing Ingress
+      - enabled: false
+        # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
+        hostname: "edc-control.local"
+        # -- Additional ingress annotations to add
+        annotations: {}
+        # -- EDC endpoints exposed by this ingress resource
+        endpoints:
+          - protocol
+        # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
+        className: ""
+        # -- TLS [tls class](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) applied to the ingress resource
+        tls:
+          # -- Enables TLS on the ingress resource
+          enabled: false
+          # -- If present overwrites the default secret name
+          secretName: ""
+        ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
+        certManager:
+          # -- If preset enables certificate generation via cert-manager namespace scoped issuer
+          issuer: ""
+          # -- If preset enables certificate generation via cert-manager cluster-wide issuer
+          clusterIssuer: ""
+      ## Private / Intranet facing Ingress
+      - enabled: false
+        # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
+        hostname: "edc-control.intranet"
+        # -- Additional ingress annotations to add
+        annotations: {}
+        # -- EDC endpoints exposed by this ingress resource
+        endpoints:
+          - management
+          - control
+        # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
+        className: ""
+        # -- TLS [tls class](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) applied to the ingress resource
+        tls:
+          # -- Enables TLS on the ingress resource
+          enabled: false
+          # -- If present overwrites the default secret name
+          secretName: ""
+        ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
+        certManager:
+          # -- If preset enables certificate generation via cert-manager namespace scoped issuer
+          issuer: ""
+          # -- If preset enables certificate generation via cert-manager cluster-wide issuer
+          clusterIssuer: ""
+    replicaCount: 1
+
+  dataplane:
+    image:
+      # -- Which derivate of the data plane to use. when left empty the deployment will select the correct image automatically
+      repository: "ghcr.io/pia-des-org/tractusx-edc/edc-dataplane-hashicorp-vault"
+      # -- [Kubernetes image pull policy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy) to use
+      pullPolicy: IfNotPresent
+      # -- Overrides the image tag whose default is the chart appVersion
+      tag: "0.5.4-beta"
+    
+    aws:
+      endpointOverride: ""
+      accessKeyId: ""
+      secretAccessKey: ""
+
+    ## Ingress declaration to expose the network service.
+    ingresses:
+      ## Public / Internet facing Ingress
+      - enabled: false
+        # -- The hostname to be used to precisely map incoming traffic onto the underlying network service
+        hostname: "edc-data.local"
+        # -- Additional ingress annotations to add
+        annotations: {}
+        # -- EDC endpoints exposed by this ingress resource
+        endpoints:
+          - public
+        # -- Defines the [ingress class](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class)  to use
+        className: ""
+        # -- TLS [tls class](https://kubernetes.io/docs/concepts/services-networking/ingress/#tls) applied to the ingress resource
+        tls:
+          # -- Enables TLS on the ingress resource
+          enabled: false
+          # -- If present overwrites the default secret name
+          secretName: ""
+        ## Adds [cert-manager](https://cert-manager.io/docs/) annotations to the ingress resource
+        certManager:
+          # -- If preset enables certificate generation via cert-manager namespace scoped issuer
+          issuer: ""
+          # -- If preset enables certificate generation via cert-manager cluster-wide issuer
+          clusterIssuer: ""
+
+    replicaCount: 1
+
+  postgresql:
+    jdbcUrl: "jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/edc"
+    primary:
+      persistence:
+        enabled: false
+    readReplicas:
+      persistence:
+        enabled: false
+    auth:
+      database: "edc"
+      username: "user"
+      password: "password"
+  vault:
+    injector:
+      enabled: false
+    server:
+      dev:
+        enabled: true
+        devRootToken: "root"
+      postStart:    # must be set externally!
+    hashicorp:
+      url: "http://{{ .Release.Name }}-vault:8200"
+      token: "changeme"
+      timeout: 30
+      healthCheck:
+        enabled: true
+        standbyOk: true
+      paths:
+        secret: /v1/secret
+        health: /v1/sys/health
+    secretNames:
+      transferProxyTokenSignerPrivateKey:
+      transferProxyTokenSignerPublicKey:
+      transferProxyTokenEncryptionAesKey: transfer-proxy-token-encryption-aes-key
+  backendService:
+    httpProxyTokenReceiverUrl: "changeme"
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # -- Existing image pull secret bound to the service account to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry)
+    imagePullSecrets: []
+  
+# UI
+app-pia-connector-ui:
+  enabled: true
+  replicaCount: 1
+  
+  config:
+    edc:
+      managementApiUrl: "EDC_MGMT_URL"
+      apiKey: "EDC_API_KEY"
+      storageAccount: "company2assets"
+      storageExplorerLinkTemplate: "storageexplorer://v=1"
+      theme: "theme-2"
+    keycloak:
+      authUrl: "CENTRALIDP_AUTH_URL"
+      realm: "CX-Central"
+      clientId: "CONNECTOR_UI_KC_CLIENT"
+  
+  # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+  image:
+    repository: acrpiapruspn0002.azurecr.io/app-pia-connector-ui
+    # This sets the pull policy for images.
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "9e8f1355c0e63202981a712b5515677f9390b4b0"
+  imagePullSecrets:
+    - name: "acr-cred"
+  
+  # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+  ingress:
+    enabled: true
+    className: "nginx"
+    annotations:
+      kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: "connector-ui.espaciodedatos-pru.segittur.es"
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: "default-tls-secret"
+        hosts:
+          - "connector-ui.espaciodedatos-pru.segittur.es"
