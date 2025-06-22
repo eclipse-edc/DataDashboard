@@ -53,6 +53,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {AssetDetailsDialogComponent} from "./components/asset/asset-details-dialog/asset-details-dialog.component";
 import {PolicyDetailsDialogComponent} from "./components/policy/policy-details-dialog/policy-details-dialog.component";
+import {NegotiateTransferComponent} from "./components/negotiate-transfer/negotiate-transfer.component"
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getCustomPaginatorIntl } from './components/transfer-history/custom-paginator-intl';
@@ -113,7 +114,8 @@ import {MatChipsModule} from "@angular/material/chips";
     IntroductionComponent,
     ConfirmationDialogComponent,
     AssetDetailsDialogComponent,
-    PolicyDetailsDialogComponent
+    PolicyDetailsDialogComponent,
+    NegotiateTransferComponent
   ],
   exports: [
     CatalogBrowserComponent,

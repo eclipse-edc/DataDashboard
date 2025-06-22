@@ -39,6 +39,40 @@
   margin-right: 0;
 }
 
+.mat-list-item-custom {
+  padding-left: 20px;
+}
+
+.nav-label {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+/* Shrink icon and reduce margin between icon and text */
+mat-sidenav a[mat-list-item] mat-icon {
+  height: 16px;
+  width: 16px;
+  margin-right: 16px;
+  margin-left: 0 !important;
+}
+
+.nav-group-title-provide {
+  font-size: 24px; // slightly larger
+  font-weight: normal; // not bold
+  text-transform: none; // no uppercase
+  color: #444;
+  padding: 12px 20px 2px;
+  margin-top: 60px; // less spacing
+}
+
+.nav-group-title-consume {
+  font-size: 24px; // slightly larger
+  font-weight: normal; // not bold
+  text-transform: none; // no uppercase
+  color: #444;
+  padding: 2px 16px 4px;
+}
+
 .page-title {
   font-size: 18px;
   font-weight: bold;
@@ -55,6 +89,3 @@
   width: 300px;
 }
 
-.provide-group {
-  margin-top: 50px;
-}

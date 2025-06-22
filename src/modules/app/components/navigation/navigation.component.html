@@ -24,40 +24,30 @@
     <!-- Sidebar content -->
     <mat-nav-list>
       <!-- Provide Group -->
-      <mat-expansion-panel class="provide-group" expanded>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Provide</mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <a mat-list-item routerLink="/my-assets">
-          <mat-icon>upload</mat-icon>
-          Assets
+      <div class="nav-group-title-provide">Provide</div>
+        <a mat-list-item class="mat-list-item-custom" routerLink="/my-assets">
+          <mat-icon svgIcon="navigation:assets"></mat-icon>
+          <span class="nav-label">Assets</span>
         </a>
-        <a mat-list-item routerLink="/policies">
-          <mat-icon>policy</mat-icon>
-          Policies
+        <a mat-list-item class="mat-list-item-custom" routerLink="/policies">
+          <mat-icon svgIcon="navigation:policies"></mat-icon>
+          <span class="nav-label">Policies</span>
         </a>
-        <a mat-list-item routerLink="/contract-definitions">
-          <mat-icon>rule</mat-icon>
-          Offers
+        <a mat-list-item class="mat-list-item-custom" routerLink="/contract-definitions">
+          <mat-icon svgIcon="navigation:offers"></mat-icon>
+          <span class="nav-label">Offers</span>
         </a>
-      </mat-expansion-panel>
 
       <!-- Consume Group -->
-      <mat-expansion-panel expanded>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Consume</mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <a mat-list-item routerLink="/contracts">
-          <mat-icon>attachment</mat-icon>
-          Contracts
+      <div class="nav-group-title-consume">Consume</div>
+        <a mat-list-item class="mat-list-item-custom" routerLink="/contracts">
+          <mat-icon svgIcon="navigation:contracts"></mat-icon>
+          <span class="nav-label">Contracts</span>
         </a>
-        <a mat-list-item routerLink="/transfer-history">
-          <mat-icon>assignment</mat-icon>
-          Transfers
+        <a mat-list-item class="mat-list-item-custom" routerLink="/transfer-history">
+          <mat-icon svgIcon="navigation:transfers"></mat-icon>
+          <span class="nav-label">Transfers</span>
         </a>
-      </mat-expansion-panel>
     </mat-nav-list>
   </mat-sidenav>
 

@@ -13,7 +13,7 @@ export const NS = {
 
 export const CONTEXT_MAP = {
   dcterms: 'https://purl.org/dc/terms/',
-  dcat: 'https://www.w3.org/ns/dcat#',
+  dcat: 'https://www.w3.org/ns/dcat',
   rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
   dqv: 'https://www.w3.org/ns/dqv#',
   segittur: 'http://w3id.org/segittur/schema#',

@@ -1,0 +1,110 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 45vw;
+  height: 100%; // full height of the dialog
+}
+
+.details-wrapper {
+  padding: 32px;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.details-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.icon-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-circle mat-icon {
+  font-size: 42px;
+  line-height: 1;
+  height: 42px;
+  width: 42px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title-block {
+  display: flex;
+  flex-direction: column;
+
+  .asset-name {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .asset-id {
+    font-size: 14px;
+    color: #555;
+  }
+}
+
+.asset-description {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 200px 200px;
+  gap: 16px 24px;
+  overflow: visible;
+}
+
+.detail-item {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px 30px;
+  align-items: start;
+}
+
+.detail-icon {
+  font-size: 40px;
+  line-height: 1;
+  margin-top: 2px;
+  flex-shrink: 0;
+
+  // ⬇️ this is critical
+  overflow: visible;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.detail-label {
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.detail-value {
+  font-size: 15px;
+  color: #111;
+}
+
+mat-dialog-actions {
+  padding: 0 32px 32px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+

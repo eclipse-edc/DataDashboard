@@ -6,6 +6,8 @@ html, body {
 
 body {
   margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
 }
 
 .snackbar-info-style {
@@ -224,8 +226,8 @@ mat-icon {
 
 body.theme-1 .logo {
   content: url('/assets/Segittur_logo.svg');
-  height: 60px;
-  margin-right: 120px;
+  height: 40px;
+  margin-right: 180px;
 }
 
 body.theme-2 .logo {

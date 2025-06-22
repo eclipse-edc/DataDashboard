@@ -41,9 +41,6 @@ export class AssetViewerComponent implements OnInit {
             ? assets$.pipe(map(assets => assets.filter(asset => asset.properties.optionalValue<string>('edc', 'name')?.includes(this.searchText))))
             : assets$;
         }));
-    this.filteredAssets$.subscribe(filtered => {
-      console.log('Filtered assets:', filtered);
-    });
   }
 
   isBusy() {

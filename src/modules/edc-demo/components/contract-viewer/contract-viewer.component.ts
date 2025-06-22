@@ -16,6 +16,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CatalogBrowserService} from "../../services/catalog-browser.service";
 import {Router} from "@angular/router";
 import {TransferProcessStates} from "../../models/transfer-process-states";
+import {NegotiateTransferComponent} from "../negotiate-transfer/negotiate-transfer.component";
 
 interface RunningTransferProcess {
   processId: string;
@@ -53,7 +54,21 @@ export class ContractViewerComponent implements OnInit {
 
   ngOnInit(): void {
     this.contracts$ = this.contractAgreementService.queryAllAgreements();
+
+    this.router.routerState.root.queryParams
+      .pipe(first())
+      .subscribe(params => {
+        const counterParty = params['CounterParty'];
+        const assetId = params['assetId'];
+
+        if (counterParty && assetId) {
+          this.dialog.open(NegotiateTransferComponent, {
+            data: { counterParty, assetId }
+          });
+        }
+      });
   }
+
 
   asDate(epochSeconds?: number): string {
     if(epochSeconds){
