@@ -6,7 +6,7 @@
 }
 
 .details-wrapper {
-  padding: 32px;
+  padding: 40px;
   max-width: 640px;
   display: flex;
   flex-direction: column;
@@ -20,13 +20,14 @@
 }
 
 .icon-circle {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: 1000px;
   background-color: #f5f5f5;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 12px;
 }
 
 .icon-circle mat-icon {
@@ -48,16 +49,18 @@
     margin: 0;
     font-size: 24px;
     font-weight: 600;
+    font-family: var(--font-quicksand), sans-serif !important;;
   }
 
   .asset-id {
     font-size: 14px;
+    font-weight: 400;
     color: #555;
   }
 }
 
 .asset-description {
-  font-size: 16px;
+  font-size: 14px;
   color: #333;
   margin: 0;
 }
@@ -65,7 +68,7 @@
 .details-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(240px, 1fr));
-  gap: 24px 40px; // vertical and horizontal gap
+  gap: 40px;
   overflow: visible;
 }
 
@@ -90,14 +93,15 @@
 }
 
 .detail-label {
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: 700;
+  font-size: 12px;
   text-transform: uppercase;
   color: #333;
 }
 
 .detail-value {
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 400;
   color: #111;
 }
 

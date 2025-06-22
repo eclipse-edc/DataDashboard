@@ -99,7 +99,8 @@ export class AssetEditorDialog implements OnInit {
       && !!this.assetMetadata.description?.trim()
       && this.assetMetadata.keywords.length > 0
       && !!this.assetMetadata.mediaType?.trim()
-      && !!this.assetMetadata.qualityNote?.trim();
+      && !!this.assetMetadata.qualityNote?.trim()
+      && !!this.assetMetadata.ontologyType?.trim();
   }
 
   isDatasourceValid(): boolean {
@@ -191,6 +192,7 @@ export class AssetEditorDialog implements OnInit {
 
     if (this.selectedStorageType === 'amazonS3') {
       dataAddress = {
+        "@type": "DataAddress",
         type: 'AmazonS3',
         region: this.s3Config.region,
         bucketName: this.s3Config.bucket,
@@ -202,6 +204,7 @@ export class AssetEditorDialog implements OnInit {
 
     if (this.selectedStorageType === 'azure') {
       dataAddress = {
+        "@type": "DataAddress",
         type: 'AzureStorage',
         account: this.azureConfig.account,
         container: this.azureConfig.container,

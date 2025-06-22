@@ -5,7 +5,7 @@
         <input
           class="search-input"
           type="text"
-          placeholder="Search Contract Definitions"
+          placeholder="Search Data Offers"
           [(ngModel)]="searchText"
           (input)="onSearch()"
         />
@@ -25,11 +25,11 @@
     <mat-card *ngFor="let contractDefinition of contractDefinitions" class="card-element">
       <mat-card-header>
         <div mat-card-avatar class="card-icon">
-          <mat-icon>rule</mat-icon>
+          <mat-icon svgIcon="dataOffer:title"></mat-icon>
         </div>
         <mat-card-title>
-        <span>
-          {{ contractDefinition.id }}
+        <span [matTooltip]="contractDefinition.id" >
+          {{ contractDefinition.id | truncate: 32 }}
         </span>
         </mat-card-title>
         <mat-card-subtitle>Data Offer</mat-card-subtitle>

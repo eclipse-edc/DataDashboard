@@ -97,13 +97,56 @@ import { initializeKeycloak } from './keycloak-init.factory';
 })
 export class AppModule {
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-    const icons = ['assets', 'contracts', 'offers', 'policies', 'transfers'];
-    icons.forEach(name => {
+    const iconsOfNavigation = ['assets', 'contracts', 'offers', 'policies', 'transfers'];
+    iconsOfNavigation.forEach(name => {
       iconRegistry.addSvgIconInNamespace(
         'navigation',
         name,
         sanitizer.bypassSecurityTrustResourceUrl(`assets/navigation_bar_${name}.svg`)
       );
     });
+
+    const iconsOfContracts = ['asset', 'provider', 'signing_date', 'title', 'transfers'];
+    iconsOfContracts.forEach(name => {
+      iconRegistry.addSvgIconInNamespace(
+        'contracts',
+        name,
+        sanitizer.bypassSecurityTrustResourceUrl(`assets/contracts_viewer_${name}.svg`)
+      );
+    });
+
+    const iconsOfNegotiate = ['properties', 'title'];
+    iconsOfNegotiate.forEach(name => {
+      iconRegistry.addSvgIconInNamespace(
+        'negotiate',
+        name,
+        sanitizer.bypassSecurityTrustResourceUrl(`assets/negotiate_${name}.svg`)
+      );
+    });
+
+    iconRegistry.addSvgIconInNamespace(
+      'dataOffer',
+      "title",
+      sanitizer.bypassSecurityTrustResourceUrl(`assets/data_offer_viewer.svg`)
+    );
+
+    iconRegistry.addSvgIconInNamespace(
+      'policy',
+      "title",
+      sanitizer.bypassSecurityTrustResourceUrl(`assets/policy_viewer.svg`)
+    );
+
+    iconRegistry.addSvgIconInNamespace(
+      'assetDetails',
+      "property",
+      sanitizer.bypassSecurityTrustResourceUrl(`assets/asset_details_icon.svg`)
+    );
+
+    iconRegistry.addSvgIconInNamespace(
+      'assetViewer',
+      "title",
+      sanitizer.bypassSecurityTrustResourceUrl(`assets/asset_viewer_icon.svg`)
+    );
+
   }
 }

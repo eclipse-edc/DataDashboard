@@ -46,7 +46,7 @@ $orange-palette: mat.define-palette(mat.$orange-palette);
 $theming-material-components-primary: $magenta-palette;
 $theming-material-components-accent: $magenta-palette;
 $theming-material-components-warn: mat-palette($mat-red);
-$theming-material-components-typography: mat.define-typography-config($font-family: 'Open Sans');
+$theming-material-components-typography: mat.define-typography-config($font-family: 'Nunito Sans');
 
 $theme1: mat.define-light-theme((
   color: (
@@ -81,6 +81,10 @@ body.theme-2 {
   --primary-color-contrast: #{mat.get-contrast-color-from-palette($orange-palette, 500)};
 }
 
+:root {
+  --font-nunito: 'Courier New', sans-serif;
+  --font-quicksand: 'Quicksand', sans-serif;
+}
 
 .mat-form-field-appearance-outline .mat-form-field-outline {
   border-radius: 8px;

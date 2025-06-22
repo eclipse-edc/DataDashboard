@@ -6,24 +6,6 @@
   background-color: #fff;
 }
 
-/* === Dialog Header === */
-.dialog-header {
-  padding: 24px 32px 8px 32px;
-}
-
-.dialog-title {
-  font-size: 30px;
-  margin: 0 0 8px 0;
-  font-weight: 500;
-}
-
-/* === Dialog Content === */
-mat-dialog-content {
-  flex: 1 1 auto;
-  overflow: auto;
-  padding: 0 32px;
-}
-
 /* === Form Layout === */
 .form-row {
   display: flex;

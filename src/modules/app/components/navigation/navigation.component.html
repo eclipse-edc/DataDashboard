@@ -1,3 +1,4 @@
+<div class="layout-wrapper">
 <!-- ✅ Full-width toolbar across the top -->
 <mat-toolbar class="top-toolbar">
   <img alt="Logo" class="logo" />
@@ -9,8 +10,7 @@
     User name <mat-icon>expand_more</mat-icon>
   </button>
   <mat-menu #userMenu="matMenu">
-    <button mat-menu-item>Profile</button>
-    <button mat-menu-item>Logout</button>
+    <button mat-menu-item (click)="logout()">Logout</button>
   </mat-menu>
 </mat-toolbar>
 
@@ -55,3 +55,4 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+</div>

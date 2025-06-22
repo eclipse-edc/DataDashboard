@@ -46,5 +46,10 @@ export class NavigationComponent {
       this.ecosystem = Ecosystem.SEGITTUR;
     }
   }
+
+  logout(): void {
+    //TODO logout user, but what do we do after
+    this.keycloak.logout(window.location.origin);
+  }
 }
 

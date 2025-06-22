@@ -3,7 +3,7 @@
     <mat-card *ngFor="let contract of contracts" class="contract-card">
       <mat-card-header>
         <div mat-card-avatar class="contract-icon">
-          <mat-icon>link</mat-icon>
+          <mat-icon svgIcon="contracts:title"></mat-icon>
         </div>
         <mat-card-title [matTooltip]="contract.id" class="contract-title">
           {{ contract.id | truncate:16 }}
@@ -15,7 +15,7 @@
         <div class="contract-info-row">
           <!-- Asset -->
           <div class="contract-info-block">
-            <mat-icon>category</mat-icon>
+            <mat-icon svgIcon="contracts:asset"></mat-icon>
             <div class="contract-info-text">
               <div class="contract-label">ASSET</div>
               <div [matTooltip]="contract.assetId" class="contract-value">
@@ -26,7 +26,7 @@
 
           <!-- Signing Date -->
           <div class="contract-info-block">
-            <mat-icon>draw</mat-icon>
+            <mat-icon svgIcon="contracts:signing_date"></mat-icon>
             <div class="contract-info-text">
             <div class="contract-label">SIGNING DATE</div>
             <div class="contract-value">{{ asDate(contract.mandatoryValue('edc', 'contractSigningDate')) }}</div>
@@ -37,7 +37,7 @@
         <!-- Provider (below) -->
         <div class="contract-info-row provider-row">
           <div class="contract-info-block">
-            <mat-icon>person</mat-icon>
+            <mat-icon svgIcon="contracts:provider"></mat-icon>
             <div class="contract-info-text">
             <div class="contract-label">PROVIDER</div>
             <div class="contract-value">{{ contract.providerId }}</div>

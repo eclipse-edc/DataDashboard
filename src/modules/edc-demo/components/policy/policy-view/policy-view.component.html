@@ -25,11 +25,11 @@
     <mat-card *ngFor="let policy of policyDefinitions" class="card-element">
       <mat-card-header>
         <div mat-card-avatar class="card-icon">
-          <mat-icon>policy</mat-icon>
+          <mat-icon svgIcon="policy:title"></mat-icon>
         </div>
         <mat-card-title>
-          <span class="clickable-title" (click)="openPolicyDialog(policy)">
-            {{ policy['@id'] }}
+          <span class="clickable-title" [matTooltip]="policy['@id']" (click)="openPolicyDialog(policy)">
+            {{ policy['@id'] | truncate:20 }}
           </span>
         </mat-card-title>
         <mat-card-subtitle>Policy</mat-card-subtitle>

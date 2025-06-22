@@ -5,23 +5,6 @@
   height: 100%;
 }
 
-/* === Dialog Layout === */
-.dialog-header {
-  padding: 24px 32px 8px 32px;
-}
-
-.dialog-title {
-  font-size: 30px;
-  margin: 0 0 8px 0;
-  font-weight: 500;
-}
-
-mat-dialog-content {
-  flex: 1 1 auto;
-  overflow: auto;
-  padding: 0 32px;
-}
-
 /* === Form Fields === */
 .section-content.vertical-layout {
   display: flex;

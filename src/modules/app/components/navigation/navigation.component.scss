@@ -45,7 +45,7 @@
 
 .nav-label {
   font-size: 16px;
-  font-weight: normal;
+  font-weight: 400;
 }
 
 /* Shrink icon and reduce margin between icon and text */
@@ -83,9 +83,14 @@ mat-sidenav a[mat-list-item] mat-icon {
 .sidenav-container {
   flex: 1;
   height: calc(100% - 64px); // 64px is the toolbar height
+  background: transparent !important;
 }
 
 .sidenav {
   width: 300px;
 }
 
+.layout-wrapper {
+  position: relative;
+  z-index: 1;
+}

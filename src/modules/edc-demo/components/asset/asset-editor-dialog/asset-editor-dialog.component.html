@@ -24,14 +24,14 @@
       </div>
 
       <mat-form-field appearance="outline" class="form-field full-width">
-        <mat-label>Body</mat-label>
+        <mat-label>Description</mat-label>
         <textarea matInput rows="4" [(ngModel)]="assetMetadata.description" placeholder="Describe" required></textarea>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="form-field full-width">
         <mat-label>Ontology type</mat-label>
-        <mat-select [(ngModel)]="assetMetadata.ontologyType">
-          <mat-option value="Organisation">Organization</mat-option>
+        <mat-select [(ngModel)]="assetMetadata.ontologyType" required>
+          <mat-option value="Organization">Organization</mat-option>
           <mat-option value="TourismService">Tourism Service</mat-option>
           <mat-option value="TourismResource">Tourism Resource</mat-option>
         </mat-select>

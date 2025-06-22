@@ -6,8 +6,6 @@ html, body {
 
 body {
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 400;
 }
 
 .snackbar-info-style {
@@ -40,7 +38,6 @@ mat-icon {
 /* === Wrapper Classes === */
 .card-element-wrapper {
   padding: 24px 32px; // Adds equal left and right padding
-  background-color: #fff !important;
   color: #000 !important;
 }
 
@@ -61,18 +58,21 @@ mat-icon {
   mat-card-content {
     font-size: 14px;
     margin: 4px 0 0;
+    font-weight: 400;
     color: #444 !important;
     flex-grow: 1;
   }
 
   mat-card-title {
-    font-size: 16px;
-    font-weight: 600;
+    font-family: var(--font-quicksand), sans-serif !important;
+    font-size: 24px;
+    font-weight: 700;
     margin-bottom: 4px;
   }
 
   mat-card-subtitle {
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 400;
     color: #777 !important;
   }
 }
@@ -165,6 +165,26 @@ mat-icon {
 }
 /* === End of Search Bar === */
 
+/* === Dialog Layout === */
+.dialog-header {
+  padding: 40px;
+  gap: 32px;
+}
+
+.dialog-title {
+  font-size: 30px;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+mat-dialog-content {
+  flex: 1 1 auto;
+  overflow: auto;
+  gap: 44px;
+  padding: 0 32px !important;
+}
+/* === End of Dialog Layout === */
+
 /* === Buttons === */
 .cancel-button {
   color: var(--primary-color) !important;
@@ -235,3 +255,29 @@ body.theme-2 .logo {
   height: 40px;
   margin-right: 160px;
 }
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/assets/background.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.2;
+  transform: rotate(206.55deg);
+  z-index: -1;
+  pointer-events: none;
+}
+
+mat-sidenav-content {
+  background-color: transparent !important;
+}
+
+mat-toolbar {
+  background-color: transparent !important;
+}
+
