@@ -206,10 +206,10 @@ export class AssetEditorDialog implements OnInit {
       dataAddress = {
         "@type": "DataAddress",
         type: 'AzureStorage',
-        account: this.azureConfig.account,
+        accountName: this.azureConfig.account,
         container: this.azureConfig.container,
         blobname: this.azureConfig.blobName,
-        keyName: this.azureConfig.keyName
+        accountKey: this.azureConfig.keyName
       };
     }
 

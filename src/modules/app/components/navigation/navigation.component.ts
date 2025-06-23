@@ -51,9 +51,9 @@ export class NavigationComponent {
 
   private loadEcosystemClaim() {
     const tokenParsed = this.keycloak.getKeycloakInstance().tokenParsed;
-    const raw = tokenParsed?.['ecosystem'] as string;
-
-    if (raw === Ecosystem.ASTURIAS) {
+    const groups = tokenParsed?.['groups'] as string[];
+    console.log(tokenParsed);
+    if (groups?.includes(Ecosystem.ASTURIAS)) { //dih_asturias, save it to store the token.
       this.ecosystem = Ecosystem.ASTURIAS;
     } else {
       this.ecosystem = Ecosystem.SEGITTUR;

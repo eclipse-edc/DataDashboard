@@ -1,4 +1,4 @@
 export enum Ecosystem {
-  SEGITTUR = 'segittur',
-  ASTURIAS = 'asturias'
+  SEGITTUR = 'SEGITTUR',
+  ASTURIAS = 'DIH_ASTURIAS'
 }

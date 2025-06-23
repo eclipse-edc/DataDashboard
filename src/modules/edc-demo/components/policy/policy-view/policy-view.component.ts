@@ -8,6 +8,7 @@ import {NotificationService} from "../../../services/notification.service";
 import {ConfirmationDialogComponent, ConfirmDialogModel} from "../../confirmation-dialog/confirmation-dialog.component";
 import {PolicyDefinition, PolicyDefinitionInput, IdResponse, Asset} from "../../../../mgmt-api-client/model";
 import {PolicyDetailsDialogComponent} from "../policy-details-dialog/policy-details-dialog.component";
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-policy-view',
@@ -38,7 +39,9 @@ export class PolicyViewComponent implements OnInit {
   ngOnInit(): void {
     this.filteredPolicies$ = this.fetch$.pipe(
       switchMap(() => {
-        const policyDefinitions = this.policyService.queryAllPolicies();
+        const policyDefinitions = this.policyService.queryAllPolicies().pipe(
+          tap(policies => console.log('Fetched policy definitions:', policies))
+        );
         return !!this.searchText ?
           policyDefinitions.pipe(map(policies => policies.filter(policy => this.isFiltered(policy, this.searchText))))
           :
@@ -49,6 +52,7 @@ export class PolicyViewComponent implements OnInit {
   openPolicyDialog(policy: PolicyDefinition): void {
     const mergedPolicy = {
       '@id': policy['@id'],
+      "@context": policy['@context'],
       'edc:createdAt': policy.createdAt,
       ...policy.policy
     };
@@ -107,6 +111,28 @@ export class PolicyViewComponent implements OnInit {
       }
     });
   }
+
+  getBpnConstraint(policy: PolicyDefinition): string | null {
+    const edcPolicy = policy['https://w3id.org/edc/v0.0.1/ns/policy']?.[0];
+    //console.log('Raw edc:policy:', edcPolicy);
+    if (!edcPolicy) return '-';
+    const permission = edcPolicy?.['http://www.w3.org/ns/odrl/2/permission']?.[0];
+    if (!permission) return '-';
+    const constraint = permission?.['http://www.w3.org/ns/odrl/2/constraint']?.[0];
+    if (!constraint) return '-';
+    const leftOperand = constraint?.['http://www.w3.org/ns/odrl/2/leftOperand']?.[0];
+    if (!leftOperand) return '-';
+    const rightOperand = constraint?.['http://www.w3.org/ns/odrl/2/rightOperand']?.[0];
+    if (!rightOperand) return '-';
+
+    const leftOperandValue = leftOperand?.['@value'];
+    const rightOperandValue = rightOperand?.['@value'];
+
+    const isBpn = leftOperandValue.toString()?.includes('BusinessPartnerNumber');
+    //[0] -> @value
+    return isBpn && rightOperandValue ? `BPN: ${rightOperandValue}` : null;
+  }
+
 
   private showError(error: Error, errorMessage: string) {
     console.error(error);

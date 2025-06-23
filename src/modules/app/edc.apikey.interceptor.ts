@@ -18,6 +18,11 @@ export class EdcApiKeyInterceptor implements HttpInterceptor {
   protected _apiKey: string = "";
 
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(httpRequest.clone({setHeaders: {"X-Api-Key": this._apiKey}}));
+
+    return next.handle(httpRequest.clone({
+        setHeaders: {
+          "X-Api-Key": this._apiKey
+        }
+    }));
   }
 }

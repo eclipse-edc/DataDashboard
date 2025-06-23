@@ -90,10 +90,10 @@
     },
 
     "azureFields": {
-      "account": "Account",
-      "accountPlaceholder": "Select",
-      "keyName": "Key Name",
-      "keyNamePlaceholder": "Bucket",
+      "account": "Account Name",
+      "accountPlaceholder": "Enter account name",
+      "keyName": "Account Key",
+      "keyNamePlaceholder": "Enter account key",
       "container": "Container",
       "containerPlaceholder": "Name of the Container",
       "blobName": "Blob Name",
@@ -114,8 +114,7 @@
     "searchPlaceholder": "Search Policies",
     "createPolicy": "Create Policy",
     "policy": "Policy",
-    "constraints": "Constraints",
-    "bpnPlaceholder": "BPN: to be clarified"
+    "constraints": "Constraints"
   },
   "policyDetails": {
     "title": "Policy details",

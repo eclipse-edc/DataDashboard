@@ -37,7 +37,7 @@
 
       <mat-card-content>
         <div>{{ 'policyView.constraints' | translate }}</div>
-        <div class="bpn-line">{{ 'policyView.bpnPlaceholder' | translate }}</div>
+        <div class="bpn-line"> {{ getBpnConstraint(policy) || '-'}}</div>
       </mat-card-content>
     </mat-card>
   </div>
