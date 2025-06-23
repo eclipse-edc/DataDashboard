@@ -16,7 +16,5 @@ COPY --from=build /app/src/assets /usr/share/nginx/html/assets
 RUN chown -R nginx:nginx /usr/share/nginx/
 EXPOSE 80
 
-USER nginx
-
 HEALTHCHECK --interval=2s --timeout=5s --retries=10 \
   CMD curl -f http://localhost/ || exit 1
