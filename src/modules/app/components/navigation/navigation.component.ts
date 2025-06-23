@@ -6,6 +6,7 @@ import {Title} from '@angular/platform-browser';
 import {KeycloakService} from "keycloak-angular";
 import {Ecosystem} from "./ecosystem.enum";
 import {AppTitleService} from "../services/title.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-navigation',
@@ -17,15 +18,19 @@ export class NavigationComponent {
   ecosystem: Ecosystem = Ecosystem.SEGITTUR;
 
   pageTitle$!: Observable<string>;
+  currentLang = 'en';
+
 
   constructor(
     public titleService: AppTitleService,
     private breakpointObserver: BreakpointObserver,
-    private keycloak: KeycloakService
+    private keycloak: KeycloakService,
+    private translate: TranslateService
   ) {
     document.body.classList.remove('theme-1', 'theme-2');
     this.pageTitle$ = this.titleService.pageTitle$;
     this.loadEcosystemClaim();
+    this.currentLang = translate.currentLang || 'en';
 
     if (this.ecosystem === Ecosystem.SEGITTUR) {
       document.body.classList.add('theme-1');
@@ -37,6 +42,11 @@ export class NavigationComponent {
       map(result => result.matches),
       shareReplay()
     );
+  }
+
+  switchLanguage(lang: string): void {
+    this.translate.use(lang);
+    this.currentLang = lang;
   }
 
   private loadEcosystemClaim() {

@@ -6,6 +6,18 @@
 
     <span class="toolbar-spacer"></span>
 
+    <button mat-button class="language-button" [matMenuTriggerFor]="langMenu">
+      {{ currentLang | uppercase }}
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-menu #langMenu="matMenu">
+      <button mat-menu-item (click)="switchLanguage('en')">
+        English
+      </button>
+      <button mat-menu-item (click)="switchLanguage('es')">
+        Spanish
+      </button>
+    </mat-menu>
     <button mat-button class="user-button" [matMenuTriggerFor]="userMenu">
       {{ 'nav.username' | translate }} <mat-icon>expand_more</mat-icon>
     </button>
