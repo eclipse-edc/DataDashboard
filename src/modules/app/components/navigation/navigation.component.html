@@ -1,58 +1,61 @@
 <div class="layout-wrapper">
-<!-- ✅ Full-width toolbar across the top -->
-<mat-toolbar class="top-toolbar">
-  <img alt="Logo" class="logo" />
-  <span class="page-title">{{ titleService.getTitle() }}</span>
+  <!-- ✅ Full-width toolbar across the top -->
+  <mat-toolbar class="top-toolbar">
+    <img alt="Logo" class="logo" />
+    <span class="page-title">{{ pageTitle$ | async }}</span>
 
-  <span class="toolbar-spacer"></span>
+    <span class="toolbar-spacer"></span>
 
-  <button mat-button class="user-button" [matMenuTriggerFor]="userMenu">
-    User name <mat-icon>expand_more</mat-icon>
-  </button>
-  <mat-menu #userMenu="matMenu">
-    <button mat-menu-item (click)="logout()">Logout</button>
-  </mat-menu>
-</mat-toolbar>
+    <button mat-button class="user-button" [matMenuTriggerFor]="userMenu">
+      {{ 'nav.username' | translate }} <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        {{ 'nav.logout' | translate }}
+      </button>
+    </mat-menu>
+  </mat-toolbar>
 
-<!-- ✅ Sidenav below the top bar -->
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-               [mode]="(isHandset$ | async) ? 'over' : 'side'"
-               [opened]="(isHandset$ | async) === false">
 
-    <!-- Sidebar content -->
-    <mat-nav-list>
-      <!-- Provide Group -->
-      <div class="nav-group-title-provide">Provide</div>
+  <!-- ✅ Sidenav below the top bar -->
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport
+                 [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+                 [mode]="(isHandset$ | async) ? 'over' : 'side'"
+                 [opened]="(isHandset$ | async) === false">
+
+      <!-- Sidebar content -->
+      <mat-nav-list>
+        <!-- Provide Group -->
+        <div class="nav-group-title-provide">{{ 'nav.provide' | translate }}</div>
         <a mat-list-item class="mat-list-item-custom" routerLink="/my-assets">
           <mat-icon svgIcon="navigation:assets"></mat-icon>
-          <span class="nav-label">Assets</span>
+          <span class="nav-label">{{ 'nav.assets' | translate }}</span>
         </a>
         <a mat-list-item class="mat-list-item-custom" routerLink="/policies">
           <mat-icon svgIcon="navigation:policies"></mat-icon>
-          <span class="nav-label">Policies</span>
+          <span class="nav-label">{{ 'nav.policies' | translate }}</span>
         </a>
         <a mat-list-item class="mat-list-item-custom" routerLink="/contract-definitions">
           <mat-icon svgIcon="navigation:offers"></mat-icon>
-          <span class="nav-label">Offers</span>
+          <span class="nav-label">{{ 'nav.offers' | translate }}</span>
         </a>
 
-      <!-- Consume Group -->
-      <div class="nav-group-title-consume">Consume</div>
+        <!-- Consume Group -->
+        <div class="nav-group-title-consume">{{ 'nav.consume' | translate }}</div>
         <a mat-list-item class="mat-list-item-custom" routerLink="/contracts">
           <mat-icon svgIcon="navigation:contracts"></mat-icon>
-          <span class="nav-label">Contracts</span>
+          <span class="nav-label">{{ 'nav.contracts' | translate }}</span>
         </a>
         <a mat-list-item class="mat-list-item-custom" routerLink="/transfer-history">
           <mat-icon svgIcon="navigation:transfers"></mat-icon>
-          <span class="nav-label">Transfers</span>
+          <span class="nav-label">{{ 'nav.transfers' | translate }}</span>
         </a>
-    </mat-nav-list>
-  </mat-sidenav>
+      </mat-nav-list>
+    </mat-sidenav>
 
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

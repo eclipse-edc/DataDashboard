@@ -8,7 +8,7 @@
         <mat-card-title [matTooltip]="contract.id" class="contract-title">
           {{ contract.id | truncate:16 }}
         </mat-card-title>
-        <mat-card-subtitle>Description</mat-card-subtitle>
+        <mat-card-subtitle>{{ 'contracts.subtitle' | translate }}</mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
@@ -17,7 +17,7 @@
           <div class="contract-info-block">
             <mat-icon svgIcon="contracts:asset"></mat-icon>
             <div class="contract-info-text">
-              <div class="contract-label">ASSET</div>
+              <div class="contract-label">{{ 'contracts.asset' | translate }}</div>
               <div [matTooltip]="contract.assetId" class="contract-value">
                 {{ contract.assetId | truncate:16 }}
               </div>
@@ -28,8 +28,10 @@
           <div class="contract-info-block">
             <mat-icon svgIcon="contracts:signing_date"></mat-icon>
             <div class="contract-info-text">
-            <div class="contract-label">SIGNING DATE</div>
-            <div class="contract-value">{{ asDate(contract.mandatoryValue('edc', 'contractSigningDate')) }}</div>
+              <div class="contract-label">{{ 'contracts.signingDate' | translate }}</div>
+              <div class="contract-value">
+                {{ asDate(contract.mandatoryValue('edc', 'contractSigningDate')) }}
+              </div>
             </div>
           </div>
         </div>
@@ -39,18 +41,22 @@
           <div class="contract-info-block">
             <mat-icon svgIcon="contracts:provider"></mat-icon>
             <div class="contract-info-text">
-            <div class="contract-label">PROVIDER</div>
-            <div class="contract-value">{{ contract.providerId }}</div>
+              <div class="contract-label">{{ 'contracts.provider' | translate }}</div>
+              <div class="contract-value">{{ contract.providerId }}</div>
             </div>
           </div>
         </div>
 
-
         <!-- Transfer button -->
         <mat-card-actions class="card-actions">
-          <button (click)="onTransferClicked(contract)" [disabled]="isTransferInProgress(contract.id!)" color="accent" mat-stroked-button>
+          <button
+            (click)="onTransferClicked(contract)"
+            [disabled]="isTransferInProgress(contract.id!)"
+            color="accent"
+            mat-stroked-button
+          >
             <mat-icon>arrow_forward</mat-icon>
-            Transfer
+            {{ 'contracts.transfer' | translate }}
           </button>
         </mat-card-actions>
 
@@ -58,7 +64,6 @@
           <mat-progress-bar *ngIf="isTransferInProgress(contract.id!)" color="accent" mode="indeterminate"></mat-progress-bar>
         </mat-card-footer>
       </mat-card-content>
-
     </mat-card>
   </div>
 </div>

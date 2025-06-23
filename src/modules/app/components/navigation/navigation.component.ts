@@ -5,6 +5,7 @@ import {map, shareReplay} from 'rxjs/operators';
 import {Title} from '@angular/platform-browser';
 import {KeycloakService} from "keycloak-angular";
 import {Ecosystem} from "./ecosystem.enum";
+import {AppTitleService} from "../services/title.service";
 
 @Component({
   selector: 'app-navigation',
@@ -15,13 +16,15 @@ export class NavigationComponent {
   isHandset$!: Observable<boolean>;
   ecosystem: Ecosystem = Ecosystem.SEGITTUR;
 
+  pageTitle$!: Observable<string>;
+
   constructor(
-    public titleService: Title,
+    public titleService: AppTitleService,
     private breakpointObserver: BreakpointObserver,
     private keycloak: KeycloakService
   ) {
     document.body.classList.remove('theme-1', 'theme-2');
-
+    this.pageTitle$ = this.titleService.pageTitle$;
     this.loadEcosystemClaim();
 
     if (this.ecosystem === Ecosystem.SEGITTUR) {

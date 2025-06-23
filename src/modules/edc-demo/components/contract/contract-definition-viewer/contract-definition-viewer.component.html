@@ -5,7 +5,7 @@
         <input
           class="search-input"
           type="text"
-          placeholder="Search Data Offers"
+          [placeholder]="'contractView.searchPlaceholder' | translate"
           [(ngModel)]="searchText"
           (input)="onSearch()"
         />
@@ -17,7 +17,7 @@
 
     <button (click)="onCreate()" mat-raised-button class="create-button">
       <mat-icon>add</mat-icon>
-      Create Data Offer
+      {{ 'contractView.create' | translate }}
     </button>
   </div>
 
@@ -28,34 +28,33 @@
           <mat-icon svgIcon="dataOffer:title"></mat-icon>
         </div>
         <mat-card-title>
-        <span [matTooltip]="contractDefinition.id" >
-          {{ contractDefinition.id | truncate: 32 }}
-        </span>
+          <span [matTooltip]="contractDefinition.id">
+            {{ contractDefinition.id | truncate: 32 }}
+          </span>
         </mat-card-title>
-        <mat-card-subtitle>Data Offer</mat-card-subtitle>
+        <mat-card-subtitle>{{ 'contractView.subtitle' | translate }}</mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
         <div class="contract-detail-row">
           <div class="contract-detail">
-            <div class="detail-label">ACCESS POLICY</div>
+            <div class="detail-label">{{ 'contractView.accessPolicy' | translate }}</div>
             <div class="detail-value">{{ contractDefinition.accessPolicyId }}</div>
           </div>
 
           <div class="contract-detail">
-            <div class="detail-label">USAGE POLICY</div>
+            <div class="detail-label">{{ 'contractView.usagePolicy' | translate }}</div>
             <div class="detail-value">{{ contractDefinition.contractPolicyId }}</div>
           </div>
 
           <div class="contract-detail">
-            <div class="detail-label">ASSET NAME</div>
+            <div class="detail-label">{{ 'contractView.assetName' | translate }}</div>
             <div class="detail-value">
-              {{ contractDefinition.assetsSelector[0].mandatoryValue('edc', 'operandRight') || 'TO BE DEFINED' }}
+              {{ contractDefinition.assetsSelector[0].mandatoryValue('edc', 'operandRight') || ('contractView.toBeDefined' | translate) }}
             </div>
           </div>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
-
 </div>

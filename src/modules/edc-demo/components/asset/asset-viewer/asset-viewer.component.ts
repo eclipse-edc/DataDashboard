@@ -33,6 +33,27 @@ export class AssetViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // const dialogData = ConfirmDialogModel.forDelete("asset", `testNamespaces1`)
+    // const ref = this.dialog.open(ConfirmationDialogComponent, {
+    //   maxWidth: '90vw',
+    //   maxHeight: '90vh',
+    //   width: 'auto',
+    //   height: 'auto',
+    //   data: dialogData
+    // });
+    //
+    // ref.afterClosed().subscribe({
+    //   next: res => {
+    //     if (res) {
+    //       this.assetService.removeAsset('testNamespaces1').subscribe({
+    //         next: () => this.fetch$.next(null),
+    //         error: err => this.showError(err, "This asset cannot be deleted"),
+    //         complete: () => this.notificationService.showInfo("Successfully deleted")
+    //       });
+    //     }
+    //   }
+    // });
+
     this.filteredAssets$ = this.fetch$
       .pipe(
         switchMap(() => {

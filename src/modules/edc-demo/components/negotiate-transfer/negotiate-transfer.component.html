@@ -15,7 +15,7 @@
     <div class="detail-item">
       <mat-icon class="detail-icon" svgIcon="negotiate:properties"></mat-icon>
       <div>
-        <div class="detail-label">ONTOLOGY TYPE</div>
+        <div class="detail-label">{{ 'negotiation.ontologyType' | translate }}</div>
         <div class="detail-value">{{ asset.ontologyType }}</div>
       </div>
     </div>
@@ -23,7 +23,7 @@
     <div class="detail-item">
       <mat-icon class="detail-icon" svgIcon="negotiate:properties"></mat-icon>
       <div>
-        <div class="detail-label">ORGANIZATION</div>
+        <div class="detail-label">{{ 'negotiation.organization' | translate }}</div>
         <div class="detail-value">Segittur</div> <!-- hardcoded for mock -->
       </div>
     </div>
@@ -32,9 +32,9 @@
 
 <mat-dialog-actions align="end">
   <button mat-stroked-button class="cancel-button" mat-dialog-close>
-    Cancel
+    {{ 'negotiation.cancel' | translate }}
   </button>
   <button class="create-button" mat-flat-button color="primary" (click)="startNegotiation()">
-    Negotiate
+    {{ 'negotiation.negotiate' | translate }}
   </button>
 </mat-dialog-actions>

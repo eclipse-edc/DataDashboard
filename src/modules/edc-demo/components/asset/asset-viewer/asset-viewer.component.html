@@ -5,7 +5,7 @@
         <input
           class="search-input"
           type="text"
-          placeholder="Search Assets"
+          [placeholder]="'asset.searchPlaceholder' | translate"
           [(ngModel)]="searchText"
           (input)="onSearch()"
         />
@@ -17,7 +17,7 @@
 
     <button (click)="onCreate()" mat-raised-button class="create-button">
       <mat-icon>add</mat-icon>
-      Create Asset
+      {{ 'asset.createButton' | translate }}
     </button>
   </div>
 
@@ -29,7 +29,7 @@
         </div>
         <mat-card-title>
           <span class="clickable-title" [matTooltip]="asset.properties.optionalValue('dcterms', 'title') || ''" (click)="openAssetDialog(asset)">
-            {{ (asset.properties.optionalValue('dcterms', 'title') || '') | truncate: 24 }}
+            {{ (asset.properties.optionalValue('edc', 'id') || '') | truncate: 24 }}
           </span>
         </mat-card-title>
         <mat-card-subtitle [matTooltip]="asset.id">{{ asset.id | truncate: 24 }}</mat-card-subtitle>
@@ -42,5 +42,4 @@
       <mat-progress-bar *ngIf="isBusy()" color="accent" mode="indeterminate"></mat-progress-bar>
     </mat-card>
   </div>
-
 </div>

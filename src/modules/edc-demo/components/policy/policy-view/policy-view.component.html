@@ -5,7 +5,7 @@
         <input
           class="search-input"
           type="text"
-          placeholder="Search Policies"
+          [placeholder]="'policyView.searchPlaceholder' | translate"
           [(ngModel)]="searchText"
           (input)="onSearch()"
         />
@@ -17,7 +17,7 @@
 
     <button (click)="onCreate()" mat-raised-button class="create-button">
       <mat-icon>add</mat-icon>
-      Create Policy
+      {{ 'policyView.createPolicy' | translate }}
     </button>
   </div>
 
@@ -32,12 +32,12 @@
             {{ policy['@id'] | truncate:20 }}
           </span>
         </mat-card-title>
-        <mat-card-subtitle>Policy</mat-card-subtitle>
+        <mat-card-subtitle>{{ 'policyView.policy' | translate }}</mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
-        <div>Constraints</div>
-        <div class="bpn-line">BPN: to be clarified</div>
+        <div>{{ 'policyView.constraints' | translate }}</div>
+        <div class="bpn-line">{{ 'policyView.bpnPlaceholder' | translate }}</div>
       </mat-card-content>
     </mat-card>
   </div>

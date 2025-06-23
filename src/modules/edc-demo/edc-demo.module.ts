@@ -58,6 +58,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getCustomPaginatorIntl } from './components/transfer-history/custom-paginator-intl';
 import {MatChipsModule} from "@angular/material/chips";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   imports: [
@@ -90,6 +91,7 @@ import {MatChipsModule} from "@angular/material/chips";
     MatCheckboxModule,
     MatTooltipModule,
     MatChipsModule,
+    TranslateModule
   ],
   declarations: [
     CatalogBrowserComponent,

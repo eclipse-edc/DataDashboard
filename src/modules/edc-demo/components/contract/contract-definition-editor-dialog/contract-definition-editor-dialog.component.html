@@ -1,5 +1,5 @@
 <div class="dialog-header">
-  <h2 class="dialog-title">Create Data Offer</h2>
+  <h2 class="dialog-title">{{ 'contractDialog.title' | translate }}</h2>
 </div>
 
 <mat-dialog-content>
@@ -8,18 +8,18 @@
 
       <!-- ID -->
       <mat-form-field appearance="outline" class="form-field full-width">
-        <mat-label>ID</mat-label>
+        <mat-label>{{ 'contractDialog.id' | translate }}</mat-label>
         <input
           matInput
           [(ngModel)]="contractDefinition['@id']"
-          placeholder="Type"
+          [placeholder]="'contractDialog.idPlaceholder' | translate"
           required
         />
       </mat-form-field>
 
       <!-- Access Policy -->
       <mat-form-field appearance="outline" class="form-field full-width">
-        <mat-label>Access Policy</mat-label>
+        <mat-label>{{ 'contractDialog.accessPolicy' | translate }}</mat-label>
         <mat-select [(ngModel)]="accessPolicy" required>
           <mat-option *ngFor="let policy of policies" [value]="policy">
             {{ policy['@id'] }}
@@ -29,7 +29,7 @@
 
       <!-- Usage Policy -->
       <mat-form-field appearance="outline" class="form-field full-width">
-        <mat-label>Usage policy</mat-label>
+        <mat-label>{{ 'contractDialog.usagePolicy' | translate }}</mat-label>
         <mat-select [(ngModel)]="contractPolicy" required>
           <mat-option *ngFor="let policy of policies" [value]="policy">
             {{ policy['@id'] }}
@@ -39,7 +39,7 @@
 
       <!-- Assets -->
       <mat-form-field appearance="outline" class="form-field full-width">
-        <mat-label>Assets</mat-label>
+        <mat-label>{{ 'contractDialog.assets' | translate }}</mat-label>
         <mat-select [(ngModel)]="assets" required>
           <mat-option *ngFor="let asset of availableAssets" [value]="asset">
             {{ asset.id }}
@@ -48,17 +48,18 @@
       </mat-form-field>
 
       <div class="checkbox-row">
-        <mat-checkbox [(ngModel)]="publishToMarketplace">Publish to Marketplace</mat-checkbox>
+        <mat-checkbox [(ngModel)]="publishToMarketplace">
+          {{ 'contractDialog.publish' | translate }}
+        </mat-checkbox>
       </div>
 
     </div>
   </div>
 </mat-dialog-content>
 
-
 <mat-dialog-actions align="end">
   <button mat-stroked-button class="cancel-button" mat-dialog-close>
-    Cancel
+    {{ 'contractDialog.cancel' | translate }}
   </button>
 
   <button
@@ -67,6 +68,6 @@
     [disabled]="!isFormValid"
     (click)="onSave()"
   >
-    Create
+    {{ 'contractDialog.create' | translate }}
   </button>
 </mat-dialog-actions>
