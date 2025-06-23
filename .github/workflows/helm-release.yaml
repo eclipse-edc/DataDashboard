@@ -32,6 +32,13 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Update helm dependencies for portal
+        run: |
+          cd charts/portal
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add hashicorp https://helm.releases.hashicorp.com
+          helm dependency update
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
