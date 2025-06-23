@@ -32,9 +32,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update helm dependencies for portal
+      - name: Update helm dependencies for EDC Umbrella
         run: |
-          cd charts/portal
+          cd charts/edc-ui-umbrella
           helm repo add bitnami https://charts.bitnami.com/bitnami
           helm repo add hashicorp https://helm.releases.hashicorp.com
           helm dependency update
