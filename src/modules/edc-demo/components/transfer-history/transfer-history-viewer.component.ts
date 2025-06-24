@@ -114,7 +114,10 @@ export class TransferHistoryViewerComponent implements OnInit {
     dialogData.cancelText = 'Abort';
 
     const ref = this.dialog.open(ConfirmationDialogComponent, {
-      maxWidth: '20%',
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      width: 'auto',
+      height: 'auto',
       data: dialogData
     });
 

@@ -50,7 +50,6 @@ export class PolicyViewComponent implements OnInit {
   }
 
   openPolicyDialog(policy: PolicyDefinition): void {
-    console.log(policy);
     const mergedPolicy = {
       '@id': policy['@id'],
       "@context": policy['@context'],
@@ -60,6 +59,10 @@ export class PolicyViewComponent implements OnInit {
 
     this.dialog.open(PolicyDetailsDialogComponent, {
       data: { policy: mergedPolicy }
+    }).afterClosed().subscribe(result => {
+      if (result?.delete) {
+        this.delete(policy);
+      }
     });
   }
 
@@ -96,7 +99,13 @@ export class PolicyViewComponent implements OnInit {
     let policyId = policy['@id']!;
     const dialogData = ConfirmDialogModel.forDelete("policy", policyId);
 
-    const ref = this.dialog.open(ConfirmationDialogComponent, {maxWidth: '20%', data: dialogData});
+    const ref = this.dialog.open(ConfirmationDialogComponent, {
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      width: 'auto',
+      height: 'auto',
+      data: dialogData
+    });
 
     ref.afterClosed().subscribe({
 
