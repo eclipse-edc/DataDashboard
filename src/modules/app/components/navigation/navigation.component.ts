@@ -26,7 +26,6 @@ export class NavigationComponent {
     { code: 'eu', label: 'Basque' }
   ];
 
-
   constructor(
     public titleService: AppTitleService,
     private breakpointObserver: BreakpointObserver,
@@ -52,7 +51,6 @@ export class NavigationComponent {
     const lang = this.languages.find(l => l.code === langCode);
     this.currentLang = lang?.label || langCode;
   }
-
 
   private loadEcosystemClaim() {
     const tokenParsed = this.keycloak.getKeycloakInstance().tokenParsed;
