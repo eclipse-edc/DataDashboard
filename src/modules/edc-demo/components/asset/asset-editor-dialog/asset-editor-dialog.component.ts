@@ -5,6 +5,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { AssetInput } from '@think-it-labs/edc-connector-client';
 import { StorageType } from '../../../models/storage-type';
 import { NS, CONTEXT_MAP } from '../../namespaces';
+import {EcosystemService} from "../../../../app/components/services/ecosystem.service";
 
 @Component({
   selector: 'edc-demo-asset-editor-dialog',
@@ -52,7 +53,7 @@ export class AssetEditorDialog implements OnInit {
 
   azureConfig = {
     account: '',
-    keyName: '',
+    sasToken: '',
     container: '',
     blobName: ''
   };
@@ -64,7 +65,8 @@ export class AssetEditorDialog implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<AssetEditorDialog>,
-    @Inject('STORAGE_TYPES') public storageTypes: StorageType[]
+    @Inject('STORAGE_TYPES') public storageTypes: StorageType[],
+    private ecosystemService: EcosystemService
   ) {}
 
   ngOnInit(): void {}
@@ -115,7 +117,7 @@ export class AssetEditorDialog implements OnInit {
           && !!this.s3Config.secretKey?.trim();
       case 'azure':
         return !!this.azureConfig.account?.trim()
-          && !!this.azureConfig.keyName?.trim()
+          && !!this.azureConfig.sasToken?.trim()
           && !!this.azureConfig.container?.trim()
           && !!this.azureConfig.blobName?.trim();
       default:
@@ -158,7 +160,7 @@ export class AssetEditorDialog implements OnInit {
     this.s3Config.secretKey = '';
 
     this.azureConfig.account = '';
-    this.azureConfig.keyName = '';
+    this.azureConfig.sasToken = '';
     this.azureConfig.container = '';
     this.azureConfig.blobName = '';
   }
@@ -209,13 +211,14 @@ export class AssetEditorDialog implements OnInit {
         accountName: this.azureConfig.account,
         container: this.azureConfig.container,
         blobname: this.azureConfig.blobName,
-        accountKey: this.azureConfig.keyName
+        accountKey: this.azureConfig.sasToken
       };
     }
 
     const assetInput: AssetInput = {
       "@id": this.assetMetadata.id,
       "@context": CONTEXT_MAP,
+      [`${NS.SEGITTUR}ecosystem`]: this.ecosystemService.ecosystem?.toLowerCase(),
       properties: {
         [`${NS.DCTERMS}title`]: this.assetMetadata.name,
         [`${NS.DCTERMS}description`]: this.assetMetadata.description,

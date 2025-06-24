@@ -90,12 +90,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       useFactory: () => [{id: "AzureStorage", name: "AzureStorage"}, {id: "AmazonS3", name: "AmazonS3"}],
     },
     {
-      provide: HTTP_INTERCEPTORS, multi: true, useFactory: () => {
-        let i = new EdcApiKeyInterceptor();
-        // TODO: read this from app.config.json??
-        i.apiKey = environment.apiKey
-        return i;
-      }, deps: [AppConfigService]
+      provide: HTTP_INTERCEPTORS,
+      useClass: EdcApiKeyInterceptor,
+      multi: true
     },
     {
       provide: EdcConnectorClient,

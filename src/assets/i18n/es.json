@@ -92,8 +92,8 @@
     "azureFields": {
       "account": "Nombre de la cuenta",
       "accountPlaceholder": "Introduce el nombre de la cuenta",
-      "keyName": "Clave de la cuenta",
-      "keyNamePlaceholder": "Introduce la clave de la cuenta",
+      "sasToken": "Token SAS",
+      "sasTokenPlaceholder": "Introduce el token SAS",
       "container": "Contenedor",
       "containerPlaceholder": "Nombre del contenedor",
       "blobName": "Nombre del blob",

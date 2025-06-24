@@ -7,6 +7,7 @@ import {KeycloakService} from "keycloak-angular";
 import {Ecosystem} from "./ecosystem.enum";
 import {AppTitleService} from "../services/title.service";
 import {TranslateService} from "@ngx-translate/core";
+import {EcosystemService} from "../services/ecosystem.service";
 
 @Component({
   selector: 'app-navigation',
@@ -15,28 +16,22 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class NavigationComponent {
   isHandset$!: Observable<boolean>;
-  ecosystem: Ecosystem = Ecosystem.SEGITTUR;
-
   pageTitle$!: Observable<string>;
   currentLang = 'en';
-
 
   constructor(
     public titleService: AppTitleService,
     private breakpointObserver: BreakpointObserver,
     private keycloak: KeycloakService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private ecosystemService: EcosystemService
   ) {
     document.body.classList.remove('theme-1', 'theme-2');
     this.pageTitle$ = this.titleService.pageTitle$;
     this.loadEcosystemClaim();
     this.currentLang = translate.currentLang || 'en';
 
-    if (this.ecosystem === Ecosystem.SEGITTUR) {
-      document.body.classList.add('theme-1');
-    } else if (this.ecosystem === Ecosystem.ASTURIAS) {
-      document.body.classList.add('theme-2');
-    }
+    this.ecosystemService.applyEcosystemSettings();
 
     this.isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
       map(result => result.matches),
@@ -52,16 +47,15 @@ export class NavigationComponent {
   private loadEcosystemClaim() {
     const tokenParsed = this.keycloak.getKeycloakInstance().tokenParsed;
     const groups = tokenParsed?.['groups'] as string[];
-    console.log(tokenParsed);
-    if (groups?.includes(Ecosystem.ASTURIAS)) { //dih_asturias, save it to store the token.
-      this.ecosystem = Ecosystem.ASTURIAS;
+
+    if (groups?.includes(Ecosystem.ASTURIAS)) {
+      this.ecosystemService.ecosystem = Ecosystem.ASTURIAS;
     } else {
-      this.ecosystem = Ecosystem.SEGITTUR;
+      this.ecosystemService.ecosystem = Ecosystem.SEGITTUR;
     }
   }
 
   logout(): void {
-    //TODO logout user, but what do we do after
     this.keycloak.logout(window.location.origin);
   }
 }

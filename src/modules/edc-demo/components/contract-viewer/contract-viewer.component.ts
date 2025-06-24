@@ -58,12 +58,12 @@ export class ContractViewerComponent implements OnInit {
     this.router.routerState.root.queryParams
       .pipe(first())
       .subscribe(params => {
-        const counterParty = params['CounterParty'];
+        const providerUrl = params['providerUrl'];
         const assetId = params['assetId'];
 
-        if (counterParty && assetId) {
+        if (providerUrl && assetId) {
           this.dialog.open(NegotiateTransferComponent, {
-            data: { counterParty, assetId }
+            data: { providerUrl, assetId }
           });
         }
       });

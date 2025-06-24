@@ -188,8 +188,8 @@
       <input matInput [(ngModel)]="azureConfig.account" placeholder="{{ 'assetEditor.azureFields.accountPlaceholder' | translate }}" required />
     </mat-form-field>
     <mat-form-field appearance="outline" class="form-field">
-      <mat-label>{{ 'assetEditor.azureFields.keyName' | translate }}</mat-label>
-      <input matInput [(ngModel)]="azureConfig.keyName" placeholder="{{ 'assetEditor.azureFields.keyNamePlaceholder' | translate }}" required />
+      <mat-label>{{ 'assetEditor.azureFields.sasToken' | translate }}</mat-label>
+      <input matInput [(ngModel)]="azureConfig.sasToken" placeholder="{{ 'assetEditor.azureFields.sasTokenPlaceholder' | translate }}" type="password" required />
     </mat-form-field>
   </div>
 
@@ -197,10 +197,6 @@
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>{{ 'assetEditor.azureFields.container' | translate }}</mat-label>
       <input matInput [(ngModel)]="azureConfig.container" placeholder="{{ 'assetEditor.azureFields.containerPlaceholder' | translate }}" required />
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>{{ 'assetEditor.azureFields.blobName' | translate }}</mat-label>
-      <input matInput [(ngModel)]="azureConfig.blobName" placeholder="{{ 'assetEditor.azureFields.blobNamePlaceholder' | translate }}" required />
     </mat-form-field>
   </div>
 </ng-template>
