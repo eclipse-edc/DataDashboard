@@ -25,6 +25,7 @@ export class NavigationComponent {
     { code: 'gl', label: 'Galician' },
     { code: 'eu', label: 'Basque' }
   ];
+  username: string | undefined;
 
   constructor(
     public titleService: AppTitleService,
@@ -55,6 +56,8 @@ export class NavigationComponent {
   private loadEcosystemClaim() {
     const tokenParsed = this.keycloak.getKeycloakInstance().tokenParsed;
     const groups = tokenParsed?.['groups'] as string[];
+
+    this.username = tokenParsed?.name || 'User';
 
     if (groups?.includes(Ecosystem.ASTURIAS)) {
       this.ecosystemService.ecosystem = Ecosystem.ASTURIAS;

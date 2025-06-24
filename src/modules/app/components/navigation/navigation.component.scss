@@ -70,6 +70,7 @@ mat-sidenav a[mat-list-item] mat-icon {
 }
 
 .nav-group-title-provide {
+  font-family: var(--font-nunito), sans-serif;
   font-size: 24px; // slightly larger
   font-weight: normal; // not bold
   text-transform: none; // no uppercase
@@ -79,6 +80,7 @@ mat-sidenav a[mat-list-item] mat-icon {
 }
 
 .nav-group-title-consume {
+  font-family: var(--font-nunito), sans-serif;
   font-size: 24px; // slightly larger
   font-weight: normal; // not bold
   text-transform: none; // no uppercase

@@ -16,7 +16,7 @@
       </button>
     </mat-menu>
     <button mat-button class="user-button" [matMenuTriggerFor]="userMenu">
-      {{ 'nav.username' | translate }} <mat-icon>expand_more</mat-icon>
+      {{ username }} <mat-icon>expand_more</mat-icon>
     </button>
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item (click)="logout()">
@@ -26,7 +26,7 @@
   </mat-toolbar>
 
 
-  <!-- ✅ Sidenav below the top bar -->
+  <!-- Sidenav below the top bar -->
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #drawer class="sidenav" fixedInViewport
                  [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
