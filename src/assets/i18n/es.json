@@ -129,6 +129,7 @@
     "restrictAccess": "Restringir acceso a los siguientes BPN",
     "publicAccess": "Todos deberían tener acceso (establecer como público)",
     "bpn": "Número de Socio Comercial",
+    "addBpn": "Introduce el BPN",
     "cancel": "Cancelar",
     "create": "Crear"
   },

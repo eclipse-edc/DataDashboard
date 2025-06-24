@@ -50,11 +50,12 @@ export class PolicyViewComponent implements OnInit {
   }
 
   openPolicyDialog(policy: PolicyDefinition): void {
+    console.log(policy);
     const mergedPolicy = {
       '@id': policy['@id'],
       "@context": policy['@context'],
       'edc:createdAt': policy.createdAt,
-      ...policy.policy
+      ...policy['edc:policy']
     };
 
     this.dialog.open(PolicyDetailsDialogComponent, {
@@ -113,25 +114,24 @@ export class PolicyViewComponent implements OnInit {
   }
 
   getBpnConstraint(policy: PolicyDefinition): string | null {
-    const edcPolicy = policy['https://w3id.org/edc/v0.0.1/ns/policy']?.[0];
-    //console.log('Raw edc:policy:', edcPolicy);
-    if (!edcPolicy) return '-';
-    const permission = edcPolicy?.['http://www.w3.org/ns/odrl/2/permission']?.[0];
-    if (!permission) return '-';
-    const constraint = permission?.['http://www.w3.org/ns/odrl/2/constraint']?.[0];
-    if (!constraint) return '-';
-    const leftOperand = constraint?.['http://www.w3.org/ns/odrl/2/leftOperand']?.[0];
-    if (!leftOperand) return '-';
-    const rightOperand = constraint?.['http://www.w3.org/ns/odrl/2/rightOperand']?.[0];
-    if (!rightOperand) return '-';
+    const edcPolicy = policy['edc:policy'];
+    if (!edcPolicy) return null;
 
-    const leftOperandValue = leftOperand?.['@value'];
-    const rightOperandValue = rightOperand?.['@value'];
+    const permission = edcPolicy['odrl:permission'];
+    if (!permission) return null;
+    const constraint = permission['odrl:constraint'];
+    if (!constraint) return null;
 
-    const isBpn = leftOperandValue.toString()?.includes('BusinessPartnerNumber');
-    //[0] -> @value
+    const leftOperandValue = constraint['odrl:leftOperand'];
+    if (!leftOperandValue) return null;
+    const rightOperandValue = constraint['odrl:rightOperand'];
+    if (!rightOperandValue) return null;
+
+    const isBpn = leftOperandValue?.toString().includes('BusinessPartnerNumber');
+
     return isBpn && rightOperandValue ? `BPN: ${rightOperandValue}` : null;
   }
+
 
 
   private showError(error: Error, errorMessage: string) {

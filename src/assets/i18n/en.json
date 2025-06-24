@@ -129,6 +129,7 @@
     "restrictAccess": "Restrict access to the following BPNs",
     "publicAccess": "Everyone should have access (set it to public)",
     "bpn": "Business Partner Number",
+    "addBpn": "Enter BPN",
     "cancel": "Cancel",
     "create": "Create"
   },

@@ -41,15 +41,28 @@
         </label>
       </div>
 
-      <!-- BPN Input (only if restricted) -->
+      <!-- BPN Chip Input (only if restricted) -->
       <mat-form-field
         *ngIf="accessOption === 'bpn'"
         appearance="outline"
         class="form-field full-width"
       >
         <mat-label>{{ 'policyEditor.bpn' | translate }}</mat-label>
-        <input matInput [(ngModel)]="businessPartnerNumber" required />
+        <mat-chip-grid #bpnGrid aria-label="BPN input">
+          <mat-chip *ngFor="let bpn of businessPartnerNumbers" [removable]="true" (removed)="removeBpn(bpn)">
+            {{ bpn }}
+            <button matChipRemove><mat-icon>cancel</mat-icon></button>
+          </mat-chip>
+          <input
+            placeholder="{{ 'policyEditor.addBpn' | translate }}"
+            [matChipInputFor]="bpnGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="true"
+            (matChipInputTokenEnd)="addBpn($event)"
+          />
+        </mat-chip-grid>
       </mat-form-field>
+
     </div>
   </div>
 </mat-dialog-content>
