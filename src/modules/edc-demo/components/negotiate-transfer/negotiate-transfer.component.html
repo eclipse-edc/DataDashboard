@@ -34,7 +34,12 @@
   <button mat-stroked-button class="cancel-button" mat-dialog-close>
     {{ 'negotiation.cancel' | translate }}
   </button>
-  <button class="create-button" mat-flat-button color="primary" (click)="startNegotiation()">
+  <button
+    class="create-button"
+    mat-flat-button
+    color="primary"
+    [disabled]="!isNegotiationReady"
+    (click)="startNegotiation()">
     {{ 'negotiation.negotiate' | translate }}
   </button>
 </mat-dialog-actions>

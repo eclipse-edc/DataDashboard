@@ -41,6 +41,8 @@ export class NegotiateTransferComponent implements OnInit {
     ContractNegotiation
   >();
   private pollingHandleNegotiation?: any;
+  isNegotiationReady: boolean = false;
+
 
   constructor(
     private dialogRef: MatDialogRef<NegotiateTransferComponent>,
@@ -90,11 +92,13 @@ export class NegotiateTransferComponent implements OnInit {
         if (this.matchedDataset) {
           this.extractDatasetProperties(this.matchedDataset);
         }
+        this.isNegotiationReady = !!this.matchedDataset && !!this.participantId;
       },
       error: (err) => {
-        console.error('❌ Failed to fetch catalog:', err);
+        console.error('Failed to fetch catalog:', err);
       }
     });
+
   }
 
   private extractParticipantId(result: any): string | null {
@@ -192,13 +196,10 @@ export class NegotiateTransferComponent implements OnInit {
                       this.finishedNegotiations.set(negotiation.offerId, updatedNegotiation);
 
                       this.notificationService.showInfo(
-                        'Contract Negotiation complete!',
-                        'Show me!',
-                        () => {
-                          this.dialogRef.close({ refreshList: true });
-                          this.router.navigate(['/contracts']);
-                        }
+                        'Contract Negotiation complete!'
                       );
+                      this.dialogRef.close({ refreshList: true });
+                      this.router.navigate(['/contracts']);
                     } else if (state === 'TERMINATED') {
                       this.notificationService.showError('Negotiation terminated.');
                     }
@@ -210,7 +211,7 @@ export class NegotiateTransferComponent implements OnInit {
                   }
                 },
                 error => {
-                  console.error("❌ Error polling negotiation:", error);
+                  console.error("Error polling negotiation:", error);
                 }
               );
             }
@@ -218,7 +219,7 @@ export class NegotiateTransferComponent implements OnInit {
         }
       },
       error: err => {
-        console.error("❌ Negotiation initiation failed:", err);
+        console.error("Negotiation initiation failed:", err);
         this.notificationService.showError("Failed to initiate negotiation.");
       }
     });

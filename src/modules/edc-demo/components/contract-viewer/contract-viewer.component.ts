@@ -68,7 +68,28 @@ export class ContractViewerComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getConnectorAddressData();
-    this.contracts$ = this.contractAgreementService.queryAllAgreements().pipe(
+    this.refreshContracts();
+
+    this.router.routerState.root.queryParams
+      .pipe(first())
+      .subscribe(params => {
+        const providerUrl = params['providerUrl'];
+        const assetId = params['assetId'];
+
+        if (providerUrl && assetId) {
+          this.dialog.open(NegotiateTransferComponent, {
+            data: { providerUrl, assetId }
+          }).afterClosed().pipe(first()).subscribe(result => {
+            if (result?.refreshList) {
+              this.refreshContracts();
+            }
+          });
+        }
+      });
+  }
+
+  refreshContracts(): void {
+    this.contractAgreementService.queryAllAgreements().pipe(
       map((allContracts: ContractAgreement[]) => {
         const negotiationData = this.contractNegotiationData || [];
 
@@ -87,27 +108,14 @@ export class ContractViewerComponent implements OnInit {
         }, []);
       }),
       catchError(err => {
-        console.error('❌ Failed fetching contracts:', err);
+        console.error('Failed fetching contracts:', err);
         return of([]);
       })
-    );
-
-    // This stays — handles queryParams opening the negotiation dialog
-    this.router.routerState.root.queryParams
-      .pipe(first())
-      .subscribe(params => {
-        const providerUrl = params['providerUrl'];
-        const assetId = params['assetId'];
-
-        this.dialog.open(NegotiateTransferComponent, {
-          data: { providerUrl, assetId }
-        }).afterClosed().pipe(first()).subscribe(result => {
-          if (result?.refreshList) {
-            this.ngOnInit(); // or trigger a separate refresh method if needed
-          }
-        });
-      });
+    ).subscribe(filteredContracts => {
+      this.contracts$ = of(filteredContracts);
+    });
   }
+
 
   asDate(epochSeconds?: number): string {
     if(epochSeconds){
