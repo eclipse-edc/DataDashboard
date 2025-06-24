@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  consumer-connector:
+    build: connector
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
+    ports:
+      - "19191:9191" # connector default
+      - "19192:9192" # connector control
+      - "19193:9193" # connector management
+      - "19194:9194" # connector protocol
+      - "19291:9291" # data-plane public
+    environment:
+      EDC_VAULT: /config/vault.properties
+      EDC_KEYSTORE: /config/vault-keys.p12
+      EDC_KEYSTORE_PASSWORD: 123456
+      EDC_FS_CONFIG: /config/configuration.properties
+    volumes:
+      - ./conf/consumer-connector.config:/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  provider-connector:
+    build: connector
+    platform: ${DOCKER_PLATFORM:-linux/amd64}
+    ports:
+      - "29191:9191" # connector default
+      - "29192:9192" # connector control
+      - "29193:9193" # connector management
+      - "29194:9194" # connector protocol
+      - "29291:9291" # data-plane public
+    environment:
+      EDC_VAULT: /config/vault.properties
+      EDC_KEYSTORE: /config/vault-keys.p12
+      EDC_KEYSTORE_PASSWORD: 123456
+      EDC_FS_CONFIG: /config/configuration.properties
+    volumes:
+      - ./conf/provider-connector.config:/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
