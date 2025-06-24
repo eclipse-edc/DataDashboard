@@ -3,6 +3,8 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Observable} from 'rxjs';
 import {KeycloakService} from "keycloak-angular";
 import {AppConfigService} from "./app-config.service";
+import { environment } from 'src/environments/environment';
+
 
 @Injectable()
 export class EdcApiKeyInterceptor implements HttpInterceptor {
@@ -28,7 +30,7 @@ export class EdcApiKeyInterceptor implements HttpInterceptor {
     //     Authorization: `Bearer ${token}`
     //   }
     // }));
-    this._apiKey = this.configService.getConfig()?.apiKey ?? '';
+    this._apiKey = environment.apiKey;
     return next.handle(httpRequest.clone({
         setHeaders: {
           "X-Api-Key": this._apiKey
