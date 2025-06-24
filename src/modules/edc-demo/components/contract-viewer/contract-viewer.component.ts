@@ -2,12 +2,13 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {
   AssetService,
   ContractAgreementService,
+  ContractNegotiationService,
   TransferProcessService
 } from "../../../mgmt-api-client";
 import {from, Observable, of} from "rxjs";
-import { Asset, ContractAgreement, TransferProcessInput, IdResponse } from "../../../mgmt-api-client/model";
+import {ContractAgreement, IdResponse} from "../../../mgmt-api-client/model";
 import {ContractOffer} from "../../models/contract-offer";
-import {filter, first, map, switchMap, tap} from "rxjs/operators";
+import {catchError, filter, first, map, switchMap, tap} from "rxjs/operators";
 import {NotificationService} from "../../services/notification.service";
 import {
   CatalogBrowserTransferDialog
@@ -17,6 +18,8 @@ import {CatalogBrowserService} from "../../services/catalog-browser.service";
 import {Router} from "@angular/router";
 import {TransferProcessStates} from "../../models/transfer-process-states";
 import {NegotiateTransferComponent} from "../negotiate-transfer/negotiate-transfer.component";
+import {ContractNegotiation} from "@think-it-labs/edc-connector-client"
+import {TransferRequest} from "./transferRequest";
 
 interface RunningTransferProcess {
   processId: string;
@@ -34,6 +37,7 @@ export class ContractViewerComponent implements OnInit {
   contracts$: Observable<ContractAgreement[]> = of([]);
   private runningTransfers: RunningTransferProcess[] = [];
   private pollingHandleTransfer?: any;
+  private contractNegotiationData?: ContractNegotiation[]
 
   constructor(private contractAgreementService: ContractAgreementService,
               private assetService: AssetService,
@@ -42,7 +46,8 @@ export class ContractViewerComponent implements OnInit {
               private transferService: TransferProcessService,
               private catalogService: CatalogBrowserService,
               private router: Router,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private contractNegotiationService : ContractNegotiationService) {
   }
 
   private static isFinishedState(state: string): boolean {
@@ -52,23 +57,57 @@ export class ContractViewerComponent implements OnInit {
       "ENDED"].includes(state);
   }
 
-  ngOnInit(): void {
-    this.contracts$ = this.contractAgreementService.queryAllAgreements();
+  async getConnectorAddressData() {
+    await this.contractNegotiationService.queryNegotiations()
+      .forEach((response: ContractNegotiation[]) => {
+        this.contractNegotiationData = response.filter((item) => {
+          return item['https://w3id.org/edc/v0.0.1/ns/state'][0]['@value'] === 'FINALIZED'
+        })
+      })
+  }
 
+  async ngOnInit(): Promise<void> {
+    await this.getConnectorAddressData();
+    this.contracts$ = this.contractAgreementService.queryAllAgreements().pipe(
+      map((allContracts: ContractAgreement[]) => {
+        const negotiationData = this.contractNegotiationData || [];
+
+        return allContracts.reduce((result: ContractAgreement[], contract) => {
+          const matchingNegotiation = negotiationData.find(n =>
+            n['https://w3id.org/edc/v0.0.1/ns/contractAgreementId']?.[0]?.['@value'] === contract['@id']
+          );
+
+          if (matchingNegotiation) {
+            (contract as any)['connectorAddress'] =
+              matchingNegotiation['https://w3id.org/edc/v0.0.1/ns/counterPartyAddress']?.[0]?.['@value'] || '';
+            result.push(contract);
+          }
+
+          return result;
+        }, []);
+      }),
+      catchError(err => {
+        console.error('❌ Failed fetching contracts:', err);
+        return of([]);
+      })
+    );
+
+    // This stays — handles queryParams opening the negotiation dialog
     this.router.routerState.root.queryParams
       .pipe(first())
       .subscribe(params => {
         const providerUrl = params['providerUrl'];
         const assetId = params['assetId'];
 
-        if (providerUrl && assetId) {
-          this.dialog.open(NegotiateTransferComponent, {
-            data: { providerUrl, assetId }
-          });
-        }
+        this.dialog.open(NegotiateTransferComponent, {
+          data: { providerUrl, assetId }
+        }).afterClosed().pipe(first()).subscribe(result => {
+          if (result?.refreshList) {
+            this.ngOnInit(); // or trigger a separate refresh method if needed
+          }
+        });
       });
   }
-
 
   asDate(epochSeconds?: number): string {
     if(epochSeconds){
@@ -83,19 +122,19 @@ export class ContractViewerComponent implements OnInit {
     const dialogRef = this.dialog.open(CatalogBrowserTransferDialog);
 
     dialogRef.afterClosed().pipe(first()).subscribe(result => {
-      const storageTypeId: string = result.storageTypeId;
-      if (storageTypeId !== 'AzureStorage') {
-        this.notificationService.showError("Only storage type \"AzureStorage\" is implemented currently!")
-        return;
-      }
-      this.createTransferRequest(contract, storageTypeId)
-        .pipe(switchMap(trq => this.transferService.initiateTransfer(trq)))
-        .subscribe(transferId => {
-          this.startPolling(transferId, contract["@id"]!);
-        }, error => {
+      const dataDestination: string = result.dataDestination;
+
+      const request = this.createTransferRequest(contract, dataDestination);
+
+      this.transferService.initiateTransfer(request).subscribe({
+        next: (transferId) => {
+          this.startPolling(transferId, contract['@id']!);
+        },
+        error: (error) => {
           console.error(error);
           this.notificationService.showError("Error initiating transfer");
-        });
+        }
+      });
     });
   }
 
@@ -103,41 +142,23 @@ export class ContractViewerComponent implements OnInit {
     return !!this.runningTransfers.find(rt => rt.contractId === contractId);
   }
 
-  private createTransferRequest(contract: ContractAgreement, storageTypeId: string): Observable<TransferProcessInput> {
-    return this.getContractOfferForAssetId(contract.assetId!).pipe(map(contractOffer => {
-
-      const iniateTransfer : TransferProcessInput = {
-        assetId: contractOffer.assetId,
-        connectorAddress: contractOffer.originator,
-
-        connectorId: "consumer", //doesn't matter, but cannot be null
-        contractId: contract.id,
-        dataDestination: {
-          "type": storageTypeId,
-          account: this.homeConnectorStorageAccount, // CAUTION: hardcoded value for AzureBlob
-          // container: omitted, so it will be auto-assigned by the EDC runtime
-        }
-      };
-
-      return iniateTransfer;
-    }));
-
-  }
-
-  /**
-   * This method is used to obtain that URL of the connector that is offering a particular asset from the catalog.
-   * This is a bit of a hack, because currently there is no "clean" way to get the counter-party's URL for a ContractAgreement.
-   *
-   * @param assetId Asset ID of the asset that is associated with the contract.
-   */
-  private getContractOfferForAssetId(assetId: string): Observable<ContractOffer> {
-    return this.catalogService.getContractOffers()
-      .pipe(
-        map(offers => offers.find(o => o.assetId === assetId)),
-        map(o => {
-          if (o) return o;
-          else throw new Error(`No offer found for asset ID ${assetId}`);
-        }))
+  private createTransferRequest(contract: ContractAgreement, dataDestination: any): TransferRequest {
+    return {
+      '@context': {
+        odrl: "http://www.w3.org/ns/odrl/2/"
+      },
+      assetId: contract.assetId,
+      contractId: contract.id,
+      dataDestination: dataDestination,
+      connectorAddress: (contract as any).connectorAddress,
+      connectorId: contract.providerId,
+      managedResources: false,
+      protocol: "dataspace-protocol-http",
+      transferType: {
+        contentType: "application/octet-stream",
+        isFinite: true
+      }
+    };
   }
 
   private startPolling(transferProcessId: IdResponse, contractId: string) {

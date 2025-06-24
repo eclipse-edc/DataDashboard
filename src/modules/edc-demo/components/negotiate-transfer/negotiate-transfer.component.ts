@@ -1,10 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {CatalogService} from "../../../mgmt-api-client/api/catalog.service";
-import {Catalog, CatalogRequest, Dataset, DatasetRequest} from "@think-it-labs/edc-connector-client";
+import {
+  Catalog,
+  CatalogRequest,
+  ContractNegotiation,
+  Dataset,
+  DatasetRequest
+} from "@think-it-labs/edc-connector-client";
 import {NotificationService} from "../../services/notification.service";
 import {ContractNegotiationService} from "../../../mgmt-api-client";
 import {AppConfigService} from "../../../app/app-config.service";
+import {NegotiationResult} from "../../models/negotiation-result";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-negotiate-transfer',
@@ -23,12 +31,24 @@ export class NegotiateTransferComponent implements OnInit {
   ontologyType?: string;
   datasetId?: string;
 
+  runningNegotiations: Map<string, NegotiationResult> = new Map<
+    string,
+    NegotiationResult
+  >();
+  // contractOfferId, contractAgreementId
+  finishedNegotiations: Map<string, ContractNegotiation> = new Map<
+    string,
+    ContractNegotiation
+  >();
+  private pollingHandleNegotiation?: any;
+
   constructor(
     private dialogRef: MatDialogRef<NegotiateTransferComponent>,
     private catalogService: CatalogService,
     private contractNegotiationService: ContractNegotiationService,
     private notificationService: NotificationService,
     private configService: AppConfigService,
+    private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: { providerUrl: string; assetId: string },
   ) {}
 
@@ -39,7 +59,6 @@ export class NegotiateTransferComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchCatalog();
-
   }
 
   private fetchCatalog(): void {
@@ -124,7 +143,7 @@ export class NegotiateTransferComponent implements OnInit {
       return;
     }
 
-    const offer = this.matchedDataset["http://www.w3.org/ns/odrl/2/hasPolicy"]
+    const offer = this.matchedDataset["http://www.w3.org/ns/odrl/2/hasPolicy"];
     const assetId = this.matchedDataset["@id"];
 
     if (!offer || !assetId) {
@@ -148,10 +167,55 @@ export class NegotiateTransferComponent implements OnInit {
       },
     };
 
+    const finishedStates = ['CONFIRMED', 'DECLINED', 'ERROR', 'TERMINATED', 'VERIFIED', 'FINALIZED'];
+
     this.contractNegotiationService.initiateContractNegotiation(initiateRequest).subscribe({
-      next: response => {
-        this.notificationService.showInfo("Negotiation started successfully.");
-        this.dialogRef.close({ refreshList: true });
+      next: (response: any) => {
+        const negotiationId = response['@id'];
+        this.runningNegotiations.set(assetId, {
+          id: negotiationId,
+          offerId: assetId,
+        });
+
+        if (!this.pollingHandleNegotiation) {
+          this.pollingHandleNegotiation = setInterval(() => {
+            for (const negotiation of this.runningNegotiations.values()) {
+              this.contractNegotiationService.getNegotiationState(negotiation.id).subscribe(
+                (updatedNegotiation: any) => {
+                  const state = updatedNegotiation['https://w3id.org/edc/v0.0.1/ns/state']?.[0]?.['@value']
+                  if (finishedStates.includes(state)) {
+                    this.runningNegotiations.delete(negotiation.offerId);
+
+                    if (state === 'VERIFIED' || state === 'FINALIZED') {
+                      updatedNegotiation.id = updatedNegotiation['@id'];
+                      updatedNegotiation.contractAgreementId = updatedNegotiation['https://w3id.org/edc/v0.0.1/ns/contractAgreementId']?.[0]?.['@value'];
+                      this.finishedNegotiations.set(negotiation.offerId, updatedNegotiation);
+
+                      this.notificationService.showInfo(
+                        'Contract Negotiation complete!',
+                        'Show me!',
+                        () => {
+                          this.dialogRef.close({ refreshList: true });
+                          this.router.navigate(['/contracts']);
+                        }
+                      );
+                    } else if (state === 'TERMINATED') {
+                      this.notificationService.showError('Negotiation terminated.');
+                    }
+
+                    if (this.runningNegotiations.size === 0) {
+                      clearInterval(this.pollingHandleNegotiation);
+                      this.pollingHandleNegotiation = undefined;
+                    }
+                  }
+                },
+                error => {
+                  console.error("❌ Error polling negotiation:", error);
+                }
+              );
+            }
+          }, 1000);
+        }
       },
       error: err => {
         console.error("❌ Negotiation initiation failed:", err);
@@ -159,7 +223,8 @@ export class NegotiateTransferComponent implements OnInit {
       }
     });
   }
-  
+
+
   close(): void {
     this.dialogRef.close();
   }

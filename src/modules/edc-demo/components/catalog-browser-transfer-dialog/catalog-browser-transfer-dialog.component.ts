@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StorageType } from '../../models/storage-type';
 import {DataAddress} from "@think-it-labs/edc-connector-client";
+import { ContractAgreement } from "../../../mgmt-api-client/model";
 
 @Component({
   selector: 'edc-demo-catalog-browser-transfer-dialog',
@@ -149,17 +150,7 @@ export class CatalogBrowserTransferDialog implements OnInit {
       };
     }
 
-    // export interface TransferProcessInput {
-    //   assetId: string;
-    //   connectorAddress: string;
-    //   connectorId: string;
-    //   contractId: string;
-    //   dataDestination: DataAddress;
-    //   id?: string;
-    //   properties?: Record<string, string>;
-    // }
-
     // Close dialog and return selected configuration
-    this.dialogRef.close({ storageTypeId: this.selectedStorageType, dataDestination });
+    this.dialogRef.close({ dataDestination });
   }
 }
