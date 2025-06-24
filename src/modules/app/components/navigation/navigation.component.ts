@@ -17,7 +17,15 @@ import {EcosystemService} from "../services/ecosystem.service";
 export class NavigationComponent {
   isHandset$!: Observable<boolean>;
   pageTitle$!: Observable<string>;
-  currentLang = 'en';
+  currentLang = 'English';
+  languages = [
+    { code: 'en', label: 'English' },
+    { code: 'es', label: 'Spanish' },
+    { code: 'ca', label: 'Catalan' },
+    { code: 'gl', label: 'Galician' },
+    { code: 'eu', label: 'Basque' }
+  ];
+
 
   constructor(
     public titleService: AppTitleService,
@@ -29,7 +37,7 @@ export class NavigationComponent {
     document.body.classList.remove('theme-1', 'theme-2');
     this.pageTitle$ = this.titleService.pageTitle$;
     this.loadEcosystemClaim();
-    this.currentLang = translate.currentLang || 'en';
+    this.currentLang = translate.currentLang || 'English';
 
     this.ecosystemService.applyEcosystemSettings();
 
@@ -39,10 +47,12 @@ export class NavigationComponent {
     );
   }
 
-  switchLanguage(lang: string): void {
-    this.translate.use(lang);
-    this.currentLang = lang;
+  switchLanguage(langCode: string): void {
+    this.translate.use(langCode);
+    const lang = this.languages.find(l => l.code === langCode);
+    this.currentLang = lang?.label || langCode;
   }
+
 
   private loadEcosystemClaim() {
     const tokenParsed = this.keycloak.getKeycloakInstance().tokenParsed;
