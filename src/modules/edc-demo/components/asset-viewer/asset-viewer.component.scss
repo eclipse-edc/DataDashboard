@@ -1,56 +1,91 @@
-#wrapper {
-  margin: 20px;
-}
-
-.asset-card {
-  width: 500px;
-  margin-right: 15px;
-  margin-bottom: 15px;
-}
-
-.main-property-icon {
-  font-size: 12px;
-}
-
-.card-actions {
-  margin-left: 0;
-}
-
-.asset-property {
-  font-weight: bold !important;
-}
-
-mat-paginator {
-  display: inline-block;
-  background-color: transparent;
-}
-
-.container {
+/* === Search Bar + Buttons === */
+.search-bar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
-.left-actions {
+.search-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex: 1;
 }
 
-.search-form-field {
-  min-width: 450px;
-  width: 30%;
-  margin-top: 18px;
+.search-input {
+  flex: 1;
+  max-width: 500px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 14px;
+  outline: none;
+  background-color: white;
+  color: #333;
 }
 
-.paginator-wrapper {
+.search-input::placeholder {
+  color: #aaa;
+}
+
+.search-button {
+  background-color: #d10073;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  cursor: pointer;
+
   display: flex;
-  justify-content: flex-end;
-  background-color: transparent;
-  margin-top: 10px;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); // optional, remove if not needed
 }
 
-.mat-mdc-paginator {
-  background-color: transparent !important;
+.search-button .material-icons {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.create-button {
+  background-color: #d10073 !important;
+  color: white !important;
+  height: 40px;
+  border-radius: 12px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 500;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  box-shadow: none;
+  transition: none;
+
+  .mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 1;
+  }
+
+  .mat-mdc-button-persistent-ripple,
+  .mat-mdc-button-focus-overlay,
+  .mat-mdc-button-touch-target {
+    display: none !important;
+  }
+}
+
+.assets-wrapper {
+  padding: 24px 32px; // Adds equal left and right padding
+  background-color: #fff;
+  color: #000;
 }
