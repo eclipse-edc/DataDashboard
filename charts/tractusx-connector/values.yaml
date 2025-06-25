@@ -49,7 +49,7 @@ controlplane:
     # -- [Kubernetes image pull policy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy) to use
     pullPolicy: IfNotPresent
     # -- Overrides the image tag whose default is the chart appVersion
-    tag: "0.5.4-beta"
+    tag: "0.5.4-alpha"
   initContainers: []
   debug:
     enabled: false
@@ -311,7 +311,7 @@ dataplane:
     # -- [Kubernetes image pull policy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy) to use
     pullPolicy: IfNotPresent
     # -- Overrides the image tag whose default is the chart appVersion
-    tag: "0.5.4-beta"
+    tag: "0.5.4-alpha"
   initContainers: []
   debug:
     enabled: false

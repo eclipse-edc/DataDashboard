@@ -20,7 +20,7 @@ tractusx-connector:
       # -- [Kubernetes image pull policy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy) to use
       pullPolicy: IfNotPresent
       # -- Overrides the image tag whose default is the chart appVersion
-      tag: "0.5.4-beta"
+      tag: "0.5.4-alpha"
 
     endpoints:
       # -- default api for health checks, should not be added to any ingress
@@ -137,7 +137,7 @@ tractusx-connector:
       # -- [Kubernetes image pull policy](https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy) to use
       pullPolicy: IfNotPresent
       # -- Overrides the image tag whose default is the chart appVersion
-      tag: "0.5.4-beta"
+      tag: "0.5.4-alpha"
     
     aws:
       endpointOverride: ""
