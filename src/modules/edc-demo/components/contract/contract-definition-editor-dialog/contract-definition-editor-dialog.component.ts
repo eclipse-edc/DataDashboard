@@ -35,20 +35,19 @@ export class ContractDefinitionEditorDialog implements OnInit {
   }
 
   ngOnInit(): void {
-    // Mock policies
-    (this.policies as any) = [
-      { '@id': 'policy-1' },
-      { '@id': 'policy-2' },
-      { '@id': 'policy-3' }
-    ];
-
-    // Mock assets
-    (this.availableAssets as any) = [
-      { id: 'asset-1' },
-      { id: 'asset-2' },
-      { id: 'asset-3' }
-    ];
-
+    this.policyService.queryAllPolicies().subscribe(policyDefinitions => {
+      this.policies = policyDefinitions;
+      this.accessPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.accessPolicyId);
+      this.contractPolicy = this.policies.find(policy => policy['@id'] === this.contractDefinition.contractPolicyId);
+    });
+    this.assetService.requestAssets().subscribe(assets => {
+      this.availableAssets = assets;
+      // preselection
+      if (this.contractDefinition) {
+        const assetIds = this.contractDefinition.assetsSelector.map(c => c.operandRight?.toString());
+        this.assets = this.availableAssets.filter(asset => assetIds.includes(asset.id));
+      }
+    })
   }
 
   get isFormValid(): boolean {
@@ -65,8 +64,8 @@ export class ContractDefinitionEditorDialog implements OnInit {
 
   onSave(): void {
     this.contractDefinition.accessPolicyId = this.accessPolicy!['@id']!;
-    this.contractDefinition.contractPolicyId = this.usagePolicy!['@id']!;
-
+    this.contractDefinition.contractPolicyId = this.contractPolicy!['@id']!;
+    this.contractDefinition.assetsSelector = [];
 
     const selectedAssets = Array.isArray(this.assets) ? this.assets : [this.assets];
 
