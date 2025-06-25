@@ -41,7 +41,7 @@ $magenta-palette: mat.define-palette((
 ));
 
 // === ORANGE PALETTE (Theme 2) ===
-$orange-palette: mat.define-palette(mat.$orange-palette);
+$orange-palette: mat.define-palette(mat.$blue-palette);
 
 $theming-material-components-primary: $magenta-palette;
 $theming-material-components-accent: $magenta-palette;
