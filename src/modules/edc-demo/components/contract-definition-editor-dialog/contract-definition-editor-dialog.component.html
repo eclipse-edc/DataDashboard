@@ -1,0 +1,72 @@
+<div class="dialog-header">
+  <h2 class="dialog-title">Create Data Offer</h2>
+</div>
+
+<mat-dialog-content>
+  <div class="section">
+    <div class="section-content vertical-layout">
+
+      <!-- ID -->
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>ID</mat-label>
+        <input
+          matInput
+          [(ngModel)]="contractDefinition['@id']"
+          placeholder="Type"
+          required
+        />
+      </mat-form-field>
+
+      <!-- Access Policy -->
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Access Policy</mat-label>
+        <mat-select [(ngModel)]="accessPolicy" required>
+          <mat-option *ngFor="let policy of policies" [value]="policy">
+            {{ policy['@id'] }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Usage Policy -->
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Usage policy</mat-label>
+        <mat-select [(ngModel)]="usagePolicy" required>
+          <mat-option *ngFor="let policy of policies" [value]="policy">
+            {{ policy['@id'] }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Assets -->
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Assets</mat-label>
+        <mat-select [(ngModel)]="assets" multiple required>
+          <mat-option *ngFor="let asset of availableAssets" [value]="asset">
+            {{ asset.id }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="checkbox-row">
+        <mat-checkbox [(ngModel)]="publishToMarketplace">Publish to Marketplace</mat-checkbox>
+      </div>
+
+    </div>
+  </div>
+</mat-dialog-content>
+
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button class="cancel-button" mat-dialog-close>
+    Cancel
+  </button>
+
+  <button
+    mat-flat-button
+    class="create-button"
+    [disabled]="!isFormValid"
+    (click)="onSave()"
+  >
+    Create
+  </button>
+</mat-dialog-actions>
