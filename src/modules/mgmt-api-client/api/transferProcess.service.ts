@@ -16,6 +16,7 @@ import { HttpResponse, HttpEvent, HttpContext }              from '@angular/comm
 import { Observable, from }                                        from 'rxjs';
 import {EdcConnectorClient} from "@think-it-labs/edc-connector-client";
 import { TransferProcessState, TransferProcess, TransferProcessInput, QuerySpec, IdResponse } from "../model";
+import {TransferRequest} from "../../edc-demo/components/contract-viewer/transferRequest";
 
 
 
@@ -23,9 +24,10 @@ import { TransferProcessState, TransferProcess, TransferProcessInput, QuerySpec,
   providedIn: 'root'
 })
 export class TransferProcessService {
-    private transferProcessService = this.edcConnectorClient.management.transferProcesses;
+    private transferProcessService;
 
     constructor(private edcConnectorClient: EdcConnectorClient) {
+      this.transferProcessService = this.edcConnectorClient.management.transferProcesses;
     }
 
     /**
@@ -86,10 +88,10 @@ export class TransferProcessService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public initiateTransfer(transferRequestInput: TransferProcessInput, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<IdResponse>;
-    public initiateTransfer(transferRequestInput: TransferProcessInput, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<IdResponse>>;
-    public initiateTransfer(transferRequestInput: TransferProcessInput, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<IdResponse>>;
-    public initiateTransfer(transferRequestInput: TransferProcessInput): Observable<any> {
+    public initiateTransfer(transferRequestInput: TransferRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<IdResponse>;
+    public initiateTransfer(transferRequestInput: TransferRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<IdResponse>>;
+    public initiateTransfer(transferRequestInput: TransferRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<IdResponse>>;
+    public initiateTransfer(transferRequestInput: TransferRequest): Observable<any> {
       return from(this.transferProcessService.initiate(transferRequestInput))
     }
 

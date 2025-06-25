@@ -23,10 +23,11 @@ import { PolicyDefinition, PolicyDefinitionInput, IdResponse, QuerySpec } from "
 })
 export class PolicyService {
 
-  private policyDefinition = this.edcConnectorClient.management.policyDefinitions;
+  private policyDefinition;
 
 
   constructor(private edcConnectorClient: EdcConnectorClient) {
+    this.policyDefinition = this.edcConnectorClient.management.policyDefinitions;
   }
 
   /**

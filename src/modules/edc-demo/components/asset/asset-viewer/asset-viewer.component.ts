@@ -33,6 +33,27 @@ export class AssetViewerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // const dialogData = ConfirmDialogModel.forDelete("asset", `testNamespaces1`)
+    // const ref = this.dialog.open(ConfirmationDialogComponent, {
+    //   maxWidth: '90vw',
+    //   maxHeight: '90vh',
+    //   width: 'auto',
+    //   height: 'auto',
+    //   data: dialogData
+    // });
+    //
+    // ref.afterClosed().subscribe({
+    //   next: res => {
+    //     if (res) {
+    //       this.assetService.removeAsset('testNamespaces1').subscribe({
+    //         next: () => this.fetch$.next(null),
+    //         error: err => this.showError(err, "This asset cannot be deleted"),
+    //         complete: () => this.notificationService.showInfo("Successfully deleted")
+    //       });
+    //     }
+    //   }
+    // });
+
     this.filteredAssets$ = this.fetch$
       .pipe(
         switchMap(() => {
@@ -55,11 +76,23 @@ export class AssetViewerComponent implements OnInit {
     const dialogRef = this.dialog.open(AssetDetailsDialogComponent, {
       data: {asset}
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.delete) {
+        this.onDelete(asset);
+      }
+    });
   }
 
   onDelete(asset: Asset) {
     const dialogData = ConfirmDialogModel.forDelete("asset", `"${asset.id}"`)
-    const ref = this.dialog.open(ConfirmationDialogComponent, {maxWidth: "20%", data: dialogData});
+    const ref = this.dialog.open(ConfirmationDialogComponent, {
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      width: 'auto',
+      height: 'auto',
+      data: dialogData
+    });
 
     ref.afterClosed().subscribe({
       next: res => {
@@ -79,11 +112,7 @@ export class AssetViewerComponent implements OnInit {
     dialogRef.afterClosed().pipe(first()).subscribe((result: { assetInput?: AssetInput }) => {
       const newAsset = result?.assetInput;
       if (newAsset) {
-        const assetWithContext = {
-          ...newAsset,
-          "@context": CONTEXT_MAP
-        } as AssetInput & { "@context": Record<string, string> };
-        this.assetService.createAsset(assetWithContext).subscribe({
+        this.assetService.createAsset(newAsset).subscribe({
           next: ()=> this.fetch$.next(null),
           error: err => this.showError(err, "This asset cannot be created"),
           complete: () => this.notificationService.showInfo("Successfully created"),

@@ -5,6 +5,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { AssetInput } from '@think-it-labs/edc-connector-client';
 import { StorageType } from '../../../models/storage-type';
 import { NS, CONTEXT_MAP } from '../../namespaces';
+import {EcosystemService} from "../../../../app/components/services/ecosystem.service";
 
 @Component({
   selector: 'edc-demo-asset-editor-dialog',
@@ -52,7 +53,7 @@ export class AssetEditorDialog implements OnInit {
 
   azureConfig = {
     account: '',
-    keyName: '',
+    sasToken: '',
     container: '',
     blobName: ''
   };
@@ -64,7 +65,8 @@ export class AssetEditorDialog implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<AssetEditorDialog>,
-    @Inject('STORAGE_TYPES') public storageTypes: StorageType[]
+    @Inject('STORAGE_TYPES') public storageTypes: StorageType[],
+    private ecosystemService: EcosystemService
   ) {}
 
   ngOnInit(): void {}
@@ -99,7 +101,8 @@ export class AssetEditorDialog implements OnInit {
       && !!this.assetMetadata.description?.trim()
       && this.assetMetadata.keywords.length > 0
       && !!this.assetMetadata.mediaType?.trim()
-      && !!this.assetMetadata.qualityNote?.trim();
+      && !!this.assetMetadata.qualityNote?.trim()
+      && !!this.assetMetadata.ontologyType?.trim();
   }
 
   isDatasourceValid(): boolean {
@@ -114,7 +117,7 @@ export class AssetEditorDialog implements OnInit {
           && !!this.s3Config.secretKey?.trim();
       case 'azure':
         return !!this.azureConfig.account?.trim()
-          && !!this.azureConfig.keyName?.trim()
+          && !!this.azureConfig.sasToken?.trim()
           && !!this.azureConfig.container?.trim()
           && !!this.azureConfig.blobName?.trim();
       default:
@@ -157,7 +160,7 @@ export class AssetEditorDialog implements OnInit {
     this.s3Config.secretKey = '';
 
     this.azureConfig.account = '';
-    this.azureConfig.keyName = '';
+    this.azureConfig.sasToken = '';
     this.azureConfig.container = '';
     this.azureConfig.blobName = '';
   }
@@ -167,6 +170,7 @@ export class AssetEditorDialog implements OnInit {
 
     if (this.selectedStorageType === 'rest') {
       dataAddress = {
+        "@type": "DataAddress",
         type: 'HttpData',
         method: this.restConfig.method,
         baseUrl: this.restConfig.url,
@@ -188,9 +192,9 @@ export class AssetEditorDialog implements OnInit {
       };
     }
 
-
     if (this.selectedStorageType === 'amazonS3') {
       dataAddress = {
+        "@type": "DataAddress",
         type: 'AmazonS3',
         region: this.s3Config.region,
         bucketName: this.s3Config.bucket,
@@ -202,24 +206,27 @@ export class AssetEditorDialog implements OnInit {
 
     if (this.selectedStorageType === 'azure') {
       dataAddress = {
+        "@type": "DataAddress",
         type: 'AzureStorage',
-        account: this.azureConfig.account,
+        accountName: this.azureConfig.account,
         container: this.azureConfig.container,
         blobname: this.azureConfig.blobName,
-        keyName: this.azureConfig.keyName
+        accountKey: this.azureConfig.sasToken
       };
     }
 
     const assetInput: AssetInput = {
       "@id": this.assetMetadata.id,
+      "@context": CONTEXT_MAP,
+      [`${NS.SEGITTUR}ecosystem`]: this.ecosystemService.ecosystem?.toLowerCase(),
       properties: {
-        name: this.assetMetadata.name,
-        description: this.assetMetadata.description,
-        ontologyType: this.assetMetadata.ontologyType,
-        keyword: this.assetMetadata.keywords,
-        mediaType: this.assetMetadata.mediaType,
-        qualityNote: this.assetMetadata.qualityNote,
-        language: this.assetMetadata.language,
+        [`${NS.DCTERMS}title`]: this.assetMetadata.name,
+        [`${NS.DCTERMS}description`]: this.assetMetadata.description,
+        [`${NS.SEGITTURONT}concept`]: `segitturont:${this.assetMetadata.ontologyType}`,
+        [`${NS.DCAT}keywords`]: this.assetMetadata.keywords?.join(', '),
+        [`${NS.DCAT}mediaType`]: this.assetMetadata.mediaType,
+        [`${NS.DQV}hasQualityAnnotation`]: this.assetMetadata.qualityNote,
+        [`${NS.DCTERMS}language`]: this.assetMetadata.language,
       },
       dataAddress
     };
@@ -227,17 +234,3 @@ export class AssetEditorDialog implements OnInit {
     this.dialogRef.close({ assetInput });
   }
 }
-
-
-/**
- *         [`${NS.DCTERMS}title`]: this.assetMetadata.name,
- *         [`${NS.DCTERMS}description`]: this.assetMetadata.description,
- *         [`${NS.SEGITTURONT}ontologyType`]: this.assetMetadata.ontologyType,
- *         [`${NS.DCAT}keywords`]: this.assetMetadata.keywords,
- *         [`${NS.DCAT}mediaType`]: this.assetMetadata.mediaType,
- *         [`${NS.DQV}hasQualityAnnotation`]: {
- *           "@type": `${NS.DQV}QualityAnnotation`,
- *           [`${NS.RDFS}comment`]: this.assetMetadata.qualityNote
- *         },
- *         [`${NS.DCTERMS}language`]: this.assetMetadata.language,
- */

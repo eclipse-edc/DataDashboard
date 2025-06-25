@@ -1,0 +1,190 @@
+{
+  "route": {
+    "gettingStarted": "Getting Started",
+    "catalogBrowser": "Catalog Browser",
+    "contracts": "Contracts",
+    "transferHistory": "Transfer History",
+    "contractDefinitions": "Contract Definitions",
+    "policies": "Policies",
+    "myAssets": "Assets"
+  },
+  "nav": {
+    "provide": "Provide",
+    "consume": "Consume",
+    "assets": "Assets",
+    "policies": "Policies",
+    "offers": "Offers",
+    "contracts": "Contracts",
+    "transfers": "Transfers",
+    "logout": "Logout",
+    "username": "User name"
+  },
+  "asset": {
+    "searchPlaceholder": "Search Assets",
+    "createButton": "Create Asset"
+  },
+  "assetEditor": {
+    "createTitle": "Create New Asset",
+    "section": {
+      "general": "1. General Information",
+      "datasource": "2. Datasource Information"
+    },
+    "name": "Name",
+    "namePlaceholder": "Name of the Asset",
+    "id": "Id",
+    "description": "Description",
+    "describe": "Describe",
+    "ontologyType": "Ontology type",
+    "organization": "Organization",
+    "tourismService": "Tourism Service",
+    "tourismResource": "Tourism Resource",
+    "keywords": "Keywords",
+    "addKeyword": "Add keyword",
+    "mediaType": "Media type",
+    "qualityNote": "Quality Note",
+    "language": "Language",
+    "languageEn": "English",
+    "select": "Select",
+    "type": "Type",
+    "rest": "REST-API Endpoint",
+    "s3": "S3",
+    "azure": "Azure Storage",
+    "cancel": "Cancel",
+    "create": "Create",
+    "freeText": "Free text field",
+
+    "method": "Method",
+    "url": "URL",
+    "urlError": "URL must start with https://",
+
+    "authSection": "AUTHENTICATION",
+    "addAuth": "Add Authentication",
+    "removeAuth": "Remove Authentication",
+    "authType": "Type",
+    "authHeaderName": "Auth Header Name",
+    "vaultSecretName": "Vault Secret Name",
+    "authHeaderValue": "Auth Header Value",
+    "vault": "Header with Vault Secret",
+    "value": "Header with Value",
+
+    "additionalHeaders": "ADDITIONAL HEADERS",
+    "addAdditionalHeader": "Add Additional Header",
+    "headerName": "Header Name",
+    "headerValue": "Header Value",
+    "remove": "Remove",
+
+    "payload": "PAYLOAD",
+    "addPayload": "Add Payload",
+    "removePayload": "Remove Payload",
+    "contentType": "Content Type",
+    "body": "Body",
+
+    "s3Fields": {
+      "region": "Region",
+      "bucket": "Bucket",
+      "bucketPlaceholder": "Bucket",
+      "keyName": "Object Path",
+      "keyNamePlaceholder": "Enter key name",
+      "accessKey": "Access Key",
+      "secretKey": "Secret Key"
+    },
+
+    "azureFields": {
+      "account": "Account Name",
+      "accountPlaceholder": "Enter account name",
+      "sasToken": "SAS Token",
+      "sasTokenPlaceholder": "Enter sas token",
+      "container": "Container",
+      "containerPlaceholder": "Name of the Container",
+      "blobName": "Blob Name",
+      "blobNamePlaceholder": "Enter Blob Name"
+    }
+  },
+  "assetDetails": {
+    "ontologyType": "ONTOLOGY TYPE",
+    "datasourceType": "DATASOURCE TYPE",
+    "contentType": "CONTENT TYPE",
+    "keywords": "KEYWORDS",
+    "qualityNote": "QUALITY NOTE",
+    "language": "LANGUAGE",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "policyView": {
+    "searchPlaceholder": "Search Policies",
+    "createPolicy": "Create Policy",
+    "policy": "Policy",
+    "constraints": "Constraints"
+  },
+  "policyDetails": {
+    "title": "Policy details",
+    "cleanedJson": "Cleaned JSON",
+    "close": "Close",
+    "delete": "Delete"
+  },
+  "policyEditor": {
+    "createTitle": "Create New Policy",
+    "name": "Name",
+    "namePlaceholder": "Enter policy name",
+    "restrictAccess": "Restrict access to the following BPNs",
+    "publicAccess": "Everyone should have access (set it to public)",
+    "bpn": "Business Partner Number",
+    "addBpn": "Enter BPN",
+    "cancel": "Cancel",
+    "create": "Create"
+  },
+  "contractView": {
+    "searchPlaceholder": "Search Data Offers",
+    "create": "Create Data Offer",
+    "subtitle": "Data Offer",
+    "accessPolicy": "ACCESS POLICY",
+    "usagePolicy": "USAGE POLICY",
+    "assetName": "ASSET NAME",
+    "toBeDefined": "TO BE DEFINED"
+  },
+  "contractDialog": {
+    "title": "Create Data Offer",
+    "id": "ID",
+    "idPlaceholder": "Type",
+    "accessPolicy": "Access Policy",
+    "usagePolicy": "Usage Policy",
+    "assets": "Assets",
+    "publish": "Publish to Marketplace",
+    "cancel": "Cancel",
+    "create": "Create"
+  },
+  "contracts": {
+    "subtitle": "Description",
+    "asset": "ASSET",
+    "signingDate": "SIGNING DATE",
+    "provider": "PROVIDER",
+    "transfer": "Transfer"
+  },
+  "transferDialog": {
+    "title": "Initiate Transfer",
+    "datasink": "Datasink",
+    "rest": "REST-API Endpoint",
+    "s3": "S3",
+    "azure": "Azure Storage",
+    "cancel": "Cancel",
+    "start": "Start transfer"
+  },
+  "transferHistory": {
+    "id": "ID",
+    "state": "State",
+    "lastUpdated": "Last updated",
+    "connectorId": "Connector ID",
+    "assetId": "Asset ID",
+    "contractId": "Contract ID",
+    "refresh": "Refresh",
+    "of": "of",
+    "elements": "elements",
+    "elementsPerPage": "Elements per page"
+  },
+  "negotiation": {
+    "ontologyType": "ONTOLOGY TYPE",
+    "organization": "ORGANIZATION",
+    "cancel": "Cancel",
+    "negotiate": "Negotiate"
+  }
+}

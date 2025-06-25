@@ -23,9 +23,10 @@ import { AssetInput, Asset, IdResponse, QuerySpec } from "../model"
 })
 export class AssetService {
 
-    private assets = this.edcConnectorClient.management.assets;
+    private assets;
 
     constructor(private edcConnectorClient: EdcConnectorClient) {
+      this.assets = this.edcConnectorClient.management.assets;
     }
 
     /**

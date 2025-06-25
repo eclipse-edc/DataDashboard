@@ -18,14 +18,16 @@
 }
 
 .contract-title {
+  font-family: var(--font-quicksand), sans-serif;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 4px;
   margin-top: 16px;
 }
 
 mat-card-subtitle {
-  font-size: 12px;
+  font-family: var(--font-nunito), sans-serif;
+  font-size: 14px;
   color: #777;
 }
 
@@ -75,13 +77,15 @@ mat-card-subtitle {
 }
 
 .contract-label {
-  font-size: 13px;
-  font-weight: 600;
+  font-family: var(--font-nunito), sans-serif;
+  font-size: 12px;
+  font-weight: 700;
   color: #111;
   margin-top: 4px;
 }
 
 .contract-value {
+  font-family: var(--font-nunito), sans-serif;
   font-size: 14px;
   color: #333;
 }

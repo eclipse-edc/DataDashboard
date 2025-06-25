@@ -14,42 +14,37 @@ import {ContractViewerComponent} from "../edc-demo/components/contract-viewer/co
 
 export const routes: Routes = [
   {
-    path: 'introduction',
-    component: IntroductionComponent,
-    data: {title: 'Getting Started', icon: 'info_outline'}
-  },
-  {
     path: 'catalog-browser',
     component: CatalogBrowserComponent,
-    data: {title: 'Catalog Browser', icon: 'sim_card'}
+    data: { title: 'route.catalogBrowser', icon: 'sim_card'}
   },
   {
     path: 'contracts',
     component: ContractViewerComponent,
-    data: {title: 'Contracts', icon: 'attachment'}
+    data: { title: 'route.contracts', icon: 'attachment'}
   },
   {
     path: 'transfer-history',
     component: TransferHistoryViewerComponent,
-    data: {title: 'Transfer History', icon: 'assignment'}
+    data: { title: 'route.transferHistory', icon: 'assignment'}
   },
   {
     path: 'contract-definitions',
     component: ContractDefinitionViewerComponent,
-    data: {title: 'Contract Definitions', icon: 'rule'}
+    data: { title: 'route.contractDefinitions', icon: 'rule'}
   },
   {
     path: 'policies',
     component: PolicyViewComponent,
-    data: {title: 'Policies', icon: 'policy'}
+    data: { title: 'route.policies', icon: 'policy'}
   },
   {
     path: 'my-assets', // must not be "assets" to prevent conflict with assets directory
     component: AssetViewerComponent,
-    data: {title: 'Assets', icon: 'upload'}
+    data: { title: 'route.myAssets', icon: 'upload'}
   },
   {
-    path: '', redirectTo: 'introduction', pathMatch: 'full'
+    path: '', redirectTo: 'my-assets', pathMatch: 'full'
   }
 ];
 

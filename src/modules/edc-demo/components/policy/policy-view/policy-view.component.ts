@@ -8,6 +8,7 @@ import {NotificationService} from "../../../services/notification.service";
 import {ConfirmationDialogComponent, ConfirmDialogModel} from "../../confirmation-dialog/confirmation-dialog.component";
 import {PolicyDefinition, PolicyDefinitionInput, IdResponse, Asset} from "../../../../mgmt-api-client/model";
 import {PolicyDetailsDialogComponent} from "../policy-details-dialog/policy-details-dialog.component";
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-policy-view',
@@ -38,7 +39,9 @@ export class PolicyViewComponent implements OnInit {
   ngOnInit(): void {
     this.filteredPolicies$ = this.fetch$.pipe(
       switchMap(() => {
-        const policyDefinitions = this.policyService.queryAllPolicies();
+        const policyDefinitions = this.policyService.queryAllPolicies().pipe(
+          tap(policies => console.log('Fetched policy definitions:', policies))
+        );
         return !!this.searchText ?
           policyDefinitions.pipe(map(policies => policies.filter(policy => this.isFiltered(policy, this.searchText))))
           :
@@ -49,12 +52,17 @@ export class PolicyViewComponent implements OnInit {
   openPolicyDialog(policy: PolicyDefinition): void {
     const mergedPolicy = {
       '@id': policy['@id'],
+      "@context": policy['@context'],
       'edc:createdAt': policy.createdAt,
-      ...policy.policy
+      ...policy['edc:policy']
     };
 
     this.dialog.open(PolicyDetailsDialogComponent, {
       data: { policy: mergedPolicy }
+    }).afterClosed().subscribe(result => {
+      if (result?.delete) {
+        this.delete(policy);
+      }
     });
   }
 
@@ -91,7 +99,13 @@ export class PolicyViewComponent implements OnInit {
     let policyId = policy['@id']!;
     const dialogData = ConfirmDialogModel.forDelete("policy", policyId);
 
-    const ref = this.dialog.open(ConfirmationDialogComponent, {maxWidth: '20%', data: dialogData});
+    const ref = this.dialog.open(ConfirmationDialogComponent, {
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      width: 'auto',
+      height: 'auto',
+      data: dialogData
+    });
 
     ref.afterClosed().subscribe({
 
@@ -107,6 +121,27 @@ export class PolicyViewComponent implements OnInit {
       }
     });
   }
+
+  getBpnConstraint(policy: PolicyDefinition): string | null {
+    const edcPolicy = policy['edc:policy'];
+    if (!edcPolicy) return null;
+
+    const permission = edcPolicy['odrl:permission'];
+    if (!permission) return null;
+    const constraint = permission['odrl:constraint'];
+    if (!constraint) return null;
+
+    const leftOperandValue = constraint['odrl:leftOperand'];
+    if (!leftOperandValue) return null;
+    const rightOperandValue = constraint['odrl:rightOperand'];
+    if (!rightOperandValue) return null;
+
+    const isBpn = leftOperandValue?.toString().includes('BusinessPartnerNumber');
+
+    return isBpn && rightOperandValue ? `BPN: ${rightOperandValue}` : null;
+  }
+
+
 
   private showError(error: Error, errorMessage: string) {
     console.error(error);

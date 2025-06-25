@@ -1,4 +1,4 @@
-export type {
+export {
   Action,
   Addresses,
   ApiErrorDetail,

@@ -1,65 +1,66 @@
 <div class="details-wrapper">
   <div class="details-header">
     <div class="icon-circle">
-      <mat-icon>upload</mat-icon>
+      <mat-icon svgIcon="assetDetails:property"></mat-icon>
     </div>
     <div class="title-block">
-      <h2 class="asset-name">{{ getNestedProp(this.keyMap.name) }}</h2>
+      <h2 class="asset-name">{{ data.asset.properties.optionalValue('dcterms', 'title') }}</h2>
       <span class="asset-id">{{ data.asset.id }}</span>
     </div>
   </div>
 
-  <p class="asset-description">{{ getNestedProp(this.keyMap.description) }}</p>
+  <p class="asset-description">{{ data.asset.properties.optionalValue('dcterms', 'description') }}</p>
 
   <div class="details-grid">
     <div class="detail-item">
-      <mat-icon class="detail-icon">upload</mat-icon>
+      <mat-icon class="detail-icon" svgIcon="assetDetails:property"></mat-icon>
       <div>
-        <div class="detail-label">ONTOLOGY TYPE</div>
-        <div class="detail-value">{{ getNestedProp(this.keyMap.ontologyType) }}</div>
+        <div class="detail-label">{{ 'assetDetails.ontologyType' | translate }}</div>
+        <div class="detail-value">{{ data.asset.properties.optionalValue('segitturont', 'concept') }}</div>
       </div>
     </div>
 
     <div class="detail-item">
-      <mat-icon class="detail-icon">upload</mat-icon>
+      <mat-icon class="detail-icon" svgIcon="assetDetails:property"></mat-icon>
       <div>
-        <div class="detail-label">DATASOURCE TYPE</div>
-        <div class="detail-value">{{ mapDatasourceType(getDataAddressProp(this.keyMap.datasourceType)) }}</div>
-      </div>
-    </div>
-
-    <div class="detail-item">
-      <mat-icon class="detail-icon">upload</mat-icon>
-      <div>
-        <div class="detail-label">CONTENT TYPE</div>
-        <div class="detail-value">{{ getNestedProp(this.keyMap.mediaType) }}</div>
-      </div>
-    </div>
-
-    <div class="detail-item">
-      <mat-icon class="detail-icon">upload</mat-icon>
-      <div>
-        <div class="detail-label">KEYWORDS</div>
+        <div class="detail-label">{{ 'assetDetails.datasourceType' | translate }}</div>
         <div class="detail-value">
-          {{ formatKeywords(getNestedProp(this.keyMap.keywords)) }}
+          {{ mapDatasourceType(data.asset.dataAddress.optionalValue('edc', 'type') ?? '') }}
         </div>
-
       </div>
     </div>
 
     <div class="detail-item">
-      <mat-icon class="detail-icon">upload</mat-icon>
+      <mat-icon class="detail-icon" svgIcon="assetDetails:property"></mat-icon>
       <div>
-        <div class="detail-label">QUALITY NOTE</div>
-        <div class="detail-value">{{ getNestedProp(this.keyMap.qualityNote) }}</div>
+        <div class="detail-label">{{ 'assetDetails.contentType' | translate }}</div>
+        <div class="detail-value">{{ data.asset.properties.optionalValue('dcat', 'mediaType') }}</div>
       </div>
     </div>
 
     <div class="detail-item">
-      <mat-icon class="detail-icon">upload</mat-icon>
+      <mat-icon class="detail-icon" svgIcon="assetDetails:property"></mat-icon>
       <div>
-        <div class="detail-label">LANGUAGE</div>
-        <div class="detail-value">{{ getNestedProp(this.keyMap.language) }}</div>
+        <div class="detail-label">{{ 'assetDetails.keywords' | translate }}</div>
+        <div class="detail-value">
+          {{ formatKeywords(data.asset.properties.optionalValue('dcat', 'keywords')) }}
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <mat-icon class="detail-icon" svgIcon="assetDetails:property"></mat-icon>
+      <div>
+        <div class="detail-label">{{ 'assetDetails.qualityNote' | translate }}</div>
+        <div class="detail-value">{{ data.asset.properties.optionalValue('dqv', 'hasQualityAnnotation') }}</div>
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <mat-icon class="detail-icon" svgIcon="assetDetails:property"></mat-icon>
+      <div>
+        <div class="detail-label">{{ 'assetDetails.language' | translate }}</div>
+        <div class="detail-value">{{ data.asset.properties.optionalValue('dcterms', 'language') }}</div>
       </div>
     </div>
   </div>
@@ -67,14 +68,10 @@
 
 <mat-dialog-actions align="end">
   <button mat-stroked-button class="cancel-button" mat-dialog-close>
-    Cancel
+    {{ 'assetDetails.cancel' | translate }}
   </button>
 
-  <button
-    mat-flat-button
-    class="delete-button"
-    (click)="delete()"
-  >
-    Delete
+  <button mat-flat-button class="delete-button" (click)="delete()">
+    {{ 'assetDetails.delete' | translate }}
   </button>
 </mat-dialog-actions>

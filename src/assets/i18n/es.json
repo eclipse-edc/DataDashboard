@@ -1,0 +1,190 @@
+{
+  "route": {
+    "gettingStarted": "Primeros pasos",
+    "catalogBrowser": "Navegador de catálogo",
+    "contracts": "Contratos",
+    "transferHistory": "Historial de transferencias",
+    "contractDefinitions": "Definiciones de contrato",
+    "policies": "Políticas",
+    "myAssets": "Activos"
+  },
+  "nav": {
+    "provide": "Proporcionar",
+    "consume": "Consumir",
+    "assets": "Activos",
+    "policies": "Políticas",
+    "offers": "Ofertas",
+    "contracts": "Contratos",
+    "transfers": "Transferencias",
+    "logout": "Cerrar sesión",
+    "username": "Nombre de usuario"
+  },
+  "asset": {
+    "searchPlaceholder": "Buscar activos",
+    "createButton": "Crear activo"
+  },
+  "assetEditor": {
+    "createTitle": "Crear nuevo activo",
+    "section": {
+      "general": "1. Información general",
+      "datasource": "2. Información de la fuente de datos"
+    },
+    "name": "Nombre",
+    "namePlaceholder": "Nombre del activo",
+    "id": "Id",
+    "description": "Descripción",
+    "describe": "Describir",
+    "ontologyType": "Tipo de ontología",
+    "organization": "Organización",
+    "tourismService": "Servicio turístico",
+    "tourismResource": "Recurso turístico",
+    "keywords": "Palabras clave",
+    "addKeyword": "Agregar palabra clave",
+    "mediaType": "Tipo de medio",
+    "qualityNote": "Nota de calidad",
+    "language": "Idioma",
+    "languageEn": "Inglés",
+    "select": "Seleccionar",
+    "type": "Tipo",
+    "rest": "Punto final REST-API",
+    "s3": "S3",
+    "azure": "Almacenamiento de Azure",
+    "cancel": "Cancelar",
+    "create": "Crear",
+    "freeText": "Campo de texto libre",
+
+    "method": "Método",
+    "url": "URL",
+    "urlError": "La URL debe comenzar con https://",
+
+    "authSection": "AUTENTICACIÓN",
+    "addAuth": "Agregar autenticación",
+    "removeAuth": "Eliminar autenticación",
+    "authType": "Tipo",
+    "authHeaderName": "Nombre del encabezado de autenticación",
+    "vaultSecretName": "Nombre del secreto de Vault",
+    "authHeaderValue": "Valor del encabezado de autenticación",
+    "vault": "Encabezado con secreto de Vault",
+    "value": "Encabezado con valor",
+
+    "additionalHeaders": "ENCABEZADOS ADICIONALES",
+    "addAdditionalHeader": "Agregar encabezado adicional",
+    "headerName": "Nombre del encabezado",
+    "headerValue": "Valor del encabezado",
+    "remove": "Eliminar",
+
+    "payload": "CUERPO DE LA SOLICITUD",
+    "addPayload": "Agregar cuerpo",
+    "removePayload": "Eliminar cuerpo",
+    "contentType": "Tipo de contenido",
+    "body": "Contenido",
+
+    "s3Fields": {
+      "region": "Región",
+      "bucket": "Bucket",
+      "bucketPlaceholder": "Bucket",
+      "keyName": "Ruta del objeto",
+      "keyNamePlaceholder": "Introduce el nombre de la clave",
+      "accessKey": "Clave de acceso",
+      "secretKey": "Clave secreta"
+    },
+
+    "azureFields": {
+      "account": "Nombre de la cuenta",
+      "accountPlaceholder": "Introduce el nombre de la cuenta",
+      "sasToken": "Token SAS",
+      "sasTokenPlaceholder": "Introduce el token SAS",
+      "container": "Contenedor",
+      "containerPlaceholder": "Nombre del contenedor",
+      "blobName": "Nombre del blob",
+      "blobNamePlaceholder": "Introduce el nombre del blob"
+    }
+  },
+  "assetDetails": {
+    "ontologyType": "TIPO DE ONTOLOGÍA",
+    "datasourceType": "TIPO DE FUENTE DE DATOS",
+    "contentType": "TIPO DE CONTENIDO",
+    "keywords": "PALABRAS CLAVE",
+    "qualityNote": "NOTA DE CALIDAD",
+    "language": "IDIOMA",
+    "cancel": "Cancelar",
+    "delete": "Eliminar"
+  },
+  "policyView": {
+    "searchPlaceholder": "Buscar Políticas",
+    "createPolicy": "Crear Política",
+    "policy": "Política",
+    "constraints": "Restricciones"
+  },
+  "policyDetails": {
+    "title": "Detalles de la política",
+    "cleanedJson": "JSON limpiado",
+    "close": "Cerrar",
+    "delete": "Eliminar"
+  },
+  "policyEditor": {
+    "createTitle": "Crear Nueva Política",
+    "name": "Nombre",
+    "namePlaceholder": "Introduzca el nombre de la política",
+    "restrictAccess": "Restringir acceso a los siguientes BPN",
+    "publicAccess": "Todos deberían tener acceso (establecer como público)",
+    "bpn": "Número de Socio Comercial",
+    "addBpn": "Introduce el BPN",
+    "cancel": "Cancelar",
+    "create": "Crear"
+  },
+  "contractView": {
+    "searchPlaceholder": "Buscar Ofertas de Datos",
+    "create": "Crear Oferta de Datos",
+    "subtitle": "Oferta de Datos",
+    "accessPolicy": "POLÍTICA DE ACCESO",
+    "usagePolicy": "POLÍTICA DE USO",
+    "assetName": "NOMBRE DEL ACTIVO",
+    "toBeDefined": "POR DEFINIR"
+  },
+  "contractDialog": {
+    "title": "Crear Oferta de Datos",
+    "id": "ID",
+    "idPlaceholder": "Tipo",
+    "accessPolicy": "Política de Acceso",
+    "usagePolicy": "Política de Uso",
+    "assets": "Activos",
+    "publish": "Publicar en el Mercado",
+    "cancel": "Cancelar",
+    "create": "Crear"
+  },
+  "contracts": {
+    "subtitle": "Descripción",
+    "asset": "ACTIVO",
+    "signingDate": "FECHA DE FIRMA",
+    "provider": "PROVEEDOR",
+    "transfer": "Transferir"
+  },
+  "transferDialog": {
+    "title": "Iniciar Transferencia",
+    "datasink": "Destino de Datos",
+    "rest": "Punto Final REST-API",
+    "s3": "S3",
+    "azure": "Almacenamiento Azure",
+    "cancel": "Cancelar",
+    "start": "Iniciar transferencia"
+  },
+  "transferHistory": {
+    "id": "ID",
+    "state": "Estado",
+    "lastUpdated": "Última actualización",
+    "connectorId": "ID del Conector",
+    "assetId": "ID del Activo",
+    "contractId": "ID del Contrato",
+    "refresh": "Actualizar",
+    "of": "de",
+    "elements": "elementos",
+    "elementsPerPage": "Elementos por página"
+  },
+  "negotiation": {
+    "ontologyType": "TIPO DE ONTOLOGÍA",
+    "organization": "ORGANIZACIÓN",
+    "cancel": "Cancelar",
+    "negotiate": "Negociar"
+  }
+}

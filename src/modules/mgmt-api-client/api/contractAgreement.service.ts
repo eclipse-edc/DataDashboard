@@ -24,10 +24,10 @@ import { ContractAgreement, QuerySpec } from '../model'
 })
 export class ContractAgreementService {
 
-    private contractAgreements = this.edcConnectorClient.management.contractAgreements;
+    private contractAgreements;
 
     constructor(private edcConnectorClient: EdcConnectorClient) {
-
+      this.contractAgreements = this.edcConnectorClient.management.contractAgreements;
     }
 
     /**
