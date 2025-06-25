@@ -2,8 +2,8 @@ apiVersion: v2
 name: edc-ui-umbrella
 description: A Helm chart for EDC and EDC UI.
 type: application
-version: 0.1.0
-appVersion: "1.0.0"
+version: 0.1.1
+appVersion: "0.5.4-alpha"
 
 dependencies:
   - name:  tractusx-connector
