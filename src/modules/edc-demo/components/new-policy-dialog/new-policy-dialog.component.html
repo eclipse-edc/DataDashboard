@@ -64,7 +64,7 @@
   <button
     mat-flat-button
     class="create-button"
-    [disabled]="!policyName || (accessOption === 'public' && !businessPartnerNumber)"
+    [disabled]="!isGeneralValid()"
     (click)="onSave()"
   >
     Create

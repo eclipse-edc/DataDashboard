@@ -180,3 +180,165 @@
     <mat-icon>add_circle_outline</mat-icon> Create
   </button>
 </mat-dialog-actions>
+
+
+<ng-template #restFields>
+  <!-- Method + URL -->
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Method</mat-label>
+      <mat-select [(ngModel)]="restConfig.method" required>
+        <mat-option value="GET">GET</mat-option>
+        <mat-option value="POST">POST</mat-option>
+        <mat-option value="PUT">PUT</mat-option>
+        <mat-option value="PATCH">PATCH</mat-option>
+        <mat-option value="DELETE">DELETE</mat-option>
+        <mat-option value="OPTIONS">OPTIONS</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>URL</mat-label>
+      <input matInput [(ngModel)]="restConfig.url" required>
+    </mat-form-field>
+  </div>
+
+  <div class="block-row">
+    <div class="inline-row">
+      <span class="section-label">AUTHENTICATION</span>
+      <a class="action-link" (click)="toggleAuth()">Add Authentication</a>
+    </div>
+
+    <div *ngIf="restConfig.auth.visible">
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Type</mat-label>
+        <mat-select [(ngModel)]="restConfig.auth.type">
+          <mat-option value="vault">Header with Vault Secret</mat-option>
+          <mat-option value="value">Header with Value</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="form-row" *ngIf="restConfig.auth.type === 'vault'">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Auth Header Name</mat-label>
+          <input matInput required [(ngModel)]="restConfig.auth.headerName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Vault Secret Name</mat-label>
+          <input matInput required [(ngModel)]="restConfig.auth.vaultSecretName">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row" *ngIf="restConfig.auth.type === 'value'">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Auth Header Name</mat-label>
+          <input matInput required [(ngModel)]="restConfig.auth.headerName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Auth Header Value</mat-label>
+          <input matInput required [(ngModel)]="restConfig.auth.headerValue">
+        </mat-form-field>
+      </div>
+
+      <a class="action-remove-link" (click)="toggleAuth()">Remove Authentication</a>
+    </div>
+  </div>
+
+  <div class="inline-row">
+    <span class="section-label">ADDITIONAL HEADERS</span>
+    <a class="action-link" (click)="addHeader()">Add Additional Header</a>
+  </div>
+
+  <div *ngFor="let header of restConfig.additionalHeaders; let i = index" class="form-row align-center">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Header Name</mat-label>
+      <input matInput [(ngModel)]="header.name" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Header Value</mat-label>
+      <input matInput [(ngModel)]="header.value" required>
+    </mat-form-field>
+    <a class="remove-link" (click)="removeHeader(i)">Remove</a>
+  </div>
+
+  <div class="inline-row">
+    <span class="section-label">PAYLOAD</span>
+    <a class="action-link" *ngIf="!restConfig.payload" (click)="togglePayload()">Add Payload</a>
+  </div>
+
+  <div *ngIf="restConfig.payload">
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Content Type</mat-label>
+        <input matInput [(ngModel)]="restConfig.payload.contentType" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Body</mat-label>
+        <textarea matInput rows="4" [(ngModel)]="restConfig.payload.body" required></textarea>
+      </mat-form-field>
+    </div>
+
+    <a class="action-remove-link" (click)="togglePayload()">Remove Payload</a>
+  </div>
+</ng-template>
+
+<ng-template #s3Fields>
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Region</mat-label>
+      <mat-select [(ngModel)]="s3Config.region" required>
+        <mat-option value="europe">Europe</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Bucket</mat-label>
+      <input matInput [(ngModel)]="s3Config.bucket" placeholder="Bucket" required />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline" class="form-field full-width">
+    <mat-label>Key Name</mat-label>
+    <input matInput [(ngModel)]="s3Config.keyName" placeholder="Enter key name" required />
+  </mat-form-field>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Access Key</mat-label>
+      <input matInput [(ngModel)]="s3Config.accessKey" type="password" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Secret Key</mat-label>
+      <input matInput [(ngModel)]="s3Config.secretKey" type="password" required />
+    </mat-form-field>
+  </div>
+</ng-template>
+
+<ng-template #azureFields>
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Account</mat-label>
+      <input matInput [(ngModel)]="azureConfig.account" placeholder="Select" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Key Name</mat-label>
+      <input matInput [(ngModel)]="azureConfig.keyName" placeholder="Bucket" required />
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Container</mat-label>
+      <input matInput [(ngModel)]="azureConfig.container" placeholder="Name of the Container" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Blob Name</mat-label>
+      <input matInput [(ngModel)]="azureConfig.blobName" placeholder="Enter Blob Name" required />
+    </mat-form-field>
+  </div>
+</ng-template>
+
