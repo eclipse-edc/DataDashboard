@@ -173,3 +173,10 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the port for oauth2Proxy
+*/}}
+{{- define "txdc.oauth2Proxy.edcContainerPort" -}}
+{{- default 3000 .Values.controlplane.oauth2Proxy.edcContainerPort }}
+{{- end -}}

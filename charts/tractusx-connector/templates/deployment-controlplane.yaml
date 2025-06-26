@@ -88,6 +88,42 @@ spec:
         {{- end }}
       {{- end }}
       containers:
+      {{- if .Values.controlplane.oauth2Proxy.enabled }}
+        - name: oauth2-proxy-sidecar
+          imagePullPolicy: IfNotPresent
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.9.0
+          args:
+            - --provider=oidc
+            # Where to redirect authenticated requests
+            - --upstream=http://127.0.0.1:{{ include "txdc.oauth2Proxy.edcContainerPort" . }}
+            # Listen on port 3000
+            - --redirect-url={{ include "txdc.controlplane.url.protocol" . }}{{ .Values.controlplane.oauth2Proxy.redirectUrlPath | default "/management/oauth2/callback" }}
+            - --http-address=0.0.0.0:{{ .Values.controlplane.endpoints.management.port }}
+            # Provide KeyCloak realm URL
+            - --oidc-issuer-url={{ .Values.controlplane.oauth2Proxy.issuerUrl | required ".Values.controlplane.oauth2Proxy.issuerUrl is required" }}
+            - --pass-user-headers=true
+            - --email-domain=*
+            - --skip-provider-button=true
+            - --scope=openid
+            - --skip-jwt-bearer-tokens
+            - --code-challenge-method=S256
+          # Read Client and Cookie secret from Kubernetes Secrets
+          env:
+            - name: OAUTH2_PROXY_CLIENT_ID
+              value: {{ .Values.controlplane.oauth2Proxy.clientId | required ".Values.controlplane.oauth2Proxy.clientId is required" | quote }}
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "txdc.fullname" . }}-controlplane-oauth2-proxy
+                  key: OAUTH2_CLIENT_SECRET
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "txdc.fullname" . }}-controlplane-oauth2-proxy
+                  key: OAUTH2_COOKIE_SECRET
+          ports:
+            - containerPort: {{ .Values.controlplane.endpoints.management.port }}
+      {{- end }}
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.controlplane.securityContext | nindent 12 }}
@@ -166,14 +202,16 @@ spec:
             #######
             # API #
             #######
+            {{- if not .Values.controlplane.oauth2Proxy.enabled }}
             - name: "EDC_API_AUTH_KEY"
               value: {{ .Values.controlplane.endpoints.management.authKey | required ".Values.controlplane.endpoints.management.authKey is required" | quote }}
+            {{- end }}
             - name: "WEB_HTTP_DEFAULT_PORT"
               value: {{ .Values.controlplane.endpoints.default.port | quote }}
             - name: "WEB_HTTP_DEFAULT_PATH"
               value: {{ .Values.controlplane.endpoints.default.path | quote }}
             - name: "WEB_HTTP_MANAGEMENT_PORT"
-              value: {{ .Values.controlplane.endpoints.management.port | quote }}
+              value: {{ .Values.controlplane.oauth2Proxy.enabled | ternary (include "txdc.oauth2Proxy.edcContainerPort" .) .Values.controlplane.endpoints.management.port | quote }}
             - name: "WEB_HTTP_MANAGEMENT_PATH"
               value: {{ .Values.controlplane.endpoints.management.path | quote }}
             - name: "WEB_HTTP_CONTROL_PORT"

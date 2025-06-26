@@ -51,6 +51,19 @@ controlplane:
     # -- Overrides the image tag whose default is the chart appVersion
     tag: "0.5.4-alpha"
   initContainers: []
+
+  oauth2Proxy:
+    enabled: false
+    issuerUrl: ""
+    clientId: ""
+    clientSecret: ""
+    # -- The cookie used by the oauth2 proxy
+    cookieSecret: ""
+    # -- Default 3000
+    port: ""
+    # -- Default /management/oauth2/callback
+    redirectUrlPath: ""
+
   debug:
     enabled: false
     port: 1044
