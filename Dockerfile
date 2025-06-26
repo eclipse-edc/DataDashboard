@@ -6,6 +6,7 @@ ARG BASE_PATH=/
 WORKDIR /app
 COPY ./ /app/
 RUN npm install
+RUN npm install libs/\@think-it-labs/edc-connector-client/
 RUN npm run build -- --base-href=$BASE_PATH
 
 # Stage 2: Serve app with nginx
