@@ -4,7 +4,7 @@
     "managementUrl": "http://cp-consumer.dataspace/management",
     "defaultUrl": "http://cp-consumer.dataspace/api",
     "protocolUrl": "http://cp-consumer.dataspace/protocol",
-    "federatedCatalogEnabled": true,
+    "federatedCatalogEnabled": false,
     "federatedCatalogUrl": "http://fc-consumer.dataspace/catalog",
     "did": "did:web:ih-consumer.dataspace"
   },
@@ -13,7 +13,7 @@
     "managementUrl": "http://cp-provider.dataspace/management",
     "defaultUrl": "http://cp-provider.dataspace/api",
     "protocolUrl": "http://cp-provider.dataspace/protocol",
-    "federatedCatalogEnabled": true,
+    "federatedCatalogEnabled": false,
     "federatedCatalogUrl": "http://fc-provider.dataspace/catalog",
     "did": "did:web:ih-provider.dataspace"
   }

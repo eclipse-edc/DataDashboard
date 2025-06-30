@@ -1,0 +1,48 @@
+{
+  "@id": "c0caf733-ff0b-464a-b3e0-5f81ddacd196",
+  "@type": "dcat:Dataset",
+  "odrl:hasPolicy": {
+    "@id": "YzM0ZWUxNGEtNzNhYS00MGQ2LTkxYjItNmJiNjE5NDliNDZh:YzBjYWY3MzMtZmYwYi00NjRhLWIzZTAtNWY4MWRkYWNkMTk2:OTZlOWIyMWYtYmM3YS00MmE1LTlkZGUtMTdmNmI1MGUxNzRj",
+    "@type": "odrl:Offer",
+    "odrl:permission": [],
+    "odrl:prohibition": [],
+    "odrl:obligation": []
+  },
+  "dcat:distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "dct:format": {
+        "@id": "HttpData-PULL"
+      },
+      "dcat:accessService": {
+        "@id": "7aa701de-f45f-4daa-bcc5-34019110487e",
+        "@type": "dcat:DataService",
+        "dcat:endpointDescription": "dspace:connector",
+        "dcat:endpointUrl": "http://cp-consumer.dataspace/protocol",
+        "dcat:endpointURL": "http://cp-consumer.dataspace/protocol"
+      }
+    },
+    {
+      "@type": "dcat:Distribution",
+      "dct:format": {
+        "@id": "HttpData-PUSH"
+      },
+      "dcat:accessService": {
+        "@id": "7aa701de-f45f-4daa-bcc5-34019110487e",
+        "@type": "dcat:DataService",
+        "dcat:endpointDescription": "dspace:connector",
+        "dcat:endpointUrl": "http://cp-consumer.dataspace/protocol",
+        "dcat:endpointURL": "http://cp-consumer.dataspace/protocol"
+      }
+    }
+  ],
+  "id": "c0caf733-ff0b-464a-b3e0-5f81ddacd196",
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "dspace": "https://w3id.org/dspace/v0.8/",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+  }
+}

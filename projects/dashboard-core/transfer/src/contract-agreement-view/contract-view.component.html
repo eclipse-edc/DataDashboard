@@ -25,7 +25,7 @@
   ></lib-pagination>
   @if ((pairs$ | async)?.length == 0) {
     <div
-      [ngClass]="initialized ? 'opacity-75' : 'opacity-0'"
+      [ngClass]="initialized ? 'opacity-100' : 'opacity-0'"
       class="tooltip tooltip-open tooltip-primary tooltip-right absolute top-24 -left-4 transition-opacity duration-1000 ease-linear"
       data-tip="No contracts yet! Negotiate your first contract in the Catalog."
     ></div>

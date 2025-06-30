@@ -44,6 +44,7 @@
       <legend class="fieldset-legend text-sm">Destination Data Address</legend>
       <lib-data-address-form
         [parentForm]="transferForm"
+        [dataType]="transferDataType"
         (dataAddressChange)="onDestinationChange($event)"
       ></lib-data-address-form>
     </fieldset>

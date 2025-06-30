@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { EdcConfig } from '../models/edc-config';
 import { EdcClientService } from './edc-client.service';
+import { AppConfig } from '../models/app-config';
 
 /**
  * Service to manage all global dashboard states.
@@ -29,6 +30,17 @@ export class DashboardStateService implements OnDestroy {
    * Observable to expose the current state of the federated catalog.
    */
   public readonly isFederatedCatalogEnabled$ = this._isFederatedCatalogEnabled.asObservable();
+
+  /**
+   * BehaviorSubject holding the current application configuration settings.
+   * Initially, the configuration is undefined.
+   */
+  private readonly _appConfig = new BehaviorSubject<AppConfig | undefined>(undefined);
+
+  /**
+   * Observable stream that emits the current application configuration settings.
+   */
+  public readonly appConfig$ = this._appConfig.asObservable();
 
   /**
    * A BehaviorSubject that holds an array of `EdcConfig` objects.
@@ -64,6 +76,8 @@ export class DashboardStateService implements OnDestroy {
   public readonly localStorageEdcConfigs$: Observable<EdcConfig[]> = this._localStorageEdcConfigs.asObservable();
 
   private readonly LOCAL_STORAGE_THEME_KEY = 'theme';
+  private readonly LOCAL_STORAGE_CURRENT_CONNECTOR = 'currentConnector';
+  private readonly LOCAL_STORAGE_MENU_OPEN = 'menuOpen';
 
   constructor(private readonly edc: EdcClientService) {
     // On load, try to retrieve the locally stored EDC configs from local storage.
@@ -72,7 +86,9 @@ export class DashboardStateService implements OnDestroy {
       try {
         const parsedConfigs: EdcConfig[] = JSON.parse(storedLocalConfigs);
         this._localStorageEdcConfigs.next(parsedConfigs);
-        this.setCurrentEdcConfig(parsedConfigs[0]);
+        if (!this._currentEdcConfig.getValue()) {
+          this.setCurrentEdcConfig(parsedConfigs[0]);
+        }
       } catch (error) {
         console.error('Error parsing locally stored EDC configurations:', error);
       }
@@ -81,6 +97,20 @@ export class DashboardStateService implements OnDestroy {
     const storedTheme = localStorage.getItem(this.LOCAL_STORAGE_THEME_KEY);
     if (storedTheme) {
       this.setTheme(storedTheme);
+    }
+
+    const storedMenuState = localStorage.getItem(this.LOCAL_STORAGE_MENU_OPEN);
+    if (storedMenuState) {
+      this.setMenuOpen(storedMenuState === 'true');
+    }
+
+    const storedCurrentConnector = localStorage.getItem(this.LOCAL_STORAGE_CURRENT_CONNECTOR);
+    if (storedCurrentConnector) {
+      try {
+        this.setCurrentEdcConfig(JSON.parse(storedCurrentConnector));
+      } catch (error) {
+        console.error('Error parsing current EDC configuration:', error);
+      }
     }
   }
 
@@ -100,13 +130,16 @@ export class DashboardStateService implements OnDestroy {
    */
   public setMenuOpen(open: boolean) {
     this._isMenuOpen.next(open);
+    localStorage.setItem(this.LOCAL_STORAGE_MENU_OPEN, String(open));
   }
 
   /**
    * Toggle the current state of the menu.
    */
   public toggleMenuOpen() {
-    this._isMenuOpen.next(!this._isMenuOpen.getValue());
+    const nextState = !this._isMenuOpen.getValue();
+    this._isMenuOpen.next(nextState);
+    localStorage.setItem(this.LOCAL_STORAGE_MENU_OPEN, String(nextState));
   }
 
   /**
@@ -125,6 +158,9 @@ export class DashboardStateService implements OnDestroy {
    */
   public setEdcConfigs(configs: EdcConfig[]): void {
     this._edcConfigs.next(configs);
+    if (!this._currentEdcConfig.getValue() && configs.length > 0) {
+      this.setCurrentEdcConfig(configs[0]);
+    }
   }
 
   /**
@@ -137,6 +173,24 @@ export class DashboardStateService implements OnDestroy {
     this.edc.setDashboardClient(config);
     this.setFederatedCatalogEnabled(config.federatedCatalogUrl !== undefined && config.federatedCatalogEnabled);
     this._currentEdcConfig.next(config);
+    localStorage.setItem(this.LOCAL_STORAGE_CURRENT_CONNECTOR, JSON.stringify(config));
+  }
+
+  /**
+   * Applies a new application configuration.
+   *
+   * Updates the global configuration state and, if specified, adjusts the EDC client's
+   * health check interval.
+   *
+   * @param config An object of type AppConfig containing the configuration settings:
+   *  - enableUserConfig: Optional boolean flag to enable or disable user configuration.
+   *  - healthCheckIntervalSeconds: Optional number representing the health check interval in seconds.
+   */
+  public setAppConfig(config: AppConfig): void {
+    this._appConfig.next(config);
+    if (config.healthCheckIntervalSeconds) {
+      this.edc.setHealthCheckInterval(config.healthCheckIntervalSeconds);
+    }
   }
 
   /**
@@ -176,5 +230,6 @@ export class DashboardStateService implements OnDestroy {
     this._isFederatedCatalogEnabled.complete();
     this._edcConfigs.complete();
     this._currentEdcConfig.complete();
+    this._appConfig.complete();
   }
 }

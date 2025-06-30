@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardAppComponent, EdcConfig } from '@eclipse-edc/dashboard-core';
-import { menuItems } from './app.routes';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { AppConfig } from '../../projects/dashboard-core/src/lib/models/app-config';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +12,6 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  title = 'tmp';
-  protected readonly menuItems = menuItems;
   protected readonly themes = [
     'light',
     'dark',
@@ -27,12 +25,13 @@ export class AppComponent implements OnInit {
     'coffee',
     'emerald',
   ];
-  protected readonly healthCheckInterval = 30;
   edcConfigs?: Promise<EdcConfig[]>;
+  appConfig?: Promise<AppConfig>;
 
   constructor(private readonly http: HttpClient) {}
 
   ngOnInit() {
     this.edcConfigs = firstValueFrom(this.http.get<EdcConfig[]>('config/edc-connector-config.json'));
+    this.appConfig = firstValueFrom(this.http.get<AppConfig>('config/app-config.json'));
   }
 }

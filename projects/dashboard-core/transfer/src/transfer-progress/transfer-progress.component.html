@@ -41,7 +41,7 @@
       </div>
     </div>
   }
-  @if (this.type === 'Pull' && !this.polling) {
+  @if (this.type === 'Pull' && !this.polling && !errorMsg) {
     <lib-transfer-pull-download
       class="w-xl"
       [agreement]="agreement"

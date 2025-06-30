@@ -77,31 +77,33 @@ export class TransferProgressComponent implements OnChanges, OnDestroy {
     if (this.statusJob) {
       clearInterval(this.statusJob);
       this.statusJob = undefined;
-      this.polling = false;
     }
+    this.polling = false;
   }
 
   private async pullStatus() {
     try {
       const state = await this.transferService.getTransferProcessState(this.transferId.id);
       this.currentState = state.state as TransferProcessStates;
-      if (this.stateHistory.length === 0 || this.stateHistory[this.stateHistory.length - 1] !== this.currentState) {
-        this.stateHistory.push(this.currentState);
-      } else {
-        return;
-      }
-      if (this.happyPath) {
+      if (
+        // First or new state
+        (this.stateHistory.length === 0 || this.stateHistory[this.stateHistory.length - 1] !== this.currentState) &&
+        // Unknown states are ignored
+        (this.happyPathStates.includes(this.currentState) || this.exceptionStates.includes(this.currentState))
+      ) {
         // Non-normal path
         if (this.exceptionStates.includes(this.currentState)) {
+          this.stopStatusJob();
           this.happyPath = false;
+          this.stateHistory.push(this.currentState);
           this.process = await compact(await this.transferService.getTransferProcess(this.transferId.id));
           this.errorMsg = JSON.stringify(this.process);
-          this.stopStatusJob();
         } else {
           // Include missed states due to pull mechanism
           this.stateHistory = this.happyPathStates.slice(0, this.happyPathStates.indexOf(this.currentState) + 1);
         }
       }
+      // Stop for happy path end states
       if (
         (this.type === 'Pull' && this.currentState === TransferProcessStates.STARTED) ||
         this.currentState === TransferProcessStates.COMPLETED

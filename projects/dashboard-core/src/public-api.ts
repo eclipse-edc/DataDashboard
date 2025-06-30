@@ -12,6 +12,7 @@ export * from './lib/common/filter-input/filter-input.component';
 export * from './lib/common/pagination/pagination.component';
 export * from './lib/common/item-count-selector/item-count-selector.component';
 export * from './lib/common/alert/alert.component';
+export * from './lib/common/connector-config-form/connector-config-form.component';
 export * from './lib/common/consumer-provider-switch/consumer-provider-switch.component';
 export * from './lib/common/multiselect-with-search/multiselect-with-search.component';
 export * from './lib/common/deletion-confirm/deletion-confirm.component';

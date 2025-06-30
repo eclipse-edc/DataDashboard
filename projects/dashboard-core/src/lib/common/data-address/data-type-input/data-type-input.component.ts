@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
 import { DataAddress } from '@think-it-labs/edc-connector-client';
 import { FormGroup } from '@angular/forms';
 
@@ -18,11 +18,7 @@ export class DataTypeInputComponent implements OnChanges, OnDestroy {
     this.formGroup = new FormGroup({});
   }
 
-  getForm(): FormGroup {
-    return this.formGroup;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.parentForm?.addControl(this.FORM_GROUP_NAME, this.formGroup);
   }
 

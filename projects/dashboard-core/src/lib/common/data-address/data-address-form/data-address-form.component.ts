@@ -28,6 +28,7 @@ export class DataAddressFormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() showDivider = true;
   @Input() parentForm?: FormGroup;
+  @Input() dataType?: string;
   @Input() dataAddress?: DataAddress;
   @Output() dataAddressChange = new EventEmitter<DataAddress>();
 
@@ -55,12 +56,17 @@ export class DataAddressFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   async ngOnInit() {
-    this.allowedTypes$ = from(this.dataTypeService.getAllowedSourceTypes());
+    if (!this.dataType) {
+      this.allowedTypes$ = from(this.dataTypeService.getAllowedSourceTypes());
+    }
   }
 
   ngOnChanges() {
     if (this.dataAddress?.type != this.dataTypeForm.value.dataType) {
       this.dataTypeForm.get('dataType')?.setValue(this.dataAddress?.type);
+    }
+    if (this.dataType) {
+      this.dataTypeForm.get('dataType')?.setValue(this.dataType);
     }
     this.parentForm?.addControl(this.FORM_GROUP_NAME, this.dataTypeForm);
   }

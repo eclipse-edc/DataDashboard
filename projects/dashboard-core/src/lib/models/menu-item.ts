@@ -3,4 +3,5 @@ export interface MenuItem {
   text: string;
   routerPath: string;
   divider?: boolean;
+  viewDescription?: string;
 }

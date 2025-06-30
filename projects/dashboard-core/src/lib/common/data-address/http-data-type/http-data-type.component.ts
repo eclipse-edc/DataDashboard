@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnDestroy } from '@angular/core';
 import { DataTypeInputComponent } from '../data-type-input/data-type-input.component';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpDataAddress } from '@think-it-labs/edc-connector-client';
@@ -64,8 +64,8 @@ export class HttpDataTypeComponent extends DataTypeInputComponent implements OnC
     this.proxyViewData.set('proxyQueryParams', { displayName: 'Proxy Query Params', icon: 'data_array' });
   }
 
-  override ngOnChanges(changes: SimpleChanges) {
-    super.ngOnChanges(changes);
+  override ngOnChanges() {
+    super.ngOnChanges();
     if (this.dataAddress) {
       Object.keys(this.dataAddress).forEach(key => {
         const formControl = this.formGroup.get(key);

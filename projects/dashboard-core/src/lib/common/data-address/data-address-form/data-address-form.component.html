@@ -1,23 +1,25 @@
 <fieldset class="fieldset" [formGroup]="dataTypeForm">
-  @if (allowedTypes$ | async) {
-    <legend class="fieldset-label">Data types your connector supports</legend>
-    <label class="select w-full" [ngClass]="dataTypeForm.get('dataType')?.invalid ? 'select-error' : ''">
-      <span class="label">Type</span>
-      <select formControlName="dataType" name="dataType" required>
-        @for (type of allowedTypes$ | async; track type) {
-          <option [ngValue]="type">{{ type }}</option>
-        }
-      </select>
-    </label>
-    @if (dataTypeForm.get('dataType')?.invalid) {
-      <p class="fieldset-label text-error">Mandatory</p>
+  @if (!dataType) {
+    @if (allowedTypes$ | async) {
+      <legend class="fieldset-label">Data types your connector supports</legend>
+      <label class="select w-full" [ngClass]="dataTypeForm.get('dataType')?.invalid ? 'select-error' : ''">
+        <span class="label">Type</span>
+        <select formControlName="dataType" name="dataType" required>
+          @for (type of allowedTypes$ | async; track type) {
+            <option [ngValue]="type">{{ type }}</option>
+          }
+        </select>
+      </label>
+      @if (dataTypeForm.get('dataType')?.invalid) {
+        <p class="fieldset-label text-error">Mandatory</p>
+      } @else {
+        <div class="divider my-1"></div>
+      }
     } @else {
-      <div class="divider my-1"></div>
+      <div class="skeleton w-full h-12 flex justify-center items-center rounded-lg">
+        <span class="loading loading-bars loading-md opacity-75 text-primary"></span>
+      </div>
     }
-  } @else {
-    <div class="skeleton w-full h-12 flex justify-center items-center rounded-lg">
-      <span class="loading loading-bars loading-md opacity-75 text-primary"></span>
-    </div>
   }
   <ng-container #dataAddressComponent></ng-container>
 </fieldset>

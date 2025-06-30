@@ -14,6 +14,7 @@ export class FallbackDataTypeComponent extends DataTypeInputComponent {
   }
 
   dataAddressChange(address: Record<string, JsonValue>): void {
-    this.changed.emit({ ...address, type: this.type! });
+    this.dataAddress = { ...address, type: this.type! };
+    this.changed.emit(this.dataAddress);
   }
 }

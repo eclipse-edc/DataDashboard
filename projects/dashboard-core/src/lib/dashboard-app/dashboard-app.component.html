@@ -16,21 +16,17 @@
 <div class="box-border flex h-screen w-screen max-h-screen max-w-screen flex-col bg-base-100 pt-4">
   <div class="navbar min-h-fit px-4 mx-4 max-w-[calc(100%-2rem)] rounded-2xl bg-neutral text-neutral-content shadow-xl">
     <div class="navbar-start">
-      <label
-        class="btn btn-lg btn-circle btn-ghost swap swap-rotate hover:text-primary-content hover:bg-primary border-none"
+      <div
+        class="btn btn-lg btn-circle btn-ghost hover:text-primary-content hover:bg-primary border-none"
+        role="button"
+        (click)="stateService.toggleMenuOpen()"
       >
-        <input type="checkbox" (change)="stateService.toggleMenuOpen()" />
-        <span
-          class="material-symbols-rounded h7 w-7 !text-[1.75rem]"
-          [ngClass]="openMenuInitially ? 'swap-on' : 'swap-off'"
-          >menu</span
-        >
-        <span
-          class="material-symbols-rounded h7 w-7 !text-[1.75rem]"
-          [ngClass]="openMenuInitially ? 'swap-off' : 'swap-on'"
-          >menu_open</span
-        >
-      </label>
+        @if (stateService.isMenuOpen$ | async) {
+          <span class="material-symbols-rounded h7 w-7 !text-[1.75rem]">menu_open</span>
+        } @else {
+          <span class="material-symbols-rounded h7 w-7 !text-[1.75rem]">menu</span>
+        }
+      </div>
     </div>
     <div class="navbar-center">
       <div class="text-lg">EDC Dashboard</div>
@@ -80,7 +76,7 @@
                 <input
                   type="radio"
                   name="edc-config-dropdown"
-                  class="btn btn-ghost justify-start checked:text-primary-content"
+                  class="btn btn-ghost justify-start checked:text-primary-content checked:bg-primary"
                   [attr.aria-label]="config.connectorName"
                   [value]="config.connectorName"
                   [checked]="config === (stateService.currentEdcConfig$ | async)"
@@ -88,35 +84,37 @@
                 />
               </li>
             }
-            @for (config of stateService.localStorageEdcConfigs$ | async; track config.connectorName) {
-              <li class="group flex flex-row flex-nowrap relative">
-                <input
-                  type="radio"
-                  name="edc-config-dropdown"
-                  class="btn btn-ghost justify-start checked:text-primary-content w-full"
-                  [attr.aria-label]="config.connectorName"
-                  [value]="config.connectorName"
-                  [checked]="config === (stateService.currentEdcConfig$ | async)"
-                  (click)="selectConnector(config)"
-                />
-                <div
-                  class="btn btn-error btn-soft absolute left-[100%] hidden group-hover:inline-flex"
-                  (click)="deleteConnector(config)"
-                >
-                  <span class="material-symbols-rounded">delete</span>
-                </div>
+            @if ((stateService.appConfig$ | async)?.enableUserConfig) {
+              @for (config of stateService.localStorageEdcConfigs$ | async; track config.connectorName) {
+                <li class="group flex flex-row flex-nowrap relative">
+                  <input
+                    type="radio"
+                    name="edc-config-dropdown"
+                    class="btn btn-ghost justify-start checked:text-primary-content w-full"
+                    [attr.aria-label]="config.connectorName"
+                    [value]="config.connectorName"
+                    [checked]="config === (stateService.currentEdcConfig$ | async)"
+                    (click)="selectConnector(config)"
+                  />
+                  <div
+                    class="btn btn-error btn-soft absolute left-[100%] hidden group-hover:inline-flex"
+                    (click)="deleteConnector(config)"
+                  >
+                    <span class="material-symbols-rounded">delete</span>
+                  </div>
+                </li>
+              }
+              <div class="divider mb-2 mt-0"></div>
+              <li>
+                <button class="btn btn-soft btn-primary" (click)="addConnector()">
+                  <span class="material-symbols-rounded">add</span>
+                  Add
+                </button>
               </li>
             }
-            <div class="divider mb-2 mt-0"></div>
-            <li>
-              <button class="btn btn-soft btn-primary" (click)="addConnector()">
-                <span class="material-symbols-rounded">add</span>
-                Add
-              </button>
-            </li>
           </ul>
         </div>
-      } @else {
+      } @else if ((stateService.appConfig$ | async)?.enableUserConfig) {
         <div
           class="tooltip tooltip-right tooltip-open tooltip-primary"
           data-tip="Add your first connector configuration"

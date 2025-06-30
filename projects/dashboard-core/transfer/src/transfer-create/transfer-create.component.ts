@@ -49,6 +49,7 @@ export class TransferCreateComponent implements OnChanges, OnDestroy {
   transferForm: FormGroup;
 
   isPushTransfer = false;
+  transferDataType = '';
   dataAddress?: DataAddress;
 
   errorMsg = '';
@@ -79,7 +80,9 @@ export class TransferCreateComponent implements OnChanges, OnDestroy {
   }
 
   onTransferTypeChange(type: string) {
-    this.isPushTransfer = type.toLowerCase().includes('push');
+    const typeSplit = type.split('-');
+    this.transferDataType = typeSplit[0];
+    this.isPushTransfer = typeSplit[1].toLowerCase().includes('push');
   }
 
   onDestinationChange(address: DataAddress) {

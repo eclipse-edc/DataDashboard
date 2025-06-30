@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
-import { MenuItem } from '../models/menu-item';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AsyncPipe, NgClass, NgForOf } from '@angular/common';
 import { DashboardStateService } from '../services/dashboard-state.service';
@@ -8,6 +7,8 @@ import { EdcClientService } from '../services/edc-client.service';
 import { ModalAndAlertService } from '../services/modal-and-alert.service';
 import { DeleteConfirmComponent } from '../common/deletion-confirm/deletion-confirm.component';
 import { ConnectorConfigFormComponent } from '../common/connector-config-form/connector-config-form.component';
+import { AppConfig } from '../models/app-config';
+import { MenuItem } from '../models/menu-item';
 
 @Component({
   selector: 'lib-dashboard-app',
@@ -17,14 +18,14 @@ import { ConnectorConfigFormComponent } from '../common/connector-config-form/co
   styleUrl: './dashboard-app.component.css',
 })
 export class DashboardAppComponent implements AfterViewInit {
-  @Input() menuItems: MenuItem[] = [];
-  @Input() themes: string[] = [];
-  @Input() openMenuInitially = true;
+  @Input() appConfig?: Promise<AppConfig>;
   @Input() edcConfigs?: Promise<EdcConfig[]>;
-  @Input() healthCheckIntervalSeconds?: number;
+  @Input() themes: string[] = [];
 
   @ViewChild('dashboardModal', { read: ViewContainerRef, static: true }) modal!: ViewContainerRef;
   @ViewChild('dashboardAlert', { read: ViewContainerRef, static: true }) alert!: ViewContainerRef;
+
+  public menuItems: MenuItem[] = [];
 
   constructor(
     public stateService: DashboardStateService,
@@ -33,12 +34,21 @@ export class DashboardAppComponent implements AfterViewInit {
   ) {}
 
   async ngAfterViewInit() {
-    this.stateService.setMenuOpen(this.openMenuInitially);
     const dialog = document.querySelector<HTMLDialogElement>('#dashboard-dialog');
     this.modalAndAlertService.setDialogToInject(dialog!, this.modal);
     this.modalAndAlertService.setAlertToInject(this.alert);
-    if (this.healthCheckIntervalSeconds) {
-      this.edcClientService.setHealthCheckInterval(this.healthCheckIntervalSeconds);
+
+    const appConfig = this.appConfig ? await this.appConfig : undefined;
+    if (!appConfig?.menuItems) {
+      this.modalAndAlertService.showAlert(
+        'Missing app configuration! Menu items must be set!',
+        'Configuration error',
+        'error',
+      );
+      return;
+    } else {
+      this.menuItems = appConfig.menuItems;
+      this.stateService.setAppConfig(appConfig);
     }
 
     const configs = this.edcConfigs ? await this.edcConfigs : undefined;
@@ -50,7 +60,6 @@ export class DashboardAppComponent implements AfterViewInit {
     try {
       this.stateService.setFederatedCatalogEnabled(firstConfig.federatedCatalogEnabled);
       this.stateService.setEdcConfigs(configs);
-      this.stateService.setCurrentEdcConfig(firstConfig);
     } catch (e) {
       console.error(e);
       this.modalAndAlertService.showAlert((e as Error).message, 'Configuration error', 'error');

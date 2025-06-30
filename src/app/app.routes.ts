@@ -1,7 +1,15 @@
 import { Routes } from '@angular/router';
-import { MenuItem } from '@eclipse-edc/dashboard-core';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('@eclipse-edc/dashboard-core/home').then(m => m.HomeViewComponent),
+  },
   {
     path: 'assets',
     loadComponent: () => import('@eclipse-edc/dashboard-core/assets').then(m => m.AssetViewComponent),
@@ -27,45 +35,5 @@ export const routes: Routes = [
   {
     path: 'transfer-history',
     loadComponent: () => import('@eclipse-edc/dashboard-core/transfer').then(m => m.TransferHistoryViewComponent),
-  },
-];
-
-export const menuItems: MenuItem[] = [
-  {
-    text: 'Home',
-    materialSymbol: 'home_app_logo',
-    routerPath: '/app',
-    divider: true,
-  },
-  {
-    text: 'Catalog',
-    materialSymbol: 'book_ribbon',
-    routerPath: 'catalog',
-  },
-  {
-    text: 'Assets',
-    materialSymbol: 'deployed_code_update',
-    routerPath: 'assets',
-  },
-  {
-    text: 'Policy Definitions',
-    materialSymbol: 'policy',
-    routerPath: 'policies',
-  },
-  {
-    text: 'Contract Definitions',
-    materialSymbol: 'contract_edit',
-    routerPath: 'contract-definitions',
-    divider: true,
-  },
-  {
-    text: 'Contracts',
-    materialSymbol: 'handshake',
-    routerPath: 'contracts',
-  },
-  {
-    text: 'Transfer History',
-    materialSymbol: 'schedule_send',
-    routerPath: 'transfer-history',
   },
 ];

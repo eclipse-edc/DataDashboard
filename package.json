@@ -1,6 +1,6 @@
 {
   "name": "data-dashboard",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,6 +9,7 @@
     "lib-build": "ng build @eclipse-edc/dashboard-core",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "lib-test": "ng test --project @eclipse-edc/dashboard-core",
     "lint": "ng lint",
     "prepare": "husky",
     "cypress:open": "ng run data-dashboard:cypress-open",
@@ -43,7 +44,7 @@
     "@tailwindcss/postcss": "^4.1.1",
     "@types/jasmine": "~5.1.7",
     "angular-eslint": "19.3.0",
-    "cypress": "^14.2.1",
+    "cypress": "^14.3.3",
     "daisyui": "^5.0.12",
     "eslint": "^9.23.0",
     "eslint-config-prettier": "^10.1.1",

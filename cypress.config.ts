@@ -1,6 +1,7 @@
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
+  projectId: '5bofid',
   e2e: {
     baseUrl: 'http://localhost:4200',
   },
@@ -20,7 +21,9 @@ export default defineConfig({
         managementUrl: 'http://test.connector/management',
         defaultUrl: 'http://test.connector/api',
         protocolUrl: 'http://test.connector/protocol',
-        federatedCatalogEnabled: false,
+        federatedCatalogEnabled: true,
+        federatedCatalogUrl: 'http://fc.connector/catalog',
+        did: 'http://ih.connector/',
       },
     ],
   },
