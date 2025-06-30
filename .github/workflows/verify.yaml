@@ -34,8 +34,8 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
-  test:
-    name: Component and Unit Tests
+  cypress-components:
+    name: Cypress Component Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -45,8 +45,8 @@ jobs:
       - run: npm ci
       - run: npm run cypress:run:component
 
-  e2e:
-    name: E2E Tests
+  cypress-e2e:
+    name: Cypress E2E Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,3 +55,16 @@ jobs:
           node-version: "22"
       - run: npm ci
       - run: npm run cypress:run:e2e
+
+  karma-services:
+    name: Karma Service Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm run lib-build
+      - run: npm lib-test -- --no-watch --browsers=GitlabHeadlessChrome
+
