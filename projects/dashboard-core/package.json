@@ -1,6 +1,6 @@
 {
   "name": "@eclipse-edc/dashboard-core",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "peerDependencies": {
     "@angular/common": "^19.2.5",
     "@angular/core": "^19.2.5",

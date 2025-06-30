@@ -78,6 +78,12 @@ For more details how this works, have a look at the [app.config.ts](src/app/app.
 
 
 # Run the dashboard
+## Docker
+The dashboard will be availabe at `http://localhost:8080`
+
+1. `docker build -t eclipse-edc/data-dashboard .`
+2. `docker run -p 8080:8080 -v $PWD/public/config/:/app/config -v $PWD/nginx.conf:/etc/nginx/conf.d/default.conf eclipse-edc/data-dashboard`
+
 ## Angular dev server
 To run the data dashboard, you have to execute the following commands.
 The dashboard will be available at `http://localhost:4200`
