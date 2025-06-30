@@ -12,7 +12,7 @@ it('should add the form control on ngOnChanges', () => {
 
 it('should remove the form control on ngOnDestroy', () => {
   const parentForm = new FormGroup({});
-  const component = mount(DataTypeInputComponent, {
+  mount(DataTypeInputComponent, {
     componentProperties: { parentForm },
   }).then(wrapper => {
     wrapper.component.ngOnDestroy();
