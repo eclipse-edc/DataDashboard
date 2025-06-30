@@ -8,7 +8,7 @@ EDC Data Dashboard is a dev frontend application for [EDC Management API](https:
 
 1. [Overview](#overview)
 2. [Configuration](#configuration)
-3. [Run / deploy the dashboard](#run--deploy-the-dashboard)
+3. [Run the dashboard](#run-the-dashboard)
 4. [Create a custom dashboard (How to use the library)](#create-a-custom-dashboard-how-to-use-the-library)
 5. [Contributing](#contributing)
 
@@ -24,15 +24,16 @@ All the components and services are inside the library to make the creation of c
 With the library approach, dependency management and extensibility for custom dashboards is improved.
 
 The library itself ([projects/dashboard-core](projects/dashboard-core)) is divided into multiple lazy loadable chunks:
-  1. [dashboard-core](projects/dashboard-core/src/lib) includes:
-     - Data model
-     - Dashboard layout (header, sidebar) and general services (edc client, modals and alerts, state, data type registry)
-     - Small reusable components
-  2. [dashboard-core/assets](projects/dashboard-core/assets) includes all components and services for the asset view.
-  3. [dashboard-core/catalog](projects/dashboard-core/catalog) includes all components and services for the catalog view.
-  4. [dashboard-core/contract-definitions](projects/dashboard-core/contract-definitions) includes all components and services for the contract definition view.
-  5. [dashboard-core/policies](projects/dashboard-core/policies) includes all components and services for the policy view.
-  6. [dashboard-core/transfer](projects/dashboard-core/transfer) includes all components and services for the contract and transfer history views.
+1. [dashboard-core](projects/dashboard-core/src/lib) includes:
+  - Data model
+  - Dashboard layout (header, sidebar) and general services (edc client, modals and alerts, state, data type registry)
+  - Small reusable components
+2. [dashboard-core/assets](projects/dashboard-core/assets) includes all components and services for the asset view.
+3. [dashboard-core/catalog](projects/dashboard-core/catalog) includes all components and services for the catalog view.
+4. [dashboard-core/contract-definitions](projects/dashboard-core/contract-definitions) includes all components and services for the contract definition view.
+5. [dashboard-core/home](projects/dashboard-core/home) includes the home view component for introduction and view descriptions.
+6. [dashboard-core/policies](projects/dashboard-core/policies) includes all components and services for the policy view.
+7. [dashboard-core/transfer](projects/dashboard-core/transfer) includes all components and services for the contract and transfer history views.
 
 The application is merely a wrapper to configure which parts of the library to use:
 - [src/styles.css](src/styles.css): Setup for tailwindcss and daisyUI
@@ -46,22 +47,29 @@ which can be customized by modifying the specified files.
 
 
 # Configuration
-
-## Connector configuration
-The user has the ability to add connectors within the dashboard.
-This user-specific configuration is currently stored in the local storage of the browser, including auth keys.
-So to have it said, be aware of the danger that secrets stored in local storage pose.
-
-For pre-configured connectors in the dashboard you have to create a JSON configuration at `public/config/edc-connector-config.json`.
-The file must contain a JSON array of [EdcConfig](projects/dashboard-core/src/lib/models/edc-config.ts) objects.
-The [edc-connector-config.json](public/config/edc-connector-config.json) in this repo contains an example configuration.
-<br> ___Note:___ Configuration loading is implemented in the angular wrapper application as you pass the pre-configured connector configuration
+<br> ___Note:___ Configuration loading is implemented in the angular wrapper application as you pass the configuration
 to the [DashboardAppComponent](projects/dashboard-core/src/lib/dashboard-app/dashboard-app.component.ts).
 So if you only use the library, the config loading has to be re-implemented.
 
+## Connector configuration
+For pre-configured connectors in the dashboard you have to create a JSON configuration at `public/config/edc-connector-config.json`.
+The file must contain a JSON array of [EdcConfig](projects/dashboard-core/src/lib/models/edc-config.ts) objects.
+The [edc-connector-config.json](public/config/edc-connector-config.json) in this repo contains an example configuration.
+
 ## Application configuration
-The angular application wrapper supports dynamic base path configuration at runtime to enable the use of
-the container images in deployment scenarios where the dashboard is not running at root level but some sub path.
+
+Beside the connector configuration, there is some application configuration. The configuration is loaded from `public/config/app-config.json`.
+The [app-config.json](public/config/app-config.json) in this repository contains the default configuration.
+The following application config values exist:
+- `menuItems` ([MenuItem](projects/dashboard-core/src/lib/models/menu-item.ts) Array): Configure the menu items (views) of the dashboard. Set the icon, text, router path and view description (for the home view) for each item.
+- `healthCheckIntervalSeconds` (number): Sets the interval in seconds to check if the connection to the current connector is still established.<br>__Default__: `30`
+- `enableUserConfig` (boolean): If enabled, the user has the ability to add connectors within the dashboard.
+This user-specific configuration is currently stored in the local storage of the browser, including auth keys.
+So to have it said, be aware of the danger that secrets stored in local storage pose.<br>__Default__: `false`
+
+### Base Path
+The angular application wrapper supports dynamic base path configuration at runtime to enable the use of 
+container images in deployment scenarios where the dashboard is not running at root level but some sub path.
 To configure a base path, add a file to the deployment environment at `public/config/APP_BASE_HREF.txt` with just the path and nothing else, e.g.:
 ```text
 /my/custom/sub/path
@@ -69,62 +77,9 @@ To configure a base path, add a file to the deployment environment at `public/co
 For more details how this works, have a look at the [app.config.ts](src/app/app.config.ts) and the angular docs about [APP_BASE_HREF](https://angular.dev/api/common/APP_BASE_HREF).
 
 
-# Run / deploy the dashboard
-Currently, there are three ways to run or deploy the data dashboard.
-
-## Helm
-For deployments in kubernetes clusters use the Helm chart (details in [helm](helm) directory).
-To apply a configuration, create a ConfigMap (following the [configuration](#configuration) section) and set this in the `volumes` and `volumeMounts` values, e.g.:
-  - ConfigMap
-    ```yaml
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: example-config
-    data:
-      edc-connector-config.json: |-
-        [
-          {
-            "connectorName": "Consumer",
-            "managementUrl": "http://cp-consumer.dataspace/management",
-            "defaultUrl": "http://cp-consumer.dataspace/api",
-            "protocolUrl": "http://cp-consumer.dataspace/protocol",
-            "federatedCatalogEnabled": true,
-            "federatedCatalogUrl": "http://fc-consumer.dataspace/catalog",
-            "did": "did:web:ih-consumer.dataspace"
-          },
-          ...
-        ]
-    ```
-  - Helm values
-    ```yaml
-      volumes:
-        - name: config
-          configMap:
-            name: example-config
-      volumeMounts:
-        - name: config
-          mountPath: /app/config/edc-connector-config.json
-          subPath: edc-connector-config.json
-          readOnly: true
-    ```
-
-## Docker
-__ToDo__: Add public image (github)<br>
-In a (local) docker environment you can run the dashboard with the following command and reach it at `http://localhost:8080`:
-```shell
-docker run -p 8080:8080 <container-image>
-```
-
-For per-configured connectors create a `edc-connector-config.json` (following the [configuration](#configuration) section) and mount it in the container.
-```shell
-docker run -p 8080:8080 -v <path-to-config-folder>:/app/config <container-image>
-```
-
-
-## Angular dev server (for debugging)
-To have a quicker development cycle, you can also run the data dashboard in the Angular dev server environment.
-For a dev environment, you have to run the following commands.
+# Run the dashboard
+## Angular dev server
+To run the data dashboard, you have to execute the following commands.
 The dashboard will be available at `http://localhost:4200`
 
 _Note that 2. and 3. always have to be executed for each run._
@@ -137,9 +92,14 @@ _Note that 2. and 3. always have to be executed for each run._
 
 # Create a custom dashboard (How to use the library)
 
-__ToDo__: Keep this section if no npm package is published in github registry? Otherwise, put package in registry and change ref.<br>
+To build a custom dashboard you first have to publish the angular library (dashboard-core) to a package registry:
+```shell
+cd projects/dashboard-core
+npm publish --registry=<your-registry-url>
+```
 
 ## Include the library in your angular project
+When the library is published to your registry, perform the following steps in the angular project you want to use the library in:
 - Add daisyUI to your angular project (https://daisyui.com/docs/install/angular/).
 - Add material-symbols to your project (https://www.npmjs.com/package/material-symbols):
     ```shell
@@ -155,7 +115,7 @@ __ToDo__: Keep this section if no npm package is published in github registry? O
     ```
 - Add the library to your project:
     ```shell
-    echo @eclipse-edc:registry=https://gitlab.cc-asp.fraunhofer.de/api/v4/projects/72400/packages/npm/ >> .npmrc
+    echo @eclipse-edc:registry=<your-registry-url> >> .npmrc
     npm i @eclipse-edc/dashboard-core
     ```
 - Add the library and material-symbols to the `styles.css` to ensure that all utility classes used in the library are added to the generated css, e.g.:
