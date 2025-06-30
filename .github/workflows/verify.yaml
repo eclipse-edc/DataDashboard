@@ -5,11 +5,7 @@ on:
   push:
     branches:
       - main
-      - feat/dst-dashboard
   pull_request:
-    branches:
-      - main
-      - feat/dst-dashboard
 
 
 concurrency:
@@ -66,5 +62,5 @@ jobs:
           node-version: "22"
       - run: npm ci
       - run: npm run lib-build
-      - run: npm lib-test -- --no-watch --browsers=GitlabHeadlessChrome
+      - run: npm run lib-test -- --no-watch --browsers=GitlabHeadlessChrome
 
