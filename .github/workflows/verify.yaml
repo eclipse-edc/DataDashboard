@@ -18,7 +18,7 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v3
         with:
           node-version: "22"
@@ -34,7 +34,7 @@ jobs:
     name: Cypress Component Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v3
         with:
           node-version: "22"
@@ -45,7 +45,7 @@ jobs:
     name: Cypress E2E Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v3
         with:
           node-version: "22"
@@ -56,7 +56,7 @@ jobs:
     name: Karma Service Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v3
         with:
           node-version: "22"
