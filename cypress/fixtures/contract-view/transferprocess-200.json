@@ -1,0 +1,10 @@
+{
+  "@type": "IdResponse",
+  "@id": "b352efbc-9be9-4a33-a53b-5c67726a5941",
+  "createdAt": 1748866109846,
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  }
+}

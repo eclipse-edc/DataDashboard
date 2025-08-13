@@ -1,0 +1,134 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<div class="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 [&_.card]:rounded-2xl [&_.card]:shadow-xl">
+  <div class="card bg-primary/20 col-span-full">
+    <div class="card-body">
+      <div class="card-title flex justify-center">
+        <svg class="stroke-primary w-8 h-8" viewBox="0 0 411 411" fill="none">
+          <circle cx="205.5" cy="205.5" r="195.5" stroke-width="20"></circle>
+          <path
+            class="stroke-primary"
+            d="M161.597 85.4497c36.82 73.7963 74.26 116.3293 153.442 193.0403"
+            stroke="url(#paint0_linear_184_39)"
+            stroke-width="20"
+          ></path>
+          <path
+            class="stroke-primary"
+            d="M110.69 231.796C197.038 238.377 236.359 251.55 298.83 281.907"
+            stroke="url(#paint1_linear_184_39)"
+            stroke-width="20"
+          ></path>
+          <path
+            d="M94.9899 229.095c48.3371-48.518 63.1451-79.806 65.7611-143.5425"
+            class="stroke-primary"
+            stroke="url(#paint2_linear_184_39)"
+            stroke-width="20"
+          ></path>
+          <circle
+            class="fill-primary"
+            cx="95.4443"
+            cy="228.597"
+            r="27.5"
+            transform="rotate(-45 95.4443 228.597)"
+          ></circle>
+          <circle
+            class="fill-primary"
+            cx="311.112"
+            cy="281.629"
+            r="27.5"
+            transform="rotate(-45 311.112 281.629)"
+          ></circle>
+          <circle
+            class="fill-primary"
+            cx="161.205"
+            cy="85.0537"
+            r="27.5"
+            transform="rotate(-45 161.205 85.0537)"
+          ></circle>
+          <defs>
+            <linearGradient
+              id="paint0_linear_184_39"
+              x1="156.986"
+              y1="89.1145"
+              x2="310.428"
+              y2="282.155"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop></stop>
+            </linearGradient>
+            <linearGradient
+              id="paint1_linear_184_39"
+              x1="112.098"
+              y1="226.509"
+              x2="300.238"
+              y2="276.621"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop></stop>
+            </linearGradient>
+            <linearGradient
+              id="paint2_linear_184_39"
+              x1="103.156"
+              y1="232.836"
+              x2="168.917"
+              y2="89.2937"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="text-2xl">Eclipse Dataspace Components</span>
+      </div>
+      EDC is an open source framework hosted by the Eclipse Foundation for building secure, globally-scalable
+      data-sharing services. EDC provides highly customizable components for creating control planes, data planes,
+      decentralized identity systems, and federated data catalogs. Backed by leading companies and cloud providers, EDC
+      gives developers the tools they need to deliver innovative solutions for data exchange networks.
+      <div class="card-actions justify-center mt-auto">
+        <a class="btn btn-primary btn-soft" href="https://github.com/eclipse-edc" target="_blank">
+          <span>GitHub</span>
+          <span class="material-symbols-rounded">open_in_new</span>
+        </a>
+        <a class="btn btn-primary btn-soft" href="https://eclipse-edc.github.io/" target="_blank">
+          <span>Docs</span>
+          <span class="material-symbols-rounded">open_in_new</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  @for (item of (stateService.appConfig$ | async)?.menuItems; track item.routerPath) {
+    @if (item.viewDescription) {
+      <div class="card flex-grow bg-base-300">
+        <div class="card-body">
+          <div class="card-title flex justify-between">
+            <span>{{ item.text }} View</span>
+            <div class="tooltip tooltip-left no-animation" [attr.data-tip]="'Go to '.concat(item.text)">
+              <button role="button" class="btn btn-soft btn-primary btn-circle" (click)="navigate(item.routerPath)">
+                <i class="material-symbols-rounded">{{ item.materialSymbol }}</i>
+              </button>
+            </div>
+          </div>
+          {{ item.viewDescription }}
+          <div class="card-actions justify-end mt-auto">
+            <button role="button" class="btn btn-primary btn-soft" (click)="navigate(item.routerPath)">
+              <span>Go to {{ item.text }}</span>
+              <span class="material-symbols-rounded">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

@@ -1,0 +1,44 @@
+[
+  {
+    "@id": "test-asset2",
+    "@type": "Asset",
+    "properties": {
+      "asset:prop:version": "1.0",
+      "name": "insert description here ...",
+      "id": "test-asset2",
+      "contenttype": "application/json"
+    },
+    "dataAddress": {
+      "@type": "DataAddress",
+      "type": "HttpData",
+      "name": "Test asset",
+      "baseUrl": "https://httpbin.org/get"
+    },
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+      "edc": "https://w3id.org/edc/v0.0.1/ns/",
+      "odrl": "http://www.w3.org/ns/odrl/2/"
+    }
+  },
+  {
+    "@id": "test-asset1",
+    "@type": "Asset",
+    "properties": {
+      "asset:prop:version": "1.0",
+      "name": "insert description here ...",
+      "id": "test-asset1",
+      "contenttype": "application/json"
+    },
+    "dataAddress": {
+      "@type": "DataAddress",
+      "type": "HttpData",
+      "name": "Test asset",
+      "baseUrl": "https://httpbin.org/get"
+    },
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+      "edc": "https://w3id.org/edc/v0.0.1/ns/",
+      "odrl": "http://www.w3.org/ns/odrl/2/"
+    }
+  }
+]

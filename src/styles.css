@@ -1,0 +1,57 @@
+/*
+ *  Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+ *
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Apache License, Version 2.0 which is available at
+ *  https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Contributors:
+ *       Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+ *
+ */
+
+@import 'tailwindcss';
+@import 'material-symbols/rounded.css';
+@source '../projects/dashboard-core/**/*.html';
+@plugin 'daisyui' {
+  themes:
+    light,
+    dark,
+    dim --prefersdark,
+    aqua,
+    nord,
+    synthwave,
+    forest,
+    dracula,
+    night,
+    coffee,
+    emerald --default;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+* {
+  scrollbar-width: thin !important;
+}
+
+*::-webkit-scrollbar * {
+  width: 3px !important;
+}

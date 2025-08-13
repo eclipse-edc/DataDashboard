@@ -1,0 +1,64 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<div class="grid grid-cols-2 2xl:grid-cols-1 gap-4 gap-x-6 items-start overflow-y-auto h-full [&_label]:shrink-0">
+  <h1 class="text-xl text-center divider m-0 2xl:col-span-2">Transfer History</h1>
+  <div class="m-0 2xl:col-span-2">
+    <div class="flex justify-center bg-transparent p-1">
+      <div
+        class="badge badge-soft badge-lg mr-6"
+        [ngClass]="
+          transferStateType === 'error' ? 'badge-error' : transferStateType === 'okay' ? 'badge-success' : 'badge-info'
+        "
+      >
+        {{ transferProcess.state }}
+      </div>
+      <div class="text-xs">
+        <div class="badge badge-ghost badge-lg">
+          <span class="opacity-50">Updated: </span>
+          {{ transferProcess.optionalValue('edc', 'stateTimestamp') | date: 'dd.MM.yyyy - HH:mm:ss' }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col [&_>*]:mb-4 [&_>*]:last:mb-0 h-full">
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box h-full overflow-auto">
+      <legend class="fieldset-legend text-sm">Properties</legend>
+      <lib-json-object-table
+        [object]="compactTransferProcess"
+        [excludeKeys]="['@context', 'dataDestination', '@type', 'stateTimestamp', 'state']"
+        [deleteButton]="false"
+      >
+      </lib-json-object-table>
+    </fieldset>
+  </div>
+
+  <div class="flex flex-col [&_>*]:mb-4 [&_>*]:last:mb-0 h-full">
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box h-full overflow-auto">
+      <legend class="fieldset-legend text-sm">Data Destination</legend>
+      @if (!dataDestination) {
+        <div class="text-center text-sm text-base-content mt-10 opacity-50">No data available</div>
+      } @else {
+        <lib-json-object-table [object]="dataDestination" [excludeKeys]="['@context', '@type']" [deleteButton]="false">
+        </lib-json-object-table>
+      }
+    </fieldset>
+    @if (privateProperties) {
+      <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box h-full overflow-auto">
+        <legend class="fieldset-legend text-sm">Properties</legend>
+        <lib-json-object-table [object]="privateProperties" [excludeKeys]="['@context']" [deleteButton]="false">
+        </lib-json-object-table>
+      </fieldset>
+    }
+  </div>
+</div>

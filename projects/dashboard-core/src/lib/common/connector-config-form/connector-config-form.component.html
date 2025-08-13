@@ -1,0 +1,119 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<form class="flex flex-col items-center overflow-auto h-full" [formGroup]="connectorForm" (submit)="addConnector()">
+  <h1 class="divider text-xl m-0">New EDC Connector</h1>
+
+  <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+    <legend class="fieldset-legend text-sm">Configuration</legend>
+
+    <legend class="fieldset-label">Connector Name</legend>
+    <label class="input w-full" [ngClass]="connectorForm.get('connectorName')?.invalid ? 'input-error' : ''">
+      <span class="material-symbols-rounded opacity-50">link</span>
+      <input type="text" placeholder="Connector Name" name="connectorName" formControlName="connectorName" />
+    </label>
+    @if (connectorForm.get('connectorName')?.invalid) {
+      <p class="fieldset-label text-error">Mandatory</p>
+    }
+
+    <legend class="fieldset-label">Management API</legend>
+    <label class="input w-full" [ngClass]="connectorForm.get('managementUrl')?.invalid ? 'input-error' : ''">
+      <span class="material-symbols-rounded opacity-50">link</span>
+      <input type="text" placeholder="Management API" name="managementUrl" formControlName="managementUrl" />
+    </label>
+    @if (connectorForm.get('managementUrl')?.invalid) {
+      <p class="fieldset-label text-error">Enter a valid URL</p>
+    }
+
+    <legend class="fieldset-label">Default API</legend>
+    <label class="input w-full" [ngClass]="connectorForm.get('defaultUrl')?.invalid ? 'input-error' : ''">
+      <span class="material-symbols-rounded opacity-50">link</span>
+      <input type="text" placeholder="Default API" name="defaultUrl" formControlName="defaultUrl" />
+    </label>
+    @if (connectorForm.get('defaultUrl')?.invalid) {
+      <p class="fieldset-label text-error">Enter a valid URL</p>
+    }
+
+    <legend class="fieldset-label">Protocol API</legend>
+    <label class="input w-full" [ngClass]="connectorForm.get('protocolUrl')?.invalid ? 'input-error' : ''">
+      <span class="material-symbols-rounded opacity-50">link</span>
+      <input type="text" placeholder="Protocol API" name="protocolUrl" formControlName="protocolUrl" />
+    </label>
+    @if (connectorForm.get('protocolUrl')?.invalid) {
+      <p class="fieldset-label text-error">Enter a valid URL</p>
+    }
+
+    <legend class="fieldset-label">API Authentication Token</legend>
+    <label class="input w-full" [ngClass]="connectorForm.get('apiToken')?.invalid ? 'input-error' : ''">
+      <span class="material-symbols-rounded opacity-50">lock</span>
+      <input type="password" placeholder="API Token" name="apiToken" formControlName="apiToken" />
+      <span class="badge badge-info">Optional</span>
+    </label>
+
+    <legend class="fieldset-label">Federated Catalog</legend>
+    <input
+      type="checkbox"
+      class="toggle toggle-primary"
+      name="federatedCatalogEnabled"
+      formControlName="federatedCatalogEnabled"
+      (change)="onFederatedCatalogToggle()"
+    />
+    @if (fcEnabled) {
+      <legend class="fieldset-label">Federated Catalog API</legend>
+      <label class="input w-full" [ngClass]="connectorForm.get('federatedCatalogUrl')?.invalid ? 'input-error' : ''">
+        <span class="material-symbols-rounded opacity-50">link</span>
+        <input
+          type="text"
+          placeholder="Federated Catalog API"
+          name="federatedCatalogUrl"
+          formControlName="federatedCatalogUrl"
+        />
+      </label>
+      @if (connectorForm.get('federatedCatalogUrl')?.invalid) {
+        <p class="fieldset-label text-error">Enter a valid URL</p>
+      }
+    }
+
+    <legend class="fieldset-label">Identity Hub</legend>
+    <input
+      type="checkbox"
+      class="toggle toggle-primary"
+      name="identityHubEnabled"
+      formControlName="identityHubEnabled"
+      (change)="onIdentityHubToggle()"
+    />
+    @if (ihEnabled) {
+      <legend class="fieldset-label">Connector DID</legend>
+      <label class="input w-full" [ngClass]="connectorForm.get('did')?.invalid ? 'input-error' : ''">
+        <span class="material-symbols-rounded opacity-50">link</span>
+        <input type="text" placeholder="DID" name="did" formControlName="did" />
+      </label>
+      @if (connectorForm.get('did')?.invalid) {
+        <p class="fieldset-label text-error">Enter a valid DID web</p>
+      }
+    }
+  </fieldset>
+
+  <div class="divider"></div>
+  @if (errorMsg) {
+    <lib-alert title="Error" [msg]="errorMsg" (closeEvent)="errorMsg = ''" type="error" class="w-lg mb-4"></lib-alert>
+  }
+  <button type="submit" class="btn btn-primary btn-lg w-lg" [disabled]="connectorForm.invalid || loading">
+    @if (loading) {
+      <span class="loading loading-bars loading-xl text-primary"></span>
+    } @else {
+      <span class="material-symbols-rounded">add</span>
+      Add Connector
+    }
+  </button>
+</form>

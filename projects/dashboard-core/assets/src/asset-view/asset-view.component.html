@@ -1,0 +1,65 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<div class="flex-row flex-nowrap flex mb-4">
+  <lib-filter-input
+    placeholder="Filter for ID, Name, Type or Content Type ..."
+    [focusShortcut]="['Alt', 'j']"
+    class="mr-4 grow"
+    (inputChange)="filter($event)"
+  ></lib-filter-input>
+  <button
+    class="mr-4 btn btn-lg btn-primary rounded-2xl btn-soft shadow-xl !text-sm border-none"
+    (click)="createAsset()"
+  >
+    <span class="material-symbols-rounded">add</span>
+    Create
+  </button>
+  <lib-item-count-selector
+    class="mr-4"
+    [currentItemCount]="pageItemCount"
+    (itemCountChanged)="pageItemCount = $event"
+  ></lib-item-count-selector>
+  <lib-pagination
+    [items]="filteredAssets$ | async"
+    [pageItemCount]="pageItemCount"
+    (pageItems)="paginationEvent($event)"
+    class="shadow-xl rounded-2xl bg-base-300 [&_button:hover]:bg-base-100 [&_.join>button]:first:rounded-l-2xl [&_.join>button]:last:rounded-r-2xl"
+  ></lib-pagination>
+</div>
+
+<div class="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+  @for (asset of pageAssets$ | async; track asset.id) {
+    <lib-asset-card
+      class="rounded-2xl shadow-xl [&_>.card]:h-full"
+      [asset]="asset"
+      (detailsEvent)="openDetails($event)"
+      (editEvent)="editAsset($event)"
+      (deleteEvent)="deleteAsset($event)"
+    ></lib-asset-card>
+  }
+  @if ((assets$ | async)?.length == 0) {
+    <div class="skeleton flex justify-center items-center h-72 shadow-xl rounded-2xl">
+      @if (!fetched) {
+        <span class="loading loading-bars loading-lg opacity-75 text-primary"></span>
+      } @else {
+        <div class="tooltip tooltip-open tooltip-primary" data-tip="No assets yet! Create your first ...">
+          <button class="btn btn-primary btn-dash" (click)="createAsset()">
+            <span class="material-symbols-rounded">add</span>
+            Create
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

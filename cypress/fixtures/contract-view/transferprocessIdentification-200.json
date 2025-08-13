@@ -1,0 +1,17 @@
+{
+  "@id": "ac2f5b63-88dc-4333-895e-1c5a0dabe645",
+  "@type": "TransferProcess",
+  "state": "STARTED",
+  "stateTimestamp": 1748865111671,
+  "type": "CONSUMER",
+  "callbackAddresses": [],
+  "correlationId": "4819f291-3398-4e9a-a526-1536a88830ca",
+  "assetId": "f03ac50c-fc25-4e3c-a480-e2ecb57a443b",
+  "contractId": "b6c64914-4ed4-4cac-aaf0-4aa99d81720a",
+  "transferType": "HttpData-PULL",
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  }
+}

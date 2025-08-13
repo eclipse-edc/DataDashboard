@@ -1,6 +1,15 @@
-.idea
-.vscode
-misc
-openapi
-tmp
+# Node dependencies (already installed inside the container)
 node_modules
+
+# public directory
+public/config
+
+# Angular build output (except during multi-stage builds)
+dist
+
+# Editor & OS-specific files
+.vscode
+.idea
+
+# Git-related files
+.git

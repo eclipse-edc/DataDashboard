@@ -1,0 +1,42 @@
+[
+  {
+    "@id": "48555095-d63f-498f-92d2-9cdde9fe92db",
+    "@type": "TransferProcess",
+    "state": "TERMINATED",
+    "stateTimestamp": 1747298419037,
+    "type": "CONSUMER",
+    "callbackAddresses": [],
+    "correlationId": "00406d0f-1445-4adf-9ac5-532921e6ccb0",
+    "assetId": "test-asset",
+    "contractId": "292c68a3-8448-4aa1-be90-719389076bb0",
+    "transferType": "HttpData-PUSH",
+    "dataDestination": {
+      "@type": "DataAddress",
+      "type": "HttpData",
+      "contentType": "application/json",
+      "baseUrl": "http://mockserver:1080/receive-data"
+    },
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+      "edc": "https://w3id.org/edc/v0.0.1/ns/",
+      "odrl": "http://www.w3.org/ns/odrl/2/"
+    }
+  },
+  {
+    "@id": "e5f01454-d1df-47b6-b74e-e6536b773f4b",
+    "@type": "TransferProcess",
+    "state": "SUCCESSFULL",
+    "stateTimestamp": 1747298404915,
+    "type": "CONSUMER",
+    "callbackAddresses": [],
+    "correlationId": "a9903952-fe08-46f7-b730-d6b9f5e0eb60",
+    "assetId": "test-asset",
+    "contractId": "292c68a3-8448-4aa1-be90-719389076bb0",
+    "transferType": "HttpData-PULL",
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+      "edc": "https://w3id.org/edc/v0.0.1/ns/",
+      "odrl": "http://www.w3.org/ns/odrl/2/"
+    }
+  }
+]

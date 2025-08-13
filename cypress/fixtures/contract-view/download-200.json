@@ -1,0 +1,13 @@
+{
+  "@type": "DataAddress",
+  "type": "https://w3id.org/idsa/v4.1/HTTP",
+  "endpoint": "http://test.connector/public",
+  "authType": "bearer",
+  "endpointType": "https://w3id.org/idsa/v4.1/HTTP",
+  "authorization": "eyJraWQiOiJwdWJsaWMta2V5IiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJhbm9ueW1vdXMiLCJhdWQiOiJjb25zdW1lciIsInN1YiI6ImFub255bW91cyIsImlhdCI6MTc0OTExOTYwMDU0MCwianRpIjoiNzMxZTQ0NDItZWFiMi00M2UzLTkxYWYtYWQwY2I0OGMzNTc0In0.wKF-PTDQCiWQAuviighlvELgTBIhpgsQVNjvW7vztrwsxKN1GlHStfdtjGnWQXSP-flriRhUpZ3IRq3DW0L2NBchofLGumKVfwzPPygxZPV4IT6CnHgZV04iqb3CFUffR-mLl3VDyHbDYste_KEOty_xSQdkwDl46Z1cr9M_KQz3BuiRzTTXho-h1fdC_KcOxU97VM23yhnpnGSHpoAcBAvnechWnyz8VjfMxSo687omNU76cd5TWNo-8kgCdAsgJb7Ll55sVdNRap-MrJ63t6AzjL76AgI90YYSD2k2-Fnzfi9P5KmWp9bor0YvCh3vCVEd53usvgXx2gjaARFbYg",
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  }
+}
