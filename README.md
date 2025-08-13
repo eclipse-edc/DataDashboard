@@ -1,6 +1,6 @@
 # EDC Data Dashboard
 
-**Please note: This repository does not contain production-grade code and is only intended for demonstration purposes.**
+ℹ️ _This repository does not contain production-grade code and is only intended for demonstration purposes._
 
 EDC Data Dashboard is a dev frontend application for [EDC Management API](https://github.com/eclipse-edc/Connector).
 
