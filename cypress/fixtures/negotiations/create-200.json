@@ -1,0 +1,6 @@
+{
+  "@type":"IdResponse",
+  "@id":"4de012ed-dff4-4fd4-b316-669642c4d11f",
+  "createdAt":1744197432554,
+  "@context":{"@vocab":"https://w3id.org/edc/v0.0.1/ns/","edc":"https://w3id.org/edc/v0.0.1/ns/","odrl":"http://www.w3.org/ns/odrl/2/"}
+}

@@ -1,0 +1,31 @@
+/*
+ *  Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+ *
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Apache License, Version 2.0 which is available at
+ *  https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Contributors:
+ *       Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+ *
+ */
+
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'lib-item-count-selector',
+  templateUrl: './item-count-selector.component.html',
+  imports: [FormsModule],
+})
+export class ItemCountSelectorComponent {
+  @Input() currentItemCount = 10;
+  @Output() itemCountChanged = new EventEmitter<number>();
+
+  change(event: Event) {
+    this.itemCountChanged.emit(Number((event.target as HTMLInputElement).value));
+    (document.activeElement as HTMLElement)?.blur();
+  }
+}

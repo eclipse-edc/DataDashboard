@@ -1,0 +1,19 @@
+[
+  {
+    "@type": "ContractNegotiation",
+    "@id": "a1d9a5fd-62e9-42c3-adc2-c6126fdc7663",
+    "type": "CONSUMER",
+    "protocol": "dataspace-protocol-http",
+    "state": "FINALIZED",
+    "counterPartyId": "provider",
+    "counterPartyAddress": "http://cp-provider.dataspace/protocol",
+    "callbackAddresses": [],
+    "createdAt": 1748343518740,
+    "contractAgreementId": "e7e700a0-348d-4e73-a94c-f5a7c38d5bff",
+    "@context": {
+      "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+      "edc": "https://w3id.org/edc/v0.0.1/ns/",
+      "odrl": "http://www.w3.org/ns/odrl/2/"
+    }
+  }
+]

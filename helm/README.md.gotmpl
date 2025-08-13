@@ -1,0 +1,35 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Installing the Chart
+
+To install the chart with the release name 'my-release':
+
+```console
+$ helm repo add edc-dashboard https://gitlab.cc-asp.fraunhofer.de/api/v4/projects/72400/packages/helm/stable
+$ helm install my-release edc-dashboard/{{ template "chart.name" . }} --version {{ template "chart.version" . }}
+```
+
+{{/*
+## Changelog
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+<br><br>
+<details>
+  <summary>Show changelog</summary>
+
+---
+
+{{ .Files.Get "CHANGELOG.md" }}
+
+---
+
+</details>
+*/}}
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}

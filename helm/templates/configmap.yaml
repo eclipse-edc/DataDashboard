@@ -1,0 +1,42 @@
+#
+#  Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+#  Contributors:
+#       Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+#
+
+{{- if .Values.ingress.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "data-dashboard.fullname" . }}-ingress-config
+  labels:
+    {{- include "data-dashboard.labels" . | nindent 4 }}
+data:
+{{- with (first (first .Values.ingress.hosts).paths).path }}
+  nginx.conf: |-
+    server {
+      listen 8080;
+      port_in_redirect off;
+      root /app;
+      location {{ . | trimSuffix "/" }}/config {
+        alias /app/config/;
+        try_files $uri$args $uri$args/ =404;
+      }
+      location {{ . }} {
+        alias /app/;
+        index index.html;
+        try_files $uri$args $uri$args/ /index.html;
+      }
+    }
+  APP_BASE_HREF.txt: |-
+    {{ . }}
+{{- end }}
+{{- end }}

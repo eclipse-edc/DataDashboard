@@ -1,0 +1,35 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<table *ngIf="keys.length > 0" class="table table-sm">
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+      <th *ngIf="deleteButton"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let key of keys">
+      <td>{{ key }}</td>
+      <td>{{ object[key] | json }}</td>
+      <td *ngIf="deleteButton">
+        <div class="tooltip" data-tip="Delete">
+          <button type="button" class="btn btn-xs btn-circle btn-error" (click)="delete.emit(key)">
+            <span class="h-4 w-4 !text-[1rem] material-symbols-rounded">delete_forever</span>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

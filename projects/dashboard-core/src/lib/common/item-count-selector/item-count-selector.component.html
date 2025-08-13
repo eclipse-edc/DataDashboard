@@ -1,0 +1,26 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<label
+  class="select h-full shadow-xl rounded-2xl bg-base-300 focus:outline-hidden focus-within:outline-hidden border-base-300 focus-within:border-primary"
+>
+  <span class="label">Items</span>
+  <select (change)="change($event)" [(ngModel)]="currentItemCount">
+    <option value="5">5</option>
+    <option value="10">10</option>
+    <option value="15">15</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+  </select>
+</label>

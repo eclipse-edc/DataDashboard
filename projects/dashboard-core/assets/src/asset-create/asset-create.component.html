@@ -1,0 +1,110 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<form
+  [formGroup]="assetForm"
+  (ngSubmit)="createAsset()"
+  class="grid grid-cols-1 2xl:grid-cols-2 gap-4 gap-x-6 items-start overflow-y-auto h-full [&_label]:shrink-0"
+>
+  <h1 class="text-xl text-center divider m-0 2xl:col-span-2">Asset</h1>
+
+  <div class="flex flex-col [&_>*]:mb-4 [&_>*]:last:mb-0">
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+      <legend class="fieldset-legend text-sm">Common Fields</legend>
+      <legend class="fieldset-label">ID</legend>
+      <label
+        class="input input-bordered !border-[var(--input-color)] flex items-center tooltip tooltip-info tooltip-top w-full"
+        data-tip="If not set a random UUID will be generated"
+      >
+        <span class="material-symbols-rounded opacity-50">deployed_code_update</span>
+        <input type="text" class="grow" placeholder="ID" formControlName="id" name="id" />
+        <span class="badge badge-info">Optional</span>
+      </label>
+      <legend class="fieldset-label">Name</legend>
+      <label
+        class="input flex items-center tooltip tooltip-info tooltip-top w-full"
+        data-tip="Can be filtered by and could be used as e.g. display name"
+      >
+        <span class="material-symbols-rounded opacity-50">assignment_ind</span>
+        <input type="text" class="grow" placeholder="Name" formControlName="name" />
+        <span class="badge badge-info">Optional</span>
+      </label>
+      <legend class="fieldset-label">Content-Type</legend>
+      <label
+        class="input flex items-center tooltip tooltip-info tooltip-top w-full"
+        data-tip="Content-Type of the asset, e.g. 'application/json'"
+      >
+        <span class="material-symbols-rounded opacity-50">unknown_document</span>
+        <input type="text" class="grow" placeholder="Content-Type" formControlName="contenttype" name="contenttype" />
+        <span class="badge badge-info">Optional</span>
+      </label>
+    </fieldset>
+
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+      <legend class="fieldset-legend text-sm">Data Address</legend>
+      <lib-data-address-form
+        [parentForm]="assetForm"
+        [dataAddress]="dataAddress"
+        (dataAddressChange)="dataAddress = $event"
+      ></lib-data-address-form>
+    </fieldset>
+  </div>
+
+  <div class="flex flex-col [&_>*]:mb-4 [&_>*]:last:mb-0">
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+      <legend class="fieldset-legend text-sm">Properties</legend>
+      <lib-json-object-input
+        [object]="properties"
+        [excludeKeys]="['@context', 'id', 'name', 'contenttype']"
+        (objectChange)="properties = $event"
+      >
+      </lib-json-object-input>
+    </fieldset>
+
+    <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
+      <legend class="fieldset-legend text-sm">Private Properties</legend>
+      <lib-json-object-input
+        [object]="privateProperties"
+        [excludeKeys]="['@context']"
+        (objectChange)="privateProperties = $event"
+      >
+      </lib-json-object-input>
+    </fieldset>
+  </div>
+
+  <div class="2xl:col-span-2 flex flex-col items-center">
+    <div class="divider mt-0"></div>
+    <lib-alert
+      *ngIf="errorMsg"
+      title="Error"
+      [msg]="errorMsg"
+      (closeEvent)="errorMsg = ''"
+      type="error"
+      class="max-w-lg 2xl:max-w-xl mb-4"
+    ></lib-alert>
+    <button
+      type="submit"
+      [disabled]="assetForm.invalid"
+      class="btn btn-lg w-lg 2xl:w-xl"
+      [ngClass]="mode === 'update' ? 'btn-warning' : 'btn-primary'"
+    >
+      @if (mode === 'update') {
+        <i class="material-symbols-rounded">update</i>
+        Update Asset
+      } @else {
+        <i class="material-symbols-rounded">add</i>
+        Create Asset
+      }
+    </button>
+  </div>
+</form>

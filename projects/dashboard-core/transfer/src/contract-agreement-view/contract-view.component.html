@@ -1,0 +1,66 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<div class="flex-row flex-nowrap flex mb-4 relative">
+  <lib-filter-input
+    placeholder="Filter for ID, Provider or Asset ..."
+    [focusShortcut]="['Alt', 'j']"
+    class="mr-4 grow"
+    (inputChange)="filter($event)"
+  ></lib-filter-input>
+  <lib-consumer-provider-switch
+    class="mr-4"
+    [initialType]="contractType"
+    consumerTooltip="Contracts for assets you receive"
+    providerTooltip="Contracts for assets you provide"
+    (changed)="onTypeChange($event)"
+  ></lib-consumer-provider-switch>
+  <lib-item-count-selector
+    class="mr-4"
+    [currentItemCount]="pageItemCount"
+    (itemCountChanged)="pageItemCount = $event"
+  ></lib-item-count-selector>
+  <lib-pagination
+    [items]="filteredPairs$ | async"
+    [pageItemCount]="pageItemCount"
+    (pageItems)="paginationEvent($event)"
+    class="shadow-xl rounded-2xl bg-base-300 [&_button:hover]:bg-base-100 [&_.join>button]:first:rounded-l-2xl [&_.join>button]:last:rounded-r-2xl"
+  ></lib-pagination>
+  @if ((pairs$ | async)?.length == 0) {
+    <div
+      [ngClass]="initialized ? 'opacity-100' : 'opacity-0'"
+      class="tooltip tooltip-open tooltip-primary tooltip-right absolute top-24 -left-4 transition-opacity duration-1000 ease-linear"
+      data-tip="No contracts yet! Negotiate your first contract in the Catalog."
+    ></div>
+  }
+</div>
+
+<div class="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+  @for (pair of pagePairs$ | async; track pair[0].id) {
+    <lib-contract-agreement-card
+      class="rounded-2xl shadow-xl [&_>.card]:h-full"
+      [agreement]="pair[0]"
+      [negotiation]="pair[1]"
+      [disableTransfer]="this.contractType !== 'CONSUMER'"
+      (detailsEvent)="openDetails(pair[0])"
+      (transferEvent)="openTransferDialog(pair)"
+    ></lib-contract-agreement-card>
+  }
+  @if ((pairs$ | async)?.length == 0) {
+    <div class="skeleton flex justify-center items-center h-72 shadow-xl rounded-2xl">
+      @if (!initialized) {
+        <span class="loading loading-bars loading-lg opacity-75 text-primary"></span>
+      }
+    </div>
+  }
+</div>

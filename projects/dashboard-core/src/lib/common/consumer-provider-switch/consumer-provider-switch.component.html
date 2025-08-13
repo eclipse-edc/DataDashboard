@@ -1,0 +1,45 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<div
+  class="tabs tabs-box shadow-xl rounded-2xl bg-base-300 [&_input]:checked:!bg-primary/8 [&_input]:checked:!text-primary [&_input]:hover:text-primary [&_input]:!rounded-xl"
+>
+  <div
+    class="tooltip-left tooltip-primary"
+    [attr.data-tip]="consumerTooltip"
+    [ngClass]="consumerTooltip ? 'tooltip' : ''"
+  >
+    <input
+      type="radio"
+      name="contract-types"
+      class="tab"
+      aria-label="Consuming"
+      [checked]="initialType === 'CONSUMER'"
+      (change)="changed.emit('CONSUMER')"
+    />
+  </div>
+  <div
+    class="tooltip-right tooltip-primary"
+    [attr.data-tip]="providerTooltip"
+    [ngClass]="providerTooltip ? 'tooltip' : ''"
+  >
+    <input
+      type="radio"
+      name="contract-types"
+      class="tab"
+      aria-label="Providing"
+      [checked]="initialType === 'PROVIDER'"
+      (change)="changed.emit('PROVIDER')"
+    />
+  </div>
+</div>

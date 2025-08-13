@@ -1,0 +1,29 @@
+{
+  "@type": "ContractAgreement",
+  "@id": "e7e700a0-348d-4e73-a94c-f5a7c38d5bff",
+  "assetId": "test-asset",
+  "policy": {
+    "@id": "a89a97cf-d6e4-40b1-9191-2971e786df20",
+    "@type": "odrl:Agreement",
+    "odrl:permission": {
+      "odrl:action": {
+        "@id": "odrl:read"
+      }
+    },
+    "odrl:prohibition": [],
+    "odrl:obligation": [],
+    "odrl:assignee": "consumer",
+    "odrl:assigner": "provider",
+    "odrl:target": {
+      "@id": "test-asset"
+    }
+  },
+  "contractSigningDate": 1748343519,
+  "consumerId": "consumer",
+  "providerId": "provider",
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  }
+}

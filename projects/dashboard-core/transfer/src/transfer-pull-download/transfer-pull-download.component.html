@@ -1,0 +1,61 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<div class="flex flex-col items-center w-full">
+  @if (warningMsg && !downloadRunning) {
+    <div role="alert" class="alert alert-warning alert-soft mt-10 w-full max-w-xl">
+      <span class="material-symbols-rounded">warning</span>
+      <div class="">
+        <h3 class="font-bold">Warning</h3>
+        <span>{{ warningMsg }}</span>
+      </div>
+    </div>
+  }
+
+  @if (downloadRunning) {
+    <div class="flex flex-col items-center mt-8 w-full">
+      <div class="text-xl mb-3">
+        @if (progress > 0) {
+          {{ progress }} %
+        } @else {
+          Downloading...
+        }
+      </div>
+      <progress
+        class="progress w-full max-w-xl"
+        [attr.value]="progress > 0 ? progress : ''"
+        max="100"
+        [ngClass]="error ? 'progress-error' : 'progress-success'"
+      ></progress>
+    </div>
+  } @else {
+    <div class="join w-full mt-10">
+      <label
+        class="input join-item tooltip input-success input-success-soft min-w-md"
+        data-tip="The filename of the downloaded asset"
+      >
+        <span class="label">Filename</span>
+        <input
+          type="text"
+          [(ngModel)]="filename"
+          [placeholder]="agreement.assetId.concat(fileExtension ?? '')"
+          name="filename"
+        />
+      </label>
+      <button type="button" class="btn btn-soft btn-success join-item border-success" (click)="downloadAsset()">
+        <span class="material-symbols-rounded">download</span>
+        Download
+      </button>
+    </div>
+  }
+</div>

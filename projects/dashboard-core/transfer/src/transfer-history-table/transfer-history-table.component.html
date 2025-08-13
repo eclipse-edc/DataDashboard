@@ -1,0 +1,91 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<div class="overflow-x-auto bg-base-300 rounded-2xl h-full">
+  <table class="table table-pin-rows h-full">
+    <thead class="">
+      <tr class="bg-base-300 shadow-md">
+        <th>Transfer ID</th>
+        <th>State Changed</th>
+        <th>State</th>
+        <th>Transfer Type</th>
+        <th>Asset ID</th>
+        <th>Contract ID</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (!transferProcesses || transferProcesses.length === 0) {
+        <td colspan="6" class="text-center p-4 opacity-50">No transfers found!</td>
+      } @else {
+        @for (transferProcess of transferProcesses; track transferProcess.id) {
+          <tr>
+            <td>
+              <div class="flex items-center gap-2">
+                <div>
+                  <div class="text-xs">{{ transferProcess.id }}</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="badge badge-lg text-nowrap">{{
+                transferProcess.optionalValue('edc', 'stateTimestamp') | date: 'dd.MM.yyyy - HH:mm:ss'
+              }}</span>
+            </td>
+            <td>
+              <div
+                class="badge badge-soft"
+                [ngClass]="
+                  stateType[transferProcess.id] === 'error'
+                    ? 'badge-error'
+                    : stateType[transferProcess.id] === 'okay'
+                      ? 'badge-success'
+                      : 'badge-neutral'
+                "
+              >
+                {{ transferProcess.state }}
+              </div>
+            </td>
+            <td>{{ transferProcess.optionalValue('edc', 'transferType') || '-' }}</td>
+            <td>
+              <div>
+                <div class="font-bold">{{ transferProcess.assetId }}</div>
+              </div>
+            </td>
+            <td class="text-xs">{{ transferProcess.contractId }}</td>
+            <td class="">
+              <div class="flex items-center justify-center flex-nowrap">
+                <div class="tooltip no-animation" data-tip="Details">
+                  <button
+                    class="btn btn-soft btn-primary btn-circle btn-sm no-animation"
+                    (click)="openDetails(transferProcess)"
+                  >
+                    <i class="material-symbols-rounded">info</i>
+                  </button>
+                </div>
+                <div class="tooltip no-animation ml-4" data-tip="Deprovision">
+                  <button
+                    class="btn btn-soft btn-error btn-circle btn-sm no-animation"
+                    (click)="deprovision(transferProcess)"
+                  >
+                    <i class="material-symbols-rounded">delete</i>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

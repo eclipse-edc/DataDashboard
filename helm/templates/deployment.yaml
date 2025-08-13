@@ -1,0 +1,110 @@
+#
+#  Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License, Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  SPDX-License-Identifier: Apache-2.0
+#
+#  Contributors:
+#       Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "data-dashboard.fullname" . }}
+  labels:
+    {{- include "data-dashboard.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "data-dashboard.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "data-dashboard.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with $.Values.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .name }}
+      {{- end }}
+      serviceAccountName: {{ include "data-dashboard.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.ingress.enabled .Values.volumeMounts }}
+          volumeMounts:
+          {{- if .Values.ingress.enabled }}
+            - name: ingress-config
+              mountPath: "/app/config/APP_BASE_HREF.txt"
+              subPath: "APP_BASE_HREF.txt"
+              readOnly: true
+            - name: ingress-config
+              mountPath: "/etc/nginx/conf.d/default.conf"
+              subPath: "nginx.conf"
+              readOnly: true
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+      {{- if or .Values.ingress.enabled .Values.volumes }}
+      volumes:
+      {{- if .Values.ingress.enabled }}
+        - name: ingress-config
+          configMap:
+            name: "{{ include "data-dashboard.fullname" . }}-ingress-config"
+      {{- end }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

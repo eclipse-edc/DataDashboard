@@ -1,0 +1,30 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+@if (object) {
+  <lib-json-object-table
+    class="w-full mx-auto"
+    [object]="object"
+    [excludeKeys]="excludeKeys"
+    [deleteButton]="true"
+    (delete)="deleteProperty($event)"
+  ></lib-json-object-table>
+}
+<fieldset class="fieldset">
+  <legend class="fieldset-label">New Property</legend>
+  <div class="join w-full" [formGroup]="formGroup">
+    <input class="input input-bordered join-item" placeholder="Key" formControlName="key" name="value" />
+    <input class="input input-bordered join-item" placeholder="Value" formControlName="value" name="value" />
+    <button type="button" class="btn btn-soft btn-primary join-item border-primary" (click)="addProperty()">Add</button>
+  </div>
+</fieldset>

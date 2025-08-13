@@ -1,0 +1,8 @@
+[
+  {
+    "message": "mandatory value 'https://w3id.org/edc/v0.0.1/ns/dataAddress/https://w3id.org/edc/v0.0.1/ns/type' is missing or it is blank",
+    "type": "ValidationFailure",
+    "path": "https://w3id.org/edc/v0.0.1/ns/dataAddress/https://w3id.org/edc/v0.0.1/ns/type",
+    "invalidValue": null
+  }
+]
