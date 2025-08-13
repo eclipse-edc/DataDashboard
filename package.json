@@ -26,7 +26,7 @@
     "@angular/forms": "^19.2.5",
     "@angular/platform-browser": "^19.2.5",
     "@angular/platform-browser-dynamic": "^19.2.5",
-    "@angular/router": "^19.2.5",
+    "@angular/router": "^20.1.6",
     "@think-it-labs/edc-connector-client": "0.8.0",
     "material-symbols": "^0.29.2",
     "mime": "^4.0.6",
