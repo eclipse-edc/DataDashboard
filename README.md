@@ -1,6 +1,6 @@
 # EDC Data Dashboard
 
-**Please note: This repository does not contain production-grade code and is only intended for demonstration purposes.**
+ℹ️ _This repository does not contain production-grade code and is only intended for demonstration purposes._
 
 EDC Data Dashboard is a dev frontend application for [EDC Management API](https://github.com/eclipse-edc/Connector).
 
@@ -19,6 +19,13 @@ This application uses all available features from the library and is like a defa
 
 The dashboard uses [daisyUI](https://daisyui.com), based on [tailwindcss](https://tailwindcss.com), as component framework.
 For the EDC Management API the [Think-iT-Labs/edc-connector-client](https://github.com/Think-iT-Labs/edc-connector-client) is used.
+
+| Framework/Library    | Version |
+|----------------------|-----------------------------|
+| daisyUI              | v5   |
+| tailwindcss          | v4   |
+| edc-connector-client | v0.8.0 (Management API v3)  |
+
 
 All the components and services are inside the library to make the creation of custom dashboards easier.
 With the library approach, dependency management and extensibility for custom dashboards is improved.
@@ -47,7 +54,7 @@ which can be customized by modifying the specified files.
 
 
 # Configuration
-<br> ___Note:___ Configuration loading is implemented in the angular wrapper application as you pass the configuration
+ℹ️ Configuration loading is implemented in the angular wrapper application as you pass the configuration
 to the [DashboardAppComponent](projects/dashboard-core/src/lib/dashboard-app/dashboard-app.component.ts).
 So if you only use the library, the config loading has to be re-implemented.
 
@@ -55,6 +62,11 @@ So if you only use the library, the config loading has to be re-implemented.
 For pre-configured connectors in the dashboard you have to create a JSON configuration at `public/config/edc-connector-config.json`.
 The file must contain a JSON array of [EdcConfig](projects/dashboard-core/src/lib/models/edc-config.ts) objects.
 The [edc-connector-config.json](public/config/edc-connector-config.json) in this repo contains an example configuration.
+
+⚠️ ___Be extra careful NOT to commit those changes, as they might leak potentially sensitive information!___ <br>
+As some extra safety consider running<br>
+`git update-index --assume-unchanged public/config/edc-connector-config.json` <br>
+before changing this file.
 
 ## Application configuration
 
@@ -64,8 +76,9 @@ The following application config values exist:
 - `menuItems` ([MenuItem](projects/dashboard-core/src/lib/models/menu-item.ts) Array): Configure the menu items (views) of the dashboard. Set the icon, text, router path and view description (for the home view) for each item.
 - `healthCheckIntervalSeconds` (number): Sets the interval in seconds to check if the connection to the current connector is still established.<br>__Default__: `30`
 - `enableUserConfig` (boolean): If enabled, the user has the ability to add connectors within the dashboard.
-This user-specific configuration is currently stored in the local storage of the browser, including auth keys.
-So to have it said, be aware of the danger that secrets stored in local storage pose.<br>__Default__: `false`
+This user-specific configuration is currently stored in the local storage of the browser, including auth keys.<br>
+__Default__: `false`<br>
+⚠️ _So to have it said, be aware of the danger that secrets stored in local storage pose._
 
 ### Base Path
 The angular application wrapper supports dynamic base path configuration at runtime to enable the use of 
