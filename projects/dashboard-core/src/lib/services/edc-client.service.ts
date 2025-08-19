@@ -108,6 +108,8 @@ export class EdcClientService implements OnDestroy {
    */
   public setHealthCheckInterval(interval: number): void {
     this.healthCheckInterval = interval;
+    this.stopHealthCheckJob();
+    this.startHealthCheckJob();
   }
 
   private runHealthCheck(edcConfig?: EdcConfig): void {
