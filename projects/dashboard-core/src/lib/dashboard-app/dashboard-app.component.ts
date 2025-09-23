@@ -22,7 +22,6 @@ import { ModalAndAlertService } from '../services/modal-and-alert.service';
 import { DeleteConfirmComponent } from '../common/deletion-confirm/deletion-confirm.component';
 import { ConnectorConfigFormComponent } from '../common/connector-config-form/connector-config-form.component';
 import { AppConfig } from '../models/app-config';
-import { MenuItem } from '../models/menu-item';
 
 @Component({
   selector: 'lib-dashboard-app',
@@ -38,8 +37,6 @@ export class DashboardAppComponent implements AfterViewInit {
 
   @ViewChild('dashboardModal', { read: ViewContainerRef, static: true }) modal!: ViewContainerRef;
   @ViewChild('dashboardAlert', { read: ViewContainerRef, static: true }) alert!: ViewContainerRef;
-
-  public menuItems: MenuItem[] = [];
 
   constructor(
     public stateService: DashboardStateService,
@@ -61,7 +58,6 @@ export class DashboardAppComponent implements AfterViewInit {
       );
       return;
     } else {
-      this.menuItems = appConfig.menuItems;
       this.stateService.setAppConfig(appConfig);
     }
 

@@ -18,4 +18,5 @@ export interface AppConfig {
   menuItems: MenuItem[];
   healthCheckIntervalSeconds?: number; // Default: 30
   enableUserConfig?: boolean; // Default: true
+  appTitle?: string; // Default 'EDC Dashboard'
 }
