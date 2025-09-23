@@ -51,12 +51,13 @@ export class ModalAndAlertService {
   }
   /**
    * Opens a modal with the specified component.
-   * The subscription lifetime of the outputCallbacks is handled for you.
+   * Manages the subscription lifecycle for output event callbacks.
    *
    * @param componentType - The type of the component to be rendered inside the modal.
    * @param inputs - An optional record of inputs to pass to the component.
    * @param outputCallbacks - An optional record of output event callbacks to subscribe to.
    * @param clear - Optionally delete all components present in the modal.
+   * @param htmlDialogCloseCallback - (Optional) Callback invoked when the dialog is closed via native events.
    * @throws Error Throws an error if no dialog or modal has been set for the service yet.
    */
   public openModal<C>(
@@ -64,6 +65,7 @@ export class ModalAndAlertService {
     inputs?: Partial<Record<keyof C, any>>,
     outputCallbacks?: Partial<Record<keyof C, (event?: any) => void>>,
     clear?: boolean,
+    htmlDialogCloseCallback?: () => void,
   ): void {
     if (!this.modal || !this.dialog) {
       throw new Error('No dialog set to open the component in.');
@@ -73,7 +75,7 @@ export class ModalAndAlertService {
     }
     const ref = this.modal.createComponent(componentType);
     this.setInputs(ref, inputs);
-    this.subscribeOutputEvents(ref, outputCallbacks);
+    this.subscribeOutputEvents(ref, outputCallbacks, htmlDialogCloseCallback);
     this.dialog.showModal();
   }
 
@@ -118,13 +120,19 @@ export class ModalAndAlertService {
 
   /**
    * Subscribes to output events of the component and binds them to the specified callbacks.
+   * Also manages the subscription/unsubscription lifecycle and optional dialog close callback.
    *
-   * @param component - The component instance whose output events are to be subscribed.
-   * @param outputCallbacks - A record of output event callbacks to subscribe to.
+   * @param component - The component reference whose output events should be subscribed to.
+   * @param outputCallbacks - An optional record mapping output event names (as keys) to callback functions.
+   *                         Each key should correspond to an EventEmitter property on the component instance.
+   *                         The callback receives the event payload.
+   * @param htmlDialogCloseCallback - Optional callback to be invoked when the HTMLDialogElement's 'close' event fires.
+   *                                 The callback is automatically unsubscribed when the component is destroyed.
    */
   private subscribeOutputEvents<C>(
     component: ComponentRef<C>,
     outputCallbacks?: Partial<Record<keyof C, (event?: any) => void>>,
+    htmlDialogCloseCallback?: () => void,
   ): void {
     if (outputCallbacks) {
       for (const key in outputCallbacks) {
@@ -136,6 +144,9 @@ export class ModalAndAlertService {
           console.error(`'${key}' is not an output event of ${component.componentType.name}`);
         }
       }
+    }
+    if (htmlDialogCloseCallback) {
+      this.dialog?.addEventListener('close', htmlDialogCloseCallback, { once: true });
     }
   }
 
