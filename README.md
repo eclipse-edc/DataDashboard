@@ -73,6 +73,7 @@ before changing this file.
 Beside the connector configuration, there is some application configuration. The configuration is loaded from `public/config/app-config.json`.
 The [app-config.json](public/config/app-config.json) in this repository contains the default configuration.
 The following application config values exist:
+- `appTitle` (string): Set the name of the application in the header area.<br>__Default__: EDC Dashboard
 - `menuItems` ([MenuItem](projects/dashboard-core/src/lib/models/menu-item.ts) Array): Configure the menu items (views) of the dashboard. Set the icon, text, router path and view description (for the home view) for each item.
 - `healthCheckIntervalSeconds` (number): Sets the interval in seconds to check if the connection to the current connector is still established.<br>__Default__: `30`
 - `enableUserConfig` (boolean): If enabled, the user has the ability to add connectors within the dashboard.

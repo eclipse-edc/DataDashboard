@@ -29,20 +29,21 @@
 <div class="box-border flex h-screen w-screen max-h-screen max-w-screen flex-col bg-base-100 pt-4">
   <div class="navbar min-h-fit px-4 mx-4 max-w-[calc(100%-2rem)] rounded-2xl bg-neutral text-neutral-content shadow-xl">
     <div class="navbar-start">
-      <div
+      <button
         class="btn btn-lg btn-circle btn-ghost hover:text-primary-content hover:bg-primary border-none"
         role="button"
         (click)="stateService.toggleMenuOpen()"
+        [disabled]="((appConfig | async)?.menuItems)!.length < 2"
       >
         @if (stateService.isMenuOpen$ | async) {
           <span class="material-symbols-rounded h7 w-7 !text-[1.75rem]">menu_open</span>
         } @else {
           <span class="material-symbols-rounded h7 w-7 !text-[1.75rem]">menu</span>
         }
-      </div>
+      </button>
     </div>
     <div class="navbar-center">
-      <div class="text-lg">EDC Dashboard</div>
+      <div class="text-lg">{{ (appConfig | async)?.appTitle ?? 'EDC Dashboard' }}</div>
       @if ((stateService.edcConfigs$ | async) && (stateService.currentEdcConfig$ | async)) {
         <div class="dropdown dropdown-center dropdown-hover ml-5">
           <div
@@ -172,29 +173,35 @@
   </div>
 
   <div class="box-border py-4 pl-4 flex flex-auto overflow-auto">
-    <ul
-      class="menu flex-nowrap shrink-0 h-full rounded-2xl bg-neutral text-neutral-content shadow-xl [&_li>a]:px-4 overflow-auto"
-    >
-      <ng-container *ngFor="let item of menuItems">
-        <button
-          class="btn btn-lg btn-ghost justify-start shadow-none hover:text-primary-content hover:bg-primary border-none transition-none"
-          routerLink="{{ item.routerPath }}"
-          routerLinkActive="text-primary"
-        >
-          <span class="material-symbols-rounded h-7 w-7 !text-[1.75rem]">{{ item.materialSymbol }}</span>
-          @if (stateService.isMenuOpen$ | async) {
-            <span class="text-sm">{{ item.text }}</span>
+    @if (((appConfig | async)?.menuItems)!.length > 1) {
+      <ul
+        class="menu flex-nowrap shrink-0 h-full rounded-2xl bg-neutral text-neutral-content shadow-xl [&_li>a]:px-4 overflow-auto"
+      >
+        <ng-container *ngFor="let item of (appConfig | async)?.menuItems">
+          <button
+            class="btn btn-lg btn-ghost justify-start shadow-none hover:text-primary-content hover:bg-primary border-none transition-none"
+            routerLink="{{ item.routerPath }}"
+            routerLinkActive="text-primary"
+          >
+            <span class="material-symbols-rounded h-7 w-7 !text-[1.75rem]">{{ item.materialSymbol }}</span>
+            @if (stateService.isMenuOpen$ | async) {
+              <span class="text-sm">{{ item.text }}</span>
+            }
+          </button>
+          @if (item.divider) {
+            <div
+              class="divider after:bg-neutral-content before:bg-neutral-content after:opacity-15 before:opacity-15 my-0 px-2"
+            ></div>
           }
-        </button>
-        @if (item.divider) {
-          <div
-            class="divider after:bg-neutral-content before:bg-neutral-content after:opacity-15 before:opacity-15 my-0 px-2"
-          ></div>
-        }
-      </ng-container>
-    </ul>
+        </ng-container>
+      </ul>
+    }
 
-    <div id="router-content" class="px-4 box-border w-full overflow-auto">
+    <div
+      id="router-content"
+      class="px-4 box-border w-full"
+      [ngClass]="((appConfig | async)?.menuItems)!.length > 1 ? '' : 'pl-0'"
+    >
       <router-outlet></router-outlet>
     </div>
   </div>
