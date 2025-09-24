@@ -37,6 +37,7 @@ export * from './lib/common/data-address/data-type-input/data-type-input.compone
 export * from './lib/common/data-address/fallback-data-type/fallback-data-type.component';
 export * from './lib/common/data-address/http-data-type/http-data-type.component';
 export * from './lib/models/menu-item';
+export * from './lib/models/app-config';
 export * from './lib/models/edc-config';
 export * from './lib/models/json-value';
 export * from './lib/models/pair';
