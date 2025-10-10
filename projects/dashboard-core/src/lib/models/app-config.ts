@@ -19,4 +19,5 @@ export interface AppConfig {
   healthCheckIntervalSeconds?: number; // Default: 30
   enableUserConfig?: boolean; // Default: true
   appTitle?: string; // Default 'EDC Dashboard'
+  selectedTheme?: string; // Default 'emerald'
 }

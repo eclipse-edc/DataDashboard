@@ -77,6 +77,7 @@ The following application config values exist:
 - `menuItems` ([MenuItem](projects/dashboard-core/src/lib/models/menu-item.ts) Array): Configure the menu items (views) of the dashboard. Set the icon, text, router path and view description (for the home view) for each item.
 - `healthCheckIntervalSeconds` (number): Sets the interval in seconds to check if the connection to the current connector is still established.<br>__Default__: `30`
 - `enableUserConfig` (boolean): If enabled, the user has the ability to add connectors within the dashboard.
+- `selectedTheme` (string): Set the initial theme (for available values, see theme switcher in top right).<br>__Default__: emerald
 This user-specific configuration is currently stored in the local storage of the browser, including auth keys.<br>
 __Default__: `false`<br>
 ⚠️ _So to have it said, be aware of the danger that secrets stored in local storage pose._
