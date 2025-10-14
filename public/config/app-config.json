@@ -1,7 +1,6 @@
 {
   "healthCheckIntervalSeconds": 30,
   "enableUserConfig": false,
-  "selectedTheme": "emerald",
   "menuItems": [
     {
       "text": "Home",
