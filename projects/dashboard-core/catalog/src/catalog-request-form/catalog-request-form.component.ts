@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { CatalogRequest } from '@think-it-labs/edc-connector-client/dist/src/entities/catalog';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DashboardStateService, DID_WEB_REGEX, URL_REGEX } from '@eclipse-edc/dashboard-core';
@@ -25,13 +25,13 @@ import { firstValueFrom } from 'rxjs';
   imports: [ReactiveFormsModule, NgClass, AsyncPipe],
 })
 export class CatalogRequestFormComponent implements OnInit {
+  readonly stateService = inject(DashboardStateService);
+
   @Output() request = new EventEmitter<CatalogRequest>();
 
   requestForm: FormGroup = new FormGroup({
     counterPartyAddress: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
   });
-
-  public constructor(public readonly stateService: DashboardStateService) {}
 
   async ngOnInit() {
     const conf = await firstValueFrom(this.stateService.currentEdcConfig$);

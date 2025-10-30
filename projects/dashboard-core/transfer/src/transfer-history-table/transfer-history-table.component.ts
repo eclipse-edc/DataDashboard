@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 
 import { TransferProcess, TransferProcessStates } from '@think-it-labs/edc-connector-client';
 import { DatePipe, NgClass } from '@angular/common';
@@ -26,6 +26,8 @@ import { DeleteConfirmComponent, ModalAndAlertService } from '@eclipse-edc/dashb
   templateUrl: './transfer-history-table.component.html',
 })
 export class TransferHistoryTableComponent implements OnChanges {
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+
   @Input() transferProcesses: TransferProcess[] | null = [];
   @Output() deprovisionEvent = new EventEmitter<TransferProcess>();
 
@@ -40,8 +42,6 @@ export class TransferHistoryTableComponent implements OnChanges {
   exceptionStates = new Set<string>([TransferProcessStates.SUSPENDED, TransferProcessStates.TERMINATED]);
 
   stateType: Record<string, string> = {};
-
-  constructor(private readonly modalAndAlertService: ModalAndAlertService) {}
 
   async ngOnChanges(changes: SimpleChanges) {
     if (changes['transferProcesses']) {

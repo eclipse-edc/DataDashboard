@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { PolicyService } from '../policy.service';
@@ -36,6 +36,9 @@ import {
   styleUrl: './policy-create.component.css',
 })
 export class PolicyCreateComponent implements OnChanges {
+  private readonly policyService = inject(PolicyService);
+  private readonly formBuilder = inject(FormBuilder);
+
   protected readonly Object = Object;
 
   @Input() policyDefinition?: PolicyDefinition;
@@ -54,10 +57,7 @@ export class PolicyCreateComponent implements OnChanges {
 
   policyForm: FormGroup;
 
-  constructor(
-    private readonly policyService: PolicyService,
-    private readonly formBuilder: FormBuilder,
-  ) {
+  constructor() {
     this.policyForm = this.formBuilder.group({
       id: [''],
       policyType: [''],
