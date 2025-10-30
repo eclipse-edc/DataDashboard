@@ -33,27 +33,25 @@ it('should emit the changed region', () => {
 });
 
 it('should enable multi object fields', () => {
-  mount(AwsS3DataTypeComponent, {}).then(wrapper => {
-    cy.get('input[name="folderName"]').should('not.exist');
-    cy.get('input[name="objectPrefix"]').should('not.exist');
-    cy.get('input[name="objectName"]').parent().should('have.class', 'input-error');
+  mount(AwsS3DataTypeComponent);
+  cy.get('input[name="folderName"]').should('not.exist');
+  cy.get('input[name="objectPrefix"]').should('not.exist');
+  cy.get('input[name="objectName"]').parent().should('have.class', 'input-error');
 
-    cy.get('input[name="multi-object-switch"]').check();
+  cy.get('input[name="multi-object-switch"]').check();
 
-    cy.get('input[name="folderName"]').should('exist');
-    cy.get('input[name="objectPrefix"]').should('exist');
-    cy.get('input[name="objectName"]').parent().should('not.have.class', 'input-error');
-  });
+  cy.get('input[name="folderName"]').should('exist');
+  cy.get('input[name="objectPrefix"]').should('exist');
+  cy.get('input[name="objectName"]').parent().should('not.have.class', 'input-error');
 });
 
 it('should enable plain credential fields', () => {
-  mount(AwsS3DataTypeComponent, {}).then(wrapper => {
-    cy.get('input[name="accessKeyId"]').should('not.exist');
-    cy.get('input[name="secretAccessKey"]').should('not.exist');
+  mount(AwsS3DataTypeComponent);
+  cy.get('input[name="accessKeyId"]').should('not.exist');
+  cy.get('input[name="secretAccessKey"]').should('not.exist');
 
-    cy.get('input[name="plain-credentials-switch"]').check();
+  cy.get('input[name="plain-credentials-switch"]').check();
 
-    cy.get('input[name="accessKeyId"]').should('exist');
-    cy.get('input[name="secretAccessKey"]').should('exist');
-  });
+  cy.get('input[name="accessKeyId"]').should('exist');
+  cy.get('input[name="secretAccessKey"]').should('exist');
 });
