@@ -17,6 +17,8 @@
     class="input input-lg text-base focus:outline-hidden focus-within:outline-hidden border-base-300 focus-within:border-primary flex w-full items-center gap-2 rounded-2xl bg-base-300"
   >
     <input type="text" class="grow" [placeholder]="placeholder ?? 'Filter...'" (input)="onChange($event)" />
-    <kbd class="kbd" *ngFor="let key of focusShortcut">{{ key }}</kbd>
+    @for (key of focusShortcut; track key) {
+      <kbd class="kbd">{{ key }}</kbd>
+    }
   </label>
 </div>

@@ -28,7 +28,9 @@
     >
       <span class="material-symbols-rounded opacity-50">contract_edit</span>
       <input type="text" class="grow" placeholder="ID" formControlName="id" name="id" />
-      <span *ngIf="!contractDefinitionInput" class="badge badge-info">Optional</span>
+      @if (!contractDefinitionInput) {
+        <span class="badge badge-info">Optional</span>
+      }
     </label>
   </fieldset>
   @if ((policyDefinitions$ | async)?.length ?? 0 > 0) {
@@ -82,14 +84,15 @@
 
   <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
     <legend class="fieldset-legend text-sm">Asset Selection</legend>
-    <lib-multiselect-with-search
-      #assetsSelector
-      *ngIf="assetIds$ | async as assetIds"
-      [items]="assetIds"
-      [preSelectedItems]="assetInput"
-      (selectedItemsChange)="handleSelectionChange($event)"
-      class="w-full"
-    ></lib-multiselect-with-search>
+    @if (assetIds$ | async; as assetIds) {
+      <lib-multiselect-with-search
+        #assetsSelector
+        [items]="assetIds"
+        [preSelectedItems]="assetInput"
+        (selectedItemsChange)="handleSelectionChange($event)"
+        class="w-full"
+      ></lib-multiselect-with-search>
+    }
     @if (assetInput.length > 0) {
       <div class="pt-3"></div>
     }
@@ -102,14 +105,9 @@
   </fieldset>
 
   <div class="divider"></div>
-  <lib-alert
-    *ngIf="errorMsg"
-    title="Error"
-    [msg]="errorMsg"
-    (closeEvent)="errorMsg = ''"
-    type="error"
-    class="w-lg mb-4"
-  ></lib-alert>
+  @if (errorMsg) {
+    <lib-alert title="Error" [msg]="errorMsg" (closeEvent)="errorMsg = ''" type="error" class="w-lg mb-4"></lib-alert>
+  }
   <button
     type="submit"
     [disabled]="contractDefinitionForm.invalid"

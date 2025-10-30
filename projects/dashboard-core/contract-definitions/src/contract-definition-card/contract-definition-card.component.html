@@ -37,12 +37,14 @@
               <b><i>Asset Selection</i></b>
             </div>
           </summary>
-          <div *ngFor="let assetPolicy of contractDefinition.assetsSelector" class="flex items-center py-1">
-            <span class="material-symbols-rounded mr-2">check</span>
-            <span class="truncate"
-              >{{ assetPolicy.operandLeft }} {{ assetPolicy.operator }} {{ assetPolicy.operandRight }}</span
-            >
-          </div>
+          @for (assetPolicy of contractDefinition.assetsSelector; track assetPolicy) {
+            <div class="flex items-center py-1">
+              <span class="material-symbols-rounded mr-2">check</span>
+              <span class="truncate"
+                >{{ assetPolicy.operandLeft }} {{ assetPolicy.operator }} {{ assetPolicy.operandRight }}</span
+              >
+            </div>
+          }
         </details>
       } @else {
         <div class="flex items-center">
@@ -53,31 +55,33 @@
       }
     </div>
 
-    <div *ngIf="showButtons" class="card-actions justify-end mt-auto">
-      <div class="tooltip no-animation" data-tip="Details">
-        <button
-          class="btn btn-soft btn-primary btn-circle btn-sm no-animation"
-          (click)="openDetailsEvent.emit(contractDefinition)"
-        >
-          <i class="material-symbols-rounded">info</i>
-        </button>
+    @if (showButtons) {
+      <div class="card-actions justify-end mt-auto">
+        <div class="tooltip no-animation" data-tip="Details">
+          <button
+            class="btn btn-soft btn-primary btn-circle btn-sm no-animation"
+            (click)="openDetailsEvent.emit(contractDefinition)"
+          >
+            <i class="material-symbols-rounded">info</i>
+          </button>
+        </div>
+        <div class="tooltip no-animation" data-tip="Edit">
+          <button
+            class="btn btn-soft btn-warning btn-circle btn-sm no-animation"
+            (click)="editContractDefinitionEvent.emit(contractDefinition)"
+          >
+            <i class="material-symbols-rounded">edit</i>
+          </button>
+        </div>
+        <div class="tooltip no-animation" data-tip="Delete">
+          <button
+            class="btn btn-soft btn-error btn-circle btn-sm"
+            (click)="deleteContractDefinitionEvent.emit(contractDefinition)"
+          >
+            <i class="material-symbols-rounded">delete</i>
+          </button>
+        </div>
       </div>
-      <div class="tooltip no-animation" data-tip="Edit">
-        <button
-          class="btn btn-soft btn-warning btn-circle btn-sm no-animation"
-          (click)="editContractDefinitionEvent.emit(contractDefinition)"
-        >
-          <i class="material-symbols-rounded">edit</i>
-        </button>
-      </div>
-      <div class="tooltip no-animation" data-tip="Delete">
-        <button
-          class="btn btn-soft btn-error btn-circle btn-sm"
-          (click)="deleteContractDefinitionEvent.emit(contractDefinition)"
-        >
-          <i class="material-symbols-rounded">delete</i>
-        </button>
-      </div>
-    </div>
+    }
   </div>
 </div>

@@ -20,9 +20,11 @@
       Page {{ currentPage + 1 }} of {{ totalPages + 1 }}
     </button>
     <ul class="menu dropdown-content bg-base-100 rounded-box shadow-2xl">
-      <li *ngFor="let _ of [].constructor(totalPages + 1); let i = index" (click)="jump(i)">
-        <a class="text-nowrap">Page {{ i + 1 }}</a>
-      </li>
+      @for (_ of [].constructor(totalPages + 1); track _; let i = $index) {
+        <li (click)="jump(i)">
+          <a class="text-nowrap">Page {{ i + 1 }}</a>
+        </li>
+      }
     </ul>
   </div>
   <button class="btn btn-lg btn-ghost join-item border-none" (click)="forward()" [disabled]="currentPage == totalPages">

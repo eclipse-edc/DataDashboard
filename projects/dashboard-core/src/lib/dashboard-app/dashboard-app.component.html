@@ -157,16 +157,18 @@
           tabindex="0"
           class="dropdown-content bg-base-100 text-base-content z-1 max-h-96 overflow-y-auto rounded-box p-2 shadow-2xl"
         >
-          <li *ngFor="let theme of themes">
-            <input
-              type="radio"
-              name="theme-dropdown"
-              class="theme-controller btn btn-ghost btn-sm btn-block justify-start checked:text-primary-content"
-              [attr.aria-label]="theme"
-              [value]="theme"
-              (click)="stateService.setTheme(theme)"
-            />
-          </li>
+          @for (theme of themes; track theme) {
+            <li>
+              <input
+                type="radio"
+                name="theme-dropdown"
+                class="theme-controller btn btn-ghost btn-sm btn-block justify-start checked:text-primary-content"
+                [attr.aria-label]="theme"
+                [value]="theme"
+                (click)="stateService.setTheme(theme)"
+              />
+            </li>
+          }
         </ul>
       </div>
     </div>
@@ -177,7 +179,7 @@
       <ul
         class="menu flex-nowrap shrink-0 h-full rounded-2xl bg-neutral text-neutral-content shadow-xl [&_li>a]:px-4 overflow-auto"
       >
-        <ng-container *ngFor="let item of (appConfig | async)?.menuItems">
+        @for (item of (appConfig | async)?.menuItems; track item) {
           <button
             class="btn btn-lg btn-ghost justify-start shadow-none hover:text-primary-content hover:bg-primary border-none transition-none"
             routerLink="{{ item.routerPath }}"
@@ -193,7 +195,7 @@
               class="divider after:bg-neutral-content before:bg-neutral-content after:opacity-15 before:opacity-15 my-0 px-2"
             ></div>
           }
-        </ng-container>
+        }
       </ul>
     }
 

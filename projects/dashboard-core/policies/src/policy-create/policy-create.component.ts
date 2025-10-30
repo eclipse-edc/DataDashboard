@@ -13,7 +13,7 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { PolicyService } from '../policy.service';
 import { AlertComponent } from '@eclipse-edc/dashboard-core';
@@ -31,7 +31,7 @@ import {
 @Component({
   selector: 'lib-policy-create',
   standalone: true,
-  imports: [FormsModule, NgIf, AlertComponent, NgClass],
+  imports: [FormsModule, AlertComponent, NgClass],
   templateUrl: './policy-create.component.html',
   styleUrl: './policy-create.component.css',
 })

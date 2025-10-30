@@ -11,25 +11,33 @@
          Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
 -->
 
-<table *ngIf="keys.length > 0" class="table table-sm">
-  <thead>
-    <tr>
-      <th>Key</th>
-      <th>Value</th>
-      <th *ngIf="deleteButton"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let key of keys">
-      <td>{{ key }}</td>
-      <td>{{ object[key] | json }}</td>
-      <td *ngIf="deleteButton">
-        <div class="tooltip" data-tip="Delete">
-          <button type="button" class="btn btn-xs btn-circle btn-error" (click)="delete.emit(key)">
-            <span class="h-4 w-4 !text-[1rem] material-symbols-rounded">delete_forever</span>
-          </button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+@if (keys.length > 0) {
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Key</th>
+        <th>Value</th>
+        @if (deleteButton) {
+          <th></th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (key of keys; track key) {
+        <tr>
+          <td>{{ key }}</td>
+          <td>{{ object[key] | json }}</td>
+          @if (deleteButton) {
+            <td>
+              <div class="tooltip" data-tip="Delete">
+                <button type="button" class="btn btn-xs btn-circle btn-error" (click)="delete.emit(key)">
+                  <span class="h-4 w-4 !text-[1rem] material-symbols-rounded">delete_forever</span>
+                </button>
+              </div>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+}

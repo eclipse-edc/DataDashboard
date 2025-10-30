@@ -14,7 +14,7 @@
 
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { compact, EdcConnectorClientError, IdResponse } from '@think-it-labs/edc-connector-client';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertComponent, JsonObjectTableComponent } from '@eclipse-edc/dashboard-core';
 import { CatalogService } from '../catalog.service';
@@ -26,7 +26,7 @@ import { JsonValue } from '@angular-devkit/core';
 @Component({
   selector: 'lib-catalog-negotiation',
   standalone: true,
-  imports: [FormsModule, NgIf, AlertComponent, JsonObjectTableComponent, NgClass, AsyncPipe],
+  imports: [FormsModule, AlertComponent, JsonObjectTableComponent, NgClass, AsyncPipe],
   templateUrl: './contract-negotiation.component.html',
 })
 export class ContractNegotiationComponent implements OnChanges {

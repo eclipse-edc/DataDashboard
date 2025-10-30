@@ -28,7 +28,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { AlertComponent, ModalAndAlertService, MultiselectWithSearchComponent } from '@eclipse-edc/dashboard-core';
 import { AssetService } from '@eclipse-edc/dashboard-core/assets';
 import { from, map, Observable, of } from 'rxjs';
-import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'lib-contract-definition-create',
@@ -40,8 +40,6 @@ import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
     ReactiveFormsModule,
     AsyncPipe,
     NgClass,
-    NgIf,
-    NgForOf,
   ],
   templateUrl: './contract-definition-create.component.html',
   styleUrl: './contract-definition-create.component.css',

@@ -13,12 +13,11 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'lib-pagination',
   standalone: true,
-  imports: [NgForOf],
+  imports: [],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css',
 })
