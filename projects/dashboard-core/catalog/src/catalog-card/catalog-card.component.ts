@@ -13,13 +13,13 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
+
 import { CatalogDataset } from '../catalog-dataset';
 
 @Component({
   selector: 'lib-catalog-card',
   standalone: true,
-  imports: [NgIf],
+  imports: [],
   templateUrl: './catalog-card.component.html',
   styleUrl: './catalog-card.component.css',
 })

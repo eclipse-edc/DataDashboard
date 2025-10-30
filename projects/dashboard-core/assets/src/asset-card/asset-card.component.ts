@@ -14,12 +14,11 @@
 
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Asset } from '@think-it-labs/edc-connector-client';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'lib-asset-card',
   standalone: true,
-  imports: [NgIf],
+  imports: [],
   templateUrl: './asset-card.component.html',
   styleUrl: './asset-card.component.css',
 })

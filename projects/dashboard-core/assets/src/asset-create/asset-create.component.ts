@@ -22,7 +22,7 @@ import {
   EdcConnectorClientError,
   IdResponse,
 } from '@think-it-labs/edc-connector-client';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { AssetService } from '../asset.service';
 import {
   AlertComponent,
@@ -39,7 +39,6 @@ import { JsonValue } from '@angular-devkit/core';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgIf,
     AlertComponent,
     JsonObjectTableComponent,
     NgClass,

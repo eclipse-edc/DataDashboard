@@ -14,7 +14,7 @@
 
 import { AfterViewInit, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { AsyncPipe, NgClass, NgForOf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { DashboardStateService } from '../services/dashboard-state.service';
 import { EdcConfig } from '../models/edc-config';
 import { EdcClientService } from '../services/edc-client.service';
@@ -26,7 +26,7 @@ import { AppConfig } from '../models/app-config';
 @Component({
   selector: 'lib-dashboard-app',
   standalone: true,
-  imports: [RouterOutlet, NgForOf, RouterLink, RouterLinkActive, AsyncPipe, NgClass],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, AsyncPipe, NgClass],
   templateUrl: './dashboard-app.component.html',
   styleUrl: './dashboard-app.component.css',
 })
