@@ -18,6 +18,7 @@ import { FallbackDataTypeComponent } from '../common/data-address/fallback-data-
 import { DataTypeInputComponent } from '../common/data-address/data-type-input/data-type-input.component';
 import { EdcClientService } from './edc-client.service';
 import { AwsS3DataTypeComponent } from '../common/data-address/aws-s3-data-type/aws-s3-data-type.component';
+import { AzureStorageDataTypeComponent } from '../common/data-address/azure-storage-data-type/azure-storage-data-type.component';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,7 @@ export class DataTypeRegistryService {
   constructor(private readonly edc: EdcClientService) {
     this.registerComponent('HttpData', HttpDataTypeComponent);
     this.registerComponent('AmazonS3', AwsS3DataTypeComponent);
+    this.registerComponent('AzureStorage', AzureStorageDataTypeComponent);
   }
 
   public getComponent(type: string): Type<DataTypeInputComponent> {
