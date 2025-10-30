@@ -29,10 +29,18 @@ import { URL_REGEX } from '../../../models/constants';
 export class HttpDataTypeComponent extends DataTypeInputComponent implements OnChanges, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
+  /**
+   * Not necessary for the user to set a name, but for compatibility reasons a name is set.
+   * AzureStorage PUSH transfer requires a name in the data address to be set.
+   * @private
+   */
+  private readonly name = `edc-dashboard-${crypto.randomUUID()}`;
+
   httpDataAddress: HttpDataAddress = {
     type: 'HttpData',
     method: '',
     baseUrl: '',
+    name: this.name,
     path: undefined,
     authKey: undefined,
     authCode: undefined,
@@ -58,7 +66,7 @@ export class HttpDataTypeComponent extends DataTypeInputComponent implements OnC
     this.formGroup.get('method')?.setValue('GET');
     this.formGroup.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
       const changes = Object.fromEntries(
-        Object.entries({ ...value, type: 'HttpData' }).filter(([key, value]) => {
+        Object.entries({ ...value, type: 'HttpData', name: this.name }).filter(([key, value]) => {
           if (key.includes('proxy')) {
             return this.proxy && value;
           }
