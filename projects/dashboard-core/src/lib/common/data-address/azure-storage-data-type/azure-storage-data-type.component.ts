@@ -28,7 +28,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class AzureStorageDataTypeComponent extends DataTypeInputComponent implements OnChanges, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
-  s3DataAddress: DataAddress = {
+  blobDataAddress: DataAddress = {
     type: 'AzureStorage',
     account: undefined,
     container: undefined,
@@ -43,7 +43,7 @@ export class AzureStorageDataTypeComponent extends DataTypeInputComponent implem
   constructor() {
     super();
 
-    Object.keys(this.s3DataAddress)
+    Object.keys(this.blobDataAddress)
       .filter(it => it !== 'type')
       .forEach(key => {
         this.formGroup.addControl(key, new FormControl(undefined));
