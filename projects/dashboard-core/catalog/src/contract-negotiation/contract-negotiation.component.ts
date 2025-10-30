@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { compact, EdcConnectorClientError, IdResponse } from '@think-it-labs/edc-connector-client';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +30,8 @@ import { JsonValue } from '@angular-devkit/core';
   templateUrl: './contract-negotiation.component.html',
 })
 export class ContractNegotiationComponent implements OnChanges {
+  private readonly catalogService = inject(CatalogService);
+
   @Input() catalogDataset!: CatalogDataset;
   @Output() negotiationRequested = new EventEmitter<IdResponse>();
 
@@ -38,8 +40,6 @@ export class ContractNegotiationComponent implements OnChanges {
   errorMsg = '';
   offerId = '';
   selectedOffer = new BehaviorSubject<string[]>(['']);
-
-  constructor(private readonly catalogService: CatalogService) {}
 
   async ngOnChanges(changes: SimpleChanges) {
     if (changes['catalogDataset']) {

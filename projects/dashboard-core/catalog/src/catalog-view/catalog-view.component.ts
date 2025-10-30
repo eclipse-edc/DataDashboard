@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CatalogService } from '../catalog.service';
 import { AsyncPipe } from '@angular/common';
 import {
@@ -59,6 +59,10 @@ import { NegotiationProgressComponent } from '../negotiation-progress/negotiatio
   styleUrl: './catalog-view.component.css',
 })
 export class CatalogViewComponent implements OnInit, OnDestroy {
+  stateService = inject(DashboardStateService);
+  private readonly catalogService = inject(CatalogService);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+
   private readonly destroy$ = new Subject<void>();
 
   catalogDatasets$: Observable<CatalogDataset[]> = of([]);
@@ -76,12 +80,6 @@ export class CatalogViewComponent implements OnInit, OnDestroy {
 
   isFederatedCatalogEnabled = false;
   errorMsg = '';
-
-  constructor(
-    public stateService: DashboardStateService,
-    private readonly catalogService: CatalogService,
-    private readonly modalAndAlertService: ModalAndAlertService,
-  ) {}
 
   async ngOnInit() {
     this.stateService.currentEdcConfig$.pipe(takeUntil(this.destroy$)).subscribe(async () => {

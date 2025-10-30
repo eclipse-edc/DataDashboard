@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { DashboardAppComponent, EdcConfig } from '@eclipse-edc/dashboard-core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
@@ -26,6 +26,8 @@ import { AppConfig } from '../../projects/dashboard-core/src/lib/models/app-conf
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
+  private readonly http = inject(HttpClient);
+
   protected readonly themes = [
     'light',
     'dark',
@@ -41,8 +43,6 @@ export class AppComponent implements OnInit {
   ];
   edcConfigs?: Promise<EdcConfig[]>;
   appConfig?: Promise<AppConfig>;
-
-  constructor(private readonly http: HttpClient) {}
 
   ngOnInit() {
     this.edcConfigs = firstValueFrom(this.http.get<EdcConfig[]>('config/edc-connector-config.json'));

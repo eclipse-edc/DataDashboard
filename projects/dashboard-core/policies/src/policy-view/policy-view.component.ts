@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { PolicyService } from '../policy.service';
 import { AsyncPipe } from '@angular/common';
 import { IdResponse, PolicyDefinition } from '@think-it-labs/edc-connector-client';
@@ -37,6 +37,10 @@ import { PolicyCardComponent } from '../policy-card/policy-card.component';
   styleUrl: './policy-view.component.css',
 })
 export class PolicyViewComponent implements OnInit, OnDestroy {
+  policyService = inject(PolicyService);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+  private readonly stateService = inject(DashboardStateService);
+
   private readonly destroy$ = new Subject<void>();
 
   policies$: Observable<PolicyDefinition[]> = of([]);
@@ -45,11 +49,7 @@ export class PolicyViewComponent implements OnInit, OnDestroy {
   fetched = false;
   pageItemCount = 15;
 
-  constructor(
-    public policyService: PolicyService,
-    private readonly modalAndAlertService: ModalAndAlertService,
-    private readonly stateService: DashboardStateService,
-  ) {
+  constructor() {
     this.stateService.currentEdcConfig$.pipe(takeUntil(this.destroy$)).subscribe(this.fetchPolicies.bind(this));
   }
 

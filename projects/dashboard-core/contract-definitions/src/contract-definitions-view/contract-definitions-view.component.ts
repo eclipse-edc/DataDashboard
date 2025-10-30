@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { from, map, Observable, of, Subject, takeUntil } from 'rxjs';
 import { ContractDefinition, IdResponse } from '@think-it-labs/edc-connector-client';
@@ -43,6 +43,10 @@ import { ContractDefinitionCardComponent } from '../contract-definition-card/con
   standalone: true,
 })
 export class ContractDefinitionsViewComponent implements OnInit, OnDestroy {
+  contractDefinitionsService = inject(ContractDefinitionsService);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+  private readonly stateService = inject(DashboardStateService);
+
   private readonly destroy$ = new Subject<void>();
 
   contractDefinitions$: Observable<ContractDefinition[]> = of([]);
@@ -51,11 +55,7 @@ export class ContractDefinitionsViewComponent implements OnInit, OnDestroy {
   fetched = false;
   pageItemCount = 15;
 
-  constructor(
-    public contractDefinitionsService: ContractDefinitionsService,
-    private readonly modalAndAlertService: ModalAndAlertService,
-    private readonly stateService: DashboardStateService,
-  ) {
+  constructor() {
     this.stateService.currentEdcConfig$
       .pipe(takeUntil(this.destroy$))
       .subscribe(this.fetchContractDefinitions.bind(this));

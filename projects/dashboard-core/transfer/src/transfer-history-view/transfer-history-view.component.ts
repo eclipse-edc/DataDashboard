@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { TransferProcess } from '@think-it-labs/edc-connector-client';
 import { from, map, Observable, of, Subject, takeUntil } from 'rxjs';
 import { TransferHistoryTableComponent } from '../transfer-history-table/transfer-history-table.component';
@@ -49,6 +49,10 @@ import { ContractAndTransferService } from '../contract-and-transfer.service';
   ],
 })
 export class TransferHistoryViewComponent implements OnInit, OnDestroy {
+  private readonly transferProcessService = inject(ContractAndTransferService);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+  private readonly stateService = inject(DashboardStateService);
+
   private readonly destroy$ = new Subject<void>();
 
   transferProcesses$: Observable<TransferProcess[]> = of([]);
@@ -58,12 +62,6 @@ export class TransferHistoryViewComponent implements OnInit, OnDestroy {
   pageItemCount = 20;
   initialized = false;
   contractType: 'CONSUMER' | 'PROVIDER' = 'CONSUMER';
-
-  constructor(
-    private readonly transferProcessService: ContractAndTransferService,
-    private readonly modalAndAlertService: ModalAndAlertService,
-    private readonly stateService: DashboardStateService,
-  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.fetchHistory();
