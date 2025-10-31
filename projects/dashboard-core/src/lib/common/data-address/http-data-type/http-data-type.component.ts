@@ -20,6 +20,7 @@ import { NgClass } from '@angular/common';
 import { ViewData } from '../../../models/view-data';
 import { Subject, takeUntil } from 'rxjs';
 import { URL_REGEX } from '../../../models/constants';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'lib-http-data-type',
@@ -34,7 +35,7 @@ export class HttpDataTypeComponent extends DataTypeInputComponent implements OnC
    * AzureStorage PUSH transfer requires a name in the data address to be set.
    * @private
    */
-  private readonly name = `edc-dashboard-${crypto.randomUUID()}`;
+  private readonly name = `edc-dashboard-${uuidv4()}`;
 
   httpDataAddress: HttpDataAddress = {
     type: 'HttpData',
