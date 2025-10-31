@@ -12,9 +12,9 @@
  *
  */
 
-import { AfterViewInit, Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { AsyncPipe, NgClass, NgForOf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { DashboardStateService } from '../services/dashboard-state.service';
 import { EdcConfig } from '../models/edc-config';
 import { EdcClientService } from '../services/edc-client.service';
@@ -26,23 +26,21 @@ import { AppConfig } from '../models/app-config';
 @Component({
   selector: 'lib-dashboard-app',
   standalone: true,
-  imports: [RouterOutlet, NgForOf, RouterLink, RouterLinkActive, AsyncPipe, NgClass],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, AsyncPipe, NgClass],
   templateUrl: './dashboard-app.component.html',
   styleUrl: './dashboard-app.component.css',
 })
 export class DashboardAppComponent implements AfterViewInit {
+  stateService = inject(DashboardStateService);
+  readonly edcClientService = inject(EdcClientService);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+
   @Input() appConfig?: Promise<AppConfig>;
   @Input() edcConfigs?: Promise<EdcConfig[]>;
   @Input() themes: string[] = [];
 
   @ViewChild('dashboardModal', { read: ViewContainerRef, static: true }) modal!: ViewContainerRef;
   @ViewChild('dashboardAlert', { read: ViewContainerRef, static: true }) alert!: ViewContainerRef;
-
-  constructor(
-    public stateService: DashboardStateService,
-    public readonly edcClientService: EdcClientService,
-    private readonly modalAndAlertService: ModalAndAlertService,
-  ) {}
 
   async ngAfterViewInit() {
     const dialog = document.querySelector<HTMLDialogElement>('#dashboard-dialog');

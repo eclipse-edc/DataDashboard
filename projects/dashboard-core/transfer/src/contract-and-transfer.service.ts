@@ -12,7 +12,7 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { EdcClientService } from '@eclipse-edc/dashboard-core';
 import {
   compact,
@@ -37,15 +37,8 @@ import { HttpClient, HttpEvent } from '@angular/common/http';
   providedIn: 'root',
 })
 export class ContractAndTransferService {
-  /**
-   * Constructor to initialize the ContractAgreementService.
-   * @param edc - The EDC client service used to interact with the contract agreement management API.
-   * @param http - Angular HTTP client
-   */
-  constructor(
-    private readonly edc: EdcClientService,
-    private readonly http: HttpClient,
-  ) {}
+  private readonly edc = inject(EdcClientService);
+  private readonly http = inject(HttpClient);
 
   /**
    * Retrieves all contract negotiations based on the optional query specification.

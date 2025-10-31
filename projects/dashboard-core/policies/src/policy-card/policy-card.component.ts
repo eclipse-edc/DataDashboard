@@ -14,12 +14,11 @@
 
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Policy, PolicyDefinition } from '@think-it-labs/edc-connector-client';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'lib-policy-card',
   standalone: true,
-  imports: [NgIf],
+  imports: [],
   templateUrl: './policy-card.component.html',
   styleUrl: './policy-card.component.css',
 })

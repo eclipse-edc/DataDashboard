@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EdcClientService } from '../../services/edc-client.service';
 import { DashboardStateService } from '../../services/dashboard-state.service';
@@ -28,6 +28,9 @@ import { DID_WEB_REGEX, URL_REGEX } from '../../models/constants';
   imports: [ReactiveFormsModule, NgClass, AlertComponent],
 })
 export class ConnectorConfigFormComponent {
+  private readonly edc = inject(EdcClientService);
+  private readonly stateService = inject(DashboardStateService);
+
   @Output() created = new EventEmitter<void>();
 
   connectorForm: FormGroup = new FormGroup({
@@ -44,11 +47,6 @@ export class ConnectorConfigFormComponent {
   ihEnabled = false;
   loading = false;
   errorMsg = '';
-
-  constructor(
-    private readonly edc: EdcClientService,
-    private readonly stateService: DashboardStateService,
-  ) {}
 
   onFederatedCatalogToggle() {
     this.fcEnabled = !this.fcEnabled;

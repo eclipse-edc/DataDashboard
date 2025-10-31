@@ -1,14 +1,14 @@
 <!--
-    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
 
-    This program and the accompanying materials are made available under the
-    terms of the Apache License, Version 2.0 which is available at
-    https://www.apache.org/licenses/LICENSE-2.0
+This program and the accompanying materials are made available under the
+terms of the Apache License, Version 2.0 which is available at
+https://www.apache.org/licenses/LICENSE-2.0
 
-    SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: Apache-2.0
 
-    Contributors:
-         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+Contributors:
+Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
 -->
 
 <form #policyForm="ngForm" class="grid grid-cols-1 gap-4 items-start overflow-y-auto h-full">
@@ -86,26 +86,20 @@
 
   <div class="flex flex-col items-center">
     <div class="divider mt-0"></div>
-    <lib-alert
-      *ngIf="errorMsg"
-      title="Error"
-      [msg]="errorMsg"
-      (closeEvent)="errorMsg = ''"
-      type="error"
-      class="w-lg mb-4"
-    ></lib-alert>
-    <button
-      *ngIf="mode === 'create'"
-      [disabled]="policyForm.invalid"
-      class="btn btn-lg btn-primary w-lg"
-      (click)="createPolicyDefinition()"
-    >
-      <i class="material-symbols-rounded">add</i>
-      Create Policy
-    </button>
-    <button *ngIf="mode === 'update'" class="btn btn-lg btn-warning w-lg" (click)="editPolicyDefinition()">
-      <i class="material-symbols-rounded">update</i>
-      Update Policy
-    </button>
+    @if (errorMsg) {
+      <lib-alert title="Error" [msg]="errorMsg" (closeEvent)="errorMsg = ''" type="error" class="w-lg mb-4"></lib-alert>
+    }
+    @if (mode === 'create') {
+      <button [disabled]="policyForm.invalid" class="btn btn-lg btn-primary w-lg" (click)="createPolicyDefinition()">
+        <i class="material-symbols-rounded">add</i>
+        Create Policy
+      </button>
+    }
+    @if (mode === 'update') {
+      <button class="btn btn-lg btn-warning w-lg" (click)="editPolicyDefinition()">
+        <i class="material-symbols-rounded">update</i>
+        Update Policy
+      </button>
+    }
   </div>
 </form>

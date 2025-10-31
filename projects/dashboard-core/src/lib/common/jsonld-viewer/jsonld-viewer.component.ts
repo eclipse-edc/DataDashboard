@@ -14,13 +14,13 @@
 
 import { Component, Input, OnChanges } from '@angular/core';
 import { compact, JsonLdObject } from '@think-it-labs/edc-connector-client';
-import { AsyncPipe, NgForOf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'lib-jsonld-viewer',
   standalone: true,
-  imports: [NgForOf, AsyncPipe],
+  imports: [AsyncPipe],
   templateUrl: './jsonld-viewer.component.html',
   styleUrl: './jsonld-viewer.component.css',
 })

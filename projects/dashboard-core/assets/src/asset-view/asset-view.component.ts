@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { AssetService } from '../asset.service';
 import { AsyncPipe } from '@angular/common';
 import { Asset, IdResponse } from '@think-it-labs/edc-connector-client';
@@ -37,6 +37,10 @@ import { AssetCardComponent } from '../asset-card/asset-card.component';
   styleUrl: './asset-view.component.css',
 })
 export class AssetViewComponent implements OnInit, OnDestroy {
+  private readonly assetService = inject(AssetService);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+  private readonly stateService = inject(DashboardStateService);
+
   private readonly destroy$ = new Subject<void>();
 
   assets$: Observable<Asset[]> = of([]);
@@ -45,11 +49,7 @@ export class AssetViewComponent implements OnInit, OnDestroy {
   fetched = false;
   pageItemCount = 15;
 
-  constructor(
-    private readonly assetService: AssetService,
-    private readonly modalAndAlertService: ModalAndAlertService,
-    private readonly stateService: DashboardStateService,
-  ) {
+  constructor() {
     this.stateService.currentEdcConfig$.pipe(takeUntil(this.destroy$)).subscribe(this.fetchAssets.bind(this));
   }
 

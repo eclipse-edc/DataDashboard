@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   Asset,
@@ -28,7 +28,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { AlertComponent, ModalAndAlertService, MultiselectWithSearchComponent } from '@eclipse-edc/dashboard-core';
 import { AssetService } from '@eclipse-edc/dashboard-core/assets';
 import { from, map, Observable, of } from 'rxjs';
-import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'lib-contract-definition-create',
@@ -40,14 +40,18 @@ import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common';
     ReactiveFormsModule,
     AsyncPipe,
     NgClass,
-    NgIf,
-    NgForOf,
   ],
   templateUrl: './contract-definition-create.component.html',
   styleUrl: './contract-definition-create.component.css',
   standalone: true,
 })
 export class ContractDefinitionCreateComponent implements OnInit, OnChanges {
+  private readonly router = inject(Router);
+  private readonly contractDefinitionService = inject(ContractDefinitionsService);
+  assetService = inject(AssetService);
+  protected readonly formBuilder = inject(FormBuilder);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+
   @ViewChild('assetsSelector', { static: false }) searchChild!: MultiselectWithSearchComponent<string>;
 
   @Input() contractDefinitionInput?: ContractDefinition;
@@ -67,13 +71,7 @@ export class ContractDefinitionCreateComponent implements OnInit, OnChanges {
 
   errorMsg = '';
 
-  constructor(
-    private readonly router: Router,
-    private readonly contractDefinitionService: ContractDefinitionsService,
-    public assetService: AssetService,
-    protected readonly formBuilder: FormBuilder,
-    private readonly modalAndAlertService: ModalAndAlertService,
-  ) {
+  constructor() {
     this.contractDefinitionForm = this.formBuilder.group({
       id: [''],
       accessPolicyId: new FormControl(undefined, {

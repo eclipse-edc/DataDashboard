@@ -12,8 +12,8 @@
  *
  */
 
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { NgClass, NgIf } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { PolicyService } from '../policy.service';
 import { AlertComponent } from '@eclipse-edc/dashboard-core';
@@ -31,11 +31,14 @@ import {
 @Component({
   selector: 'lib-policy-create',
   standalone: true,
-  imports: [FormsModule, NgIf, AlertComponent, NgClass],
+  imports: [FormsModule, AlertComponent, NgClass],
   templateUrl: './policy-create.component.html',
   styleUrl: './policy-create.component.css',
 })
 export class PolicyCreateComponent implements OnChanges {
+  private readonly policyService = inject(PolicyService);
+  private readonly formBuilder = inject(FormBuilder);
+
   protected readonly Object = Object;
 
   @Input() policyDefinition?: PolicyDefinition;
@@ -54,10 +57,7 @@ export class PolicyCreateComponent implements OnChanges {
 
   policyForm: FormGroup;
 
-  constructor(
-    private readonly policyService: PolicyService,
-    private readonly formBuilder: FormBuilder,
-  ) {
+  constructor() {
     this.policyForm = this.formBuilder.group({
       id: [''],
       policyType: [''],
@@ -126,6 +126,7 @@ export class PolicyCreateComponent implements OnChanges {
   private createPolicyInput(): PolicyDefinitionInput {
     const policyInput: PolicyInput = {
       '@type': this.policyType,
+      profiles: [],
     };
 
     // Individual JSON parsing with separate error handling

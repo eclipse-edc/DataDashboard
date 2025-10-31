@@ -13,12 +13,11 @@
  */
 
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
-import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'lib-filter-input',
   standalone: true,
-  imports: [NgForOf],
+  imports: [],
   templateUrl: './filter-input.component.html',
   styleUrl: './filter-input.component.css',
 })

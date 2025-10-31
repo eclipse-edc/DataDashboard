@@ -12,7 +12,7 @@
  *
  */
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DashboardStateService } from '@eclipse-edc/dashboard-core';
 import { AsyncPipe } from '@angular/common';
 import { Router } from '@angular/router';
@@ -23,10 +23,8 @@ import { Router } from '@angular/router';
   templateUrl: './home-view.component.html',
 })
 export class HomeViewComponent {
-  constructor(
-    public readonly stateService: DashboardStateService,
-    private readonly router: Router,
-  ) {}
+  readonly stateService = inject(DashboardStateService);
+  private readonly router = inject(Router);
 
   async navigate(path: string) {
     await this.router.navigate([path]);

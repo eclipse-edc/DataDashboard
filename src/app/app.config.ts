@@ -30,9 +30,9 @@ import { APP_BASE_HREF } from '@angular/common';
   providedIn: 'root',
 })
 class BaseHrefService {
-  private baseHref = '/';
+  private readonly http = inject(HttpClient);
 
-  constructor(private readonly http: HttpClient) {}
+  private baseHref = '/';
 
   async load() {
     try {
