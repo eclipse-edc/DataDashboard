@@ -1,0 +1,123 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<fieldset class="fieldset" [formGroup]="formGroup">
+  @for (property of viewData; track property[0]) {
+    <legend class="fieldset-label">{{ property[1].displayName }}</legend>
+    <label
+      class="input w-full"
+      [ngClass]="
+        formGroup.get(property[0])?.invalid
+          ? property[1].tooltip
+            ? 'input-error tooltip tooltip-top tooltip-info'
+            : 'input-error'
+          : property[1].tooltip
+            ? 'tooltip tooltip-top tooltip-info'
+            : ''
+      "
+      [attr.data-tip]="property[1].tooltip"
+    >
+      @if (property[1].icon) {
+        <span class="material-symbols-rounded opacity-50">{{ property[1].icon }}</span>
+      }
+      <input
+        [type]="property[1].inputType ?? 'text'"
+        [placeholder]="property[1].displayName"
+        [name]="property[0]"
+        [formControlName]="property[0]"
+      />
+    </label>
+  }
+
+  <legend class="fieldset-label">
+    <span>Multiple Objects</span>
+  </legend>
+  <div class="flex items-center">
+    <input
+      type="checkbox"
+      name="multi-object-switch"
+      [checked]="multiObject"
+      class="toggle toggle-primary"
+      (change)="onMultiDataSwitch()"
+    />
+    <div
+      class="tooltip tooltip-info tooltip-right ml-2 h-[1.3rem]"
+      data-tip="When folderName and objectPrefix are not present, transfer only the object with a key matching the objectPath property. When folderName, objectPrefix and objectPath are empty and/or null an entire s3 bucket transfer is triggered. Precedence: folderName and/or objectPrefix take precedence over objectPath when determining which objects to transfer. It allows for both multiple object transfers and fetching a single object when necessary."
+    >
+      <span class="material-symbols-rounded !text-[1.3rem] text-info">info</span>
+    </div>
+  </div>
+  @if (multiObject) {
+    @for (property of multiObjectViewData; track property[0]) {
+      <legend class="fieldset-label">{{ property[1].displayName }}</legend>
+      <label
+        class="input w-full"
+        [ngClass]="
+          formGroup.get(property[0])?.invalid
+            ? property[1].tooltip
+              ? 'input-error tooltip tooltip-top tooltip-info'
+              : 'input-error'
+            : property[1].tooltip
+              ? 'tooltip tooltip-top tooltip-info'
+              : ''
+        "
+        [attr.data-tip]="property[1].tooltip"
+      >
+        @if (property[1].icon) {
+          <span class="material-symbols-rounded opacity-50">{{ property[1].icon }}</span>
+        }
+        <input
+          [type]="property[1].inputType ?? 'text'"
+          [placeholder]="property[1].displayName"
+          [name]="property[0]"
+          [formControlName]="property[0]"
+        />
+      </label>
+    }
+  }
+
+  <legend class="fieldset-label">
+    <span>Plain Text Credentials</span>
+  </legend>
+  <div class="flex items-center">
+    <input
+      type="checkbox"
+      name="plain-credentials-switch"
+      [checked]="plainCredentials"
+      class="toggle toggle-primary"
+      (change)="plainCredentials = !plainCredentials"
+    />
+    <div
+      class="tooltip tooltip-info tooltip-right ml-2 h-[1.3rem]"
+      data-tip="This feature has been introduced to provide flexibility by not mandating the use of a vault. However, it is important to note that this functionality is not recommended for production environments. Do not set the key name because it has higher priority."
+    >
+      <span class="material-symbols-rounded !text-[1.3rem] text-info">info</span>
+    </div>
+  </div>
+  @if (plainCredentials) {
+    @for (property of plainCredentialsViewData; track property[0]) {
+      <legend class="fieldset-label">{{ property[1].displayName }}</legend>
+      <label class="input w-full">
+        @if (property[1].icon) {
+          <span class="material-symbols-rounded opacity-50">{{ property[1].icon }}</span>
+        }
+        <input
+          [type]="property[1].inputType ?? 'text'"
+          [placeholder]="property[1].displayName"
+          [name]="property[0]"
+          [formControlName]="property[0]"
+        />
+      </label>
+    }
+  }
+</fieldset>
