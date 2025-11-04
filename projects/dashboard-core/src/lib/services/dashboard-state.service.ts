@@ -194,16 +194,22 @@ export class DashboardStateService implements OnDestroy {
    * Applies a new application configuration.
    *
    * Updates the global configuration state and, if specified, adjusts the EDC client's
-   * health check interval.
+   * health check interval. Also, if a theme is defined in config (and no theme had been
+   * stored), it is applied.
    *
    * @param config An object of type AppConfig containing the configuration settings:
    *  - enableUserConfig: Optional boolean flag to enable or disable user configuration.
    *  - healthCheckIntervalSeconds: Optional number representing the health check interval in seconds.
+   *  - initialTheme: Optional name of the theme.
    */
   public setAppConfig(config: AppConfig): void {
     this._appConfig.next(config);
     if (config.healthCheckIntervalSeconds) {
       this.edc.setHealthCheckInterval(config.healthCheckIntervalSeconds);
+    }
+    const storedTheme = localStorage.getItem(this.LOCAL_STORAGE_THEME_KEY);
+    if (!storedTheme && config.initialTheme) {
+      this.setTheme(config.initialTheme);
     }
   }
 
