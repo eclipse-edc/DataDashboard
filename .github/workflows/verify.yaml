@@ -18,10 +18,10 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
@@ -34,21 +34,22 @@ jobs:
     name: Cypress Component Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
         with:
-          node-version: "22"
-      - run: npm ci
+          node-version: "24"
+      # cypress does not support new angular builder yet: https://github.com/cypress-io/cypress/issues/30903
+      - run: npm ci --legacy-peer-deps
       - run: npm run cypress:run:component
 
   cypress-e2e:
     name: Cypress E2E Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
       - run: npm ci
       - run: npm run cypress:run:e2e
 
@@ -56,10 +57,10 @@ jobs:
     name: Karma Service Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
       - run: npm ci
       - run: npm run lib-build
       - run: npm run lib-test -- --no-watch --browsers=GitlabHeadlessChrome
