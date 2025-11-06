@@ -12,7 +12,7 @@
 -->
 
 <div class="join text-base-content">
-  <button class="btn btn-lg btn-ghost join-item border-none" (click)="backward()" [disabled]="currentPage == 0">
+  <button class="btn btn-lg btn-ghost join-item border-none" (click)="backward()" [disabled]="currentPage === 0">
     «
   </button>
   <div class="dropdown dropdown-center dropdown-hover join-item">
@@ -21,13 +21,17 @@
     </button>
     <ul class="menu dropdown-content bg-base-100 rounded-box shadow-2xl">
       @for (_ of [].constructor(totalPages + 1); track _; let i = $index) {
-        <li (click)="jump(i)">
+        <li [tabindex]="i" (keydown)="jump(i)" (click)="jump(i)">
           <a class="text-nowrap">Page {{ i + 1 }}</a>
         </li>
       }
     </ul>
   </div>
-  <button class="btn btn-lg btn-ghost join-item border-none" (click)="forward()" [disabled]="currentPage == totalPages">
+  <button
+    class="btn btn-lg btn-ghost join-item border-none"
+    (click)="forward()"
+    [disabled]="currentPage === totalPages"
+  >
     »
   </button>
 </div>
