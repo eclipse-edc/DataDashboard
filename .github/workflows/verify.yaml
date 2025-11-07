@@ -38,8 +38,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "24"
-      # cypress does not support new angular builder yet: https://github.com/cypress-io/cypress/issues/30903
-      - run: npm ci --legacy-peer-deps
+      - run: npm ci
       - run: npm run cypress:run:component
 
   cypress-e2e:
