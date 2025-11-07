@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, inject } from '@angular/core';
 import { IdResponse, TransferProcessStates } from '@think-it-labs/edc-connector-client';
 import { NgClass } from '@angular/common';
 import { CatalogService } from '../catalog.service';
@@ -25,6 +25,10 @@ import { Router } from '@angular/router';
   imports: [NgClass],
 })
 export class NegotiationProgressComponent implements OnChanges, OnDestroy {
+  private readonly catalogService = inject(CatalogService);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+  private readonly router = inject(Router);
+
   @Input() negotiationId!: IdResponse;
   @Input() pullIntervalMs = 500;
 
@@ -38,12 +42,6 @@ export class NegotiationProgressComponent implements OnChanges, OnDestroy {
   errorMsg?: string;
 
   private statusJob?: ReturnType<typeof setInterval>;
-
-  constructor(
-    private readonly catalogService: CatalogService,
-    private readonly modalAndAlertService: ModalAndAlertService,
-    private readonly router: Router,
-  ) {}
 
   async ngOnChanges() {
     if (this.negotiationId.id) {

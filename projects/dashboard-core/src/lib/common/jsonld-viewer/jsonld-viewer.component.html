@@ -15,18 +15,18 @@
   <div class="max-h-full">
     <h2 class="h-[50px] font-bold text-xl text-center content-center">Compacted JSON-LD</h2>
     <div class="mockup-code h-[calc(100%-50px)] w-[40vw] overflow-y-auto">
-      <ng-container *ngFor="let line of compacted | async; let i = index">
+      @for (line of compacted | async; track line; let i = $index) {
         <pre [attr.data-prefix]="i + 1"><code>{{ line }}</code></pre>
-      </ng-container>
+      }
     </div>
   </div>
   <div class="divider divider-horizontal">OR</div>
   <div class="max-h-full">
     <h2 class="h-[50px] font-bold text-xl text-center content-center">Expanded JSON-LD</h2>
     <div class="mockup-code h-[calc(100%-50px)] w-[40vw] overflow-y-auto">
-      <ng-container *ngFor="let line of expanded | async; let i = index">
+      @for (line of expanded | async; track line; let i = $index) {
         <pre [attr.data-prefix]="i + 1"><code>{{ line }}</code></pre>
-      </ng-container>
+      }
     </div>
   </div>
 </div>

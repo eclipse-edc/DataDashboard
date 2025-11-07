@@ -22,6 +22,7 @@ import {
   Output,
   ViewChild,
   ViewContainerRef,
+  inject,
 } from '@angular/core';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { from, Observable, of, Subject, takeUntil } from 'rxjs';
@@ -35,6 +36,9 @@ import { DataTypeRegistryService } from '../../../services/data-type-registry.se
   imports: [AsyncPipe, ReactiveFormsModule, NgClass],
 })
 export class DataAddressFormComponent implements OnInit, OnChanges, OnDestroy {
+  private readonly dataTypeService = inject(DataTypeRegistryService);
+  private readonly formBuilder = inject(FormBuilder);
+
   private readonly destroy$ = new Subject<void>();
 
   @ViewChild('dataAddressComponent', { read: ViewContainerRef, static: true })
@@ -52,10 +56,7 @@ export class DataAddressFormComponent implements OnInit, OnChanges, OnDestroy {
   private readonly FORM_GROUP_NAME = 'dataAddress';
   dataTypeForm: FormGroup;
 
-  constructor(
-    private readonly dataTypeService: DataTypeRegistryService,
-    private readonly formBuilder: FormBuilder,
-  ) {
+  constructor() {
     this.dataTypeForm = this.formBuilder.group({
       dataType: new FormControl(undefined, {
         validators: [Validators.required, () => (this.validDataAddress ? null : { invalidDataType: true })],

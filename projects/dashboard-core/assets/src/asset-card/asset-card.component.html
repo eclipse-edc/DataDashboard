@@ -11,48 +11,63 @@
          Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
 -->
 
-<div class="card grow bg-base-300" *ngIf="asset">
-  <div class="card-body">
-    <div class="card-title mb-3">
-      <span class="material-symbols-rounded !text-3xl">deployed_code_update</span>
-      <span class="truncate text-wrap">{{ asset.id }}</span>
-    </div>
-    <div
-      class="ml-3 mb-3 grid grid-cols-[minmax(0,auto)_minmax(0,min-content)] gap-4"
-      *ngIf="name || type || contentType"
-    >
-      <div *ngIf="name" class="flex items-center">
-        <span class="material-symbols-rounded mr-1">assignment_ind</span>
-        <b><i>Name</i></b>
+@if (asset) {
+  <div class="card grow bg-base-300">
+    <div class="card-body">
+      <div class="card-title mb-3">
+        <span class="material-symbols-rounded !text-3xl">deployed_code_update</span>
+        <span class="truncate text-wrap">{{ asset.id }}</span>
       </div>
-      <span class="truncate" *ngIf="name">{{ name }}</span>
-      <div *ngIf="type" class="flex items-center">
-        <span class="material-symbols-rounded mr-1">question_exchange</span>
-        <b><i>Type</i></b>
-      </div>
-      <span class="truncate" *ngIf="type">{{ type }}</span>
-      <div *ngIf="contentType" class="flex items-center">
-        <span class="material-symbols-rounded mr-1">unknown_document</span>
-        <b><i>Content Type</i></b>
-      </div>
-      <span class="truncate" *ngIf="contentType">{{ contentType }}</span>
-    </div>
-    <div class="card-actions justify-end mt-auto" *ngIf="showButtons">
-      <div class="tooltip no-animation" data-tip="Details">
-        <button class="btn btn-soft btn-primary btn-circle btn-sm no-animation" (click)="detailsEvent.emit(asset)">
-          <i class="material-symbols-rounded">info</i>
-        </button>
-      </div>
-      <div class="tooltip no-animation" data-tip="Edit">
-        <button class="btn btn-soft btn-warning btn-circle btn-sm no-animation" (click)="editEvent.emit(asset)">
-          <i class="material-symbols-rounded">edit</i>
-        </button>
-      </div>
-      <div class="tooltip no-animation" data-tip="Delete">
-        <button class="btn btn-soft btn-error btn-circle btn-sm" (click)="deleteEvent.emit(asset)">
-          <i class="material-symbols-rounded">delete</i>
-        </button>
-      </div>
+      @if (name || type || contentType) {
+        <div class="ml-3 mb-3 grid grid-cols-[minmax(0,auto)_minmax(0,min-content)] gap-4">
+          @if (name) {
+            <div class="flex items-center">
+              <span class="material-symbols-rounded mr-1">assignment_ind</span>
+              <b><i>Name</i></b>
+            </div>
+          }
+          @if (name) {
+            <span class="truncate">{{ name }}</span>
+          }
+          @if (type) {
+            <div class="flex items-center">
+              <span class="material-symbols-rounded mr-1">question_exchange</span>
+              <b><i>Type</i></b>
+            </div>
+          }
+          @if (type) {
+            <span class="truncate">{{ type }}</span>
+          }
+          @if (contentType) {
+            <div class="flex items-center">
+              <span class="material-symbols-rounded mr-1">unknown_document</span>
+              <b><i>Content Type</i></b>
+            </div>
+          }
+          @if (contentType) {
+            <span class="truncate">{{ contentType }}</span>
+          }
+        </div>
+      }
+      @if (showButtons) {
+        <div class="card-actions justify-end mt-auto">
+          <div class="tooltip no-animation" data-tip="Details">
+            <button class="btn btn-soft btn-primary btn-circle btn-sm no-animation" (click)="detailsEvent.emit(asset)">
+              <i class="material-symbols-rounded">info</i>
+            </button>
+          </div>
+          <div class="tooltip no-animation" data-tip="Edit">
+            <button class="btn btn-soft btn-warning btn-circle btn-sm no-animation" (click)="editEvent.emit(asset)">
+              <i class="material-symbols-rounded">edit</i>
+            </button>
+          </div>
+          <div class="tooltip no-animation" data-tip="Delete">
+            <button class="btn btn-soft btn-error btn-circle btn-sm" (click)="deleteEvent.emit(asset)">
+              <i class="material-symbols-rounded">delete</i>
+            </button>
+          </div>
+        </div>
+      }
     </div>
   </div>
-</div>
+}

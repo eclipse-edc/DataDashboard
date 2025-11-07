@@ -11,44 +11,59 @@
          Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
 -->
 
-<div class="card flex-grow bg-base-300" *ngIf="catalogDataset">
-  <div class="card-body">
-    <div class="card-title mb-3">
-      <span class="material-symbols-rounded text-3xl">deployed_code_update</span>
-      <span class="truncate text-wrap">{{ name }}</span>
-    </div>
-    <div
-      class="ml-3 mb-3 grid grid-cols-[minmax(0,auto)_minmax(0,min-content)] gap-4"
-      *ngIf="participantId || version || contentType"
-    >
-      <div *ngIf="participantId" class="flex items-center">
-        <span class="material-symbols-rounded mr-1">source_environment</span>
-        <b><i>Provider</i></b>
+@if (catalogDataset) {
+  <div class="card flex-grow bg-base-300">
+    <div class="card-body">
+      <div class="card-title mb-3">
+        <span class="material-symbols-rounded text-3xl">deployed_code_update</span>
+        <span class="truncate text-wrap">{{ name }}</span>
       </div>
-      <span class="truncate" *ngIf="participantId">{{ participantId }}</span>
-      <div *ngIf="version" class="flex items-center">
-        <span class="material-symbols-rounded mr-1">history</span>
-        <b><i>Version</i></b>
-      </div>
-      <span class="truncate" *ngIf="version">{{ version }}</span>
-      <div *ngIf="contentType" class="flex items-center">
-        <span class="material-symbols-rounded mr-1">unknown_document</span>
-        <b><i>Content Type</i></b>
-      </div>
-      <span class="truncate" *ngIf="contentType">{{ contentType }}</span>
-    </div>
-    <div class="card-actions justify-between mt-auto" *ngIf="showButtons">
-      <button class="btn btn-soft btn-primary btn-sm no-animation" (click)="negotiateEvent.emit(catalogDataset)">
-        <i class="p-0 material-symbols-rounded">handshake</i> Negotiate
-      </button>
-      <div class="tooltip no-animation" data-tip="Details">
-        <button
-          class="btn btn-soft btn-primary btn-circle btn-sm no-animation"
-          (click)="detailsEvent.emit(catalogDataset)"
-        >
-          <i class="material-symbols-rounded">info</i>
-        </button>
-      </div>
+      @if (participantId || version || contentType) {
+        <div class="ml-3 mb-3 grid grid-cols-[minmax(0,auto)_minmax(0,min-content)] gap-4">
+          @if (participantId) {
+            <div class="flex items-center">
+              <span class="material-symbols-rounded mr-1">source_environment</span>
+              <b><i>Provider</i></b>
+            </div>
+          }
+          @if (participantId) {
+            <span class="truncate">{{ participantId }}</span>
+          }
+          @if (version) {
+            <div class="flex items-center">
+              <span class="material-symbols-rounded mr-1">history</span>
+              <b><i>Version</i></b>
+            </div>
+          }
+          @if (version) {
+            <span class="truncate">{{ version }}</span>
+          }
+          @if (contentType) {
+            <div class="flex items-center">
+              <span class="material-symbols-rounded mr-1">unknown_document</span>
+              <b><i>Content Type</i></b>
+            </div>
+          }
+          @if (contentType) {
+            <span class="truncate">{{ contentType }}</span>
+          }
+        </div>
+      }
+      @if (showButtons) {
+        <div class="card-actions justify-between mt-auto">
+          <button class="btn btn-soft btn-primary btn-sm no-animation" (click)="negotiateEvent.emit(catalogDataset)">
+            <i class="p-0 material-symbols-rounded">handshake</i> Negotiate
+          </button>
+          <div class="tooltip no-animation" data-tip="Details">
+            <button
+              class="btn btn-soft btn-primary btn-circle btn-sm no-animation"
+              (click)="detailsEvent.emit(catalogDataset)"
+            >
+              <i class="material-symbols-rounded">info</i>
+            </button>
+          </div>
+        </div>
+      }
     </div>
   </div>
-</div>
+}

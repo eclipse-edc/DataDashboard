@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
 import {
   Asset,
   AssetInput,
@@ -22,7 +22,7 @@ import {
   EdcConnectorClientError,
   IdResponse,
 } from '@think-it-labs/edc-connector-client';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { AssetService } from '../asset.service';
 import {
   AlertComponent,
@@ -39,7 +39,6 @@ import { JsonValue } from '@angular-devkit/core';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgIf,
     AlertComponent,
     JsonObjectTableComponent,
     NgClass,
@@ -51,6 +50,9 @@ import { JsonValue } from '@angular-devkit/core';
   styleUrl: './asset-create.component.css',
 })
 export class AssetCreateComponent implements OnChanges {
+  private readonly assetService = inject(AssetService);
+  private readonly formBuilder = inject(FormBuilder);
+
   @Input() asset?: Asset;
   @Output() created = new EventEmitter<IdResponse>();
   @Output() updated = new EventEmitter<void>();
@@ -64,10 +66,7 @@ export class AssetCreateComponent implements OnChanges {
 
   assetForm: FormGroup;
 
-  constructor(
-    private readonly assetService: AssetService,
-    private readonly formBuilder: FormBuilder,
-  ) {
+  constructor() {
     this.assetForm = this.formBuilder.group({
       id: [''],
       name: [''],

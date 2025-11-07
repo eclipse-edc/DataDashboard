@@ -12,7 +12,7 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { EdcClientService } from '@eclipse-edc/dashboard-core';
 import {
   Catalog,
@@ -37,11 +37,7 @@ import { CatalogRequest } from '@think-it-labs/edc-connector-client/dist/src/ent
   providedIn: 'root',
 })
 export class CatalogService {
-  /**
-   * Constructor to initialize the CatalogService.
-   * @param edc - The EDC client service used to interact with the federated catalog API.
-   */
-  constructor(private readonly edc: EdcClientService) {}
+  private readonly edc = inject(EdcClientService);
 
   /**
    * Retrieves catalogs from catalog request API.
@@ -161,6 +157,7 @@ export class CatalogService {
         '@type': policyType,
         assigner: participantId,
         target: dataset.id,
+        profiles: [],
       };
       const policy: Policy = new PolicyBuilder().raw(policyInput).raw(offer).build();
       offerMap.set(String(index + 1), policy);

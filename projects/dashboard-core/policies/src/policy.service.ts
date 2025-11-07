@@ -12,7 +12,7 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { EdcClientService } from '@eclipse-edc/dashboard-core';
 import { IdResponse, PolicyDefinition, PolicyDefinitionInput } from '@think-it-labs/edc-connector-client';
 
@@ -23,11 +23,7 @@ import { IdResponse, PolicyDefinition, PolicyDefinitionInput } from '@think-it-l
   providedIn: 'root',
 })
 export class PolicyService {
-  /**
-   * Constructor to initialize the PolicyService.
-   * @param edc - The EDC client service used to interact with the asset management API.
-   */
-  constructor(private readonly edc: EdcClientService) {}
+  private readonly edc = inject(EdcClientService);
 
   /**
    * Retrieves all assets from the management API.

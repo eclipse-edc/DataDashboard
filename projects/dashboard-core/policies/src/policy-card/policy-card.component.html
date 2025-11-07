@@ -11,68 +11,70 @@
          Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
 -->
 
-<div class="card grow bg-base-300" *ngIf="policyDefinition">
-  <div class="card-body">
-    <div class="card-title mb-3">
-      <span class="material-symbols-rounded !text-3xl">policy</span>
-      <span class="truncate text-wrap">{{ policyDefinition?.['@id'] }}</span>
-    </div>
-
-    <div class="ml-3 mb-3 grid grid-cols-[minmax(0,auto)_minmax(0,min-content)] gap-4">
-      @if (policyType) {
+@if (policyDefinition) {
+  <div class="card grow bg-base-300">
+    <div class="card-body">
+      <div class="card-title mb-3">
+        <span class="material-symbols-rounded !text-3xl">policy</span>
+        <span class="truncate text-wrap">{{ policyDefinition?.['@id'] }}</span>
+      </div>
+      <div class="ml-3 mb-3 grid grid-cols-[minmax(0,auto)_minmax(0,min-content)] gap-4">
+        @if (policyType) {
+          <div class="flex items-center">
+            <span class="material-symbols-rounded mr-1">question_exchange</span>
+            <b><i>Policy Type</i></b>
+          </div>
+          <div class="truncate">
+            <span>{{ policyType }}</span>
+          </div>
+        }
         <div class="flex items-center">
-          <span class="material-symbols-rounded mr-1">question_exchange</span>
-          <b><i>Policy Type</i></b>
+          <span class="material-symbols-rounded mr-1">rule</span>
+          <b><i>Permissions</i></b>
         </div>
         <div class="truncate">
-          <span>{{ policyType }}</span>
+          <span class="material-symbols-rounded">{{ hasPermissions ? 'check' : 'close' }}</span>
+        </div>
+        <div class="flex items-center">
+          <span class="material-symbols-rounded mr-1">rule</span>
+          <b><i>Prohibitions</i></b>
+        </div>
+        <div class="truncate">
+          <span class="material-symbols-rounded">{{ hasProhibitions ? 'check' : 'close' }}</span>
+        </div>
+        <div class="flex items-center">
+          <span class="material-symbols-rounded mr-1">rule</span>
+          <b><i>Obligations</i></b>
+        </div>
+        <div class="truncate">
+          <span class="material-symbols-rounded">{{ hasObligations ? 'check' : 'close' }}</span>
+        </div>
+      </div>
+      @if (showButtons) {
+        <div class="card-actions justify-end mt-auto">
+          <div class="tooltip no-animation" data-tip="Details">
+            <button
+              class="btn btn-soft btn-primary btn-circle btn-sm no-animation"
+              (click)="detailsEvent.emit(policyDefinition)"
+            >
+              <i class="material-symbols-rounded">info</i>
+            </button>
+          </div>
+          <div class="tooltip no-animation" data-tip="Edit">
+            <button
+              class="btn btn-soft btn-warning btn-circle btn-sm no-animation"
+              (click)="editEvent.emit(policyDefinition)"
+            >
+              <i class="material-symbols-rounded">edit</i>
+            </button>
+          </div>
+          <div class="tooltip no-animation" data-tip="Delete">
+            <button class="btn btn-soft btn-error btn-circle btn-sm" (click)="deleteEvent.emit(policyDefinition)">
+              <i class="material-symbols-rounded">delete</i>
+            </button>
+          </div>
         </div>
       }
-      <div class="flex items-center">
-        <span class="material-symbols-rounded mr-1">rule</span>
-        <b><i>Permissions</i></b>
-      </div>
-      <div class="truncate">
-        <span class="material-symbols-rounded">{{ hasPermissions ? 'check' : 'close' }}</span>
-      </div>
-      <div class="flex items-center">
-        <span class="material-symbols-rounded mr-1">rule</span>
-        <b><i>Prohibitions</i></b>
-      </div>
-      <div class="truncate">
-        <span class="material-symbols-rounded">{{ hasProhibitions ? 'check' : 'close' }}</span>
-      </div>
-      <div class="flex items-center">
-        <span class="material-symbols-rounded mr-1">rule</span>
-        <b><i>Obligations</i></b>
-      </div>
-      <div class="truncate">
-        <span class="material-symbols-rounded">{{ hasObligations ? 'check' : 'close' }}</span>
-      </div>
-    </div>
-
-    <div class="card-actions justify-end mt-auto" *ngIf="showButtons">
-      <div class="tooltip no-animation" data-tip="Details">
-        <button
-          class="btn btn-soft btn-primary btn-circle btn-sm no-animation"
-          (click)="detailsEvent.emit(policyDefinition)"
-        >
-          <i class="material-symbols-rounded">info</i>
-        </button>
-      </div>
-      <div class="tooltip no-animation" data-tip="Edit">
-        <button
-          class="btn btn-soft btn-warning btn-circle btn-sm no-animation"
-          (click)="editEvent.emit(policyDefinition)"
-        >
-          <i class="material-symbols-rounded">edit</i>
-        </button>
-      </div>
-      <div class="tooltip no-animation" data-tip="Delete">
-        <button class="btn btn-soft btn-error btn-circle btn-sm" (click)="deleteEvent.emit(policyDefinition)">
-          <i class="material-symbols-rounded">delete</i>
-        </button>
-      </div>
     </div>
   </div>
-</div>
+}

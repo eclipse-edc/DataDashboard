@@ -90,15 +90,16 @@
 
   <div class="2xl:col-span-2 flex flex-col items-center">
     <div class="divider mt-0"></div>
-    <lib-alert
-      *ngIf="errorMsg"
-      title="Error"
-      [msg]="errorMsg"
-      (closeEvent)="errorMsg = ''"
-      type="error"
-      class="max-w-lg 2xl:max-w-xl mb-4"
-      [timeoutSeconds]="5"
-    ></lib-alert>
+    @if (errorMsg) {
+      <lib-alert
+        title="Error"
+        [msg]="errorMsg"
+        (closeEvent)="errorMsg = ''"
+        type="error"
+        class="max-w-lg 2xl:max-w-xl mb-4"
+        [timeoutSeconds]="5"
+      ></lib-alert>
+    }
     <button type="submit" [disabled]="negotiationForm.invalid" class="btn btn-lg btn-primary w-lg 2xl:w-xl">
       <i class="material-symbols-rounded">handshake</i>
       Negotiate

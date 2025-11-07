@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, inject } from '@angular/core';
 import { DashboardStateService, EdcConfig, ModalAndAlertService } from '@eclipse-edc/dashboard-core';
 import { FormsModule } from '@angular/forms';
 import { CatalogRequest } from '@think-it-labs/edc-connector-client/dist/src/entities/catalog';
@@ -27,6 +27,9 @@ import { CatalogRequestFormComponent } from '../catalog-request-form/catalog-req
   templateUrl: './catalog-request.component.html',
 })
 export class CatalogRequestComponent implements OnDestroy {
+  readonly stateService = inject(DashboardStateService);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+
   private readonly destroy$ = new Subject<void>();
 
   @ViewChild('connectorSelect', { static: false }) connectorSelect?: ElementRef;
@@ -38,10 +41,7 @@ export class CatalogRequestComponent implements OnDestroy {
   protocol = 'dataspace-protocol-http';
   selectedConnector?: EdcConfig;
 
-  constructor(
-    public readonly stateService: DashboardStateService,
-    private readonly modalAndAlertService: ModalAndAlertService,
-  ) {
+  constructor() {
     this.stateService.currentEdcConfig$.pipe(takeUntil(this.destroy$)).subscribe(this.resetSelector.bind(this));
   }
 

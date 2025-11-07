@@ -86,26 +86,20 @@
 
   <div class="flex flex-col items-center">
     <div class="divider mt-0"></div>
-    <lib-alert
-      *ngIf="errorMsg"
-      title="Error"
-      [msg]="errorMsg"
-      (closeEvent)="errorMsg = ''"
-      type="error"
-      class="w-lg mb-4"
-    ></lib-alert>
-    <button
-      *ngIf="mode === 'create'"
-      [disabled]="policyForm.invalid"
-      class="btn btn-lg btn-primary w-lg"
-      (click)="createPolicyDefinition()"
-    >
-      <i class="material-symbols-rounded">add</i>
-      Create Policy
-    </button>
-    <button *ngIf="mode === 'update'" class="btn btn-lg btn-warning w-lg" (click)="editPolicyDefinition()">
-      <i class="material-symbols-rounded">update</i>
-      Update Policy
-    </button>
+    @if (errorMsg) {
+      <lib-alert title="Error" [msg]="errorMsg" (closeEvent)="errorMsg = ''" type="error" class="w-lg mb-4"></lib-alert>
+    }
+    @if (mode === 'create') {
+      <button [disabled]="policyForm.invalid" class="btn btn-lg btn-primary w-lg" (click)="createPolicyDefinition()">
+        <i class="material-symbols-rounded">add</i>
+        Create Policy
+      </button>
+    }
+    @if (mode === 'update') {
+      <button class="btn btn-lg btn-warning w-lg" (click)="editPolicyDefinition()">
+        <i class="material-symbols-rounded">update</i>
+        Update Policy
+      </button>
+    }
   </div>
 </form>

@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, inject } from '@angular/core';
 import { ContractAgreement, ContractNegotiation } from '@think-it-labs/edc-connector-client';
 import { ContractAndTransferService } from '../contract-and-transfer.service';
 import * as mime from 'mime';
@@ -27,6 +27,8 @@ import { NgClass } from '@angular/common';
   imports: [FormsModule, NgClass],
 })
 export class TransferPullDownloadComponent implements OnChanges, OnDestroy {
+  private readonly transferService = inject(ContractAndTransferService);
+
   private readonly destroy$ = new Subject<void>();
   private readonly EXTENSION_WARNING =
     "Override the filename or when the download includes a content type this may trigger your browser to set a file extension. Otherwise, the download won't have a file extension.";
@@ -44,8 +46,6 @@ export class TransferPullDownloadComponent implements OnChanges, OnDestroy {
   downloadRunning = false;
   progress = 0;
   error = false;
-
-  constructor(private readonly transferService: ContractAndTransferService) {}
 
   async ngOnChanges() {
     if (this.negotiation && this.agreement) {

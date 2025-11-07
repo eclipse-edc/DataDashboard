@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { compact, ContractAgreement, ContractNegotiation, IdResponse } from '@think-it-labs/edc-connector-client';
 import { map, Observable, of, Subject, takeUntil } from 'rxjs';
 import {
@@ -47,6 +47,10 @@ import { TransferCreateComponent } from '../transfer-create/transfer-create.comp
   styleUrl: './contract-view.component.css',
 })
 export class ContractViewComponent implements OnInit, OnDestroy {
+  private readonly contractAndTransferService = inject(ContractAndTransferService);
+  private readonly modalAndAlertService = inject(ModalAndAlertService);
+  private readonly stateService = inject(DashboardStateService);
+
   private readonly destroy$ = new Subject<void>();
 
   pairs$: Observable<Pair<ContractAgreement, ContractNegotiation>[]> = of([]);
@@ -55,12 +59,6 @@ export class ContractViewComponent implements OnInit, OnDestroy {
   pageItemCount = 15;
   initialized = false;
   contractType: 'CONSUMER' | 'PROVIDER' = 'CONSUMER';
-
-  constructor(
-    private readonly contractAndTransferService: ContractAndTransferService,
-    private readonly modalAndAlertService: ModalAndAlertService,
-    private readonly stateService: DashboardStateService,
-  ) {}
 
   async ngOnInit() {
     await this.fetchAgreements();

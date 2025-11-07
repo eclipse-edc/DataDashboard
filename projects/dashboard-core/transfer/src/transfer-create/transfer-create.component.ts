@@ -21,6 +21,7 @@ import {
   Output,
   ViewChild,
   ViewContainerRef,
+  inject,
 } from '@angular/core';
 import { ContractAndTransferService } from '../contract-and-transfer.service';
 import {
@@ -49,6 +50,9 @@ import { AlertComponent, DataAddressFormComponent } from '@eclipse-edc/dashboard
   ],
 })
 export class TransferCreateComponent implements OnChanges, OnDestroy {
+  private readonly transferService = inject(ContractAndTransferService);
+  private readonly formBuilder = inject(FormBuilder);
+
   private readonly destroy$ = new Subject<void>();
 
   @ViewChild('destinationComponent', { read: ViewContainerRef, static: true })
@@ -68,10 +72,7 @@ export class TransferCreateComponent implements OnChanges, OnDestroy {
 
   errorMsg = '';
 
-  constructor(
-    private readonly transferService: ContractAndTransferService,
-    private readonly formBuilder: FormBuilder,
-  ) {
+  constructor() {
     this.transferForm = this.formBuilder.group({
       transferType: new FormControl('', Validators.required),
     });

@@ -12,7 +12,7 @@
  *
  */
 
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { EdcConfig } from '../models/edc-config';
 import { EdcClientService } from './edc-client.service';
@@ -25,6 +25,8 @@ import { AppConfig } from '../models/app-config';
   providedIn: 'root',
 })
 export class DashboardStateService implements OnDestroy {
+  private readonly edc = inject(EdcClientService);
+
   /**
    * Subject to hold the state of whether the menu is open or closed.
    */
@@ -93,7 +95,7 @@ export class DashboardStateService implements OnDestroy {
   private readonly LOCAL_STORAGE_CURRENT_CONNECTOR = 'currentConnector';
   private readonly LOCAL_STORAGE_MENU_OPEN = 'menuOpen';
 
-  constructor(private readonly edc: EdcClientService) {
+  constructor() {
     // On load, try to retrieve the locally stored EDC configs from local storage.
     const storedLocalConfigs = localStorage.getItem(this.LOCAL_STORAGE_CONFIG_KEY);
     if (storedLocalConfigs && storedLocalConfigs.length > 0) {

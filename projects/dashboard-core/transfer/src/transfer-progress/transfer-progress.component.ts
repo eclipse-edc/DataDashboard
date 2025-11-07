@@ -12,7 +12,7 @@
  *
  */
 
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, inject } from '@angular/core';
 import {
   compact,
   ContractAgreement,
@@ -32,6 +32,8 @@ import { TransferPullDownloadComponent } from '../transfer-pull-download/transfe
   imports: [NgClass, TransferPullDownloadComponent],
 })
 export class TransferProgressComponent implements OnChanges, OnDestroy {
+  private readonly transferService = inject(ContractAndTransferService);
+
   @Input() agreement!: ContractAgreement;
   @Input() negotiation!: ContractNegotiation;
   @Input() transferId!: IdResponse;
@@ -59,8 +61,6 @@ export class TransferProgressComponent implements OnChanges, OnDestroy {
   errorMsg?: string;
 
   private statusJob?: ReturnType<typeof setInterval>;
-
-  constructor(private readonly transferService: ContractAndTransferService) {}
 
   async ngOnChanges() {
     if (this.transferId.id) {

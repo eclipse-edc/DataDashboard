@@ -12,7 +12,7 @@
  *
  */
 
-import { Injectable, Type } from '@angular/core';
+import { Injectable, Type, inject } from '@angular/core';
 import { HttpDataTypeComponent } from '../common/data-address/http-data-type/http-data-type.component';
 import { FallbackDataTypeComponent } from '../common/data-address/fallback-data-type/fallback-data-type.component';
 import { DataTypeInputComponent } from '../common/data-address/data-type-input/data-type-input.component';
@@ -24,12 +24,14 @@ import { AzureStorageDataTypeComponent } from '../common/data-address/azure-stor
   providedIn: 'root',
 })
 export class DataTypeRegistryService {
+  private readonly edc = inject(EdcClientService);
+
   private readonly inputComponents: Map<string, Type<DataTypeInputComponent>> = new Map<
     string,
     Type<DataTypeInputComponent>
   >();
 
-  constructor(private readonly edc: EdcClientService) {
+  constructor() {
     this.registerComponent('HttpData', HttpDataTypeComponent);
     this.registerComponent('AmazonS3', AwsS3DataTypeComponent);
     this.registerComponent('AzureStorage', AzureStorageDataTypeComponent);

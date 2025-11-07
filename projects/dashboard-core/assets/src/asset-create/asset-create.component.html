@@ -84,14 +84,15 @@
 
   <div class="2xl:col-span-2 flex flex-col items-center">
     <div class="divider mt-0"></div>
-    <lib-alert
-      *ngIf="errorMsg"
-      title="Error"
-      [msg]="errorMsg"
-      (closeEvent)="errorMsg = ''"
-      type="error"
-      class="max-w-lg 2xl:max-w-xl mb-4"
-    ></lib-alert>
+    @if (errorMsg) {
+      <lib-alert
+        title="Error"
+        [msg]="errorMsg"
+        (closeEvent)="errorMsg = ''"
+        type="error"
+        class="max-w-lg 2xl:max-w-xl mb-4"
+      ></lib-alert>
+    }
     <button
       type="submit"
       [disabled]="assetForm.invalid"

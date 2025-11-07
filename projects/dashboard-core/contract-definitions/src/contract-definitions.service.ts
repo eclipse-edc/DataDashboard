@@ -12,7 +12,7 @@
  *
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { EdcClientService } from '@eclipse-edc/dashboard-core';
 import {
   ContractDefinition,
@@ -25,11 +25,7 @@ import {
   providedIn: 'root',
 })
 export class ContractDefinitionsService {
-  /**
-   * Constructor to initialize the ContractDefinitionService.
-   * @param edc - The EDC client service used to interact with the contract definition management API.
-   */
-  constructor(private readonly edc: EdcClientService) {}
+  private readonly edc = inject(EdcClientService);
 
   /**
    * Retrieves all contract definitions from the management API.
