@@ -24,7 +24,7 @@ For the EDC Management API the [Think-iT-Labs/edc-connector-client](https://gith
 |----------------------|-----------------------------|
 | daisyUI              | v5   |
 | tailwindcss          | v4   |
-| edc-connector-client | v0.8.0 (Management API v3)  |
+| edc-connector-client | v0.9.0 (Management API v3)  |
 
 
 All the components and services are inside the library to make the creation of custom dashboards easier.
