@@ -59,6 +59,9 @@ export class DashboardAppComponent implements AfterViewInit {
       return;
     } else {
       this.stateService.setAppConfig(appConfig);
+      if (appConfig.initialTheme) {
+        this.stateService.setTheme(appConfig.initialTheme);
+      }
     }
 
     const configs = this.edcConfigs ? await this.edcConfigs : undefined;

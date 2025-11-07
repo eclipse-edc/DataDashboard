@@ -76,6 +76,7 @@ The following application config values exist:
 - `appTitle` (string): Set the name of the application in the header area.<br>__Default__: EDC Dashboard
 - `menuItems` ([MenuItem](projects/dashboard-core/src/lib/models/menu-item.ts) Array): Configure the menu items (views) of the dashboard. Set the icon, text, router path and view description (for the home view) for each item.
 - `healthCheckIntervalSeconds` (number): Sets the interval in seconds to check if the connection to the current connector is still established.<br>__Default__: `30`
+- `initialTheme` (string): Set the initial theme (for available values, see theme switcher in top right).
 - `enableUserConfig` (boolean): If enabled, the user has the ability to add connectors within the dashboard.
 This user-specific configuration is currently stored in the local storage of the browser, including auth keys.<br>
 __Default__: `false`<br>
@@ -93,7 +94,7 @@ For more details how this works, have a look at the [app.config.ts](src/app/app.
 
 # Run the dashboard
 ## Docker
-The dashboard will be availabe at `http://localhost:8080`
+The dashboard will be available at `http://localhost:8080`
 
 1. `docker build -t eclipse-edc/data-dashboard .`
 2. `docker run -p 8080:8080 -v $PWD/public/config/:/app/config -v $PWD/nginx.conf:/etc/nginx/conf.d/default.conf eclipse-edc/data-dashboard`
