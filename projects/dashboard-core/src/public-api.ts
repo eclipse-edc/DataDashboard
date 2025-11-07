@@ -36,6 +36,8 @@ export * from './lib/common/data-address/data-address-form/data-address-form.com
 export * from './lib/common/data-address/data-type-input/data-type-input.component';
 export * from './lib/common/data-address/fallback-data-type/fallback-data-type.component';
 export * from './lib/common/data-address/http-data-type/http-data-type.component';
+export * from './lib/common/data-address/aws-s3-data-type/aws-s3-data-type.component';
+export * from './lib/common/data-address/azure-storage-data-type/azure-storage-data-type.component';
 export * from './lib/models/menu-item';
 export * from './lib/models/app-config';
 export * from './lib/models/edc-config';

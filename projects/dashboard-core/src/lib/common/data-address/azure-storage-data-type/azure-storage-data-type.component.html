@@ -1,0 +1,88 @@
+<!--
+    Copyright (c) 2025 Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
+
+    This program and the accompanying materials are made available under the
+    terms of the Apache License, Version 2.0 which is available at
+    https://www.apache.org/licenses/LICENSE-2.0
+
+    SPDX-License-Identifier: Apache-2.0
+
+    Contributors:
+         Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
+-->
+
+<fieldset class="fieldset" [formGroup]="formGroup">
+  @for (property of viewData; track property[0]) {
+    <legend class="fieldset-label">{{ property[1].displayName }}</legend>
+    <label
+      class="input w-full"
+      [ngClass]="
+        formGroup.get(property[0])?.invalid
+          ? property[1].tooltip
+            ? 'input-error tooltip tooltip-top tooltip-info'
+            : 'input-error'
+          : property[1].tooltip
+            ? 'tooltip tooltip-top tooltip-info'
+            : ''
+      "
+      [attr.data-tip]="property[1].tooltip"
+    >
+      @if (property[1].icon) {
+        <span class="material-symbols-rounded opacity-50">{{ property[1].icon }}</span>
+      }
+      <input
+        [type]="property[1].inputType ?? 'text'"
+        [placeholder]="property[1].displayName"
+        [name]="property[0]"
+        [formControlName]="property[0]"
+      />
+    </label>
+  }
+
+  <legend class="fieldset-label">
+    <span>Multiple Blobs</span>
+  </legend>
+  <div class="flex items-center">
+    <input
+      type="checkbox"
+      name="multi-object-switch"
+      [checked]="multiObject"
+      class="toggle toggle-primary"
+      (change)="onMultiDataSwitch()"
+    />
+    <div
+      class="tooltip tooltip-info tooltip-right ml-2 h-[1.3rem]"
+      data-tip="When blobPrefix is present, transfer all blobs with names that start with the specified prefix. When blobPrefix is not present, transfer only the blob with a name matching the blobPath property. Precedence: blobPrefix takes precedence over blobPath when determining which objects to transfer. It allows for both multiple blobs transfers and fetching a single blob when necessary."
+    >
+      <span class="material-symbols-rounded !text-[1.3rem] text-info">info</span>
+    </div>
+  </div>
+  @if (multiObject) {
+    @for (property of multiObjectViewData; track property[0]) {
+      <legend class="fieldset-label">{{ property[1].displayName }}</legend>
+      <label
+        class="input w-full"
+        [ngClass]="
+          formGroup.get(property[0])?.invalid
+            ? property[1].tooltip
+              ? 'input-error tooltip tooltip-top tooltip-info'
+              : 'input-error'
+            : property[1].tooltip
+              ? 'tooltip tooltip-top tooltip-info'
+              : ''
+        "
+        [attr.data-tip]="property[1].tooltip"
+      >
+        @if (property[1].icon) {
+          <span class="material-symbols-rounded opacity-50">{{ property[1].icon }}</span>
+        }
+        <input
+          [type]="property[1].inputType ?? 'text'"
+          [placeholder]="property[1].displayName"
+          [name]="property[0]"
+          [formControlName]="property[0]"
+        />
+      </label>
+    }
+  }
+</fieldset>
