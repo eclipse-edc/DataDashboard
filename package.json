@@ -28,7 +28,7 @@
     "@angular/platform-browser-dynamic": "^20.3.9",
     "@angular/router": "^20.3.9",
     "@think-it-labs/edc-connector-client": "0.9.0",
-    "material-symbols": "^0.39.0",
+    "material-symbols": "^0.39.1",
     "mime": "^4.1.0",
     "ngx-float-ui": "^20.0.0",
     "rxjs": "~7.8.2",
