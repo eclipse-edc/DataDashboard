@@ -23,12 +23,12 @@ jobs:
         with:
           node-version: "24"
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: javascript  # CodeQL JavaScript supports TypeScript
           queries: security-and-quality
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
 
   cypress-components:
     name: Cypress Component Tests
