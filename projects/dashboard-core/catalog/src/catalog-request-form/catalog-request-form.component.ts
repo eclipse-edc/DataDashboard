@@ -48,9 +48,8 @@ export class CatalogRequestFormComponent implements OnInit {
   onRequest(): void {
     const catalogRequest: CatalogRequest = {
       counterPartyAddress: this.requestForm.value.counterPartyAddress,
+      counterPartyId: this.requestForm.value.counterPartyId,
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (catalogRequest as any).counterPartyId = this.requestForm.value.counterPartyId;
     this.request.emit(catalogRequest);
   }
 }
