@@ -130,9 +130,8 @@ export class ContractAndTransferService {
       const datasetRequest: DatasetRequest = {
         '@id': agreement.assetId,
         counterPartyAddress: negotiation.counterPartyAddress,
+        counterPartyId: agreement.providerId,
       };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (datasetRequest as any).counterPartyId = agreement.providerId;
       const dataset = (await this.edc.getClient()).management.catalog.requestDataset(datasetRequest);
       if (compacted) {
         return compact(await dataset);

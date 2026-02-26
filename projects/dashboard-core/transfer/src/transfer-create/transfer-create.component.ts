@@ -107,6 +107,7 @@ export class TransferCreateComponent implements OnChanges, OnDestroy {
   async createTransfer() {
     if (this.negotiation.counterPartyAddress) {
       const transferInput: TransferProcessInput = {
+        counterPartyId: this.agreement.providerId,
         transferType: this.transferForm.value.transferType,
         assetId: this.agreement.assetId,
         contractId: this.agreement.id,

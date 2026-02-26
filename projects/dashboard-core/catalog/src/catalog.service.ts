@@ -139,7 +139,7 @@ export class CatalogService {
    * @returns the participant id. If undefined then returns the default value
    */
   private getCatalogParticipantId(catalog: Catalog, defaultValue: string): string {
-    return catalog?.['https://w3id.org/dspace/v0.8/participantId']?.[0]?.['@value'] ?? defaultValue;
+    return catalog?.['https://w3id.org/dspace/2025/1/participantId']?.[0]?.['@id'] ?? defaultValue;
   }
 
   /**

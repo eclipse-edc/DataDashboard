@@ -64,6 +64,7 @@ export class ContractNegotiationComponent implements OnChanges {
       const request: ContractNegotiationRequest = {
         counterPartyAddress: this.catalogDataset.originator,
         policy: policy,
+        counterPartyId: this.catalogDataset.participantId,
       };
 
       this.catalogService
