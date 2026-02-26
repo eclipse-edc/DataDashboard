@@ -49,6 +49,7 @@ export class CatalogRequestComponent implements OnDestroy {
     (document.activeElement as HTMLElement)?.blur();
     if (this.selectedConnector) {
       const request: CatalogRequest = {
+        counterPartyId: this.selectedConnector.did ?? '',
         counterPartyAddress: this.selectedConnector.protocolUrl,
       };
       if (this.selectedConnector.did) {

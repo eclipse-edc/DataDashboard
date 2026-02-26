@@ -62,6 +62,7 @@ export class ContractNegotiationComponent implements OnChanges {
     const policy = this.catalogDataset.offers.get(this.offerId);
     if (policy != undefined) {
       const request: ContractNegotiationRequest = {
+        counterPartyId: this.catalogDataset.participantId,
         counterPartyAddress: this.catalogDataset.originator,
         policy: policy,
       };
