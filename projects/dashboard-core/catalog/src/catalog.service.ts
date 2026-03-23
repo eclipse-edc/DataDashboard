@@ -157,7 +157,6 @@ export class CatalogService {
         '@type': policyType,
         assigner: participantId,
         target: dataset.id,
-        profiles: [],
       };
       const policy: Policy = new PolicyBuilder().raw(policyInput).raw(offer).build();
       offerMap.set(String(index + 1), policy);

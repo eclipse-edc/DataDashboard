@@ -126,7 +126,6 @@ export class PolicyCreateComponent implements OnChanges {
   private createPolicyInput(): PolicyDefinitionInput {
     const policyInput: PolicyInput = {
       '@type': this.policyType,
-      profiles: [],
     };
 
     // Individual JSON parsing with separate error handling
