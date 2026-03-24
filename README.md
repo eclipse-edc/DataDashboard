@@ -20,11 +20,11 @@ This application uses all available features from the library and is like a defa
 The dashboard uses [daisyUI](https://daisyui.com), based on [tailwindcss](https://tailwindcss.com), as component framework.
 For the EDC Management API the [Think-iT-Labs/edc-connector-client](https://github.com/Think-iT-Labs/edc-connector-client) is used.
 
-| Framework/Library    | Version |
-|----------------------|-----------------------------|
-| daisyUI              | v5   |
-| tailwindcss          | v4   |
-| edc-connector-client | v0.9.0 (Management API v3)  |
+| Framework/Library    | Version                                                                    |
+|----------------------|----------------------------------------------------------------------------|
+| daisyUI              | v5                                                                         |
+| tailwindcss          | v4                                                                         |
+| edc-connector-client | v0.9.x (Management API v3, Catalog API v1-alpha, IdentityHub API v1-alpha) |
 
 
 All the components and services are inside the library to make the creation of custom dashboards easier.
