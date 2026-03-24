@@ -3,7 +3,7 @@
     "connectorName": "Consumer",
     "managementUrl": "http://cp-consumer.dataspace/management",
     "defaultUrl": "http://cp-consumer.dataspace/api",
-    "protocolUrl": "http://cp-consumer.dataspace/protocol",
+    "protocolUrl": "http://cp-consumer.dataspace/protocol/2025-1",
     "federatedCatalogEnabled": false,
     "federatedCatalogUrl": "http://fc-consumer.dataspace/catalog",
     "did": "did:web:ih-consumer.dataspace"
@@ -12,7 +12,7 @@
     "connectorName": "Provider",
     "managementUrl": "http://cp-provider.dataspace/management",
     "defaultUrl": "http://cp-provider.dataspace/api",
-    "protocolUrl": "http://cp-provider.dataspace/protocol",
+    "protocolUrl": "http://cp-provider.dataspace/protocol/2025-1",
     "federatedCatalogEnabled": false,
     "federatedCatalogUrl": "http://fc-provider.dataspace/catalog",
     "did": "did:web:ih-provider.dataspace"

@@ -59,8 +59,8 @@ describe('FilterInputComponent', () => {
     });
 
     cy.get('input').should('not.be.focused');
-    cy.window().trigger('keydown', { key: 'Control' });
-    cy.window().trigger('keydown', { key: 'Shift' });
+    cy.get('body').trigger('keydown', { key: 'Control' });
+    cy.get('body').trigger('keydown', { key: 'Shift' });
     cy.get('input').should('be.focused');
   });
 
