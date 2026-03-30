@@ -48,7 +48,7 @@
     "angular-eslint": "20.5.0",
     "cypress": "^15.6.0",
     "daisyui": "^5.3.10",
-    "eslint": "^9.38.0",
+    "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "jasmine-core": "~5.12.1",
