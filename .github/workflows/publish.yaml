@@ -21,6 +21,6 @@ jobs:
       - run: npm run lib-build
       - name: Publish
         run: npm publish
-        working-directory: dist/dashboard-core
+        working-directory: dist/@eclipse-edc/dashboard-core
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
