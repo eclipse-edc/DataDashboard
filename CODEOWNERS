@@ -8,8 +8,8 @@
 
 # The linked persons are automatically added as reviewers when a pull request is opened.
 
-LICENSE @paullatzelsperger
+LICENSE @ronjaquensel
 
-.github/actions/ @paullatzelsperger
-.github/ISSUE_TEMPLATE @paullatzelsperger
-.github/workflows/ @paullatzelsperger
+.github/actions/ @ronjaquensel
+.github/ISSUE_TEMPLATE @ronjaquensel
+.github/workflows/ @ronjaquensel
