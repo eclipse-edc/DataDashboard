@@ -29,7 +29,7 @@ jobs:
 
       - name: Validate semver format
         run: |
-          if ! echo "${{ inputs.version }}" | grep -qE '^\d+\.\d+\.\d+$'; then
+          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
             echo "::error::Version '${{ inputs.version }}' does not match semver format (MAJOR.MINOR.PATCH)"
             exit 1
           fi
