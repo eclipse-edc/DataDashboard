@@ -113,14 +113,7 @@ _Note that 2. and 3. always have to be executed for each run._
 
 # Create a custom dashboard (How to use the library)
 
-To build a custom dashboard you first have to publish the angular library (dashboard-core) to a package registry:
-```shell
-cd projects/dashboard-core
-npm publish --registry=<your-registry-url>
-```
-
-## Include the library in your angular project
-When the library is published to your registry, perform the following steps in the angular project you want to use the library in:
+Add the libraray and all necessary dependencies to the angular project you want to use the library in:
 - Add daisyUI to your angular project (https://daisyui.com/docs/install/angular/).
 - Add material-symbols to your project (https://www.npmjs.com/package/material-symbols):
     ```shell
@@ -136,7 +129,7 @@ When the library is published to your registry, perform the following steps in t
     ```
 - Add the library to your project:
     ```shell
-    echo @eclipse-edc:registry=<your-registry-url> >> .npmrc
+    echo @eclipse-edc:registry=https://npm.pkg.github.com >> .npmrc
     npm i @eclipse-edc/dashboard-core
     ```
 - Add the library and material-symbols to the `styles.css` to ensure that all utility classes used in the library are added to the generated css, e.g.:
