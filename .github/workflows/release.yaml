@@ -102,7 +102,7 @@ jobs:
       - name: Publish npm library
         if: ${{ !inputs.dry-run }}
         run: npm publish --provenance
-        working-directory: dist/dashboard-core
+        working-directory: dist/@eclipse-edc/dashboard-core
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
