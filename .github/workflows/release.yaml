@@ -22,6 +22,11 @@ on:
         required: false
         type: boolean
         default: true
+      bump-version:
+        description: "Bump version of app and lib to input.version"
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -100,6 +105,7 @@ jobs:
 
       # --- Version bump ---
       - name: Bump version in package.json files
+        if: ${{ inputs.bump-version }}
         run: |
           npm version "${{ inputs.version }}" --no-git-tag-version
           cd projects/dashboard-core
@@ -163,36 +169,25 @@ jobs:
         if: ${{ !inputs.dry-run }}
         run: cosign sign --yes ghcr.io/eclipse-edc/data-dashboard@${{ steps.build-and-push.outputs.digest }}
 
-      # --- Changelog ---
-      - name: Generate changelog
-        run: npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 1
-
-      - name: Extract release notes
-        run: npx conventional-changelog-cli -p angular -r 1 -o /tmp/RELEASE_NOTES.md
-
-      # --- Git tag and GitHub Release ---
+      # --- GitHub Release ---
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit version bump and changelog
-        if: ${{ !inputs.dry-run }}
+      - name: Commit version bump
+        if: ${{ (!inputs.dry-run) && (inputs.bump-version) }}
         run: |
-          git add package.json projects/dashboard-core/package.json CHANGELOG.md
+          git add package.json projects/dashboard-core/package.json
           git commit -m "chore(release): v${{ inputs.version }}"
-
-      - name: Create and push tag
-        if: ${{ !inputs.dry-run }}
-        run: |
-          git tag "v${{ inputs.version }}"
-          git push origin main --follow-tags
 
       - name: Create GitHub Release
         if: ${{ !inputs.dry-run }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "v${{ inputs.version }}" \
+          latest=$(gh release view --json tagName | jq -r '.tagName')
+          gh release create "v${{ inputs.version }}" --latest \
             --title "v${{ inputs.version }}" \
-            --notes-file /tmp/RELEASE_NOTES.md
+            --generate-notes \
+            --notes-start-tag ${latest}
