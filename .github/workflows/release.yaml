@@ -165,10 +165,10 @@ jobs:
 
       # --- Changelog ---
       - name: Generate changelog
-        run: npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 1
+        run: npx conventional-changelog-cli -n ./changelog.config.cjs -i CHANGELOG.md -s -r 1
 
       - name: Extract release notes
-        run: npx conventional-changelog-cli -p angular -r 1 -o /tmp/RELEASE_NOTES.md
+        run: npx conventional-changelog-cli -n ./changelog.config.cjs -r 1 -o /tmp/RELEASE_NOTES.md
 
       # --- Git tag and GitHub Release ---
       - name: Configure git
@@ -181,12 +181,6 @@ jobs:
         run: |
           git add package.json projects/dashboard-core/package.json CHANGELOG.md
           git commit -m "chore(release): v${{ inputs.version }}"
-
-      - name: Create and push tag
-        if: ${{ !inputs.dry-run }}
-        run: |
-          git tag "v${{ inputs.version }}"
-          git push origin main --follow-tags
 
       - name: Create GitHub Release
         if: ${{ !inputs.dry-run }}
