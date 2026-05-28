@@ -1,6 +1,7 @@
 apiVersion: v2
 name: data-dashboard
 description: Deploys the EDC Data Dashboard.
+icon: https://avatars.githubusercontent.com/u/87998832
 
 # A chart can be either an 'application' or a 'library' chart.
 #

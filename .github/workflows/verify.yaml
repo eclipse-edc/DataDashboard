@@ -77,7 +77,7 @@ jobs:
           load: true
           tags: edc-dashboard:test
 
-  helm-lint:
+  helm-checks:
     name: Helm Lint & Template
     runs-on: ubuntu-latest
     steps:

@@ -188,11 +188,19 @@ jobs:
 
       # --- Helm chart ---
       - name: Package and push Helm chart
+        id: helm-push
         if: ${{ (!inputs.dry-run) && (inputs.docker-publish) }}
         run: |
           helm package helm/
           echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
-          helm push data-dashboard-${{ inputs.version }}.tgz oci://ghcr.io/eclipse-edc/charts
+          push_output=$(helm push data-dashboard-${{ inputs.version }}.tgz oci://ghcr.io/eclipse-edc/charts 2>&1)
+          echo "$push_output"
+          digest=$(echo "$push_output" | grep -oP 'sha256:[a-f0-9]+')
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+
+      - name: Sign Helm chart
+        if: ${{ (!inputs.dry-run) && (inputs.docker-publish) }}
+        run: cosign sign --yes ghcr.io/eclipse-edc/charts/data-dashboard@${{ steps.helm-push.outputs.digest }}
 
       # --- GitHub Release ---
       - name: Configure git
