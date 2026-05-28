@@ -84,6 +84,7 @@ jobs:
         with:
           node-version: "24"
           registry-url: "https://npm.pkg.github.com"
+          package-manager-cache: false
 
       - run: npm ci
 
@@ -101,7 +102,7 @@ jobs:
       # --- Publish npm library (with provenance) ---
       - name: Publish npm library
         if: ${{ !inputs.dry-run }}
-        run: npm publish --provenance
+        run: npm publish --provenance --access public
         working-directory: dist/@eclipse-edc/dashboard-core
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
