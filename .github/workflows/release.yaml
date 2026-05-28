@@ -166,7 +166,7 @@ jobs:
           provenance: true
 
       - name: Sign container image
-        if: ${{ !inputs.dry-run }}
+        if: ${{ (!inputs.dry-run) && (inputs.docker-publish) }}
         run: cosign sign --yes ghcr.io/eclipse-edc/data-dashboard@${{ steps.build-and-push.outputs.digest }}
 
       # --- GitHub Release ---
