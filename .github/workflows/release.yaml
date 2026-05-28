@@ -12,6 +12,16 @@ on:
         required: false
         type: boolean
         default: false
+      npm-publish:
+        description: "Publish library npm package to github registry"
+        required: false
+        type: boolean
+        default: true
+      docker-publish:
+        description: "Publish container image to github registry"
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -101,7 +111,7 @@ jobs:
 
       # --- Publish npm library (with provenance) ---
       - name: Publish npm library
-        if: ${{ !inputs.dry-run }}
+        if: ${{ (!inputs.dry-run) && (inputs.npm-publish) }}
         run: npm publish --provenance --access public
         working-directory: dist/@eclipse-edc/dashboard-core
         env:
@@ -142,7 +152,7 @@ jobs:
         uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
         with:
           context: .
-          push: ${{ !inputs.dry-run }}
+          push: ${{ (!inputs.dry-run) && (inputs.docker-publish) }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
