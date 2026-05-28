@@ -13,7 +13,8 @@
  */
 
 import { Injectable, inject } from '@angular/core';
-import { EdcClientService } from '@eclipse-edc/dashboard-core';
+import { EdcClientService, DashboardStateService } from '@eclipse-edc/dashboard-core';
+
 import {
   compact,
   ContractAgreement,
@@ -26,7 +27,7 @@ import {
   TransferProcessInput,
   TransferProcessState,
 } from '@think-it-labs/edc-connector-client';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 
 /**
@@ -39,6 +40,7 @@ import { HttpClient, HttpEvent } from '@angular/common/http';
 export class ContractAndTransferService {
   private readonly edc = inject(EdcClientService);
   private readonly http = inject(HttpClient);
+  private readonly stateService = inject(DashboardStateService);
 
   /**
    * Retrieves all contract negotiations based on the optional query specification.
@@ -142,27 +144,44 @@ export class ContractAndTransferService {
     }
   }
 
+  // /**
+  //  * Downloads a dataset based on the provided transfer ID.
+  //  *
+  //  * @param {string} transferId - The unique identifier for the dataset transfer.
+  //  * @return {Promise<Observable<HttpEvent<Blob>>>} - A promise resolving to an Observable that emits HttpEvent objects
+  //  *   for the Blob being downloaded, with progress tracking capabilities.
+  //  * @throws {Error} - Throws an error if no EDR (Endpoint Data Reference) is found for the provided transfer ID.
+  //  */
+  // public async downloadDataset(transferId: string): Promise<Observable<HttpEvent<Blob>>> {
+  //   const edr = await (await this.edc.getClient()).management.edrs.dataAddress(transferId);
+  //   if (!edr) {
+  //     throw new Error('No EDR found for transfer ID ' + transferId);
+  //   }
+  //   return this.http.get(edr.mandatoryValue<string>('edc', 'endpoint'), {
+  //     headers: {
+  //       Authorization: edr.mandatoryValue<string>('edc', 'authorization'),
+  //     },
+  //     responseType: 'blob',
+  //     reportProgress: true,
+  //     observe: 'events',
+  //   });
+  // }
+
   /**
-   * Downloads a dataset based on the provided transfer ID.
-   *
-   * @param {string} transferId - The unique identifier for the dataset transfer.
-   * @return {Promise<Observable<HttpEvent<Blob>>>} - A promise resolving to an Observable that emits HttpEvent objects
-   *   for the Blob being downloaded, with progress tracking capabilities.
-   * @throws {Error} - Throws an error if no EDR (Endpoint Data Reference) is found for the provided transfer ID.
-   */
+    * Downloads a dataset through Gateplane using the transfer ID.
+    */
   public async downloadDataset(transferId: string): Promise<Observable<HttpEvent<Blob>>> {
-    const edr = await (await this.edc.getClient()).management.edrs.dataAddress(transferId);
-    if (!edr) {
-      throw new Error('No EDR found for transfer ID ' + transferId);
+    const config = await firstValueFrom(this.stateService.currentEdcConfig$);
+    if (!config) {
+      throw new Error('No EDC configuration available.');
     }
-    return this.http.get(edr.mandatoryValue<string>('edc', 'endpoint'), {
-      headers: {
-        Authorization: edr.mandatoryValue<string>('edc', 'authorization'),
-      },
-      responseType: 'blob',
-      reportProgress: true,
-      observe: 'events',
-    });
+    const gateplaneUrl = `${config.gateplaneUrl}/${transferId}`;
+
+    return this.http.get(gateplaneUrl, {
+       responseType: 'blob',
+       reportProgress: true,
+       observe: 'events',
+     });
   }
 
   /**

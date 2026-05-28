@@ -13,15 +13,7 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
-import {
-  Asset,
-  AssetInput,
-  BaseDataAddress,
-  compact,
-  DataAddress,
-  EdcConnectorClientError,
-  IdResponse,
-} from '@think-it-labs/edc-connector-client';
+import { Asset, compact, EdcConnectorClientError, IdResponse } from '@think-it-labs/edc-connector-client';
 import { NgClass } from '@angular/common';
 import { AssetService } from '../asset.service';
 import {
@@ -33,6 +25,15 @@ import {
 } from '@eclipse-edc/dashboard-core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { JsonValue } from '@angular-devkit/core';
+
+type DataplaneMetadataFormValue = {
+  type?: string;
+  method?: string;
+  baseUrl?: string;
+  ttl?: number | string;
+  username?: string;
+  password?: string;
+};
 
 @Component({
   selector: 'lib-asset-create',
@@ -62,7 +63,6 @@ export class AssetCreateComponent implements OnChanges {
 
   properties: Record<string, JsonValue> = {};
   privateProperties: Record<string, JsonValue> = {};
-  dataAddress?: DataAddress;
 
   assetForm: FormGroup;
 
@@ -85,15 +85,31 @@ export class AssetCreateComponent implements OnChanges {
   private async updateAssetAndSyncForm() {
     this.properties = await compact(this.asset!.properties);
     this.privateProperties = await compact(this.asset!.privateProperties);
-    this.dataAddress = (await compact(this.asset!.dataAddress)) as unknown as BaseDataAddress;
     this.assetForm.get('id')?.setValue(this.asset!.id);
-    this.assetForm.get('name')?.setValue(this.properties['name']);
-    this.assetForm.get('contenttype')?.setValue(this.properties['contenttype']);
+    this.assetForm.get('name')?.setValue(this.propertyValue('name'));
+    this.assetForm.get('contenttype')?.setValue(this.propertyValue('contenttype'));
+
+    setTimeout(async () => {
+      const dpm = await this.compactDataplaneMetadata();
+
+      if (dpm) {
+        this.assetForm.patchValue({
+          dataplaneMetadata: {
+            type: dpm['type'] || 'HttpData',
+            method: dpm['method'] || 'GET',
+            baseUrl: dpm['baseUrl'] || dpm['url'] || '',
+            ttl: dpm['ttl'] || 600,
+            username: dpm['auth.username'] || dpm['auth']?.['username'] || '',
+            password: dpm['auth.password'] || dpm['auth']?.['password'] || '',
+          },
+        });
+      }
+    });
   }
 
   createAsset(): void {
     if (this.assetForm.valid) {
-      const assetInput: AssetInput = this.createAssetInput();
+      const assetInput = this.createAssetInput();
       if (this.mode === 'create') {
         this.assetService
           .createAsset(assetInput)
@@ -114,21 +130,81 @@ export class AssetCreateComponent implements OnChanges {
     }
   }
 
-  private createAssetInput(): AssetInput {
-    const asset: AssetInput = {
-      dataAddress: this.dataAddress!,
-      properties: this.properties,
-      privateProperties: this.privateProperties,
+  private propertyValue(key: string): JsonValue | undefined {
+    const properties = this.properties as any;
+    const raw =
+      properties[key] ??
+      properties[`edc:${key}`] ??
+      properties[`asset:prop:${key}`] ??
+      properties[`https://w3id.org/edc/v0.0.1/ns/${key}`];
+
+    if (Array.isArray(raw) && raw.length === 1) {
+      return raw[0]?.['@value'] ?? raw[0]?.['@id'] ?? raw[0];
+    }
+
+    return raw?.['@value'] ?? raw?.['@id'] ?? raw;
+  }
+
+  private createAssetInput(): any {
+    const formValue = this.assetForm.getRawValue();
+    const dataplaneMetadata = this.createDataplaneMetadataProperties(
+      this.assetForm.get('dataplaneMetadata')?.value as DataplaneMetadataFormValue,
+    );
+
+    const asset: any = {
+      '@context': ['https://w3id.org/edc/connector/management/v2'],
+      '@type': 'Asset',
+      properties: {
+        ...this.properties,
+      },
+      privateProperties: {
+        ...this.privateProperties,
+      },
+      dataplaneMetadata: {
+        '@type': 'DataplaneMetadata',
+        properties: dataplaneMetadata,
+      },
     };
-    if (this.assetForm.value.id) {
-      asset['@id'] = this.assetForm.value.id;
+
+    if (formValue.id) {
+      asset['@id'] = formValue.id;
     }
-    if (this.assetForm.value.name) {
-      asset.properties['name'] = this.assetForm.value.name;
+    if (formValue.name) {
+      asset.properties['name'] = formValue.name;
     }
-    if (this.assetForm.value.contenttype) {
-      asset.properties['contenttype'] = this.assetForm.value.contenttype;
+    if (formValue.contenttype) {
+      asset.properties['contenttype'] = formValue.contenttype;
     }
+
     return asset;
   }
+
+  private createDataplaneMetadataProperties(dpm?: DataplaneMetadataFormValue): Record<string, JsonValue> {
+    const url = String(dpm?.baseUrl ?? '').trim();
+    const properties: Record<string, JsonValue> = {
+      type: dpm?.type || 'HttpData',
+      method: dpm?.method || 'GET',
+      url,
+      ttl: Number(dpm?.ttl ?? 600),
+    };
+
+    if (dpm?.username && dpm.password) {
+      properties['auth.type'] = 'basic';
+      properties['auth.username'] = dpm.username;
+      properties['auth.password'] = dpm.password;
+    }
+
+    return properties;
+  }
+
+  private async compactDataplaneMetadata(): Promise<any | undefined> {
+    const raw = (this.asset as any)?.dataplaneMetadata ?? (this.properties as any)?.dataplaneMetadata;
+    if (!raw) {
+      return undefined;
+    }
+
+    const compacted = await compact(raw);
+    return compacted?.properties?.['@value'] ?? compacted?.properties ?? raw?.properties?.['@value'] ?? raw?.properties;
+  }
+
 }

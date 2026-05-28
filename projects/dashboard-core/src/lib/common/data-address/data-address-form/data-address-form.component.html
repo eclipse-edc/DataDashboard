@@ -11,28 +11,48 @@
          Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - initial API and implementation
 -->
 
-<fieldset class="fieldset" [formGroup]="dataTypeForm">
-  @if (!dataType) {
-    @if (allowedTypes$ | async) {
-      <legend class="fieldset-label">Data types your connector supports</legend>
-      <label class="select w-full" [ngClass]="dataTypeForm.get('dataType')?.invalid ? 'select-error' : ''">
-        <span class="label">Type</span>
-        <select formControlName="dataType" name="dataType" required>
-          @for (type of allowedTypes$ | async; track type) {
-            <option [ngValue]="type">{{ type }}</option>
-          }
-        </select>
-      </label>
-      @if (dataTypeForm.get('dataType')?.invalid) {
-        <p class="fieldset-label text-error">Mandatory</p>
-      } @else {
-        <div class="divider my-1"></div>
-      }
-    } @else {
-      <div class="skeleton w-full h-12 flex justify-center items-center rounded-lg">
-        <span class="loading loading-bars loading-md opacity-75 text-primary"></span>
-      </div>
-    }
+<fieldset class="fieldset" [formGroup]="dataplaneMetadataForm">
+  <legend class="fieldset-label">Data types your connector supports</legend>
+  <label class="select w-full">
+    <span class="label">Type</span>
+    <select formControlName="type" name="type" required>
+      <option value="HttpData">HttpData</option>
+    </select>
+  </label>
+
+  <legend class="fieldset-label">Method</legend>
+  <label class="select w-full">
+    <span class="label">HTTP</span>
+    <select class="input" name="method" formControlName="method">
+      <option value="GET">GET</option>
+      <option value="POST">POST</option>
+    </select>
+  </label>
+
+  <legend class="fieldset-label">Base URL</legend>
+  <label class="input w-full" [ngClass]="dataplaneMetadataForm.get('baseUrl')?.invalid ? 'input-error' : ''">
+    <span class="material-symbols-rounded opacity-50">link</span>
+    <input type="url" placeholder="Base Url" name="baseUrl" formControlName="baseUrl" />
+  </label>
+  @if (dataplaneMetadataForm.get('baseUrl')?.invalid) {
+    <p class="fieldset-label text-error">Enter a valid URL</p>
   }
-  <ng-container #dataAddressComponent></ng-container>
+
+  <legend class="fieldset-label">TTL</legend>
+  <label class="input w-full">
+    <span class="material-symbols-rounded opacity-50">timer</span>
+    <input type="number" placeholder="TTL" name="ttl" formControlName="ttl" />
+  </label>
+
+  <legend class="fieldset-label">Basic Auth Username</legend>
+  <label class="input w-full">
+    <span class="material-symbols-rounded opacity-50">person</span>
+    <input type="text" placeholder="Username" name="username" formControlName="username" />
+  </label>
+
+  <legend class="fieldset-label">Basic Auth Password</legend>
+  <label class="input w-full">
+    <span class="material-symbols-rounded opacity-50">password</span>
+    <input type="password" placeholder="Password" name="password" formControlName="password" />
+  </label>
 </fieldset>

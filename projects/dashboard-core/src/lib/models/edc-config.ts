@@ -19,6 +19,7 @@ export interface EdcConfig {
   protocolUrl: string;
   apiToken?: string;
   controlUrl?: string;
+  gateplaneUrl: string;
   federatedCatalogEnabled: boolean;
   federatedCatalogUrl?: string;
   did?: string;

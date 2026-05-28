@@ -37,6 +37,6 @@ export class AssetCardComponent implements OnChanges {
   ngOnChanges() {
     this.name = this.asset?.properties.optionalValue('edc', 'name');
     this.contentType = this.asset?.properties.optionalValue('edc', 'contenttype');
-    this.type = this.asset?.dataAddress.mandatoryValue('edc', 'type');
+    this.type = 'DataplaneMetadata';
   }
 }

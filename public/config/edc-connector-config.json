@@ -1,20 +1,24 @@
 [
   {
-    "connectorName": "Consumer",
-    "managementUrl": "http://cp-consumer.dataspace/management",
-    "defaultUrl": "http://cp-consumer.dataspace/api",
-    "protocolUrl": "http://cp-consumer.dataspace/protocol/2025-1",
-    "federatedCatalogEnabled": false,
-    "federatedCatalogUrl": "http://fc-consumer.dataspace/catalog",
-    "did": "did:web:ih-consumer.dataspace"
+    "connectorName": "Provider",
+    "managementUrl": "http://localhost:3109/management",
+    "protocolUrl": "http://localhost:3111/dsp/2025-1",
+    "controlUrl": "http://localhost:3109/control",
+    "defaultUrl": "http://localhost:3109",
+    "gateplaneUrl": "http://localhost:3198/data/consume",
+    "apiToken": "password",
+    "federatedCatalogEnabled": true,
+    "did": "did:web:localhost%3A3102:provider"
   },
   {
-    "connectorName": "Provider",
-    "managementUrl": "http://cp-provider.dataspace/management",
-    "defaultUrl": "http://cp-provider.dataspace/api",
-    "protocolUrl": "http://cp-provider.dataspace/protocol/2025-1",
-    "federatedCatalogEnabled": false,
-    "federatedCatalogUrl": "http://fc-provider.dataspace/catalog",
-    "did": "did:web:ih-provider.dataspace"
+    "connectorName": "Consumer",
+    "managementUrl": "http://localhost:3009/management",
+    "protocolUrl": "http://localhost:3011/dsp/2025-1",
+    "controlUrl": "http://localhost:3009/control",
+    "defaultUrl": "http://localhost:3009",
+    "gateplaneUrl": "http://localhost:3098/data/consume",
+    "apiToken": "password",
+    "federatedCatalogEnabled": true,
+    "did": "did:web:localhost%3A3002:consumer"
   }
 ]

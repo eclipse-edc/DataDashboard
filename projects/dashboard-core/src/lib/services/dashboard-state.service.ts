@@ -187,7 +187,7 @@ export class DashboardStateService implements OnDestroy {
    */
   public setCurrentEdcConfig(config: EdcConfig): void {
     this.edc.setDashboardClient(config);
-    this.setFederatedCatalogEnabled(config.federatedCatalogUrl !== undefined && config.federatedCatalogEnabled);
+    this.setFederatedCatalogEnabled(this._isFederatedCatalogEnabled.getValue() || config.federatedCatalogEnabled);
     this._currentEdcConfig.next(config);
     localStorage.setItem(this.LOCAL_STORAGE_CURRENT_CONNECTOR, JSON.stringify(config));
   }

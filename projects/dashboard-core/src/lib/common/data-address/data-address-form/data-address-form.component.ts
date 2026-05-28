@@ -12,91 +12,52 @@
  *
  */
 
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
-  ViewContainerRef,
-  inject,
-} from '@angular/core';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { from, Observable, of, Subject, takeUntil } from 'rxjs';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, inject } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DataAddress } from '@think-it-labs/edc-connector-client';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DataTypeRegistryService } from '../../../services/data-type-registry.service';
+import { URL_REGEX } from '../../../models/constants';
 
 @Component({
   selector: 'lib-data-address-form',
   templateUrl: './data-address-form.component.html',
-  imports: [AsyncPipe, ReactiveFormsModule, NgClass],
+  imports: [ReactiveFormsModule, NgClass],
 })
-export class DataAddressFormComponent implements OnInit, OnChanges, OnDestroy {
-  private readonly dataTypeService = inject(DataTypeRegistryService);
+export class DataAddressFormComponent implements OnChanges, OnDestroy {
   private readonly formBuilder = inject(FormBuilder);
 
   private readonly destroy$ = new Subject<void>();
 
-  @ViewChild('dataAddressComponent', { read: ViewContainerRef, static: true })
-  private readonly dataAddressComponent!: ViewContainerRef;
-
   @Input() showDivider = true;
   @Input() parentForm?: FormGroup;
-  @Input() dataType?: string;
-  @Input() dataAddress?: DataAddress;
   @Output() dataAddressChange = new EventEmitter<DataAddress>();
 
-  allowedTypes$: Observable<Set<string>> = of();
-  private validDataAddress = false;
-
-  private readonly FORM_GROUP_NAME = 'dataAddress';
-  dataTypeForm: FormGroup;
+  private readonly FORM_GROUP_NAME = 'dataplaneMetadata';
+  dataplaneMetadataForm: FormGroup;
 
   constructor() {
-    this.dataTypeForm = this.formBuilder.group({
-      dataType: new FormControl(undefined, {
-        validators: [Validators.required, () => (this.validDataAddress ? null : { invalidDataType: true })],
-      }),
+    this.dataplaneMetadataForm = this.formBuilder.group({
+      type: ['HttpData', Validators.required],
+      method: ['GET'],
+      baseUrl: ['', [Validators.required, Validators.pattern(URL_REGEX)]],
+      ttl: [600],
+      username: [''],
+      password: [''],
     });
-    this.dataTypeForm
-      .get('dataType')
-      ?.valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe(type => {
-        this.onDataTypeChange(type);
-      });
-  }
 
-  async ngOnInit() {
-    if (!this.dataType) {
-      this.allowedTypes$ = from(this.dataTypeService.getAllowedSourceTypes());
-    }
+    this.dataplaneMetadataForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(value => {
+      const dataAddress = {
+        type: value.type || 'HttpData',
+        method: value.method || 'GET',
+        baseUrl: value.baseUrl,
+      } as DataAddress;
+      this.dataAddressChange.emit(dataAddress);
+    });
   }
 
   ngOnChanges() {
-    if (this.dataAddress?.type != this.dataTypeForm.value.dataType) {
-      this.dataTypeForm.get('dataType')?.setValue(this.dataAddress?.type);
-    }
-    if (this.dataType) {
-      this.dataTypeForm.get('dataType')?.setValue(this.dataType);
-    }
-    this.parentForm?.addControl(this.FORM_GROUP_NAME, this.dataTypeForm);
-  }
-
-  onDataTypeChange(type: string) {
-    this.validDataAddress = false;
-    this.dataAddressComponent.clear();
-    const typeComponent = this.dataTypeService.getComponent(type);
-    const ref = this.dataAddressComponent.createComponent(typeComponent);
-    ref.setInput('type', type);
-    ref.setInput('dataAddress', this.dataAddress);
-    ref.setInput('parentForm', this.dataTypeForm);
-    const sub = ref.instance.changed.subscribe(address => this.dataAddressChange.emit(address));
-    ref.onDestroy(() => sub.unsubscribe());
-    this.validDataAddress = ref.instance.formGroup.valid;
+    this.parentForm?.setControl(this.FORM_GROUP_NAME, this.dataplaneMetadataForm);
   }
 
   ngOnDestroy() {

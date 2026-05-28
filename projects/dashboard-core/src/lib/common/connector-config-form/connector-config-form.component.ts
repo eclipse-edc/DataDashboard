@@ -38,6 +38,7 @@ export class ConnectorConfigFormComponent {
     managementUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
     defaultUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
     protocolUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
+    gateplaneUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
     apiToken: new FormControl(''),
     federatedCatalogEnabled: new FormControl(false),
     identityHubEnabled: new FormControl(false),
@@ -78,6 +79,7 @@ export class ConnectorConfigFormComponent {
       managementUrl: this.connectorForm.value.managementUrl,
       defaultUrl: this.connectorForm.value.defaultUrl,
       protocolUrl: this.connectorForm.value.protocolUrl,
+      gateplaneUrl: this.connectorForm.value.gateplaneUrl,
       federatedCatalogEnabled: this.connectorForm.value.federatedCatalogEnabled,
     };
     if (this.connectorForm.value.apiToken) {

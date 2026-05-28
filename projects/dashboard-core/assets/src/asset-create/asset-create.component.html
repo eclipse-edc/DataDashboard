@@ -51,11 +51,9 @@
     </fieldset>
 
     <fieldset class="fieldset w-lg bg-base-200 border border-base-300 p-4 rounded-box">
-      <legend class="fieldset-legend text-sm">Data Address</legend>
+      <legend class="fieldset-legend text-sm">Dataplane Metadata</legend>
       <lib-data-address-form
         [parentForm]="assetForm"
-        [dataAddress]="dataAddress"
-        (dataAddressChange)="dataAddress = $event"
       ></lib-data-address-form>
     </fieldset>
   </div>

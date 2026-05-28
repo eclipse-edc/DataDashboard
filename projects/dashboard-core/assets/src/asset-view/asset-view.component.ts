@@ -67,7 +67,7 @@ export class AssetViewComponent implements OnInit, OnDestroy {
               asset.id.includes(searchText) ||
               asset.properties.optionalValue<string>('edc', 'name')?.toLowerCase().includes(lower) ||
               asset.properties.optionalValue<string>('edc', 'contenttype')?.toLowerCase().includes(lower) ||
-              asset.dataAddress.mandatoryValue<string>('edc', 'type').toLowerCase().includes(lower),
+              asset.properties.optionalValue<string>('edc', 'contenttype'),
           ),
         ),
       );
