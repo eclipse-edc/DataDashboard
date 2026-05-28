@@ -208,11 +208,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit version bump
+      - name: Commit and push version bump
         if: ${{ (!inputs.dry-run) && (inputs.bump-version) }}
         run: |
           git add package.json projects/dashboard-core/package.json helm/Chart.yaml helm/values.yaml helm/README.md
           git commit -m "chore(release): v${{ inputs.version }}"
+          git push
 
       - name: Create GitHub Release
         if: ${{ !inputs.dry-run }}
