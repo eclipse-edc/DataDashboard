@@ -131,7 +131,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@80c7e94dd9b9319bd5eb7a0e0fe9291e23a2a2e9 # v6.1.0
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/eclipse-edc/data-dashboard
           tags: |
             type=semver,pattern={{version}},value=v${{ inputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=v${{ inputs.version }}
@@ -151,7 +151,7 @@ jobs:
 
       - name: Sign container image
         if: ${{ !inputs.dry-run }}
-        run: cosign sign --yes ghcr.io/${{ github.repository }}@${{ steps.build-and-push.outputs.digest }}
+        run: cosign sign --yes ghcr.io/eclipse-edc/data-dashboard@${{ steps.build-and-push.outputs.digest }}
 
       # --- Changelog ---
       - name: Generate changelog
