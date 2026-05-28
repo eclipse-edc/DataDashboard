@@ -8,7 +8,7 @@ EDC Data Dashboard is a dev frontend application for [EDC Management API](https:
 
 1. [Overview](#overview)
 2. [Configuration](#configuration)
-3. [Run the dashboard](#run-the-dashboard)
+3. [Run/Deploy the dashboard](#rundeploy-the-dashboard)
 4. [Create a custom dashboard (How to use the library)](#create-a-custom-dashboard-how-to-use-the-library)
 5. [Contributing](#contributing)
 
@@ -92,12 +92,23 @@ To configure a base path, add a file to the deployment environment at `public/co
 For more details how this works, have a look at the [app.config.ts](src/app/app.config.ts) and the angular docs about [APP_BASE_HREF](https://angular.dev/api/common/APP_BASE_HREF).
 
 
-# Run the dashboard
+# Run/Deploy the dashboard
+## Helm
+The dashboard can be installed via Helm from the OCI registry.
+The dashboard will be available depending on your ingress/service configuration.
+
+```shell
+helm install data-dashboard oci://ghcr.io/eclipse-edc/charts/data-dashboard
+```
+
+For available configuration options, see the [Helm chart documentation](helm/README.md).
+
 ## Docker
 The dashboard will be available at `http://localhost:8080`
 
-1. `docker build -t eclipse-edc/data-dashboard .`
-2. `docker run -p 8080:8080 -v $PWD/public/config/:/app/config -v $PWD/nginx.conf:/etc/nginx/conf.d/default.conf eclipse-edc/data-dashboard`
+```shell
+docker run -p 8080:8080 -v $PWD/public/config/:/app/config -v $PWD/nginx.conf:/etc/nginx/conf.d/default.conf ghcr.io/eclipse-edc/data-dashboard:latest
+```
 
 ## Angular dev server
 To run the data dashboard, you have to execute the following commands.
