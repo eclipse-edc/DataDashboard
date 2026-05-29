@@ -9,6 +9,9 @@ EDC Data Dashboard is a dev frontend application for [EDC Management API](https:
 1. [Overview](#overview)
 2. [Configuration](#configuration)
 3. [Run/Deploy the dashboard](#rundeploy-the-dashboard)
+    - [Docker](#docker)
+    - [Angular dev server](#angular-dev-server)
+    - [Helm](#helm)
 4. [Create a custom dashboard (How to use the library)](#create-a-custom-dashboard-how-to-use-the-library)
 5. [Contributing](#contributing)
 
@@ -93,15 +96,6 @@ For more details how this works, have a look at the [app.config.ts](src/app/app.
 
 
 # Run/Deploy the dashboard
-## Helm
-The dashboard can be installed via Helm from the OCI registry.
-The dashboard will be available depending on your ingress/service configuration.
-
-```shell
-helm install data-dashboard oci://ghcr.io/eclipse-edc/charts/data-dashboard
-```
-
-For available configuration options, see the [Helm chart documentation](helm/README.md).
 
 ## Docker
 The dashboard will be available at `http://localhost:8080`
@@ -120,7 +114,53 @@ _Note that 2. and 3. always have to be executed for each run._
 2. `npm run lib-start`
 3. `npm run start`
 
+## Helm
 
+For deployments in kubernetes clusters use the Helm chart from the OCI registry.
+
+```shell
+helm install data-dashboard oci://ghcr.io/eclipse-edc/charts/data-dashboard
+```
+
+The dashboard will be available depending on your ingress/service configuration.
+
+To apply a connector configuration, create a ConfigMap (following the [connector configuration](#connector-configuration) section)
+and set this in the `volumes` and `volumeMounts` values, e.g.:
+- ConfigMap
+  ```yaml
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: example-config
+  data:
+    edc-connector-config.json: |-
+      [
+        {
+          "connectorName": "Consumer",
+          "managementUrl": "http://cp-consumer.dataspace/management",
+          "defaultUrl": "http://cp-consumer.dataspace/api",
+          "protocolUrl": "http://cp-consumer.dataspace/protocol",
+          "federatedCatalogEnabled": true,
+          "federatedCatalogUrl": "http://fc-consumer.dataspace/catalog",
+          "did": "did:web:ih-consumer.dataspace"
+        },
+        ...
+      ]
+  ```
+- Helm values
+  ```yaml
+    volumes:
+      - name: config
+        configMap:
+          name: example-config
+    volumeMounts:
+      - name: config
+        mountPath: /app/config/edc-connector-config.json
+        subPath: edc-connector-config.json
+        readOnly: true
+  ```
+
+For all available configuration options, see the [Helm chart documentation](helm/README.md).
 
 # Create a custom dashboard (How to use the library)
 
