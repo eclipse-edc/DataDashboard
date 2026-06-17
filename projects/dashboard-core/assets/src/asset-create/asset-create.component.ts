@@ -78,7 +78,6 @@ export class AssetCreateComponent implements OnChanges {
     if (this.asset) {
       this.mode = 'update';
       await this.updateAssetAndSyncForm();
-      this.assetForm.get('id')?.disable();
     }
   }
 
