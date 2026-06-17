@@ -60,9 +60,6 @@ export class ContractDefinitionCreateComponent implements OnInit, OnChanges {
 
   contractDefinitionForm: FormGroup;
 
-  contractDefinitionId: string | undefined = '';
-  accessPolicyId: string | undefined = '';
-  contractPolicyId: string | undefined = '';
   assetInput: string[] = [];
 
   assets$: Observable<Asset[]> = of([]);
@@ -96,10 +93,7 @@ export class ContractDefinitionCreateComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.contractDefinitionInput) {
-      this.contractDefinitionId = this.contractDefinitionInput?.id;
-      this.contractPolicyId = this.contractDefinitionInput?.contractPolicyId;
-      this.accessPolicyId = this.contractDefinitionInput?.accessPolicyId;
-      this.assetInput = this.contractDefinitionInput?.assetsSelector
+      this.assetInput = this.contractDefinitionInput.assetsSelector
         .filter(x => x.operandLeft == 'id')
         .map(x => x.operandRight);
       this.syncForm();
@@ -107,12 +101,9 @@ export class ContractDefinitionCreateComponent implements OnInit, OnChanges {
   }
 
   private syncForm() {
-    if (this.contractDefinitionInput?.id !== undefined) {
-      this.contractDefinitionForm.get('id')?.setValue(this.contractDefinitionInput.id);
-      this.contractDefinitionForm.get('id')?.disable();
-    }
-    this.contractDefinitionForm.get('accessPolicyId')?.setValue(this.accessPolicyId);
-    this.contractDefinitionForm.get('contractPolicyId')?.setValue(this.contractPolicyId);
+    this.contractDefinitionForm.get('id')?.setValue(this.contractDefinitionInput?.id ?? '');
+    this.contractDefinitionForm.get('accessPolicyId')?.setValue(this.contractDefinitionInput?.accessPolicyId);
+    this.contractDefinitionForm.get('contractPolicyId')?.setValue(this.contractDefinitionInput?.contractPolicyId);
   }
 
   async createPolicy() {
@@ -159,23 +150,12 @@ export class ContractDefinitionCreateComponent implements OnInit, OnChanges {
     });
 
     const contractDefinition: ContractDefinitionInput = {
-      accessPolicyId: this.accessPolicyId!,
-      contractPolicyId: this.contractPolicyId!,
+      accessPolicyId: this.contractDefinitionForm.value.accessPolicyId,
+      contractPolicyId: this.contractDefinitionForm.value.contractPolicyId,
       assetsSelector: assetsSelector,
     };
     if (this.contractDefinitionForm.value.id) {
       contractDefinition['@id'] = this.contractDefinitionForm.value.id;
-    } else if (this.contractDefinitionId) {
-      contractDefinition['@id'] = this.contractDefinitionId;
-    }
-    if (this.contractDefinitionForm.value.accessPolicyId) {
-      contractDefinition.accessPolicyId = this.contractDefinitionForm.value.accessPolicyId;
-    }
-    if (this.contractDefinitionForm.value.contractPolicyId) {
-      contractDefinition.contractPolicyId = this.contractDefinitionForm.value.contractPolicyId;
-    }
-    if (this.contractDefinitionForm.value.assetsSelector) {
-      contractDefinition.assetsSelector = this.contractDefinitionForm.value.assetsSelector;
     }
     return contractDefinition;
   }
