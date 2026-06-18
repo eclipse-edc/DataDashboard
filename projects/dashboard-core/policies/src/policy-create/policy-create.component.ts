@@ -14,7 +14,7 @@
 
 import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PolicyService } from '../policy.service';
 import { AlertComponent } from '@eclipse-edc/dashboard-core';
 import { PolicyType } from '@think-it-labs/edc-connector-client/dist/src/entities/policy/policy';
@@ -31,15 +31,13 @@ import {
 @Component({
   selector: 'lib-policy-create',
   standalone: true,
-  imports: [FormsModule, AlertComponent, NgClass],
+  imports: [ReactiveFormsModule, AlertComponent, NgClass],
   templateUrl: './policy-create.component.html',
   styleUrl: './policy-create.component.css',
 })
 export class PolicyCreateComponent implements OnChanges {
   private readonly policyService = inject(PolicyService);
   private readonly formBuilder = inject(FormBuilder);
-
-  protected readonly Object = Object;
 
   @Input() policyDefinition?: PolicyDefinition;
 
@@ -49,141 +47,112 @@ export class PolicyCreateComponent implements OnChanges {
 
   errorMsg = '';
 
-  id = '';
-  policyType?: PolicyType;
-  permissionsJson = '';
-  prohibitionsJson = '';
-  obligationsJson = '';
-
   policyForm: FormGroup;
 
   constructor() {
     this.policyForm = this.formBuilder.group({
       id: [''],
-      policyType: [''],
+      policyType: new FormControl<PolicyType | undefined>(undefined, {
+        validators: [Validators.required],
+      }),
+      permissionsJson: [''],
+      prohibitionsJson: [''],
+      obligationsJson: [''],
     });
   }
 
   async ngOnChanges() {
-    if (this.policyDefinition) {
-      const compactPolicy = await compact(this.policyDefinition.policy);
-      this.mode = 'update';
-      this.id = this.policyDefinition['@id'];
-
-      const typeSplit: string[] = compactPolicy['@type'].split('/');
-      this.policyType = typeSplit[typeSplit.length - 1] as PolicyType;
-      if (this.policyDefinition.policy.permissions.length > 0) {
-        this.permissionsJson = JSON.stringify(await compact(this.policyDefinition.policy.permissions));
-      }
-      if (this.policyDefinition.policy.prohibitions.length > 0) {
-        this.prohibitionsJson = JSON.stringify(await compact(this.policyDefinition.policy.prohibitions));
-      }
-
-      if (this.policyDefinition.policy.obligations.length > 0) {
-        this.obligationsJson = JSON.stringify(await compact(this.policyDefinition.policy.obligations));
-      }
+    if (!this.policyDefinition) {
+      return;
     }
+    this.mode = 'update';
+
+    const { policy } = this.policyDefinition;
+    const compactPolicy = await compact(policy);
+    const typeSegments = compactPolicy['@type'].split('/');
+
+    this.policyForm.patchValue({
+      id: this.policyDefinition['@id'],
+      policyType: typeSegments[typeSegments.length - 1] as PolicyType,
+      permissionsJson: await this.rulesToJson(policy.permissions),
+      prohibitionsJson: await this.rulesToJson(policy.prohibitions),
+      obligationsJson: await this.rulesToJson(policy.obligations),
+    });
   }
 
   createPolicyDefinition(): void {
-    try {
-      const policyInput: PolicyDefinitionInput = this.createPolicyInput();
-      this.policyService
-        .createPolicyDefinition(policyInput)
-        .then((idResponse: IdResponse) => {
-          this.created.emit(idResponse);
-        })
-        .catch((err: EdcConnectorClientError) => {
-          this.errorMsg = err.message;
-        });
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        this.errorMsg = err.message; // Use the error message from the thrown error
-      } else {
-        this.errorMsg = 'An unknown error occurred.';
-      }
-    }
+    this.submit(input => this.policyService.createPolicyDefinition(input).then(res => this.created.emit(res)));
   }
 
   editPolicyDefinition(): void {
-    try {
-      const policyInput: PolicyDefinitionInput = this.createPolicyInput();
-      this.policyService
-        .updatePolicy(policyInput.id!, policyInput)
-        .then(() => this.updated.emit())
-        .catch((err: EdcConnectorClientError) => {
-          this.errorMsg = err.message;
-        });
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        this.errorMsg = err.message; // Use the error message from the thrown error
-      } else {
-        this.errorMsg = 'An unknown error occurred.';
-      }
+    this.submit(input => this.policyService.updatePolicy(input.id!, input).then(() => this.updated.emit()));
+  }
+
+  /** Validates the form, builds the input and runs the given action, funnelling all errors to `errorMsg`. */
+  private submit(action: (input: PolicyDefinitionInput) => Promise<unknown>): void {
+    if (!this.policyForm.valid) {
+      console.error('Policy form submitted while invalid');
+      return;
     }
+
+    let policyInput: PolicyDefinitionInput;
+    try {
+      policyInput = this.createPolicyInput();
+    } catch (err: unknown) {
+      this.errorMsg = this.toErrorMessage(err, 'An unknown error occurred.');
+      return;
+    }
+
+    action(policyInput).catch((err: EdcConnectorClientError) => {
+      this.errorMsg = err.message;
+    });
   }
 
   private createPolicyInput(): PolicyDefinitionInput {
-    const policyInput: PolicyInput = {
-      '@type': this.policyType,
-    };
+    const { id, policyType, permissionsJson, prohibitionsJson, obligationsJson } = this.policyForm.value;
 
-    // Individual JSON parsing with separate error handling
-    try {
-      if (this.permissionsJson && this.permissionsJson !== '') {
-        policyInput.permission = JSON.parse(this.permissionsJson);
-      }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        throw new Error(`Invalid JSON for permissions: ${err.message}`);
-      } else {
-        throw new Error('An unknown error occurred during permissions JSON parsing.');
-      }
-    }
+    const policyInput: PolicyInput = { '@type': policyType };
+    this.assignJsonRule(policyInput, 'permission', permissionsJson, 'Permissions');
+    this.assignJsonRule(policyInput, 'prohibition', prohibitionsJson, 'Prohibitions');
+    this.assignJsonRule(policyInput, 'obligation', obligationsJson, 'Obligations');
 
-    try {
-      if (this.prohibitionsJson && this.prohibitionsJson !== '') {
-        policyInput.prohibition = JSON.parse(this.prohibitionsJson);
-      }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        throw new Error(`Invalid JSON for prohibitions: ${err.message}`);
-      } else {
-        throw new Error('An unknown error occurred during prohibitions JSON parsing.');
-      }
-    }
+    const policy = new PolicyBuilder()
+      .type(policyType ?? ('Set' as PolicyType))
+      .raw(policyInput)
+      .build();
 
-    try {
-      if (this.obligationsJson && this.obligationsJson !== '') {
-        policyInput.obligation = JSON.parse(this.obligationsJson);
-      }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        throw new Error(`Invalid JSON for obligations: ${err.message}`);
-      } else {
-        throw new Error('An unknown error occurred during obligations JSON parsing.');
-      }
-    }
-
-    let policy;
-    if (this.policyType) {
-      policy = new PolicyBuilder().type(this.policyType).raw(policyInput).build();
-    } else {
-      policy = new PolicyBuilder()
-        .type('Set' as PolicyType)
-        .raw(policyInput)
-        .build();
-    }
-
-    const policyDefinitionInput: PolicyDefinitionInput = {
-      policy: policy,
-    };
-
-    if (this.id) {
-      policyDefinitionInput.id = this.id;
-      policyDefinitionInput['@id'] = this.id;
+    const policyDefinitionInput: PolicyDefinitionInput = { policy };
+    if (id) {
+      policyDefinitionInput.id = id;
+      policyDefinitionInput['@id'] = id;
     }
 
     return policyDefinitionInput;
+  }
+
+  /** Compacts a list of rules to a JSON string, or returns an empty string when there are none. */
+  private async rulesToJson(rules: unknown[]): Promise<string> {
+    return rules.length > 0 ? JSON.stringify(await compact(rules)) : '';
+  }
+
+  /** Parses a JSON rule field and assigns it to the policy input, throwing a labelled error on failure. */
+  private assignJsonRule(
+    target: PolicyInput,
+    key: 'permission' | 'prohibition' | 'obligation',
+    value: string,
+    label: string,
+  ): void {
+    if (!value) {
+      return;
+    }
+    try {
+      target[key] = JSON.parse(value);
+    } catch (err: unknown) {
+      throw new Error(`Invalid JSON for ${label}: ${this.toErrorMessage(err, 'parsing failed')}`, { cause: err });
+    }
+  }
+
+  private toErrorMessage(err: unknown, fallback: string): string {
+    return err instanceof Error ? err.message : fallback;
   }
 }

@@ -27,9 +27,18 @@
       [attr.data-tip]="!contractDefinitionInput ? 'If not set a random UUID will be generated' : ''"
     >
       <span class="material-symbols-rounded opacity-50">contract_edit</span>
-      <input type="text" class="grow" placeholder="ID" formControlName="id" name="id" />
+      <input
+        type="text"
+        class="grow"
+        placeholder="ID"
+        formControlName="id"
+        name="id"
+        [readonly]="!!contractDefinitionInput"
+      />
       @if (!contractDefinitionInput) {
         <span class="badge badge-info">Optional</span>
+      } @else {
+        <span class="badge badge-warning">Readonly</span>
       }
     </label>
   </fieldset>

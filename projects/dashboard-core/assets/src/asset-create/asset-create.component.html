@@ -27,8 +27,12 @@
         data-tip="If not set a random UUID will be generated"
       >
         <span class="material-symbols-rounded opacity-50">deployed_code_update</span>
-        <input type="text" class="grow" placeholder="ID" formControlName="id" name="id" />
-        <span class="badge badge-info">Optional</span>
+        <input type="text" class="grow" placeholder="ID" formControlName="id" name="id" [readonly]="!!asset" />
+        @if (!asset) {
+          <span class="badge badge-info">Optional</span>
+        } @else {
+          <span class="badge badge-warning">Readonly</span>
+        }
       </label>
       <legend class="fieldset-label">Name</legend>
       <label
