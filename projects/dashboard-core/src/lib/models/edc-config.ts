@@ -22,4 +22,9 @@ export interface EdcConfig {
   federatedCatalogEnabled: boolean;
   federatedCatalogUrl?: string;
   did?: string;
+  /**
+   * Optional custom health check. Resolves true = healthy, false = unhealthy.
+   * When set, this runs instead of the native observability.checkHealth().
+   */
+  customHealthCheck?: () => Promise<boolean>;
 }
