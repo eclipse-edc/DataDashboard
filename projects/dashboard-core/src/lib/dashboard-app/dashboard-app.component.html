@@ -33,7 +33,7 @@
         class="btn btn-lg btn-circle btn-ghost hover:text-primary-content hover:bg-primary border-none"
         role="button"
         (click)="stateService.toggleMenuOpen()"
-        [disabled]="((appConfig | async)?.menuItems)!.length < 2"
+        [disabled]="((appConfig | async)?.menuItems?.length ?? 0) < 2"
       >
         @if (stateService.isMenuOpen$ | async) {
           <span class="material-symbols-rounded h7 w-7 !text-[1.75rem]">menu_open</span>
@@ -41,6 +41,9 @@
           <span class="material-symbols-rounded h7 w-7 !text-[1.75rem]">menu</span>
         }
       </button>
+      @for (component of navbarStartComponents; track component) {
+        <ng-container *ngComponentOutlet="component"></ng-container>
+      }
     </div>
     <div class="navbar-center">
       <div class="text-lg">{{ (appConfig | async)?.appTitle ?? 'EDC Dashboard' }}</div>
@@ -139,6 +142,9 @@
           </button>
         </div>
       }
+      @for (component of navbarCenterComponents; track component) {
+        <ng-container *ngComponentOutlet="component"></ng-container>
+      }
     </div>
     <div class="navbar-end">
       <div class="dropdown dropdown-end">
@@ -171,11 +177,14 @@
           }
         </ul>
       </div>
+      @for (component of navbarEndComponents; track component) {
+        <ng-container *ngComponentOutlet="component"></ng-container>
+      }
     </div>
   </div>
 
   <div class="box-border py-4 pl-4 flex flex-auto overflow-auto">
-    @if (((appConfig | async)?.menuItems)!.length > 1) {
+    @if (((appConfig | async)?.menuItems?.length ?? 0) > 1) {
       <ul
         class="menu flex-nowrap shrink-0 h-full rounded-2xl bg-neutral text-neutral-content shadow-xl [&_li>a]:px-4 overflow-auto"
       >
@@ -202,7 +211,7 @@
     <div
       id="router-content"
       class="px-4 box-border w-full"
-      [ngClass]="((appConfig | async)?.menuItems)!.length > 1 ? '' : 'pl-0'"
+      [ngClass]="((appConfig | async)?.menuItems?.length ?? 0) > 1 ? '' : 'pl-0'"
     >
       <router-outlet></router-outlet>
     </div>
