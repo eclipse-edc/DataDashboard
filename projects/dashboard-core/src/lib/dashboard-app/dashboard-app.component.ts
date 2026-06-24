@@ -12,9 +12,9 @@
  *
  */
 
-import { AfterViewInit, Component, Input, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { AfterViewInit, Component, Input, Type, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, NgClass, NgComponentOutlet } from '@angular/common';
 import { DashboardStateService } from '../services/dashboard-state.service';
 import { EdcConfig } from '../models/edc-config';
 import { EdcClientService } from '../services/edc-client.service';
@@ -26,7 +26,7 @@ import { AppConfig } from '../models/app-config';
 @Component({
   selector: 'lib-dashboard-app',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, AsyncPipe, NgClass],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, AsyncPipe, NgClass, NgComponentOutlet],
   templateUrl: './dashboard-app.component.html',
   styleUrl: './dashboard-app.component.css',
 })
@@ -38,6 +38,13 @@ export class DashboardAppComponent implements AfterViewInit {
   @Input() appConfig?: Promise<AppConfig>;
   @Input() edcConfigs?: Promise<EdcConfig[]>;
   @Input() themes: string[] = [];
+
+  /** Components appended to the navbar-start region, rendered after the built-in content. */
+  @Input() navbarStartComponents: Type<unknown>[] = [];
+  /** Components appended to the navbar-center region, rendered after the built-in content. */
+  @Input() navbarCenterComponents: Type<unknown>[] = [];
+  /** Components appended to the navbar-end region, rendered after the built-in content. */
+  @Input() navbarEndComponents: Type<unknown>[] = [];
 
   @ViewChild('dashboardModal', { read: ViewContainerRef, static: true }) modal!: ViewContainerRef;
   @ViewChild('dashboardAlert', { read: ViewContainerRef, static: true }) alert!: ViewContainerRef;

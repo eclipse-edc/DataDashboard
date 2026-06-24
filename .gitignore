@@ -50,3 +50,4 @@ cypress/downloads/
 
 # Cypress cache
 .cypress_cache/
+/projects/dashboard-core/styles.css
