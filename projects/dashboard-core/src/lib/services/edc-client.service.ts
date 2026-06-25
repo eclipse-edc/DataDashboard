@@ -33,6 +33,8 @@ export class EdcClientService implements OnDestroy {
    */
   private healthCheckInterval = 30;
 
+  private currentConfig?: EdcConfig;
+
   private readonly _client = new BehaviorSubject<EdcConnectorClient | undefined>(undefined);
   private readonly _isHealthy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   readonly isHealthy$ = this._isHealthy.asObservable();
@@ -72,6 +74,7 @@ export class EdcClientService implements OnDestroy {
    * @param config.federatedCatalogUrl - (Optional) The federated catalog URL for the EDC client.
    */
   public setDashboardClient(config: EdcConfig): void {
+    this.currentConfig = config;
     this._client.next(this.createEdcConnectorClient(config));
     this.startHealthCheckJob();
 
@@ -113,7 +116,24 @@ export class EdcClientService implements OnDestroy {
   }
 
   private runHealthCheck(edcConfig?: EdcConfig): void {
-    if (this._client.getValue() || edcConfig) {
+    const config = edcConfig ?? this.currentConfig;
+
+    // A custom health check takes precedence over the native one.
+    if (config?.customHealthCheck) {
+      config
+        .customHealthCheck()
+        .then(isHealthy => {
+          if (config === this.currentConfig && isHealthy !== this._isHealthy.getValue()) {
+            this._isHealthy.next(isHealthy);
+          }
+        })
+        .catch((e: unknown) => {
+          if (config === this.currentConfig) {
+            console.error(`[${this.constructor.name}] Custom health check failed: ${(e as Error)?.message}`);
+            this._isHealthy.next(false);
+          }
+        });
+    } else if (this._client.getValue() || edcConfig) {
       const client = edcConfig ? this.createEdcConnectorClient(edcConfig) : this._client.getValue();
       client?.observability
         .checkHealth()
@@ -151,5 +171,6 @@ export class EdcClientService implements OnDestroy {
     this._client.complete();
     this._isHealthy.complete();
     this.stopHealthCheckJob();
+    this.currentConfig = undefined;
   }
 }
