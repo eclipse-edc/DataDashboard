@@ -8,7 +8,7 @@ replicaCount: 1
 # -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   repository: ghcr.io/eclipse-edc/data-dashboard
-  tag: 0.4.0
+  tag: 0.5.0
   pullPolicy: IfNotPresent
 
 # -- This is for setting pull secrets if private images are used.
