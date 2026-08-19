@@ -70,9 +70,9 @@ describe('DashboardStateService', () => {
     const configs: EdcConfig[] = [
       {
         federatedCatalogUrl: 'http://example.com',
-        federatedCatalogEnabled: true,
         connectorName: '',
         managementUrl: '',
+        managementApiVersion: 'v4',
         defaultUrl: '',
         protocolUrl: '',
       },
@@ -88,9 +88,9 @@ describe('DashboardStateService', () => {
       connectorName: '',
       defaultUrl: '',
       managementUrl: '',
+      managementApiVersion: 'v4',
       protocolUrl: '',
       federatedCatalogUrl: 'http://example.com',
-      federatedCatalogEnabled: true,
     };
     spyOn(edcClientService, 'setDashboardClient');
     service.setCurrentEdcConfig(config);

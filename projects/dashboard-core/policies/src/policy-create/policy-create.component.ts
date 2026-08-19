@@ -16,10 +16,9 @@ import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angu
 import { NgClass } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PolicyService } from '../policy.service';
-import { AlertComponent } from '@eclipse-edc/dashboard-core';
+import { AlertComponent, EdcClientService } from '@eclipse-edc/dashboard-core';
 import { PolicyType } from '@think-it-labs/edc-connector-client/dist/src/entities/policy/policy';
 import {
-  compact,
   EdcConnectorClientError,
   IdResponse,
   PolicyBuilder,
@@ -38,6 +37,7 @@ import {
 export class PolicyCreateComponent implements OnChanges {
   private readonly policyService = inject(PolicyService);
   private readonly formBuilder = inject(FormBuilder);
+  private readonly edc = inject(EdcClientService);
 
   @Input() policyDefinition?: PolicyDefinition;
 
@@ -68,7 +68,7 @@ export class PolicyCreateComponent implements OnChanges {
     this.mode = 'update';
 
     const { policy } = this.policyDefinition;
-    const compactPolicy = await compact(policy);
+    const compactPolicy = await this.edc.compact<{ '@type': string }>(policy);
     const typeSegments = compactPolicy['@type'].split('/');
 
     this.policyForm.patchValue({
@@ -132,7 +132,7 @@ export class PolicyCreateComponent implements OnChanges {
 
   /** Compacts a list of rules to a JSON string, or returns an empty string when there are none. */
   private async rulesToJson(rules: unknown[]): Promise<string> {
-    return rules.length > 0 ? JSON.stringify(await compact(rules)) : '';
+    return rules.length > 0 ? JSON.stringify(await this.edc.compact(rules)) : '';
   }
 
   /** Parses a JSON rule field and assigns it to the policy input, throwing a labelled error on failure. */

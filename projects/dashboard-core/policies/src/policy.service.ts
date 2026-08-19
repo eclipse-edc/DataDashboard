@@ -48,9 +48,9 @@ export class PolicyService {
    *
    * @param {string} policyDefinitionId - The unique identifier of the policy definition to update.
    * @param {PolicyDefinitionInput} policyInput - The input containing the updated properties of the policy definition.
-   * @return {Promise<IdResponse>} A promise that resolves to the response containing the identifier of the updated policy definition.
+   * @return {Promise<void>} A promise that resolves once the policy definition has been updated.
    */
-  public async updatePolicy(policyDefinitionId: string, policyInput: PolicyDefinitionInput): Promise<IdResponse> {
+  public async updatePolicy(policyDefinitionId: string, policyInput: PolicyDefinitionInput): Promise<void> {
     return (await this.edc.getClient()).management.policyDefinitions.update(policyDefinitionId, policyInput);
   }
 

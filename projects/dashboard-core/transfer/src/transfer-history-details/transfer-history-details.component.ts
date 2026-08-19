@@ -12,10 +12,10 @@
  *
  */
 
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { JsonObjectTableComponent } from '@eclipse-edc/dashboard-core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { EdcClientService, JsonObjectTableComponent } from '@eclipse-edc/dashboard-core';
 import { JsonValue } from '@angular-devkit/core';
-import { compact, TransferProcess } from '@think-it-labs/edc-connector-client';
+import { TransferProcess } from '@think-it-labs/edc-connector-client';
 import { DatePipe, NgClass } from '@angular/common';
 
 @Component({
@@ -27,6 +27,8 @@ import { DatePipe, NgClass } from '@angular/common';
 export class TransferHistoryDetailsComponent implements OnChanges {
   @Input() transferProcess!: TransferProcess;
   @Input() stateType!: string;
+
+  private readonly edc = inject(EdcClientService);
 
   compactTransferProcess: Record<string, JsonValue> = {};
   dataDestination: Record<string, JsonValue> | undefined;
@@ -40,12 +42,12 @@ export class TransferHistoryDetailsComponent implements OnChanges {
 
   private async updateProperties() {
     if (this.transferProcess) {
-      this.compactTransferProcess = await compact(this.transferProcess);
+      this.compactTransferProcess = await this.edc.compact(this.transferProcess);
       if (this.compactTransferProcess['dataDestination']) {
-        this.dataDestination = await compact(this.transferProcess.dataDestination);
+        this.dataDestination = await this.edc.compact(this.transferProcess.dataDestination);
       }
       if (this.compactTransferProcess['privateProperties']) {
-        this.privateProperties = await compact(this.transferProcess.privateProperties);
+        this.privateProperties = await this.edc.compact(this.transferProcess.privateProperties);
       }
     }
   }

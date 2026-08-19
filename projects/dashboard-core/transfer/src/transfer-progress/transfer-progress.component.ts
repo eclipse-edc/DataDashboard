@@ -14,7 +14,6 @@
 
 import { Component, Input, OnChanges, OnDestroy, inject } from '@angular/core';
 import {
-  compact,
   ContractAgreement,
   ContractNegotiation,
   IdResponse,
@@ -22,6 +21,7 @@ import {
   TransferProcessStates,
 } from '@think-it-labs/edc-connector-client';
 import { ContractAndTransferService } from '../contract-and-transfer.service';
+import { EdcClientService } from '@eclipse-edc/dashboard-core';
 import { NgClass } from '@angular/common';
 import { TransferPullDownloadComponent } from '../transfer-pull-download/transfer-pull-download.component';
 
@@ -33,6 +33,7 @@ import { TransferPullDownloadComponent } from '../transfer-pull-download/transfe
 })
 export class TransferProgressComponent implements OnChanges, OnDestroy {
   private readonly transferService = inject(ContractAndTransferService);
+  private readonly edc = inject(EdcClientService);
 
   @Input() agreement!: ContractAgreement;
   @Input() negotiation!: ContractNegotiation;
@@ -64,7 +65,7 @@ export class TransferProgressComponent implements OnChanges, OnDestroy {
 
   async ngOnChanges() {
     if (this.transferId.id) {
-      this.process = await compact(await this.transferService.getTransferProcess(this.transferId.id));
+      this.process = await this.edc.compact<TransferProcess>(await this.transferService.getTransferProcess(this.transferId.id));
       if (this.process) {
         this.type = this.process['transferType']?.toLowerCase().includes('push') ? 'Push' : 'Pull';
         if (this.type === 'Pull') {
@@ -110,7 +111,7 @@ export class TransferProgressComponent implements OnChanges, OnDestroy {
           this.stopStatusJob();
           this.happyPath = false;
           this.stateHistory.push(this.currentState);
-          this.process = await compact(await this.transferService.getTransferProcess(this.transferId.id));
+          this.process = await this.edc.compact<TransferProcess>(await this.transferService.getTransferProcess(this.transferId.id));
           this.errorMsg = JSON.stringify(this.process);
         } else {
           // Include missed states due to pull mechanism

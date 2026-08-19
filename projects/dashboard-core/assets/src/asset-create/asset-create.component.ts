@@ -17,7 +17,6 @@ import {
   Asset,
   AssetInput,
   BaseDataAddress,
-  compact,
   DataAddress,
   EdcConnectorClientError,
   IdResponse,
@@ -28,6 +27,7 @@ import {
   AlertComponent,
   DataAddressFormComponent,
   DataTypeInputComponent,
+  EdcClientService,
   JsonObjectInputComponent,
   JsonObjectTableComponent,
 } from '@eclipse-edc/dashboard-core';
@@ -52,6 +52,7 @@ import { JsonValue } from '@angular-devkit/core';
 export class AssetCreateComponent implements OnChanges {
   private readonly assetService = inject(AssetService);
   private readonly formBuilder = inject(FormBuilder);
+  private readonly edc = inject(EdcClientService);
 
   @Input() asset?: Asset;
   @Output() created = new EventEmitter<IdResponse>();
@@ -82,9 +83,9 @@ export class AssetCreateComponent implements OnChanges {
   }
 
   private async updateAssetAndSyncForm() {
-    this.properties = await compact(this.asset!.properties);
-    this.privateProperties = await compact(this.asset!.privateProperties);
-    this.dataAddress = (await compact(this.asset!.dataAddress)) as unknown as BaseDataAddress;
+    this.properties = await this.edc.compact(this.asset!.properties);
+    this.privateProperties = await this.edc.compact(this.asset!.privateProperties);
+    this.dataAddress = (await this.edc.compact(this.asset!.dataAddress)) as unknown as BaseDataAddress;
     this.assetForm.get('id')?.setValue(this.asset!.id);
     this.assetForm.get('name')?.setValue(this.properties['name']);
     this.assetForm.get('contenttype')?.setValue(this.properties['contenttype']);

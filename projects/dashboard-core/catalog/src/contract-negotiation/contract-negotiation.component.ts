@@ -13,10 +13,10 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
-import { compact, EdcConnectorClientError, IdResponse } from '@think-it-labs/edc-connector-client';
+import { EdcConnectorClientError, IdResponse } from '@think-it-labs/edc-connector-client';
 import { AsyncPipe, NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AlertComponent, JsonObjectTableComponent } from '@eclipse-edc/dashboard-core';
+import { AlertComponent, EdcClientService, JsonObjectTableComponent } from '@eclipse-edc/dashboard-core';
 import { CatalogService } from '../catalog.service';
 import { ContractNegotiationRequest } from '@think-it-labs/edc-connector-client/dist/src/entities';
 import { CatalogDataset } from '../catalog-dataset';
@@ -31,6 +31,7 @@ import { JsonValue } from '@angular-devkit/core';
 })
 export class ContractNegotiationComponent implements OnChanges {
   private readonly catalogService = inject(CatalogService);
+  private readonly edc = inject(EdcClientService);
 
   @Input() catalogDataset!: CatalogDataset;
   @Output() negotiationRequested = new EventEmitter<IdResponse>();
@@ -50,7 +51,7 @@ export class ContractNegotiationComponent implements OnChanges {
   private async loadDataset() {
     if (this.catalogDataset) {
       try {
-        this.dataset = await compact(this.catalogDataset.dataset);
+        this.dataset = await this.edc.compact(this.catalogDataset.dataset);
         this.catalog = this.getCatalogAsRecord();
       } catch (error) {
         console.error('Error compacting dataset:', error);

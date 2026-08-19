@@ -35,6 +35,20 @@
       <p class="fieldset-label text-error">Enter a valid URL</p>
     }
 
+    <legend class="fieldset-label">Management API Version</legend>
+    <label class="input w-full" [ngClass]="connectorForm.get('managementApiVersion')?.invalid ? 'input-error' : ''">
+      <span class="material-symbols-rounded opacity-50">tag</span>
+      <input
+        type="text"
+        placeholder="Management API Version"
+        name="managementApiVersion"
+        formControlName="managementApiVersion"
+      />
+    </label>
+    @if (connectorForm.get('managementApiVersion')?.invalid) {
+      <p class="fieldset-label text-error">Mandatory</p>
+    }
+
     <legend class="fieldset-label">Default API</legend>
     <label class="input w-full" [ngClass]="connectorForm.get('defaultUrl')?.invalid ? 'input-error' : ''">
       <span class="material-symbols-rounded opacity-50">link</span>
@@ -53,10 +67,31 @@
       <p class="fieldset-label text-error">Enter a valid URL</p>
     }
 
+    <legend class="fieldset-label">Protocol Version</legend>
+    <label class="input w-full" [ngClass]="connectorForm.get('protocolVersion')?.invalid ? 'input-error' : ''">
+      <span class="material-symbols-rounded opacity-50">tag</span>
+      <input type="text" placeholder="Protocol Version" name="protocolVersion" formControlName="protocolVersion" />
+    </label>
+    @if (connectorForm.get('protocolVersion')?.invalid) {
+      <p class="fieldset-label text-error">Mandatory</p>
+    }
+
     <legend class="fieldset-label">API Authentication Token</legend>
     <label class="input w-full" [ngClass]="connectorForm.get('apiToken')?.invalid ? 'input-error' : ''">
       <span class="material-symbols-rounded opacity-50">lock</span>
       <input type="password" placeholder="API Token" name="apiToken" formControlName="apiToken" />
+      <span class="badge badge-info">Optional</span>
+    </label>
+
+    <legend class="fieldset-label">Custom Authorization Header</legend>
+    <label class="input w-full">
+      <span class="material-symbols-rounded opacity-50">key</span>
+      <input type="text" placeholder="Header Name (e.g. x-api-key)" name="authHeaderKey" formControlName="authHeaderKey" />
+      <span class="badge badge-info">Optional</span>
+    </label>
+    <label class="input w-full">
+      <span class="material-symbols-rounded opacity-50">lock</span>
+      <input type="password" placeholder="Header Value" name="authHeaderValue" formControlName="authHeaderValue" />
       <span class="badge badge-info">Optional</span>
     </label>
 
@@ -100,6 +135,38 @@
       </label>
       @if (connectorForm.get('did')?.invalid) {
         <p class="fieldset-label text-error">Enter a valid DID web</p>
+      }
+
+      <legend class="fieldset-label">Identity API</legend>
+      <label class="input w-full" [ngClass]="connectorForm.get('identityUrl')?.invalid ? 'input-error' : ''">
+        <span class="material-symbols-rounded opacity-50">link</span>
+        <input type="text" placeholder="Identity API" name="identityUrl" formControlName="identityUrl" />
+      </label>
+      @if (connectorForm.get('identityUrl')?.invalid) {
+        <p class="fieldset-label text-error">Enter a valid URL</p>
+      }
+
+      <legend class="fieldset-label">Identity API Version</legend>
+      <label class="input w-full" [ngClass]="connectorForm.get('identityApiVersion')?.invalid ? 'input-error' : ''">
+        <span class="material-symbols-rounded opacity-50">tag</span>
+        <input
+          type="text"
+          placeholder="Identity API Version"
+          name="identityApiVersion"
+          formControlName="identityApiVersion"
+        />
+      </label>
+      @if (connectorForm.get('identityApiVersion')?.invalid) {
+        <p class="fieldset-label text-error">Mandatory</p>
+      }
+
+      <legend class="fieldset-label">Presentation API</legend>
+      <label class="input w-full" [ngClass]="connectorForm.get('presentationUrl')?.invalid ? 'input-error' : ''">
+        <span class="material-symbols-rounded opacity-50">link</span>
+        <input type="text" placeholder="Presentation API" name="presentationUrl" formControlName="presentationUrl" />
+      </label>
+      @if (connectorForm.get('presentationUrl')?.invalid) {
+        <p class="fieldset-label text-error">Enter a valid URL</p>
       }
     }
   </fieldset>

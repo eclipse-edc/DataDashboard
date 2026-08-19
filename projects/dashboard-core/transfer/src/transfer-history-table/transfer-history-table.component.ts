@@ -12,12 +12,12 @@
  *
  */
 
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 
 import { TransferProcess, TransferProcessStates } from '@think-it-labs/edc-connector-client';
 import { DatePipe, NgClass } from '@angular/common';
 import { TransferHistoryDetailsComponent } from '../transfer-history-details/transfer-history-details.component';
-import { DeleteConfirmComponent, ModalAndAlertService } from '@eclipse-edc/dashboard-core';
+import { ModalAndAlertService } from '@eclipse-edc/dashboard-core';
 
 @Component({
   selector: 'lib-transfer-history-table',
@@ -29,7 +29,6 @@ export class TransferHistoryTableComponent implements OnChanges {
   private readonly modalAndAlertService = inject(ModalAndAlertService);
 
   @Input() transferProcesses: TransferProcess[] | null = [];
-  @Output() deprovisionEvent = new EventEmitter<TransferProcess>();
 
   validStates = new Set<string>([
     TransferProcessStates.INITIAL,
@@ -70,21 +69,5 @@ export class TransferHistoryTableComponent implements OnChanges {
       transferProcess: transferProcess,
       stateType: this.stateType[transferProcess.id],
     });
-  }
-
-  deprovision(transferProcess: TransferProcess) {
-    this.modalAndAlertService.openModal(
-      DeleteConfirmComponent,
-      {
-        customText: `Do you really want to request the deprovisioning of transfer process '${transferProcess.id}'?`,
-      },
-      {
-        canceled: () => this.modalAndAlertService.closeModal(),
-        confirm: () => {
-          this.modalAndAlertService.closeModal();
-          this.deprovisionEvent.emit(transferProcess);
-        },
-      },
-    );
   }
 }

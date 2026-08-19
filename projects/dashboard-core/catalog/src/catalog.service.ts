@@ -49,11 +49,11 @@ export class CatalogService {
   }
 
   /**
-   * Retrieves all catalogs from the federated catalog API.
+   * Retrieves all catalogs from the federated catalog cache via the management API.
    * @returns A promise that resolves to an array of catalog.
    */
   private async getAllFederatedCatalogs(): Promise<Catalog[]> {
-    return (await this.edc.getClient()).federatedCatalog.queryAll();
+    return (await this.edc.getClient()).management.catalogs.queryAll();
   }
 
   /**

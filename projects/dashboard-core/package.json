@@ -5,7 +5,7 @@
     "@angular/common": "^21.0.0",
     "@angular/core": "^21.0.0",
     "@tailwindcss/postcss": "^4.0.0",
-    "@think-it-labs/edc-connector-client": "0.9.5",
+    "@think-it-labs/edc-connector-client": "0.10.0",
     "daisyui": "^5.0.0",
     "tailwindcss": "^4.0.0",
     "postcss": "^8.0.0",

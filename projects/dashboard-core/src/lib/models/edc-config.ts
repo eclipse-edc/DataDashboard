@@ -15,11 +15,27 @@
 export interface EdcConfig {
   connectorName: string;
   managementUrl: string;
+  managementApiVersion: string;
   defaultUrl: string;
   protocolUrl: string;
+  protocolVersion?: string;
+  /**
+   * Identity API base URL. Only required when the connector exposes an Identity Hub.
+   */
+  identityUrl?: string;
+  identityApiVersion?: string;
+  /**
+   * Presentation API base URL. Only required when the connector exposes an Identity Hub.
+   */
+  presentationUrl?: string;
+  /**
+   * @deprecated use {@link authorization} instead
+   */
   apiToken?: string;
-  controlUrl?: string;
-  federatedCatalogEnabled: boolean;
+  authorization?: {
+    key: string;
+    value: string;
+  }
   federatedCatalogUrl?: string;
   did?: string;
   /**

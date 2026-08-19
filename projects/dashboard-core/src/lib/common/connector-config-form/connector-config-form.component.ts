@@ -36,9 +36,13 @@ export class ConnectorConfigFormComponent {
   connectorForm: FormGroup = new FormGroup({
     connectorName: new FormControl('', Validators.required),
     managementUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
-    defaultUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
+    managementApiVersion: new FormControl('v4', [Validators.required]),
     protocolUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
+    protocolVersion: new FormControl('2025-01', [Validators.required]),
+    defaultUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
     apiToken: new FormControl(''),
+    authHeaderKey: new FormControl(''),
+    authHeaderValue: new FormControl(''),
     federatedCatalogEnabled: new FormControl(false),
     identityHubEnabled: new FormControl(false),
   });
@@ -63,12 +67,21 @@ export class ConnectorConfigFormComponent {
   onIdentityHubToggle() {
     this.ihEnabled = !this.ihEnabled;
     if (this.ihEnabled) {
+      this.connectorForm.addControl('did', new FormControl('', [Validators.required, Validators.pattern(DID_WEB_REGEX)]));
       this.connectorForm.addControl(
-        'did',
-        new FormControl('', [Validators.required, Validators.pattern(DID_WEB_REGEX)]),
+        'identityUrl',
+        new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
+      );
+      this.connectorForm.addControl('identityApiVersion', new FormControl('v1beta', [Validators.required]));
+      this.connectorForm.addControl(
+        'presentationUrl',
+        new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
       );
     } else {
       this.connectorForm.removeControl('did');
+      this.connectorForm.removeControl('identityUrl');
+      this.connectorForm.removeControl('identityApiVersion');
+      this.connectorForm.removeControl('presentationUrl');
     }
   }
 
@@ -76,18 +89,28 @@ export class ConnectorConfigFormComponent {
     const edcConfig: EdcConfig = {
       connectorName: this.connectorForm.value.connectorName,
       managementUrl: this.connectorForm.value.managementUrl,
+      managementApiVersion: this.connectorForm.value.managementApiVersion,
       defaultUrl: this.connectorForm.value.defaultUrl,
       protocolUrl: this.connectorForm.value.protocolUrl,
-      federatedCatalogEnabled: this.connectorForm.value.federatedCatalogEnabled,
+      protocolVersion: this.connectorForm.value.protocolVersion,
     };
     if (this.connectorForm.value.apiToken) {
       edcConfig.apiToken = this.connectorForm.value.apiToken;
     }
-    if (edcConfig.federatedCatalogEnabled) {
+    if (this.connectorForm.value.authHeaderKey && this.connectorForm.value.authHeaderValue) {
+      edcConfig.authorization = {
+        key: this.connectorForm.value.authHeaderKey,
+        value: this.connectorForm.value.authHeaderValue,
+      };
+    }
+    if (this.connectorForm.value.federatedCatalogEnabled) {
       edcConfig.federatedCatalogUrl = this.connectorForm.value.federatedCatalogUrl;
     }
     if (this.connectorForm.value.identityHubEnabled) {
       edcConfig.did = this.connectorForm.value.did;
+      edcConfig.identityUrl = this.connectorForm.value.identityUrl;
+      edcConfig.identityApiVersion = this.connectorForm.value.identityApiVersion;
+      edcConfig.presentationUrl = this.connectorForm.value.presentationUrl;
     }
 
     const client: EdcConnectorClient = this.edc.createEdcConnectorClient(edcConfig);

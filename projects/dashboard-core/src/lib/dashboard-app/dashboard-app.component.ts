@@ -73,7 +73,7 @@ export class DashboardAppComponent implements AfterViewInit {
     const firstConfig: EdcConfig = configs[0];
 
     try {
-      this.stateService.setFederatedCatalogEnabled(firstConfig.federatedCatalogEnabled);
+      this.stateService.setFederatedCatalogEnabled(firstConfig.federatedCatalogUrl !== undefined);
       this.stateService.setEdcConfigs(configs);
     } catch (e) {
       console.error(e);

@@ -13,11 +13,12 @@
  */
 
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { compact, ContractAgreement, ContractNegotiation, IdResponse } from '@think-it-labs/edc-connector-client';
+import { ContractAgreement, ContractNegotiation, IdResponse } from '@think-it-labs/edc-connector-client';
 import { map, Observable, of, Subject, takeUntil } from 'rxjs';
 import {
   ConsumerProviderSwitchComponent,
   DashboardStateService,
+  EdcClientService,
   FilterInputComponent,
   ItemCountSelectorComponent,
   JsonldViewerComponent,
@@ -50,6 +51,7 @@ export class ContractViewComponent implements OnInit, OnDestroy {
   private readonly contractAndTransferService = inject(ContractAndTransferService);
   private readonly modalAndAlertService = inject(ModalAndAlertService);
   private readonly stateService = inject(DashboardStateService);
+  private readonly edc = inject(EdcClientService);
 
   private readonly destroy$ = new Subject<void>();
 
@@ -68,6 +70,7 @@ export class ContractViewComponent implements OnInit, OnDestroy {
   private async fetchAgreements(): Promise<void> {
     this.initialized = false;
     const negotiations = await this.contractAndTransferService.getAllContractNegotiations({
+      '@type': 'QuerySpec',
       sortField: 'createdAt',
       sortOrder: 'DESC',
       filterExpression: [
@@ -88,7 +91,10 @@ export class ContractViewComponent implements OnInit, OnDestroy {
     const pairs = await Promise.all(
       negotiations.map(async negotiation => {
         const agreement = await this.contractAndTransferService.getAgreementForNegotiation(negotiation.id);
-        return [agreement, await compact(negotiation)] as Pair<ContractAgreement, ContractNegotiation>;
+        return [agreement, await this.edc.compact<ContractNegotiation>(negotiation)] as Pair<
+          ContractAgreement,
+          ContractNegotiation
+        >;
       }),
     );
     this.initialized = true;
