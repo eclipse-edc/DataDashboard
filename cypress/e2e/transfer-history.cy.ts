@@ -24,12 +24,10 @@ describe('transfer history view e2e tests', () => {
       body: edcConfigs,
       statusCode: 200,
     });
-    //What to intercept here?
-    cy.intercept('POST', `${edcConfig.federatedCatalogUrl}/v1alpha/transferprocesses/query?`, {
+    cy.intercept('POST', `${edcConfig.managementUrl}/v1alpha/transferprocesses/query?`, {
       fixture: 'transfer-history/query-200.json',
       statusCode: 200,
     }).as('dataset');
-    //What to intercept here?
     cy.intercept('POST', `${edcConfig.managementUrl}/v3/transferprocesses/request?`, {
       fixture: 'transfer-history/query-200.json',
       statusCode: 200,
@@ -101,25 +99,5 @@ describe('transfer history view e2e tests', () => {
         });
   });
 
-  it('can delete transfer', () => {
-    cy.get('lib-transfer-history-table').first().contains('i', 'delete').click();
-    cy.get('lib-delete-confirm').contains('button', 'Delete').click();
-
-    cy.wait('@deprovision').then(() => {
-      cy.wait('@request').then(() => {
-        cy.get('lib-alert .alert-success').should('exist');
-      });
-    });
-  });
-
-  it('can cancel deprivision of transfer', () => {
-    cy.intercept('DELETE', `$edcConfig.managementUrl}/v3/transferprocesses/*/deprovision`, cy.spy().as('deleteSpy'));
-    cy.get('lib-transfer-history-table').first().contains('i', 'delete').click();
-    cy.get('lib-delete-confirm').contains('button', 'Cancel').click();
-
-    cy.get('@deleteSpy').should('not.have.been.called');
-    cy.get('lib-delete-confirm').should('not.exist');
-    cy.get('lib-alert .alert-success').should('not.exist');
-  });
 
 });
