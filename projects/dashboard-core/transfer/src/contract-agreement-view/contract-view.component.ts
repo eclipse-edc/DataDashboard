@@ -75,16 +75,16 @@ export class ContractViewComponent implements OnInit, OnDestroy {
       sortOrder: 'DESC',
       filterExpression: [
         {
+          '@type': 'Criterion',
           operandLeft: 'type',
           operator: '=',
           operandRight: this.contractType,
         },
         {
+          '@type': 'Criterion',
           operandLeft: 'state',
           operator: '=',
-          // 1200 = 'FINALIZED'
-          // ToDo: Wait for upstream fix to be able to use string 'FINALIZED'
-          operandRight: 1200,
+          operandRight: 'FINALIZED',
         },
       ],
     });

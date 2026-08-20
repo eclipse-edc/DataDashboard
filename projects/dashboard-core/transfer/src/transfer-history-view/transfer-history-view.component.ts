@@ -74,6 +74,7 @@ export class TransferHistoryViewComponent implements OnInit, OnDestroy {
         sortOrder: 'DESC',
         filterExpression: [
           {
+            '@type': 'Criterion',
             operandLeft: 'type',
             operator: '=',
             operandRight: this.contractType,
