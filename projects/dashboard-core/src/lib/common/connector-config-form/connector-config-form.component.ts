@@ -36,9 +36,9 @@ export class ConnectorConfigFormComponent {
   connectorForm: FormGroup = new FormGroup({
     connectorName: new FormControl('', Validators.required),
     managementUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
-    managementApiVersion: new FormControl('v4', [Validators.required]),
+    managementApiVersion: new FormControl('v3', [Validators.required]),
     protocolUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
-    protocolVersion: new FormControl('2025-01', [Validators.required]),
+    protocolVersion: new FormControl('dataspace-protocol-http:2025-01', [Validators.required]),
     defaultUrl: new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),
     apiToken: new FormControl(''),
     authHeaderKey: new FormControl(''),
@@ -67,7 +67,10 @@ export class ConnectorConfigFormComponent {
   onIdentityHubToggle() {
     this.ihEnabled = !this.ihEnabled;
     if (this.ihEnabled) {
-      this.connectorForm.addControl('did', new FormControl('', [Validators.required, Validators.pattern(DID_WEB_REGEX)]));
+      this.connectorForm.addControl(
+        'did',
+        new FormControl('', [Validators.required, Validators.pattern(DID_WEB_REGEX)]),
+      );
       this.connectorForm.addControl(
         'identityUrl',
         new FormControl('', [Validators.required, Validators.pattern(URL_REGEX)]),

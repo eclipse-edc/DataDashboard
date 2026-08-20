@@ -16,6 +16,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angu
 import {
   Asset,
   AssetInput,
+  AssetInputV4,
   BaseDataAddress,
   DataAddress,
   EdcConnectorClientError,
@@ -114,8 +115,9 @@ export class AssetCreateComponent implements OnChanges {
     }
   }
 
-  private createAssetInput(): AssetInput {
-    const asset: AssetInput = {
+  private createAssetInput(): AssetInputV4 {
+    const asset: AssetInputV4 = {
+      '@type': 'Asset',
       dataAddress: this.dataAddress!,
       properties: this.properties,
       privateProperties: this.privateProperties,

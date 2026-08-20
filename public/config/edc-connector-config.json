@@ -2,19 +2,19 @@
   {
     "connectorName": "Consumer",
     "managementUrl": "http://cp-consumer.dataspace/management",
+    "managementApiVersion": "v3",
     "defaultUrl": "http://cp-consumer.dataspace/api",
     "protocolUrl": "http://cp-consumer.dataspace/protocol/2025-1",
-    "federatedCatalogEnabled": false,
-    "federatedCatalogUrl": "http://fc-consumer.dataspace/catalog",
-    "did": "did:web:ih-consumer.dataspace"
+    "protocolVersion": "dataspace-protocol-http:2025-1",
+    "did": "did:web:ih-consumer.dataspace:did"
   },
   {
     "connectorName": "Provider",
     "managementUrl": "http://cp-provider.dataspace/management",
+    "managementApiVersion": "v3",
     "defaultUrl": "http://cp-provider.dataspace/api",
     "protocolUrl": "http://cp-provider.dataspace/protocol/2025-1",
-    "federatedCatalogEnabled": false,
-    "federatedCatalogUrl": "http://fc-provider.dataspace/catalog",
-    "did": "did:web:ih-provider.dataspace"
+    "protocolVersion": "dataspace-protocol-http:2025-1",
+    "did": "did:web:ih-provider.dataspace:did"
   }
 ]

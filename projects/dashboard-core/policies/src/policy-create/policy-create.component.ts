@@ -121,7 +121,10 @@ export class PolicyCreateComponent implements OnChanges {
       .raw(policyInput)
       .build();
 
-    const policyDefinitionInput: PolicyDefinitionInput = { policy };
+    const policyDefinitionInput: PolicyDefinitionInput = {
+      '@type': 'PolicyDefinition',
+      policy: policy,
+    };
     if (id) {
       policyDefinitionInput.id = id;
       policyDefinitionInput['@id'] = id;

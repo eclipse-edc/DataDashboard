@@ -92,7 +92,7 @@ export class EdcClientService implements OnDestroy {
    *
    * @param config - The configuration object containing URLs and optional parameters for the EDC client.
    * @param config.managementUrl - The management URL for the EDC client.
-   * @param config.managementApiVersion - The management API version (e.g. `v4`).
+   * @param config.managementApiVersion - The management API version (e.g. `v3`).
    * @param config.defaultUrl - The default URL for the EDC client.
    * @param config.protocolUrl - The protocol (DSP) URL for the EDC client.
    * @param config.protocolVersion - (Optional) The dataspace protocol version.

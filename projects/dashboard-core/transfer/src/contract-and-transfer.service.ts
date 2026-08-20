@@ -127,6 +127,7 @@ export class ContractAndTransferService {
     // ToDo: Why is counterPartyAddress undefined otherwise?
     if (negotiation.counterPartyAddress) {
       const datasetRequest: DatasetRequest = {
+        '@type': 'DatasetRequest',
         '@id': agreement.assetId,
         counterPartyId: agreement.providerId,
         counterPartyAddress: negotiation.counterPartyAddress,
