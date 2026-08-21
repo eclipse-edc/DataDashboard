@@ -14,7 +14,8 @@
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, filter, firstValueFrom, timeout } from 'rxjs';
-import { EdcConnectorClient, EdcConnectorClientError } from '@think-it-labs/edc-connector-client';
+import { EdcConnectorClient, EdcConnectorClientError, JsonLdService } from '@think-it-labs/edc-connector-client';
+import { JsonValue } from '@angular-devkit/core';
 import { EdcConfig } from '../models/edc-config';
 
 @Injectable({
@@ -38,6 +39,13 @@ export class EdcClientService implements OnDestroy {
   private readonly _client = new BehaviorSubject<EdcConnectorClient | undefined>(undefined);
   private readonly _isHealthy: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   readonly isHealthy$ = this._isHealthy.asObservable();
+
+  /**
+   * Lazily created {@link JsonLdService} bound to the current client and its cached
+   * JSON-LD contexts. Invalidated whenever the active client changes.
+   * @private
+   */
+  private jsonLdService?: { client: EdcConnectorClient; service: JsonLdService };
 
   private healthCheckJob?: ReturnType<typeof setInterval>;
 
@@ -68,9 +76,7 @@ export class EdcClientService implements OnDestroy {
    * @param config.managementUrl - The management URL for the EDC client.
    * @param config.defaultUrl - The default URL for the EDC client.
    * @param config.protocolUrl - The protocol URL for the EDC client.
-   * @param config.federatedCatalogEnabled - Whether this connector has an FC or not.
    * @param config.apiToken - (Optional) The API token for authentication.
-   * @param config.controlUrl - (Optional) The control URL for the EDC client.
    * @param config.federatedCatalogUrl - (Optional) The federated catalog URL for the EDC client.
    */
   public setDashboardClient(config: EdcConfig): void {
@@ -83,7 +89,19 @@ export class EdcClientService implements OnDestroy {
 
   /**
    * Create a client WITHOUT setting it as the current dashboard client.
-   * @param {EdcConfig} config
+   *
+   * @param config - The configuration object containing URLs and optional parameters for the EDC client.
+   * @param config.managementUrl - The management URL for the EDC client.
+   * @param config.managementApiVersion - The management API version (e.g. `v3`).
+   * @param config.defaultUrl - The default URL for the EDC client.
+   * @param config.protocolUrl - The protocol (DSP) URL for the EDC client.
+   * @param config.protocolVersion - (Optional) The dataspace protocol version.
+   * @param config.identityUrl - (Optional) The identity API URL (Identity Hub).
+   * @param config.identityApiVersion - (Optional) The identity API version.
+   * @param config.presentationUrl - (Optional) The presentation API URL (Identity Hub).
+   * @param config.apiToken - (Optional, deprecated) The API token for authentication.
+   * @param config.authorization - (Optional) A custom authorization header key/value pair.
+   * @param config.federatedCatalogUrl - (Optional) The federated catalog URL for the EDC client.
    * @private
    */
   public createEdcConnectorClient(config: EdcConfig): EdcConnectorClient {
@@ -97,10 +115,36 @@ export class EdcClientService implements OnDestroy {
       .managementUrl(config.managementUrl)
       .defaultUrl(config.defaultUrl)
       .protocolUrl(config.protocolUrl);
+    if (config.managementApiVersion) connector.managementApiVersion(config.managementApiVersion);
+    if (config.protocolVersion) connector.protocolVersion(config.protocolVersion);
+    if (config.identityUrl) connector.identityUrl(config.identityUrl);
+    if (config.identityApiVersion) connector.identityApiVersion(config.identityApiVersion);
+    if (config.presentationUrl) connector.presentationUrl(config.presentationUrl);
     if (config.apiToken) connector.apiToken(config.apiToken);
-    if (config.controlUrl) connector.controlUrl(config.controlUrl);
-    if (config.federatedCatalogUrl) connector.federatedCatalogUrl(config.federatedCatalogUrl);
+    if (config.authorization) connector.authorization(config.authorization.key, config.authorization.value);
     return connector.build();
+  }
+
+  /**
+   * Compacts a JSON-LD object using the JSON-LD contexts cached by the current client.
+   *
+   * Centralizes JSON-LD handling so consumers do not need to instantiate a
+   * {@link JsonLdService} themselves. The underlying service is cached and only
+   * recreated when the active client changes.
+   *
+   * @param body - The (expanded) JSON-LD object to compact.
+   * @returns A promise resolving to the compacted representation.
+   */
+  public async compact<T = Record<string, JsonValue>>(body: unknown): Promise<T> {
+    const client = await this.getClient();
+    if (this.jsonLdService?.client !== client) {
+      this.jsonLdService = {
+        client,
+        service: new JsonLdService(client.context.cachedJsonLdContexts),
+      };
+    }
+    const compacted = await this.jsonLdService.service.compact(body);
+    return compacted as T;
   }
 
   /**
@@ -172,5 +216,6 @@ export class EdcClientService implements OnDestroy {
     this._isHealthy.complete();
     this.stopHealthCheckJob();
     this.currentConfig = undefined;
+    this.jsonLdService = undefined;
   }
 }

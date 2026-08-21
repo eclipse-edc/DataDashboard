@@ -18,16 +18,20 @@ describe('catalog view e2e tests', () => {
   const edcConfigs: EdcConfig[] = Cypress.env('edcConfig');
   const edcConfig = edcConfigs[0];
 
+  const requestCatalog = () => {
+    cy.get('lib-catalog-request .btn').click();
+    cy.get('lib-catalog-request-form input[name="counterPartyId"]').type('did:web:test');
+    cy.get('lib-catalog-request-form input[name="counterPartyAddress"]').type('http://e2e');
+    cy.get('lib-catalog-request-form .btn').click();
+
+    cy.wait('@request');
+  };
+
   beforeEach(() => {
     cy.intercept('GET', `${Cypress.config('baseUrl')}/config/edc-connector-config.json`, {
       body: edcConfigs,
       statusCode: 200,
     });
-
-    cy.intercept('POST', `${edcConfig.federatedCatalogUrl}/v1alpha/catalog/query?`, {
-      fixture: 'catalog/query-200.json',
-      statusCode: 200,
-    }).as('dataset');
 
     cy.intercept('POST', `${edcConfig.managementUrl}/v3/catalog/request?`, {
       fixture: 'catalog/query-200.json',
@@ -48,8 +52,9 @@ describe('catalog view e2e tests', () => {
     cy.get('ul.menu button').contains('book_ribbon').click();
   });
 
-  it('shows federated catalog dataset', () => {
-    cy.get('lib-catalog-request').should('contain', 'Federated Catalog Enabled');
+  it('shows catalog dataset', () => {
+    cy.get('lib-catalog-request').should('contain', 'Request Manually');
+    cy.get('lib-catalog-request').should('not.contain', 'Federated Catalog Enabled');
     cy.get('lib-pagination')
       .should('have.length', 1)
       .find('div.join > button')
@@ -57,18 +62,19 @@ describe('catalog view e2e tests', () => {
         cy.wrap($btn).should('be.disabled');
       });
 
-    cy.wait('@dataset').then(() => {
-      cy.get('lib-catalog-card').should('have.length.at.least', 1);
-    });
+    requestCatalog();
+    cy.get('lib-catalog-card').should('have.length.at.least', 1);
   });
 
   it('can filter datasets', () => {
+    requestCatalog();
     cy.get('lib-filter-input input').type('asset1');
 
     cy.get('lib-catalog-card').should('have.length', 1);
   });
 
   it('can show details of dataset', () => {
+    requestCatalog();
     cy.get('lib-catalog-card').first().contains('i', 'info').click();
 
     cy.get('lib-jsonld-viewer').should('have.length.at.least', 1);
@@ -107,6 +113,7 @@ describe('catalog view e2e tests', () => {
   });
 
   it('should negotiate successfully', () => {
+    requestCatalog();
     cy.get('lib-catalog-card').contains('Negotiate').click();
     cy.get('lib-catalog-negotiation').should('exist');
     cy.get('lib-catalog-negotiation button[type="submit"]').should('be.disabled');
@@ -127,6 +134,7 @@ describe('catalog view e2e tests', () => {
       statusCode: 400,
     }).as('negotiation');
 
+    requestCatalog();
     cy.get('lib-catalog-card').contains('Negotiate').click();
     cy.get('label').contains('Offer 1').click();
     cy.get('lib-catalog-negotiation button[type="submit"]').click();

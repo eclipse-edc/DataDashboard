@@ -37,6 +37,27 @@ class MockEdcConnectorClient {
       protocolUrl: jasmine.createSpy('protocolUrl').and.callFake(() => {
         return this;
       }),
+      managementApiVersion: jasmine.createSpy('managementApiVersion').and.callFake(() => {
+        return this;
+      }),
+      protocolVersion: jasmine.createSpy('protocolVersion').and.callFake(() => {
+        return this;
+      }),
+      identityUrl: jasmine.createSpy('identityUrl').and.callFake(() => {
+        return this;
+      }),
+      identityApiVersion: jasmine.createSpy('identityApiVersion').and.callFake(() => {
+        return this;
+      }),
+      presentationUrl: jasmine.createSpy('presentationUrl').and.callFake(() => {
+        return this;
+      }),
+      apiToken: jasmine.createSpy('apiToken').and.callFake(() => {
+        return this;
+      }),
+      authorization: jasmine.createSpy('authorization').and.callFake(() => {
+        return this;
+      }),
       build: jasmine.createSpy('build').and.returnValue(new MockEdcConnectorClient()),
     };
   }
@@ -65,7 +86,7 @@ describe('EdcClientService', () => {
   it('should create an EDC client successfully', () => {
     const config: EdcConfig = {
       connectorName: '',
-      federatedCatalogEnabled: false,
+      managementApiVersion: 'v4',
       managementUrl: 'http://management.url',
       defaultUrl: 'http://default.url',
       protocolUrl: 'http://protocol.url',
@@ -78,7 +99,7 @@ describe('EdcClientService', () => {
   it('should throw an error if required config properties are missing', () => {
     const config: EdcConfig = {
       connectorName: '',
-      federatedCatalogEnabled: false,
+      managementApiVersion: 'v4',
       managementUrl: '',
       defaultUrl: '',
       protocolUrl: '',
@@ -90,7 +111,7 @@ describe('EdcClientService', () => {
   it('should get the client', async () => {
     const config: EdcConfig = {
       connectorName: '',
-      federatedCatalogEnabled: false,
+      managementApiVersion: 'v4',
       managementUrl: 'http://management.url',
       defaultUrl: 'http://default.url',
       protocolUrl: 'http://protocol.url',
@@ -104,7 +125,7 @@ describe('EdcClientService', () => {
   it('should handle health check failure', async () => {
     const config: EdcConfig = {
       connectorName: '',
-      federatedCatalogEnabled: false,
+      managementApiVersion: 'v4',
       managementUrl: 'http://management.url',
       defaultUrl: 'http://default.url',
       protocolUrl: 'http://protocol.url',

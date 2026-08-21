@@ -43,7 +43,6 @@
 <lib-transfer-history-table
   class="min-h-0"
   [transferProcesses]="pageTransferProcesses$ | async"
-  (deprovisionEvent)="onDeprovision($event)"
 ></lib-transfer-history-table>
 
 @if (contractType !== 'PROVIDER' && (transferProcesses$ | async)?.length == 0) {

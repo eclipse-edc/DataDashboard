@@ -15,7 +15,6 @@
 import { Injectable, inject } from '@angular/core';
 import { EdcClientService } from '@eclipse-edc/dashboard-core';
 import {
-  compact,
   ContractAgreement,
   ContractNegotiation,
   Dataset,
@@ -128,13 +127,14 @@ export class ContractAndTransferService {
     // ToDo: Why is counterPartyAddress undefined otherwise?
     if (negotiation.counterPartyAddress) {
       const datasetRequest: DatasetRequest = {
+        '@type': 'DatasetRequest',
         '@id': agreement.assetId,
         counterPartyId: agreement.providerId,
         counterPartyAddress: negotiation.counterPartyAddress,
       };
       const dataset = (await this.edc.getClient()).management.catalog.requestDataset(datasetRequest);
       if (compacted) {
-        return compact(await dataset);
+        return this.edc.compact<Dataset>(await dataset);
       }
       return dataset;
     } else {
@@ -203,9 +203,5 @@ export class ContractAndTransferService {
    */
   public async getTransferProcessState(id: string): Promise<TransferProcessState> {
     return (await this.edc.getClient()).management.transferProcesses.getState(id);
-  }
-
-  public async deprovisionTransferProcess(id: string): Promise<void> {
-    return (await this.edc.getClient()).management.transferProcesses.deprovision(id);
   }
 }

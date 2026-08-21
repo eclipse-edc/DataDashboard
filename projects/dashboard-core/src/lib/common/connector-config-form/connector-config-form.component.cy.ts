@@ -60,6 +60,8 @@ describe('Test ConnectorConfigFormComponent', () => {
           expect(wrapper.component.connectorForm.valid).to.be.false;
         });
         cy.get('input[formControlName="did"]').type('did:web:test');
+        cy.get('input[formControlName="identityUrl"]').type(url);
+        cy.get('input[formControlName="presentationUrl"]').type(url);
         cy.then(() => {
           expect(wrapper.component.connectorForm.valid).to.be.true;
         });
@@ -71,9 +73,9 @@ describe('Test ConnectorConfigFormComponent', () => {
     const edcConfig: EdcConfig = {
       connectorName: 'Test Connector',
       managementUrl: 'https://management.test',
+      managementApiVersion: 'v4',
       defaultUrl: 'https://default.test',
       protocolUrl: 'https://protocol.test',
-      federatedCatalogEnabled: false,
     };
 
     const mockHealthCheck = (component: any, resolve: boolean, success: boolean) => {

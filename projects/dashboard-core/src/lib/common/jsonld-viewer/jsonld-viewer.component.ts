@@ -12,10 +12,11 @@
  *
  */
 
-import { Component, Input, OnChanges } from '@angular/core';
-import { compact, JsonLdObject } from '@think-it-labs/edc-connector-client';
+import { Component, Input, OnChanges, inject } from '@angular/core';
+import { JsonLdObject } from '@think-it-labs/edc-connector-client';
 import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
+import { EdcClientService } from '../../services/edc-client.service';
 
 @Component({
   selector: 'lib-jsonld-viewer',
@@ -28,13 +29,13 @@ export class JsonldViewerComponent implements OnChanges {
   @Input() jsonLdObject?: JsonLdObject;
   expanded = new BehaviorSubject<string[]>(['']);
   compacted = new BehaviorSubject<string[]>(['']);
+  edcClientService = inject(EdcClientService);
 
   async ngOnChanges() {
     const expanded = JSON.stringify(this.jsonLdObject, null, 2).split('\n');
-    let compacted = await compact(this.jsonLdObject);
-    compacted = JSON.stringify(compacted, null, 2).split('\n');
+    const compacted = await this.edcClientService.compact(this.jsonLdObject);
 
     this.expanded.next(expanded);
-    this.compacted.next(compacted);
+    this.compacted.next(JSON.stringify(compacted, null, 2).split('\n'));
   }
 }

@@ -33,10 +33,10 @@ export default defineConfig({
       {
         connectorName: 'cypress',
         managementUrl: 'http://test.connector/management',
+        managementApiVersion: 'v3',
         defaultUrl: 'http://test.connector/api',
         protocolUrl: 'http://test.connector/protocol',
-        federatedCatalogEnabled: true,
-        federatedCatalogUrl: 'http://fc.connector/catalog',
+        protocolVersion: 'dataspace-protocol-http:2025-1',
         did: 'http://ih.connector/',
       },
     ],

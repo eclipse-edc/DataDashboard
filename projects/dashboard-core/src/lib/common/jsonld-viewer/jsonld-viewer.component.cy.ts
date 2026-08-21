@@ -13,12 +13,24 @@
  */
 
 import { mount } from 'cypress/angular';
-import { JsonldViewerComponent } from '@eclipse-edc/dashboard-core';
-import { JsonLdObject } from '@think-it-labs/edc-connector-client';
+import { EdcClientService, JsonldViewerComponent } from '@eclipse-edc/dashboard-core';
+import { JsonLdObject, JsonLdService } from '@think-it-labs/edc-connector-client';
+
+/**
+ * Provides an {@link EdcClientService} stub whose `compact` delegates to a real
+ * {@link JsonLdService} (using the default EDC context), so the viewer renders
+ * real compacted output without needing a live connector.
+ */
+const edcClientServiceProvider = {
+  provide: EdcClientService,
+  useValue: {
+    compact: (body: unknown) => new JsonLdService().compact(body),
+  },
+};
 
 describe('JsonldViewerComponent', () => {
   it('should display the correct titles for both sections', () => {
-    mount(JsonldViewerComponent);
+    mount(JsonldViewerComponent, { providers: [edcClientServiceProvider] });
 
     cy.contains('Compacted JSON-LD').should('exist');
     cy.contains('Expanded JSON-LD').should('exist');
@@ -31,6 +43,7 @@ describe('JsonldViewerComponent', () => {
       name: 'John Doe',
     };
     mount(JsonldViewerComponent, {
+      providers: [edcClientServiceProvider],
       componentProperties: {
         jsonLdObject: testJsonLdObject as JsonLdObject,
       },
@@ -54,6 +67,7 @@ describe('JsonldViewerComponent', () => {
       name: 'John Doe',
     };
     mount(JsonldViewerComponent, {
+      providers: [edcClientServiceProvider],
       componentProperties: {
         jsonLdObject: testJsonLdObject as JsonLdObject,
       },

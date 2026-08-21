@@ -150,6 +150,7 @@ export class ContractDefinitionCreateComponent implements OnInit, OnChanges {
     });
 
     const contractDefinition: ContractDefinitionInput = {
+      '@type': 'ContractDefinition',
       accessPolicyId: this.contractDefinitionForm.value.accessPolicyId,
       contractPolicyId: this.contractDefinitionForm.value.contractPolicyId,
       assetsSelector: assetsSelector,

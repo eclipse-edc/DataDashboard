@@ -22,7 +22,6 @@ import {
   DashboardStateService,
   FilterInputComponent,
   ItemCountSelectorComponent,
-  ModalAndAlertService,
   PaginationComponent,
 } from '@eclipse-edc/dashboard-core';
 import { ContractAndTransferService } from '../contract-and-transfer.service';
@@ -50,7 +49,6 @@ import { ContractAndTransferService } from '../contract-and-transfer.service';
 })
 export class TransferHistoryViewComponent implements OnInit, OnDestroy {
   private readonly transferProcessService = inject(ContractAndTransferService);
-  private readonly modalAndAlertService = inject(ModalAndAlertService);
   private readonly stateService = inject(DashboardStateService);
 
   private readonly destroy$ = new Subject<void>();
@@ -71,10 +69,12 @@ export class TransferHistoryViewComponent implements OnInit, OnDestroy {
   private async fetchHistory() {
     this.transferProcesses$ = this.filteredTransferProcesses$ = from(
       this.transferProcessService.getAllTransferProcesses({
+        '@type': 'QuerySpec',
         sortField: 'stateTimestamp',
         sortOrder: 'DESC',
         filterExpression: [
           {
+            '@type': 'Criterion',
             operandLeft: 'type',
             operator: '=',
             operandRight: this.contractType,
@@ -111,21 +111,6 @@ export class TransferHistoryViewComponent implements OnInit, OnDestroy {
   async onTypeChange(type: 'CONSUMER' | 'PROVIDER') {
     this.contractType = type;
     await this.fetchHistory();
-  }
-
-  async onDeprovision(transferProcess: TransferProcess) {
-    this.transferProcessService
-      .deprovisionTransferProcess(transferProcess.id)
-      .then(async () => {
-        const msg = `Deprovisioning of transfer process '${transferProcess.id}' requested successfully`;
-        this.modalAndAlertService.showAlert(msg, undefined, 'success', 5);
-        await this.fetchHistory();
-      })
-      .catch(error => {
-        console.error(error);
-        const msg = `Requesting deprovisioning of transfer process '${transferProcess.id}' failed`;
-        this.modalAndAlertService.showAlert(msg, undefined, 'error', 5);
-      });
   }
 
   ngOnDestroy() {
