@@ -12,6 +12,8 @@
  *
  */
 
+import { EdcController } from '@think-it-labs/edc-connector-client';
+
 export interface EdcConfig {
   connectorName: string;
   managementUrl: string;
@@ -35,7 +37,7 @@ export interface EdcConfig {
   authorization?: {
     key: string;
     value: string;
-  }
+  };
   federatedCatalogUrl?: string;
   did?: string;
   /**
@@ -43,4 +45,9 @@ export interface EdcConfig {
    * When set, this runs instead of the native observability.checkHealth().
    */
   customHealthCheck?: () => Promise<boolean>;
+  /**
+   * Optional extra custom controllers for EDC connectors with more/custom controllers.
+   * They are added to EdcConnectorClient via the 'use()' function.
+   */
+  customControllers?: Record<string, typeof EdcController>;
 }
