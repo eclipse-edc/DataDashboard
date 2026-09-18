@@ -122,6 +122,11 @@ export class EdcClientService implements OnDestroy {
     if (config.presentationUrl) connector.presentationUrl(config.presentationUrl);
     if (config.apiToken) connector.apiToken(config.apiToken);
     if (config.authorization) connector.authorization(config.authorization.key, config.authorization.value);
+    if (config.customControllers) {
+      for (const [key, value] of Object.entries(config.customControllers)) {
+        connector.use(key, value);
+      }
+    }
     return connector.build();
   }
 
