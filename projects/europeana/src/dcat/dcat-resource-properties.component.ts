@@ -65,14 +65,10 @@ export class EuropeanaDcatResourcePropertiesComponent implements OnInit, OnChang
     value: new FormControl('', Validators.required),
   });
 
-  /** Active field catalog: from `fieldKeys` or `fields`. */
-  get activeFields(): readonly DcatField[] {
-    return this.fieldKeys?.length ? dcatFormFields(...this.fieldKeys) : this.fields;
-  }
+  activeFields: readonly DcatField[] = DCAT_FIELDS;
 
-  /** Keys owned by the configured field catalog (used to hide them from free-form tables). */
-  get dcatExcludeKeys(): string[] {
-    return dcatOwnedKeys(this.activeFields);
+  private syncFieldCatalog(): void {
+    this.activeFields = this.fieldKeys?.length ? dcatFormFields(...this.fieldKeys) : this.fields;
   }
 
   /** Whether the current properties map has any entries. */
@@ -103,13 +99,17 @@ export class EuropeanaDcatResourcePropertiesComponent implements OnInit, OnChang
 
   /** Builds the fields form and emits property updates when layout is `fields`. */
   ngOnInit(): void {
+    this.syncFieldCatalog();
     this.buildFieldsForm();
   }
 
   /** Reloads labeled inputs when properties / field catalog inputs change. */
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['fieldKeys'] || changes['fields']) && this.fieldsForm) {
-      this.buildFieldsForm();
+    if (changes['fieldKeys'] || changes['fields']) {
+      this.syncFieldCatalog();
+      if (this.fieldsForm) {
+        this.buildFieldsForm();
+      }
       return;
     }
     if (changes['properties'] && this.fieldsForm && !changes['properties'].firstChange) {
